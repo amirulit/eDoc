@@ -123,7 +123,7 @@
         $(document).ready(function () {
             //$("input[name='opt_req']").change(function () {
 
-
+            //$(".save").css("display", "none");
 
 
             $("#ddlAnyDoc").change(function () {
@@ -155,10 +155,16 @@
 
                 //alert("You selected: " + sts);
 
+
+
+
+                $("#btnSave_" + data_id).css("display", "block");
+
                 if (sts == "Obtained") {
                     $("#Obtained_" + data_id).css("display", "block");
                     $("#Not_" + data_id).css("display", "none");
                     $("#Part_" + data_id).css("display", "none");
+                    $("#btnSave_" + data_id).css("display", "none");
                 }
 
                 if (sts == "Not") {
@@ -174,14 +180,28 @@
                 }
             });
 
+
+
+
             $(".save").click(function () {
 
 
+
+                //var cus_id = "";
                 var data_id = $(this).attr("data-id");
                 var div_name = $(this).attr("div-name");
 
-                //alert(data_id);
+
+                alert(data_id);
+                alert(cus_id);
+
                 //alert(div_name);
+
+
+                var required = $('input[name="opt_req_' + data_id + '"]:checked').val();
+
+                alert(required);
+
 
                 var ddl = $("#ddl_" + data_id).val()
 
@@ -189,12 +209,14 @@
 
                 var obj = {};
 
+                obj.cus_id = cus_id;
+                obj.required = required;
 
                 obj.status = ddl;
-                obj.drawdown_id = 1; // $("#txteDocID").val();
-                obj.doc_sl = data_id; // $("#txtCustomerCode").val();
+                //obj.remarks = 1; // $("#txteDocID").val();
+                obj.doc_id = data_id; // $("#txtCustomerCode").val();
 
-                obj.details = '';
+                //obj.details = '';
 
                 var not_reason = $("#txtNotObtained_" + data_id).val();
                 var part_reason = $("#txtPartiallyObtained_" + data_id).val();
@@ -212,7 +234,7 @@
                     obj.details = part_reason;
                     obj.deadline = part_deadline
                     if (part_reason == '' || part_deadline == '') {
-                        alert('Pls put reason| deadline');
+                        alert('Pls put reason & deadline');
                         return false;
                     }
                 }
@@ -232,7 +254,7 @@
                     //processData: false,
 
                     type: "POST",
-                    url: "DocumentUpload_V9.aspx/Save_DocumentStatus",
+                    url: "DocumentUpload_V10_New_Mapping_CusTypeWise.aspx/Save_DocumentUpload_Customer",
                     data: '{Obj: ' + JSON.stringify(obj) + '}',
                     //data: formData,
                     dataType: "json",
@@ -557,6 +579,10 @@
     </script>
     <script type="text/javascript">
 
+
+        var cus_type;
+        var cus_id;
+
         $(function () {
 
             var queryString = window.location.search;
@@ -565,14 +591,14 @@
             //Remove the leading '?' and split by '&'
             var params = queryString.substring(1).split('&');
 
-            var cus_type = params[0].split('=')[1];
+            cus_type = params[0].split('=')[1];
             alert(cus_type);
             var customer_auto_id = params[1].split('=')[1];
-            alert(customer_auto_id);
+            //alert(customer_auto_id);
             var customer_edoc_id = params[2].split('=')[1];
-            alert(customer_edoc_id);
-            var drawdown_id = params[3].split('=')[1];
-            alert(drawdown_id);
+            //alert(customer_edoc_id);
+            cus_id = params[3].split('=')[1];
+            alert(cus_id);
 
             //File Upload
 
@@ -580,13 +606,19 @@
 
             $(".upload").click(function () {
 
-                var file_auto_id = $(this).attr("data-id");
+                var doc_id = $(this).attr("data-id");
 
                 var div_name = $(this).attr("div-name");
 
-                alert(file_auto_id + '-' + div_name);
 
-                var ctrl = $("#fileInput_" + file_auto_id)[0];
+
+                var required = $('input[name="opt_req_' + doc_id + '"]:checked').val();
+
+                alert(required);
+
+                alert(doc_id + '-' + div_name);
+
+                var ctrl = $("#fileInput_" + doc_id)[0];
 
                 if (ctrl.files.length <= 0) {
                     alert('No file selected')
@@ -605,11 +637,12 @@
 
                 var formData = new FormData();
                 //formData.append("customer_auto_id", customer_auto_id);
-                formData.append("customer_auto_id", 72);
-                formData.append("file_auto_id", file_auto_id);
+                //formData.append("customer_auto_id", 72);
+                formData.append("doc_id", doc_id);
                 //formData.append("file", ctrl.files[0]);
-                formData.append("drawdown_id", drawdown_id);
+                formData.append("cus_id", cus_id);
                 formData.append("file", fn);
+                formData.append("required", required);
 
 
                 $.ajax({
@@ -622,20 +655,19 @@
                     processData: false,
                     success: function (fileName) {
 
-                        $("#div" + div_name + "StatusText_" + file_auto_id).html('Uploaded');
+                        $("#div" + div_name + "StatusText_" + doc_id).html('Uploaded');
 
                         //$("#fileProgress").hide();
                         //$("#lblMessage").html("<b>" + fileName + "</b> has been uploaded.");
 
 
-                        $("#btnView" + div_name + "_" + file_auto_id).css("display", "block");
-                        $("#btnView" + div_name + "_" + file_auto_id).attr("cus-auto-id", customer_auto_id);
-                        $("#btnView" + div_name + "_" + file_auto_id).attr("file-auto-id", file_auto_id);
-                        //$("#btnView" + div_name + "_" + file_auto_id).attr("file-name", fn.name);
-                        $("#btnView" + div_name + "_" + file_auto_id).attr("file-name", fileName);
-                        $("#btnView" + div_name + "_" + file_auto_id).attr("file-ext", extension);
+                        $("#btnView" + div_name + "_" + doc_id).css("display", "block");
+                        $("#btnView" + div_name + "_" + doc_id).attr("cus-id", cus_id);
+                        $("#btnView" + div_name + "_" + doc_id).attr("doc-id", doc_id);
+                        $("#btnView" + div_name + "_" + doc_id).attr("file-name", fileName);
+                        $("#btnView" + div_name + "_" + doc_id).attr("file-ext", extension);
 
-                        $("#btnDelete" + div_name + "_" + file_auto_id).css("display", "block");
+                        $("#btnDelete" + div_name + "_" + doc_id).css("display", "block");
 
 
 
@@ -656,7 +688,7 @@
                                     //console.log("Value = " + e.loaded + " :: Max =" + e.total);
                                     var percentage = Math.floor((e.loaded / e.total) * 100);
                                     //console.log(percentage + '%');
-                                    $("#div" + div_name + "StatusText_" + file_auto_id).html(percentage + '%');
+                                    $("#div" + div_name + "StatusText_" + doc_id).html(percentage + '%');
 
                                 }
                             }, false);
@@ -687,10 +719,10 @@
 
             //$(".V").click(function () {
             $(".View").click(function () {
-            
 
 
-                var id = $(this).attr("data-id");
+
+                var id = $(this).attr("doc-id");
                 var fn = $(this).attr("file-name");
 
                 alert(fn);
@@ -777,7 +809,11 @@ function (isConfirm) {
             }
         });
 
-    } //else {
+    }
+
+
+
+    //else {
     //swal("Cancelled", "Data not Deleted)", "error");
     //return false;
     //}
@@ -967,6 +1003,14 @@ function (isConfirm) {
 
                     Int32 doc_id;
 
+                    String file_name;
+
+                    String status;
+
+                    String remarks;
+
+                    String date;
+
                     if (TableData.Rows.Count > 0)
                     {
                         
@@ -1004,62 +1048,132 @@ function (isConfirm) {
                         <%
                         for (var data = 0; data < TableData.Rows.Count; data++)
                         {
-                            doc_id = Convert.ToInt32(TableData.Rows[data]["SL"]);
-            
+                            doc_id = Convert.ToInt32(TableData.Rows[data]["primary_key"]);
+
+                            file_name = (TableData.Rows[data]["file_name"]).ToString();
+
+                            status = (TableData.Rows[data]["c_status"]).ToString();
+
+                            if (status == null || status == "")
+                            {
+                                status = "Obtained";
+                            }
+                            remarks = (TableData.Rows[data]["c_remarks"]).ToString();
+                            date = (TableData.Rows[data]["c_date"]).ToString();
+                            
                         %>
                         <tr>
                             <td>
-                                <%=TableData.Rows[data]["SL"]%>
+                                <%=TableData.Rows[data]["primary_key"]%>
                             </td>
                             <td>
                                 <%=TableData.Rows[data]["Name"]%>
                             </td>
                             <td>
                                 <%-- <%=TableData.Rows[data]["Required"]%>--%>
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["SL"]%>" data-id="<%=TableData.Rows[data]["SL"]%>"
+                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>"
                                     value="Y" <%=TableData.Rows[data]["Required"].ToString()=="Yes"?"checked":""%> />
                                 Yes
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["SL"]%>" data-id="<%=TableData.Rows[data]["SL"]%>"
+                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>"
                                     value="N" />No
                             </td>
                             <td>
                                 <%--<%=TableData.Rows[data]["Obtained"]%>--%>
-                                <select id="ddl_<%=doc_id %>" data-id="<%=TableData.Rows[data]["SL"]%>" class="ddlStatus">
-                                    <option value="Obtained">Obtained</option>
-                                    <option value="Not">Not Obtained</option>
-                                    <option value="Part">Partially Obtained</option>
+                                <select id="ddl_<%=doc_id %>" data-id="<%=TableData.Rows[data]["primary_key"]%>" class="ddlStatus">
+                                    
+
+                                      <option value="Obtained" <%= status == "Obtained" ? "selected" : "" %>>
+        Obtained
+    </option>
+
+    <option value="Not" <%= status == "Not" ? "selected" : "" %>>
+        Not Obtained
+    </option>
+
+    <option value="Part" <%= status == "Part" ? "selected" : "" %>>
+        Partially Obtained
+    </option>
+
                                 </select>
                             </td>
                             <td style="white-space: nowrap;" class="details">
-                                <div id="Obtained_<%=doc_id%>">
+                                <div id="Obtained_<%=doc_id%>"     style="<%= status == "Obtained" ? "" : "display:none;" %>" >
                                     <input type="file" class="file" id="fileInput_<%=doc_id %>" data-id="c" name="fileInput_<%=doc_id %>" />
                                     <span id="<%=DocType[i]%>_id_<%=doc_id %>" class="id">
                                         <%=doc_id%></span>
                                     <input type="button" value="Upload" class="upload" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>" />
                                     <span id="div<%=DocType[i]%>StatusText_<%=doc_id %>">0%</span>
                                 </div>
-                                <div id="Not_<%=doc_id%>" style="display: none;">
+                                <div id="Not_<%=doc_id%>"   style="<%= status == "Not" ? "" : "display:none;" %>" >
                                     Not Obtained Reasons :
-                                    <%=TableData.Rows[data]["reason"]%>
-                                    <input id="txtNotObtained_<%=doc_id %>" type="text" />
+                                    <%=TableData.Rows[data]["remarks"]%>
+                                    <input id="txtNotObtained_<%=doc_id %>" type="text" value="<%=remarks %>"/>
                                 </div>
-                                <div id="Part_<%=doc_id%>" style="display: none;">
-                                    <%=TableData.Rows[data]["reason"]%>
+                                <div id="Part_<%=doc_id%>"  style="<%= status == "Part" ? "" : "display:none;" %>">
+                                    <%=TableData.Rows[data]["remarks"]%>
                                     Partially Obtained Reasons :
-                                    <input id="txtPartiallyObtained_<%=doc_id %>" type="text" />
+                                    <input id="txtPartiallyObtained_<%=doc_id %>" type="text"   value="<%=remarks %>" />
                                     Deadline :
-                                    <input id="txtDeadline_<%=doc_id %>" type="text" class="datepicker" />
+                                    <input id="txtDeadline_<%=doc_id %>" type="text" class="datepicker"   value="<%=date %>"  />
                                 </div>
-                                <input type="button" value="Save" class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>" />
+
+                                <input type="button" value="Save" id="btnSave_<%=doc_id%>"   class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>"  style="<%= status == "Obtained" ? "display:none;" : "" %>"   />
+                                
+                                
+                                 
+                                
+                               
+
+
                             </td>
 
 
 
                             <td>
-                                <input id="btnView<%=DocType[i]%>_<%=doc_id %>" type="button" value="View" class="View"
-                                    style="display: none;" />
-                                <input id="btnDelete<%=DocType[i]%>_<%=doc_id %>" type="button" value="Delete" class="Delete"
-                                    style="display: none;" />
+
+                        
+                                <input id="btnView<%=DocType[i]%>_<%=doc_id %>" type="button" value="View" class="View" data-id="<%=doc_id%>"
+
+                                 file-name="<%=file_name%>"
+
+                                     <%  if (file_name!=""){ %>
+                                    style="display: block;"
+
+                                     <%
+                            }
+                            else
+                            {
+                                        
+                                        
+                                         %>
+
+                                         style="display: none;" 
+
+                                         <%} %>
+                                          />
+
+
+                                <input id="btnDelete<%=DocType[i]%>_<%=doc_id %>" type="button" value="Delete" class="Delete" data-id="<%=doc_id%>"   file-name="<%=file_name%>"
+                                   
+                                     <%  if (file_name!=""){
+                                     
+                                      %>
+                                    style="display: block;"
+
+                                     <%
+                            }
+                            else
+                            {
+                                        
+                                        
+                                         %>
+
+                                         style="display: none;" 
+
+                                         <%} %>
+                                          />
+
+                                   
                                 <% 
                             /*
                                     if (doc_Type == "GENERAL")

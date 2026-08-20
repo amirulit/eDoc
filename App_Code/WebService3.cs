@@ -195,7 +195,7 @@ public class WebService3 : System.Web.Services.WebService
         //Directory.CreateDirectory(path);
         //}
 
-        Int32 Customer_Auto_ID = Convert.ToInt32(HttpContext.Current.Request.Form["customer_auto_id"].ToString());
+        Int32 Customer_Auto_ID = Convert.ToInt32(HttpContext.Current.Request.Form["cus_id"].ToString());
 
         Int32 File_Auto_ID = Convert.ToInt32(HttpContext.Current.Request.Form["file_auto_id"].ToString());
 
@@ -220,7 +220,7 @@ public class WebService3 : System.Web.Services.WebService
 
         postedFile.SaveAs(@"E:\CAD_Doc\" + fileName);
 
-        String SqlStr = "INSERT INTO [dbo].[t_Uploads]  ([cus_id],[doc_id],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   (" + Customer_Auto_ID + "," + File_Auto_ID + ",'" + fileName + "',getdate(),'Test','127.0.0.1')";
+        String SqlStr = "INSERT INTO [dbo].[t_Uploads_Customer]  ([cus_id],[doc_id],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   (" + Customer_Auto_ID + "," + File_Auto_ID + ",'" + fileName + "',getdate(),'Test','127.0.0.1')";
 
         Int32 i;
 
@@ -400,11 +400,15 @@ public class WebService3 : System.Web.Services.WebService
         //Directory.CreateDirectory(path);
         //}
 
-        Int32 Customer_Auto_ID = Convert.ToInt32(HttpContext.Current.Request.Form["customer_auto_id"].ToString());
+        String cus_id = HttpContext.Current.Request.Form["cus_id"].ToString();
 
-        Int32 File_Auto_ID = Convert.ToInt32(HttpContext.Current.Request.Form["file_auto_id"].ToString());
+        Int32 doc_id = Convert.ToInt32(HttpContext.Current.Request.Form["doc_id"].ToString());
 
-        Int32 drawdown_id = Convert.ToInt32(HttpContext.Current.Request.Form["drawdown_id"].ToString());
+
+        String required = HttpContext.Current.Request.Form["required"].ToString();
+
+        
+
 
         HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
 
@@ -416,7 +420,7 @@ public class WebService3 : System.Web.Services.WebService
 
         //String fileName = Customer_Auto_ID + "_" + File_Auto_ID + "_" + postedFile.FileName + Path.GetExtension(postedFile.FileName);
 
-        String fileName = drawdown_id + "_" + File_Auto_ID + "_" + postedFile.FileName;
+        String fileName = cus_id + "_" + doc_id + "_" + postedFile.FileName;
 
         //Save the File.
         //postedFile.SaveAs(path + fileName);
@@ -429,7 +433,7 @@ public class WebService3 : System.Web.Services.WebService
 
         //String SqlStr = "INSERT INTO [dbo].[t_Uploads]  ([cus_id],[doc_id],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   (" + Customer_Auto_ID + "," + File_Auto_ID + ",'" + fileName + "',getdate(),'Test','127.0.0.1')";
 
-        String SqlStr = "INSERT INTO [dbo].[t_Uploads]  ([drawdown_id],[doc_id],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   (" + drawdown_id + "," + File_Auto_ID + ",'" + fileName + "',getdate(),'Test','127.0.0.1')";
+        String SqlStr = "INSERT INTO [dbo].[t_Uploads_Customer]  ([cus_id],[doc_id],[required],[status],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   ('" + cus_id + "'," + doc_id + ",'" + required + "','Obtained','" + fileName + "',getdate(),'Test','127.0.0.1')";
 
         Int32 i;
 

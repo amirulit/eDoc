@@ -8,6 +8,7 @@ using System.Data;
 using System.Web.Services;
 using System.IO;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 
 public partial class DocumentUpload_V10_New_Mapping : System.Web.UI.Page
 {
@@ -170,7 +171,7 @@ Upload Not Required
                         //new SqlParameter("@customer_type",c_type)
                        //,new SqlParameter("@cus_id", cus_auto_id)
 
-                       new SqlParameter("@customer_type","Part")
+                        new SqlParameter("@customer_type","Part")
                        ,new SqlParameter("@cus_id", 72)
                        ,new SqlParameter("@drawdown_id",  Convert.ToInt32( Request.QueryString[0].ToString()))
 
@@ -250,6 +251,29 @@ Upload Not Required
         public String details;
         public String deadline;
 
+    }
+
+
+
+    public SqlDateTime ConvertSQLDateTime(string txtdt)
+    {
+        SqlDateTime sqldt;
+        DateTime dt;
+        if (String.IsNullOrEmpty(txtdt))
+        {
+            sqldt = SqlDateTime.Null;
+        }
+        else
+        {
+            dt = Convert.ToDateTime(txtdt.ToString().Substring(6, 4) + '-' + txtdt.ToString().Substring(3, 2) + '-' + txtdt.ToString().Substring(0, 2));
+            //sqldt = Convert.ToDateTime(txtdt.ToString().Substring(6, 4) + '-' + txtdt.ToString().Substring(3, 2) + '-' + txtdt.ToString().Substring(0,2));
+            //sqldt = Convert.ToDateTime(txtdt.ToString().Substring(3, 2) + '/' + txtdt.ToString().Substring(0, 2) + '/' + txtdt.ToString().Substring(6, 4));
+            //sqldt = DateTime.ParseExact(txtdt.ToString().Substring(3, 2) + '/' + txtdt.ToString().Substring(0, 2) + '/' + txtdt.ToString().Substring(6, 4), "MM/dd/yyyy", null);
+            //sqldt = DateTime.ParseExact(txtdt.ToString().Substring(3, 2) + '/' + txtdt.ToString().Substring(0, 2) + '/' + txtdt.ToString().Substring(6, 4), "MM/dd/yyyy", null);
+
+            sqldt = dt;
+        }
+        return sqldt;
     }
 
     [WebMethod(EnableSession = true)]

@@ -8,6 +8,7 @@ using System.Data;
 using System.Web.Services;
 using System.IO;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 
 public partial class DocumentUpload_V10_New_Mapping_CusTypeWise : System.Web.UI.Page
 {
@@ -87,6 +88,103 @@ Upload Not Required
 
 
     }
+
+
+
+    [WebMethod(EnableSession = true)]
+    public static String Save_DocumentUpload_Customer(Obj Obj)
+    {
+        Utility u = new Utility();
+
+        //Object[] details = null;
+        String msg = "";
+
+        //String e_doc_id = "";
+        //Int32 auto_id = 0;
+
+        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        SqlConnection connection = new SqlConnection(ConStr);
+
+        SqlCommand command = new SqlCommand();
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_SaveDocumentUpload_Customer";
+        command.Connection = connection;
+
+        command.Parameters.Add(new SqlParameter("@cus_id", Obj.cus_id));
+        command.Parameters.Add(new SqlParameter("@doc_id", Obj.doc_id));
+
+        command.Parameters.Add(new SqlParameter("@required", Obj.required));
+        command.Parameters.Add(new SqlParameter("@status", Obj.status));
+        command.Parameters.Add(new SqlParameter("@remarks", Obj.details));
+
+        if (Obj.deadline != "")
+        {
+            SqlDateTime date = u.ConvertSQLDateTime(Obj.deadline);
+            command.Parameters.Add(new SqlParameter("@date", date));
+        }
+
+        command.Parameters.Add(new SqlParameter("@file_name", Obj.file_name));
+        command.Parameters.Add(new SqlParameter("@upload_by", "Test"));
+        command.Parameters.Add(new SqlParameter("@upload_ip", "Test"));
+
+
+        //command.Parameters.AddRange(parameters);
+
+        connection.Open();
+        Int32 i = command.ExecuteNonQuery();
+        connection.Close();
+
+        if (i > 0)
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
+            msg = "Data Saved";
+        }
+        else
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
+            msg = "Data Not Saved";
+        }
+
+        //SqlParameter e_docid_parm = new SqlParameter("@eDOC_ID", SqlDbType.VarChar, 50);
+        //e_docid_parm.Direction = ParameterDirection.Output;
+        //command.Parameters.Add(e_docid_parm);
+
+        //SqlParameter auto_id_parm = new SqlParameter("@auto_id", SqlDbType.Int);
+        //auto_id_parm.Direction = ParameterDirection.Output;
+        //command.Parameters.Add(auto_id_parm);
+
+        //try
+        //{
+
+        //SqlDataAdapter sda = new SqlDataAdapter(command);
+        //DataSet ds = new DataSet();
+        //sda.Fill(ds);
+
+        //e_doc_id = e_docid_parm.Value.ToString();
+        //auto_id = Convert.ToInt32(auto_id_parm.Value.ToString());
+
+
+        //}
+
+        //catch (Exception ex)
+        //{
+
+        //}
+
+
+
+        //return e_doc_id;
+
+        //details = new object[] { e_doc_id, auto_id };
+
+        //return details;
+
+        return msg;
+
+    }
+
+
     [WebMethod]
     public static Object[] GetDetails2(String fn)
     {
@@ -142,6 +240,7 @@ Upload Not Required
     protected void LoadDocList()
     {
         String cus_type = Request.QueryString[0].ToString();
+
         //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
         //String c_type = Request.QueryString[2].ToString().Split('-')[0];
 
@@ -265,6 +364,29 @@ OTHER DOCUMENTS
 
     public class Obj
     {
+
+        public String cus_id;
+        public Int32 doc_id;
+
+
+        public String required;
+        public String status;
+        public String details;
+        public String deadline;
+
+
+        public String file_name;
+        public Int32 upload_by;
+        public String upload_ip;
+
+
+    }
+
+
+
+    public class Obj2
+    {
+
         public String doc_name;
         public Int32 drawdown_id;
         public String status;
@@ -272,10 +394,23 @@ OTHER DOCUMENTS
         public String details;
         public String deadline;
 
+
+    }
+    public class Obj_AnyDoc
+    {
+
+        public String doc_name;
+        public Int32 drawdown_id;
+        public String status;
+        public Int32 doc_sl;
+        public String details;
+        public String deadline;
+
+
     }
 
     [WebMethod(EnableSession = true)]
-    public static String Save_DocumentStatus(Obj Obj)
+    public static String Save_DocumentStatus(Obj2 Obj)
     {
         //Object[] details = null;
         String msg = "";
@@ -354,7 +489,7 @@ OTHER DOCUMENTS
     }
 
     [WebMethod(EnableSession = true)]
-    public static String Save_AnyDoc(Obj Obj)
+    public static String Save_AnyDoc(Obj_AnyDoc Obj)
     {
         //Object[] details = null;
         String msg = "";
