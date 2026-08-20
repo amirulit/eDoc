@@ -614,6 +614,9 @@
 
                 var required = $('input[name="opt_req_' + doc_id + '"]:checked').val();
 
+                if (required == null)
+                    required = '';
+
                 alert(required);
 
                 alert(doc_id + '-' + div_name);
