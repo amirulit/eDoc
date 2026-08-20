@@ -116,21 +116,13 @@ Upload Not Required
 
         command.Parameters.Add(new SqlParameter("@required", Obj.required));
         command.Parameters.Add(new SqlParameter("@status", Obj.status));
-        command.Parameters.Add(new SqlParameter("@reason", Obj.reason));
+        command.Parameters.Add(new SqlParameter("@remarks", Obj.details));
 
         if (Obj.deadline != "")
         {
             SqlDateTime date = u.ConvertSQLDateTime(Obj.deadline);
             command.Parameters.Add(new SqlParameter("@date", date));
         }
-
-        if (Obj.expiry != "")
-        {
-            SqlDateTime expiry = u.ConvertSQLDateTime(Obj.expiry);
-            command.Parameters.Add(new SqlParameter("@expiry", expiry));
-
-        }
-        command.Parameters.Add(new SqlParameter("@remarks", Obj.remarks));
 
         command.Parameters.Add(new SqlParameter("@file_name", Obj.file_name));
         command.Parameters.Add(new SqlParameter("@upload_by", "Test"));
@@ -379,12 +371,8 @@ OTHER DOCUMENTS
 
         public String required;
         public String status;
-        public String reason;
+        public String details;
         public String deadline;
-
-
-        public String expiry;
-        public String remarks;
 
 
         public String file_name;

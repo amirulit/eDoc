@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DocumentUpload_V10_New_Mapping_CusTypeWise.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Copy of DocumentUpload_V10_New_Mapping_CusTypeWise.aspx.cs"
     Inherits="DocumentUpload_V10_New_Mapping_CusTypeWise" Debug="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -164,23 +164,19 @@
                     $("#Obtained_" + data_id).css("display", "block");
                     $("#Not_" + data_id).css("display", "none");
                     $("#Part_" + data_id).css("display", "none");
-                    //$("#btnSave_" + data_id).css("display", "none");
-
-                    $("#btnSave_" + data_id).text("Upload&Save");
+                    $("#btnSave_" + data_id).css("display", "none");
                 }
 
                 if (sts == "Not") {
                     $("#Obtained_" + data_id).css("display", "none");
                     $("#Not_" + data_id).css("display", "block");
                     $("#Part_" + data_id).css("display", "none");
-                    $("#btnSave_" + data_id).text("Save");
                 }
 
                 if (sts == "Part") {
                     $("#Obtained_" + data_id).css("display", "none");
                     $("#Not_" + data_id).css("display", "none");
                     $("#Part_" + data_id).css("display", "block");
-                    $("#btnSave_" + data_id).text("Save");
                 }
             });
 
@@ -243,12 +239,10 @@
                     }
                 }
 
-                var expiry = $("#txtExpiry_" + data_id).val();
-                var remarks = $("#txtRemarks_" + data_id).val();
 
 
-                obj.expiry = expiry;
-                obj.remarks = remarks;
+
+
 
 
                 //alert(obj.toString());
@@ -300,122 +294,6 @@
 
 
             });
-
-
-            function upload() {
-
-
-
-                var doc_id = $(this).attr("data-id");
-
-                var div_name = $(this).attr("div-name");
-
-                var required = $('input[name="opt_req_' + doc_id + '"]:checked').val();
-
-                if (required == null) {
-                    required = '';
-                }
-
-                alert(required);
-
-                alert(doc_id + '-' + div_name);
-
-                var expiry = $("#txtExpiry_" + data_id).val();
-
-                var remarks = $("#txtRemarks_" + data_id).val();
-
-
-
-
-                var ctrl = $("#fileInput_" + doc_id)[0];
-
-                if (ctrl.files.length <= 0) {
-                    alert('No file selected')
-                    return;
-                }
-
-                //alert(ctrl.files[0].name);
-
-                var fn = ctrl.files[0];
-
-                //var extension = fn.name.substring(fn.lastIndexOf('.') + 1);
-
-                var extension = fn.name.split('.').pop();
-
-                //alert(extension);
-
-                var formData = new FormData();
-                //formData.append("customer_auto_id", customer_auto_id);
-                //formData.append("customer_auto_id", 72);
-                formData.append("doc_id", doc_id);
-                //formData.append("file", ctrl.files[0]);
-                formData.append("cus_id", cus_id);
-                formData.append("file", fn);
-                formData.append("required", required);
-
-                formData.append("expiry", expiry);
-                formData.append("remarks", remarks);
-
-
-                $.ajax({
-
-                    url: 'WebService3.asmx/UploadFiles_5',
-                    type: 'POST',
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (fileName) {
-
-                        $("#div" + div_name + "StatusText_" + doc_id).html('Uploaded');
-
-                        //$("#fileProgress").hide();
-                        //$("#lblMessage").html("<b>" + fileName + "</b> has been uploaded.");
-
-
-                        $("#btnView" + div_name + "_" + doc_id).css("display", "block");
-                        $("#btnView" + div_name + "_" + doc_id).attr("cus-id", cus_id);
-                        $("#btnView" + div_name + "_" + doc_id).attr("doc-id", doc_id);
-                        $("#btnView" + div_name + "_" + doc_id).attr("file-name", fileName);
-                        $("#btnView" + div_name + "_" + doc_id).attr("file-ext", extension);
-
-                        $("#btnDelete" + div_name + "_" + doc_id).css("display", "block");
-
-
-
-                        //swal("Success!", "Uploaded", "success");
-
-
-
-                    },
-                    xhr: function () {
-                        var fileXhr = $.ajaxSettings.xhr();
-                        //Check if upload property exists
-                        if (fileXhr.upload) {
-
-                            //update progressbar percent complete
-                            fileXhr.upload.addEventListener("progress", function (e) {
-                                if (e.lengthComputable) {
-                                    //$("#Status_Text").attr({ value: e.loaded, max: e.total });
-                                    //console.log("Value = " + e.loaded + " :: Max =" + e.total);
-                                    var percentage = Math.floor((e.loaded / e.total) * 100);
-                                    //console.log(percentage + '%');
-                                    $("#div" + div_name + "StatusText_" + doc_id).html(percentage + '%');
-
-                                }
-                            }, false);
-
-                        }
-                        return fileXhr;
-
-
-                    }, error: function () {
-                        alert("Whoops something went wrong!");
-                    }
-                });
-
-            }
-
 
 
             function LoadDocStatus_Exception() {
@@ -731,6 +609,8 @@
                 var doc_id = $(this).attr("data-id");
 
                 var div_name = $(this).attr("div-name");
+
+
 
                 var required = $('input[name="opt_req_' + doc_id + '"]:checked').val();
 
@@ -1130,13 +1010,9 @@ function (isConfirm) {
 
                     String status;
 
-                    String reason;
+                    String remarks;
 
                     String date;
-                    
-                    String expiry;
-
-                    String remarks;
 
                     if (TableData.Rows.Count > 0)
                     {
@@ -1165,9 +1041,7 @@ function (isConfirm) {
                             <th>
                                 Details <span id="statusDetails"></span>
                             </th>
-                         <th>Expiry</th>
-                         <th>Remarks
-                         </th>
+                         
                             <th>
                                 Action
                             </th>   <th>Upload Time</th>
@@ -1187,10 +1061,8 @@ function (isConfirm) {
                             {
                                 status = "Obtained";
                             }
-                            reason = (TableData.Rows[data]["c_reason"]).ToString();
-                            date = (TableData.Rows[data]["c_date"]).ToString();
-                            expiry = (TableData.Rows[data]["c_expiry"]).ToString();
                             remarks = (TableData.Rows[data]["c_remarks"]).ToString();
+                            date = (TableData.Rows[data]["c_date"]).ToString();
                             
                         %>
                         <tr>
@@ -1235,24 +1107,22 @@ function (isConfirm) {
                                     <input type="button" value="Upload" class="upload" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>" />
                                     <span id="div<%=DocType[i]%>StatusText_<%=doc_id %>">0%</span>
                                 </div>
-                              
                                 <div id="Not_<%=doc_id%>"   style="<%= status == "Not" ? "" : "display:none;" %>" >
-                                    Not Obtained Reasons :  <br />
-                                    <%=TableData.Rows[data]["c_remarks"]%>
-                                     <br />
-                                    <input id="txtNotObtained_<%=doc_id %>" type="text" value="<%=reason %>"/>
+                                    Not Obtained Reasons :
+                                    <%=TableData.Rows[data]["remarks"]%>
+                                    <input id="txtNotObtained_<%=doc_id %>" type="text" value="<%=remarks %>"/>
                                 </div>
-                               
                                 <div id="Part_<%=doc_id%>"  style="<%= status == "Part" ? "" : "display:none;" %>">
-                                    <%=TableData.Rows[data]["c_remarks"]%>
-                                    Partially Obtained Reasons :  <br />
-                                    <input id="txtPartiallyObtained_<%=doc_id %>" type="text"   value="<%=reason %>" />
-                                     <br />
-                                    Deadline :  <br />
+                                    <%=TableData.Rows[data]["remarks"]%>
+                                    Partially Obtained Reasons :
+                                    <input id="txtPartiallyObtained_<%=doc_id %>" type="text"   value="<%=remarks %>" />
+                                    Deadline :
                                     <input id="txtDeadline_<%=doc_id %>" type="text" class="datepicker"   value="<%=date %>"  />
                                 </div>
 
-                            
+                                <input type="button" value="Save" id="btnSave_<%=doc_id%>"   class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>"  style="<%= status == "Obtained" ? "display:none;" : "" %>"   />
+                                
+                                
                                  
                                 
                                
@@ -1261,27 +1131,9 @@ function (isConfirm) {
                             </td>
 
 
- 
-                            <td>
-
-                               <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker"  value="<%=expiry %>" />
-
-
-                                
-                            </td>
 
                             <td>
-                             <input id="txtRemarks_<%=doc_id %>" type="text"   value="<%=remarks %>" />
 
-                               
-                            </td>
-                            <td>
-
-                            <!-- style="<%= status == "Obtained" ? "display:none;" : "" %>"-->
-                            
-                             <input type="button" value="Save" id="btnSave_<%=doc_id%>"   class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>"    />
-                                
-                                
                         
                                 <input id="btnView<%=DocType[i]%>_<%=doc_id %>" type="button" value="View" class="View" data-id="<%=doc_id%>"
 
@@ -1337,8 +1189,9 @@ function (isConfirm) {
                                      */
                             
                                 %>
-                            
                             </td>
+
+
                             <td>
                                <% =TableData.Rows[data]["upload_date_time"].ToString()%>
                             </td>
