@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show PDF in Dialog</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <script  type="text/javascript"  language="javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script  type="text/javascript" language="javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+     
+
+     <input type="text" id="txt" />
+
+     <br />
+
+     Image
+    <br /> <br />
+   
+
+     <button id="showImageBtn">Show Image</button>
+
+    <!-- Hidden Div for Dialog -->
+    <div id="imageDialog" title="Image Viewer" style="display: none;">
+        <img id="imageViewer" src="" alt="Image" style="width: 100%; height: auto;"/>
+    </div>
+    <br /> <br />
+   
+
+     PDF
+    <br />
+
+    <button id="showPdfBtn">
+        Show PDF</button>
+    <!-- Hidden Div for Dialog -->
+    <div id="pdfDialog" title="PDF Viewer" style="display: none;">
+        <iframe id="pdfFrame" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+    </div>
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            // Initialize the jQuery dialog
+
+            $("#imageDialog").dialog({
+                autoOpen: false,
+                width: $(window).width(),
+                height: $(window).height(),
+
+                buttons: {
+                    Close: function () {
+                        $(this).dialog('close');
+                    }
+                },
+
+                modal: true
+            });
+
+
+            $("#pdfDialog").dialog({
+                autoOpen: false,
+                width: $(window).width(),
+                height: $(window).height(),
+
+                buttons: {
+                    Close: function () {
+                        $(this).dialog('close');
+                    }
+                },
+
+
+                modal: true
+            });
+
+            $("#showImageBtn").on("click", function () {
+
+                var fn = $("#txt").val();
+
+                alert(fn);
+                //var filePath = encodeURIComponent("C:\\OutsideRoot\\example.jpg"); // Change this to the actual file path
+                var imageUrl = "ImageHandler_V2.ashx?filePath=" + fn;
+
+                // Set the image source and open the dialog
+                $("#imageViewer").attr("src", imageUrl);
+                $("#imageDialog").dialog("open");
+
+            });
+
+            // Open the dialog and load the PDF when button is clicked
+            $("#showPdfBtn").on("click", function () {
+
+                var fn = $("#txt").val();
+
+                alert(fn);
+
+                //var filePath = encodeURIComponent("C:\\OutsideRoot\\Sample.pdf"); // Change this to the actual file path
+                var pdfUrl = "PDFHandler.ashx?filePath=" + fn;
+
+                // Set the iframe source and open the dialog
+                $("#pdfFrame").attr("src", pdfUrl);
+                $("#pdfDialog").dialog("open");
+            });
+
+
+
+        });
+    </script>
+</body>
+</html>
