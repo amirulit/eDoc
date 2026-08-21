@@ -174,14 +174,14 @@
                     $("#Obtained_" + data_id).css("display", "none");
                     $("#Not_" + data_id).css("display", "block");
                     $("#Part_" + data_id).css("display", "none");
-                  
+
                 }
 
                 if (sts == "Part") {
                     $("#Obtained_" + data_id).css("display", "none");
                     $("#Not_" + data_id).css("display", "none");
                     $("#Part_" + data_id).css("display", "block");
-                  
+
                 }
             });
 
@@ -190,11 +190,38 @@
 
             $(".save").click(function () {
 
-
-
-                //var cus_id = "";
                 var data_id = $(this).attr("data-id");
                 var div_name = $(this).attr("div-name");
+
+
+                var ddl = $("#ddl_" + data_id).val()
+
+
+                if (ddl == 'Not' || ddl == 'Part') {
+
+                    //alert(ddl);
+                    //return;
+
+                    save(data_id, div_name, ddl);
+
+                }
+
+
+                if (ddl == 'Obtained') {
+
+                    upload_n_save(data_id, div_name);
+                }
+                //var cus_id = "";
+
+
+
+
+            });
+
+
+            function save(data_id, div_name, ddl) {
+
+
 
 
                 alert(data_id);
@@ -208,7 +235,7 @@
                 alert(required);
 
 
-                var ddl = $("#ddl_" + data_id).val()
+                //var ddl = $("#ddl_" + data_id).val()
 
                 //alert(ddl);
 
@@ -279,7 +306,7 @@
                             alert("Data Saved Successfully.");
 
 
-                            LoadDocStatus_Exception();
+                            //LoadDocStatus_Exception();
 
 
                         }
@@ -299,19 +326,17 @@
 
                 return false;
 
+            }
 
-            });
-
-
-            function upload_n_save() {
+            function upload_n_save(data_id, div_name) {
 
 
 
-                var doc_id = $(this).attr("data-id");
+                //var doc_id = $(this).attr("data-id");
 
-                var div_name = $(this).attr("div-name");
+                //var div_name = $(this).attr("div-name");
 
-                var required = $('input[name="opt_req_' + doc_id + '"]:checked').val();
+                var required = $('input[name="opt_req_' + data_id + '"]:checked').val();
 
                 if (required == null) {
                     required = '';
@@ -319,7 +344,7 @@
 
                 alert(required);
 
-                alert(doc_id + '-' + div_name);
+                alert(data_id + '-' + div_name);
 
                 var expiry = $("#txtExpiry_" + data_id).val();
 
@@ -328,7 +353,7 @@
 
 
 
-                var ctrl = $("#fileInput_" + doc_id)[0];
+                var ctrl = $("#fileInput_" + data_id)[0];
 
                 if (ctrl.files.length <= 0) {
                     alert('No file selected')
@@ -348,7 +373,7 @@
                 var formData = new FormData();
                 //formData.append("customer_auto_id", customer_auto_id);
                 //formData.append("customer_auto_id", 72);
-                formData.append("doc_id", doc_id);
+                formData.append("doc_id", data_id);
                 //formData.append("file", ctrl.files[0]);
                 formData.append("cus_id", cus_id);
                 formData.append("file", fn);
@@ -368,19 +393,19 @@
                     processData: false,
                     success: function (fileName) {
 
-                        $("#div" + div_name + "StatusText_" + doc_id).html('Uploaded');
+                        $("#div" + div_name + "StatusText_" + data_id).html('Uploaded');
 
                         //$("#fileProgress").hide();
                         //$("#lblMessage").html("<b>" + fileName + "</b> has been uploaded.");
 
 
-                        $("#btnView" + div_name + "_" + doc_id).css("display", "block");
-                        $("#btnView" + div_name + "_" + doc_id).attr("cus-id", cus_id);
-                        $("#btnView" + div_name + "_" + doc_id).attr("doc-id", doc_id);
-                        $("#btnView" + div_name + "_" + doc_id).attr("file-name", fileName);
-                        $("#btnView" + div_name + "_" + doc_id).attr("file-ext", extension);
+                        $("#btnView" + div_name + "_" + data_id).css("display", "block");
+                        $("#btnView" + div_name + "_" + data_id).attr("cus-id", cus_id);
+                        $("#btnView" + div_name + "_" + data_id).attr("doc-id", data_id);
+                        $("#btnView" + div_name + "_" + data_id).attr("file-name", fileName);
+                        $("#btnView" + div_name + "_" + data_id).attr("file-ext", extension);
 
-                        $("#btnDelete" + div_name + "_" + doc_id).css("display", "block");
+                        $("#btnDelete" + div_name + "_" + data_id).css("display", "block");
 
 
 
@@ -401,7 +426,7 @@
                                     //console.log("Value = " + e.loaded + " :: Max =" + e.total);
                                     var percentage = Math.floor((e.loaded / e.total) * 100);
                                     //console.log(percentage + '%');
-                                    $("#div" + div_name + "StatusText_" + doc_id).html(percentage + '%');
+                                    $("#div" + div_name + "StatusText_" + data_id).html(percentage + '%');
 
                                 }
                             }, false);
@@ -415,8 +440,9 @@
                     }
                 });
 
-            }
 
+
+            }
 
 
             function LoadDocStatus_Exception() {

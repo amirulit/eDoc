@@ -407,8 +407,16 @@ public class WebService3 : System.Web.Services.WebService
 
         String required = HttpContext.Current.Request.Form["required"].ToString();
 
-        
 
+        String expiry = HttpContext.Current.Request.Form["expiry"].ToString();
+
+
+        if (expiry != "")
+        {
+            expiry = expiry.ToString().Substring(6, 4) + '-' + expiry.ToString().Substring(3, 2) + '-' + expiry.ToString().Substring(0, 2);
+        }
+
+        String remarks = HttpContext.Current.Request.Form["remarks"].ToString(); 
 
         HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
 
@@ -433,56 +441,118 @@ public class WebService3 : System.Web.Services.WebService
 
         //String SqlStr = "INSERT INTO [dbo].[t_Uploads]  ([cus_id],[doc_id],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   (" + Customer_Auto_ID + "," + File_Auto_ID + ",'" + fileName + "',getdate(),'Test','127.0.0.1')";
 
-        String SqlStr = "INSERT INTO [dbo].[t_Uploads_Customer]  ([cus_id],[doc_id],[required],[status],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   ('" + cus_id + "'," + doc_id + ",'" + required + "','Obtained','" + fileName + "',getdate(),'Test','127.0.0.1')";
+        //String SqlStr = "INSERT INTO [dbo].[t_Uploads_Customer]  ([cus_id],[doc_id],[required],[status],[reason],[date],[expiry],[remarks],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   ('" + cus_id + "'," + doc_id + ",'" + required + "','Obtained','" + fileName + "',getdate(),'Test','127.0.0.1')";
 
-        Int32 i;
+        //Int32 i;
 
         String ErrorMSG = "";
 
         //String ConStr = ConfigurationManager.ConnectionStrings["MBLFileTracker"].ConnectionString;
 
-        SqlConnection connection = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
+        //SqlConnection connection = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
 
         //SqlConnection connection = new SqlConnection(con);
-        SqlCommand command = new SqlCommand();
-        command.CommandType = CommandType.Text;
-        command.CommandText = SqlStr;
-        command.Connection = connection;
+        //SqlCommand command = new SqlCommand();
+        //command.CommandType = CommandType.Text;
+        //command.CommandText = SqlStr;
+        //command.Connection = connection;
 
 
 
-        try
-        {
-            connection.Open();
-            i = command.ExecuteNonQuery();
-            connection.Close();
-            if (i > 0)
-            {
+        //try
+        //{
+            //connection.Open();
+            //i = command.ExecuteNonQuery();
+            //connection.Close();
+            //if (i > 0)
+            //{
                 //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('LOAN Proposal Created Successfully');window.location = 'ProposalListing.aspx';", true);
-                ErrorMSG = "OK";
-            }
-            else
-            {
-                ErrorMSG = "Error";
+                //ErrorMSG = "OK";
+            //}
+            //else
+            //{
+                //ErrorMSG = "Error";
                 //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! LOAN Proposal Creation failed');", true);
-            }
-        }
+            //}
+        //}
 
-        catch (Exception ex)
-        {
+        //catch (Exception ex)
+        //{
             //lblStatus.Text = ex.Message;
             //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Error Occured : " + ex.Message + "');", true);
 
-            ErrorMSG = ex.Message;
+            //ErrorMSG = ex.Message;
+        //}
+
+
+
+        using (SqlConnection connection = new SqlConnection(
+            @"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;"))
+        {
+            using (SqlCommand command = new SqlCommand("usp_SaveDocumentUpload_Customer_With_FileUpload", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@cus_id", cus_id);
+                command.Parameters.AddWithValue("@doc_id", doc_id);
+                command.Parameters.AddWithValue("@required", required);
+                command.Parameters.AddWithValue("@status", "Obtained");
+                //command.Parameters.AddWithValue("@reason", fileName);
+                //command.Parameters.AddWithValue("@date", DateTime.Now);
+
+                if (expiry != "")
+                {
+                    command.Parameters.AddWithValue("@expiry", expiry);
+                }
+                command.Parameters.AddWithValue("@remarks", remarks);
+                command.Parameters.AddWithValue("@file_name", fileName);
+                command.Parameters.AddWithValue("@upload_date_time", DateTime.Now);
+                command.Parameters.AddWithValue("@upload_by", "test");
+                command.Parameters.AddWithValue("@upload_ip", "127.0.0.1");
+
+                try
+                {
+                    connection.Open();
+
+                    int i = command.ExecuteNonQuery();
+
+                    if (i > 0)
+                    {
+                        ErrorMSG = "OK";
+
+                       
+                    }
+                    else
+                    {
+                        ErrorMSG = "Error";
+                    }
+
+
+                    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+                    HttpContext.Current.Response.Write(fileName);
+                    HttpContext.Current.Response.Flush();
+
+
+                }
+                catch (Exception ex)
+                {
+                    ErrorMSG = ex.Message;
+                    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    HttpContext.Current.Response.Write(ex.Message);
+                    HttpContext.Current.Response.Flush();
+                }
+
+            }
+
         }
 
 
         //HttpContext.Current.Response.StatusCode =(int)HttpStatusCode.InternalServerError;
 
         //Send OK Response to Client.
-        HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
-        HttpContext.Current.Response.Write(fileName);
-        HttpContext.Current.Response.Flush();
+        //HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+        //HttpContext.Current.Response.Write(fileName);
+        //HttpContext.Current.Response.Flush();
 
         //}
         //catch (Exception ex)
