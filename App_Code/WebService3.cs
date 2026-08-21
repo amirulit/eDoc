@@ -510,6 +510,24 @@ public class WebService3 : System.Web.Services.WebService
                 command.Parameters.AddWithValue("@upload_by", "test");
                 command.Parameters.AddWithValue("@upload_ip", "127.0.0.1");
 
+
+                /*
+                
+                command.Parameters.Add("@cus_id", SqlDbType.VarChar, 50).Value = cus_id;
+                command.Parameters.Add("@doc_id", SqlDbType.Int).Value = doc_id;
+                command.Parameters.Add("@required", SqlDbType.VarChar, 10).Value = required;
+                command.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = "Obtained";
+                command.Parameters.Add("@reason", SqlDbType.VarChar, 500).Value = fileName;
+                command.Parameters.Add("@date", SqlDbType.DateTime).Value = DateTime.Now;
+                command.Parameters.Add("@expiry", SqlDbType.VarChar, 50).Value = "Test";
+                command.Parameters.Add("@remarks", SqlDbType.VarChar, 500).Value = remarks;
+                command.Parameters.Add("@file_name", SqlDbType.VarChar, 500).Value = fileName;
+                command.Parameters.Add("@upload_date_time", SqlDbType.DateTime).Value = DateTime.Now;
+                command.Parameters.Add("@upload_by", SqlDbType.VarChar, 100).Value = upload_by;
+                command.Parameters.Add("@upload_ip", SqlDbType.VarChar, 50).Value = upload_ip; 
+                 
+                */
+
                 try
                 {
                     connection.Open();

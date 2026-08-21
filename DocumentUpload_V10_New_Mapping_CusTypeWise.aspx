@@ -191,8 +191,12 @@
             $(".save").click(function () {
 
                 var data_id = $(this).attr("data-id");
-                var div_name = $(this).attr("div-name");
 
+                var div_name = $(this).attr("div-name"); 
+
+                var expiry_req = $(this).attr("data-expiry");
+
+                alert(expiry_req);
 
                 var ddl = $("#ddl_" + data_id).val()
 
@@ -202,14 +206,16 @@
                     //alert(ddl);
                     //return;
 
-                    save(data_id, div_name, ddl);
+                    save(data_id, div_name, ddl, expiry_req);
 
                 }
 
 
                 if (ddl == 'Obtained') {
 
-                    upload_n_save(data_id, div_name);
+                    upload_n_save(data_id, div_name, expiry_req);
+
+
                 }
                 //var cus_id = "";
 
@@ -219,7 +225,7 @@
             });
 
 
-            function save(data_id, div_name, ddl) {
+            function save(data_id, div_name, ddl, expiry_req) {
 
 
 
@@ -328,7 +334,7 @@
 
             }
 
-            function upload_n_save(data_id, div_name) {
+            function upload_n_save(data_id, div_name, expiry_req) {
 
 
 
@@ -347,6 +353,11 @@
                 alert(data_id + '-' + div_name);
 
                 var expiry = $("#txtExpiry_" + data_id).val();
+
+                if (expiry == "") {
+                    alert('expiry can not empty');
+                    return;
+                }
 
                 var remarks = $("#txtRemarks_" + data_id).val();
 
@@ -912,11 +923,19 @@
             });
 
 
-            $("body").on("click", ".D", function () {
+            //$("body").on("click", ".D", function () {
+
+            $("body").on("click", ".Delete", function () {
 
                 var id = $(this).attr("data-id");
 
+                var deleteid = $(this).attr("data-deleteid");
 
+
+                alert(deleteid);
+
+
+                return;
 
                 //alert('Delete ?' + id);
 
@@ -975,6 +994,13 @@ function (isConfirm) {
 
     </script>
     <style type="text/css">
+        
+        .tdTopLeft {
+    vertical-align: top;
+    text-align: left;
+    padding:5px;
+}
+
         body
         {
             font-size: 12px;
@@ -1078,6 +1104,8 @@ function (isConfirm) {
 
         <br />
         <div id="accordion" style="width: auto;">
+
+
             <%
                 for (int i = 0; i < TabsName.Length; i++)
                 {
@@ -1150,6 +1178,8 @@ function (isConfirm) {
                     }
 
 
+                    String expiry_req;
+
 
                     Int32 doc_id;
 
@@ -1164,6 +1194,8 @@ function (isConfirm) {
                     String expiry;
 
                     String remarks;
+
+                    Int32 id_to_delete;
 
                     if (TableData.Rows.Count > 0)
                     {
@@ -1204,6 +1236,10 @@ function (isConfirm) {
                         <%
                         for (var data = 0; data < TableData.Rows.Count; data++)
                         {
+
+                            expiry_req = (TableData.Rows[data]["expiry"]).ToString();
+                                
+                                
                             doc_id = Convert.ToInt32(TableData.Rows[data]["primary_key"]);
 
                             file_name = (TableData.Rows[data]["file_name"]).ToString();
@@ -1218,16 +1254,19 @@ function (isConfirm) {
                             date = (TableData.Rows[data]["c_date"]).ToString();
                             expiry = (TableData.Rows[data]["c_expiry"]).ToString();
                             remarks = (TableData.Rows[data]["c_remarks"]).ToString();
+
+
+                            id_to_delete =TableData.Rows[data]["c_id"].ToString();
                             
                         %>
                         <tr>
-                            <td>
+                           <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["primary_key"]%>
                             </td>
-                            <td>
+                         <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["Name"]%>
                             </td>
-                            <td>
+                         <td class="tdTopLeft">
                                 <%-- <%=TableData.Rows[data]["Required"]%>--%>
                                 <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>"
                                     value="Y" <%=TableData.Rows[data]["Required"].ToString()=="Yes"?"checked":""%> />
@@ -1235,7 +1274,7 @@ function (isConfirm) {
                                 <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>"
                                     value="N" />No
                             </td>
-                            <td>
+                         <td class="tdTopLeft">
                                 <%--<%=TableData.Rows[data]["Obtained"]%>--%>
                                 <select id="ddl_<%=doc_id %>" data-id="<%=TableData.Rows[data]["primary_key"]%>" class="ddlStatus">
                                     
@@ -1254,7 +1293,7 @@ function (isConfirm) {
 
                                 </select>
                             </td>
-                            <td style="white-space: nowrap;" class="details">
+                            <td style="white-space: nowrap;" class="details tdTopLeft">
                                 <div id="Obtained_<%=doc_id%>"     style="<%= status == "Obtained" ? "" : "display:none;" %>" >
                                     <input type="file" class="file" id="fileInput_<%=doc_id %>" data-id="c" name="fileInput_<%=doc_id %>" />
                                     <span id="<%=DocType[i]%>_id_<%=doc_id %>" class="id">
@@ -1266,7 +1305,7 @@ function (isConfirm) {
                                 <div id="Not_<%=doc_id%>"   style="<%= status == "Not" ? "" : "display:none;" %>" >
                                     Not Obtained Reasons :  <br />
                                     <%=TableData.Rows[data]["c_remarks"]%>
-                                     <br />
+                                  
                                     <input id="txtNotObtained_<%=doc_id %>" type="text" value="<%=reason %>"/>
                                 </div>
                                
@@ -1289,24 +1328,31 @@ function (isConfirm) {
 
 
  
-                            <td>
+                         <td class="tdTopLeft">
 
-                               <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker"  value="<%=expiry %>" />
+                               <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker"  value="<%=expiry %>"   />
 
 
                                 
                             </td>
 
-                            <td>
+                        <td class="tdTopLeft">
                              <input id="txtRemarks_<%=doc_id %>" type="text"   value="<%=remarks %>" />
 
                                
                             </td>
-                            <td>
+                         <td class="tdTopLeft">
 
                             <!-- style="<%= status == "Obtained" ? "display:none;" : "" %>"-->
                             
-                             <input type="button" value="Save" id="btnSave_<%=doc_id%>"   class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>"    />
+                             <input type="button" value="Save" id="btnSave_<%=doc_id%>"   class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>"   
+                             
+                             
+                             data-expiry="<%=expiry_req%>"
+                             
+                             
+                             
+                              />
                                 
                                 
                         
@@ -1331,7 +1377,7 @@ function (isConfirm) {
                                           />
 
 
-                                <input id="btnDelete<%=DocType[i]%>_<%=doc_id %>" type="button" value="Delete" class="Delete" data-id="<%=doc_id%>"   file-name="<%=file_name%>"
+                                <input id="btnDelete<%=DocType[i]%>_<%=doc_id %>" type="button" value="Delete" class="Delete" data-id="<%=doc_id%>" data-deleteid="<%=id_to_delete%>"  file-name="<%=file_name%>"
                                    
                                      <%  if (file_name!=""){
                                      
@@ -1366,7 +1412,7 @@ function (isConfirm) {
                                 %>
                             
                             </td>
-                            <td>
+                          <td class="tdTopLeft">
                                <% =TableData.Rows[data]["upload_date_time"].ToString()%>
                             </td>
                         </tr>
