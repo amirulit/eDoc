@@ -159,6 +159,7 @@
 
 
                 $("#btnSave_" + data_id).css("display", "block");
+                $("#btnSave_" + data_id).text("Save");
 
                 if (sts == "Obtained") {
                     $("#Obtained_" + data_id).css("display", "block");
@@ -173,14 +174,14 @@
                     $("#Obtained_" + data_id).css("display", "none");
                     $("#Not_" + data_id).css("display", "block");
                     $("#Part_" + data_id).css("display", "none");
-                    $("#btnSave_" + data_id).text("Save");
+                  
                 }
 
                 if (sts == "Part") {
                     $("#Obtained_" + data_id).css("display", "none");
                     $("#Not_" + data_id).css("display", "none");
                     $("#Part_" + data_id).css("display", "block");
-                    $("#btnSave_" + data_id).text("Save");
+                  
                 }
             });
 
@@ -302,7 +303,7 @@
             });
 
 
-            function upload() {
+            function upload_n_save() {
 
 
 
