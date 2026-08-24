@@ -1520,7 +1520,9 @@
             %>
             <!--dssdfsdfsfsdsfsdfsafsadf-->
         </div>
-        <br />
+
+
+         <br />
         <hr />
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -1566,8 +1568,181 @@
                         </td>
                     </tr>
                 </table>
-               </div>
+                <br />
+                <table class="table table-condensed" id="tblAnyOthDoc">
+                    <thead>
+                        <tr>
+                            <th>
+                                SL
+                            </th>
+                            <th>
+                                Exception Details
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Reason
+                            </th>
+                            <th>
+                                Comply Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            for (var data = 0; data < TableData_AnyOtherDocument.Rows.Count; data++)
+                            {
+                            
+                        %>
+                        <tr>
+                            <td>
+                                <%=TableData_AnyOtherDocument.Rows[data]["doc_sl"]%>
+                            </td>
+                            <td>
+                                <%=TableData_AnyOtherDocument.Rows[data]["doc_name"]%>
+                            </td>
+                            <td>
+                                <%=TableData_AnyOtherDocument.Rows[data]["status"]%>
+                            </td>
+                            <td>
+                                <%=TableData_AnyOtherDocument.Rows[data]["details"]%>
+                            </td>
+                            <td>
+                                <%=TableData_AnyOtherDocument.Rows[data]["deadline"]%>
+                            </td>
+                        </tr>
+                        <%
+                            } %>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <br />
+        <hr />
+        <% //if (TableData_Exception.Rows.Count > 0)
+                            //{
+        %>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-bar-chart-o"></i>Exception</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed" id="tblException">
+                    <thead>
+                        <tr>
+                            <th>
+                                SL
+                            </th>
+                            <th>
+                                Exception Details
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Reason
+                            </th>
+                            <th>
+                                Comply Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            for (var data = 0; data < TableData_Exception.Rows.Count; data++)
+                            {
+                            
+                        %>
+                        <tr>
+                            <td>
+                                <%=TableData_Exception.Rows[data]["doc_sl"]%>
+                            </td>
+                            <td>
+                                <%=TableData_Exception.Rows[data]["doc_name"]%>
+                            </td>
+                            <td>
+                                <%=TableData_Exception.Rows[data]["status"]%>
+                            </td>
+                            <td>
+                                <%=TableData_Exception.Rows[data]["details"]%>
+                            </td>
+                            <td>
+                                <%=TableData_Exception.Rows[data]["deadline"]%>
+                            </td>
+                        </tr>
+                        <%
+                            } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <%
+                            //}
+        %>
+        <br />
+        <hr />
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-bar-chart-o"></i>Confirmation</h3>
+            </div>
+            <div class="panel-body">
+                <br />
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                SL
+                            </th>
+                            <th>
+                                Question
+                            </th>
+                            <th>
+                                Reply
+                            </th>
+                            <th>
+                                If no reasons
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            for (var data = 0; data < TableData_Confirmation.Rows.Count; data++)
+                            {
+                            
+                        %>
+                        <tr>
+                            <td>
+                                <%=TableData_Confirmation.Rows[data]["id"]%>
+                            </td>
+                            <td>
+                                <%=TableData_Confirmation.Rows[data]["question"]%>
+                            </td>
+                            <td>
+                                <input id="Radio1" type="radio" name="rdo_conf_<%=TableData_Confirmation.Rows[data]["id"]%>"
+                                    value="Y" <%=TableData_Confirmation.Rows[data]["reply"].ToString()=="Y"?"checked":""%> />Yes
+                                <input id="Radio2" type="radio" name="rdo_conf_<%=TableData_Confirmation.Rows[data]["id"]%>"
+                                    value="N" <%=TableData_Confirmation.Rows[data]["reply"].ToString()=="N"?"checked":""%> />No
+                            </td>
+                            <td>
+                                <input id="txtCon_<%=TableData_Confirmation.Rows[data]["id"]%>" type="text" value="<%=TableData_Confirmation.Rows[data]["reason"]%>" />
+                            </td>
+                            <td>
+                                <input id="btnSaveConfirm" type="button" value="Save" class="confirm" data-id="<%=TableData_Confirmation.Rows[data]["id"]%>" />
+                            </td>
+                        </tr>
+                        <%} %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
         <br />
         <div id="modal_dialog" style="display: none">
             This is a Modal Background popup
