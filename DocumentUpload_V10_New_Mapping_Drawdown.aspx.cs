@@ -85,14 +85,14 @@ Upload Not Required
         LoadDocList();
 
         //LoadCusList();
-
-        //hfCusID.Value = Request.QueryString[3].ToString();
+        hfCusID.Value = Request.QueryString[1].ToString();
+        hfDrawdownID.Value = Request.QueryString[0].ToString();
     }
 
 
 
     [WebMethod(EnableSession = true)]
-    public static String Save_DocumentUpload_Customer(Obj Obj)
+    public static String Save_DocumentUpload_Drawdown(Obj Obj)
     {
         Utility u = new Utility();
 
@@ -108,7 +108,7 @@ Upload Not Required
 
         SqlCommand command = new SqlCommand();
         command.CommandType = CommandType.StoredProcedure;
-        command.CommandText = "usp_SaveDocumentUpload_Customer";
+        command.CommandText = "usp_SaveDocumentUpload_Drawdown";
         command.Connection = connection;
 
         command.Parameters.Add(new SqlParameter("@cus_id", Obj.cus_id));
@@ -211,7 +211,7 @@ Upload Not Required
         command.CommandText = "usp_DeleteUpload";
         command.Connection = connection;
 
-        command.Parameters.Add(new SqlParameter("@doc_type", "C"));
+        command.Parameters.Add(new SqlParameter("@doc_type", "L"));
         command.Parameters.Add(new SqlParameter("@cus_id", cus_id));
 
         command.Parameters.Add(new SqlParameter("@doc_id", data_id));

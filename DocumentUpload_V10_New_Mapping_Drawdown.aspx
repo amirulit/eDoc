@@ -347,7 +347,7 @@
                     //processData: false,
 
                     type: "POST",
-                    url: "DocumentUpload_V10_New_Mapping_CusTypeWise.aspx/Save_DocumentUpload_Customer",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/Save_DocumentUpload_Drawdown",
                     data: '{Obj: ' + JSON.stringify(obj) + '}',
                     //data: formData,
                     dataType: "json",
@@ -442,6 +442,7 @@
                 var formData = new FormData();
                 //formData.append("customer_auto_id", customer_auto_id);
                 //formData.append("customer_auto_id", 72);
+                formData.append("drawdown_id", data_id);
                 formData.append("doc_id", data_id);
                 //formData.append("file", ctrl.files[0]);
                 formData.append("cus_id", cus_id);
@@ -454,7 +455,7 @@
 
                 $.ajax({
 
-                    url: 'WebService3.asmx/UploadFiles_5',
+                    url: 'WebService3.asmx/UploadFiles_6',
                     type: 'POST',
                     data: formData,
                     cache: false,
@@ -807,6 +808,7 @@
 
         var cus_type;
         var cus_id;
+        var drawdown_id;
 
         $(function () {
 
@@ -816,14 +818,16 @@
             //Remove the leading '?' and split by '&'
             var params = queryString.substring(1).split('&');
 
-            cus_type = params[0].split('=')[1];
-            alert(cus_type);
-            var customer_auto_id = params[1].split('=')[1];
-            //alert(customer_auto_id);
-            var customer_edoc_id = params[2].split('=')[1];
-            //alert(customer_edoc_id);
-            cus_id = params[3].split('=')[1];
+            drawdown_id = params[0].split('=')[1];
+            alert(drawdown_id);
+            //var customer_auto_id = params[1].split('=')[1];
+            cus_id = params[1].split('=')[1];
             alert(cus_id);
+            //alert(customer_auto_id);
+            //var customer_edoc_id = params[2].split('=')[1];
+            //alert(customer_edoc_id);
+            //cus_id = params[3].split('=')[1];
+            //alert(cus_id);
 
             //File Upload
 
@@ -1033,10 +1037,10 @@
 
 
                 $.ajax({
-                    url: 'DocumentUpload_V10_New_Mapping_CusTypeWise.aspx/DeleteDocument',
+                    url: 'DocumentUpload_V10_New_Mapping_Drawdown.aspx/DeleteDocument',
                     type: 'POST',
                     contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({ cus_id: cus_id, data_id: parseInt(data_id) }),
+                    data: JSON.stringify({drawdown_id: parseInt(drawdown_id),cus_id: cus_id, data_id: parseInt(data_id) }),
                     dataType: "json",
 
                     success: function (data) {
@@ -1112,7 +1116,6 @@
     background-color: #fff3cd ;
 }
 
-
     </style>
     <style type="text/css">
         table
@@ -1146,6 +1149,7 @@
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
       
         <input id="hfCusID" type="hidden" runat="server" />
+        <input id="hfDrawdownID" type="hidden" runat="server" />
 
 
         <input  type="button" value="Close" onclick="window.close();"/>

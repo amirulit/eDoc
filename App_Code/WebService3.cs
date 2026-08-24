@@ -504,6 +504,7 @@ public class WebService3 : System.Web.Services.WebService
                 {
                     command.Parameters.AddWithValue("@expiry", expiry);
                 }
+
                 command.Parameters.AddWithValue("@remarks", remarks);
                 command.Parameters.AddWithValue("@file_name", fileName);
                 command.Parameters.AddWithValue("@upload_date_time", DateTime.Now);
@@ -539,6 +540,211 @@ public class WebService3 : System.Web.Services.WebService
                         ErrorMSG = "OK";
 
                        
+                    }
+                    else
+                    {
+                        ErrorMSG = "Error";
+                    }
+
+
+                    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+                    HttpContext.Current.Response.Write(fileName);
+                    HttpContext.Current.Response.Flush();
+
+
+                }
+                catch (Exception ex)
+                {
+                    ErrorMSG = ex.Message;
+                    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    HttpContext.Current.Response.Write(ex.Message);
+                    HttpContext.Current.Response.Flush();
+                }
+
+            }
+
+        }
+
+
+        //HttpContext.Current.Response.StatusCode =(int)HttpStatusCode.InternalServerError;
+
+        //Send OK Response to Client.
+        //HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+        //HttpContext.Current.Response.Write(fileName);
+        //HttpContext.Current.Response.Flush();
+
+        //}
+        //catch (Exception ex)
+        //{
+        //HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        //HttpContext.Current.Response.Write(ex.Message);
+        //HttpContext.Current.Response.Flush();
+        //} 
+
+    }
+
+
+
+
+    [WebMethod]
+    public void UploadFiles_6()
+    {
+        //try
+        //{
+
+        //Create the Directory.
+        //string path = HttpContext.Current.Server.MapPath("~/Uploads/");
+        //if (!Directory.Exists(path))
+        //{
+        //Directory.CreateDirectory(path);
+        //}
+
+
+
+
+        Int32 drawdown_id = Convert.ToInt32(HttpContext.Current.Request.Form["drawdown_id"].ToString());
+
+        String cus_id = HttpContext.Current.Request.Form["cus_id"].ToString();
+
+        Int32 doc_id = Convert.ToInt32(HttpContext.Current.Request.Form["doc_id"].ToString());
+
+
+        String required = HttpContext.Current.Request.Form["required"].ToString();
+
+
+        String expiry = HttpContext.Current.Request.Form["expiry"].ToString();
+
+
+        if (expiry != "")
+        {
+            expiry = expiry.ToString().Substring(6, 4) + '-' + expiry.ToString().Substring(3, 2) + '-' + expiry.ToString().Substring(0, 2);
+        }
+
+        String remarks = HttpContext.Current.Request.Form["remarks"].ToString();
+
+        HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
+
+        //Fetch the File Name.
+
+
+
+
+
+        //String fileName = Customer_Auto_ID + "_" + File_Auto_ID + "_" + postedFile.FileName + Path.GetExtension(postedFile.FileName);
+
+        String fileName = cus_id + "_" + doc_id + "_" + postedFile.FileName;
+
+        //Save the File.
+        //postedFile.SaveAs(path + fileName);
+
+        //postedFile.SaveAs(@"E:\tt\" + fileName + "_" + Path.GetFileName(postedFile.FileName));
+
+        //postedFile.SaveAs(@"E:\CAD_Doc\" + fileName + "_ITD");
+
+        postedFile.SaveAs(@"E:\CAD_Doc\" + fileName);
+
+        //String SqlStr = "INSERT INTO [dbo].[t_Uploads]  ([cus_id],[doc_id],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   (" + Customer_Auto_ID + "," + File_Auto_ID + ",'" + fileName + "',getdate(),'Test','127.0.0.1')";
+
+        //String SqlStr = "INSERT INTO [dbo].[t_Uploads_Customer]  ([cus_id],[doc_id],[required],[status],[reason],[date],[expiry],[remarks],[file_name],[upload_date_time],[upload_by],[upload_ip])   VALUES   ('" + cus_id + "'," + doc_id + ",'" + required + "','Obtained','" + fileName + "',getdate(),'Test','127.0.0.1')";
+
+        //Int32 i;
+
+        String ErrorMSG = "";
+
+        //String ConStr = ConfigurationManager.ConnectionStrings["MBLFileTracker"].ConnectionString;
+
+        //SqlConnection connection = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
+
+        //SqlConnection connection = new SqlConnection(con);
+        //SqlCommand command = new SqlCommand();
+        //command.CommandType = CommandType.Text;
+        //command.CommandText = SqlStr;
+        //command.Connection = connection;
+
+
+
+        //try
+        //{
+        //connection.Open();
+        //i = command.ExecuteNonQuery();
+        //connection.Close();
+        //if (i > 0)
+        //{
+        //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('LOAN Proposal Created Successfully');window.location = 'ProposalListing.aspx';", true);
+        //ErrorMSG = "OK";
+        //}
+        //else
+        //{
+        //ErrorMSG = "Error";
+        //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! LOAN Proposal Creation failed');", true);
+        //}
+        //}
+
+        //catch (Exception ex)
+        //{
+        //lblStatus.Text = ex.Message;
+        //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Error Occured : " + ex.Message + "');", true);
+
+        //ErrorMSG = ex.Message;
+        //}
+
+
+
+        using (SqlConnection connection = new SqlConnection(
+            @"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;"))
+        {
+            using (SqlCommand command = new SqlCommand("usp_SaveDocumentUpload_Drawdown_With_FileUpload", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@drawdown_id", cus_id);
+                command.Parameters.AddWithValue("@cus_id", cus_id);
+                command.Parameters.AddWithValue("@doc_id", doc_id);
+                command.Parameters.AddWithValue("@required", required);
+                command.Parameters.AddWithValue("@status", "Obtained");
+                //command.Parameters.AddWithValue("@reason", fileName);
+                //command.Parameters.AddWithValue("@date", DateTime.Now);
+
+                if (expiry != "")
+                {
+                    command.Parameters.AddWithValue("@expiry", expiry);
+                }
+
+                command.Parameters.AddWithValue("@remarks", remarks);
+                command.Parameters.AddWithValue("@file_name", fileName);
+                command.Parameters.AddWithValue("@upload_date_time", DateTime.Now);
+                command.Parameters.AddWithValue("@upload_by", "test");
+                command.Parameters.AddWithValue("@upload_ip", "127.0.0.1");
+
+
+                /*
+                
+                command.Parameters.Add("@cus_id", SqlDbType.VarChar, 50).Value = cus_id;
+                command.Parameters.Add("@doc_id", SqlDbType.Int).Value = doc_id;
+                command.Parameters.Add("@required", SqlDbType.VarChar, 10).Value = required;
+                command.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = "Obtained";
+                command.Parameters.Add("@reason", SqlDbType.VarChar, 500).Value = fileName;
+                command.Parameters.Add("@date", SqlDbType.DateTime).Value = DateTime.Now;
+                command.Parameters.Add("@expiry", SqlDbType.VarChar, 50).Value = "Test";
+                command.Parameters.Add("@remarks", SqlDbType.VarChar, 500).Value = remarks;
+                command.Parameters.Add("@file_name", SqlDbType.VarChar, 500).Value = fileName;
+                command.Parameters.Add("@upload_date_time", SqlDbType.DateTime).Value = DateTime.Now;
+                command.Parameters.Add("@upload_by", SqlDbType.VarChar, 100).Value = upload_by;
+                command.Parameters.Add("@upload_ip", SqlDbType.VarChar, 50).Value = upload_ip; 
+                 
+                */
+
+                try
+                {
+                    connection.Open();
+
+                    int i = command.ExecuteNonQuery();
+
+                    if (i > 0)
+                    {
+                        ErrorMSG = "OK";
+
+
                     }
                     else
                     {
