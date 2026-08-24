@@ -113,6 +113,7 @@ Upload Not Required
 
         command.Parameters.Add(new SqlParameter("@cus_id", Obj.cus_id));
         command.Parameters.Add(new SqlParameter("@doc_id", Obj.doc_id));
+        command.Parameters.Add(new SqlParameter("@drawdown_id", Obj.drawdown_id));
 
         command.Parameters.Add(new SqlParameter("@required", Obj.required));
         command.Parameters.Add(new SqlParameter("@status", Obj.status));
@@ -194,7 +195,7 @@ Upload Not Required
 
 
     [WebMethod(EnableSession = true)]
-    public static String DeleteDocument(String cus_id, Int32 data_id)
+    public static String DeleteDocument(Int32 drawdown_id, String cus_id, Int32 data_id)
     {
         //Object[] details = null;
         String msg = "";
@@ -213,8 +214,8 @@ Upload Not Required
 
         command.Parameters.Add(new SqlParameter("@doc_type", "L"));
         command.Parameters.Add(new SqlParameter("@cus_id", cus_id));
-
         command.Parameters.Add(new SqlParameter("@doc_id", data_id));
+        command.Parameters.Add(new SqlParameter("@drawdown_id", drawdown_id));
 
 
         //command.Parameters.AddRange(parameters);
@@ -452,7 +453,7 @@ OTHER DOCUMENTS
 
         public String cus_id;
         public Int32 doc_id;
-
+        public Int32 drawdown_id;
 
         public String required;
         public String status;

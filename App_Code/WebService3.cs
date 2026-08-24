@@ -697,7 +697,7 @@ public class WebService3 : System.Web.Services.WebService
             {
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@drawdown_id", cus_id);
+                command.Parameters.AddWithValue("@drawdown_id", drawdown_id);
                 command.Parameters.AddWithValue("@cus_id", cus_id);
                 command.Parameters.AddWithValue("@doc_id", doc_id);
                 command.Parameters.AddWithValue("@required", required);

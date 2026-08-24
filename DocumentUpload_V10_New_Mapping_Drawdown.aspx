@@ -301,6 +301,7 @@
                 var obj = {};
 
                 obj.cus_id = cus_id;
+                obj.drawdown_id = drawdown_id;
                 obj.required = required;
 
                 obj.status = ddl;
@@ -442,7 +443,7 @@
                 var formData = new FormData();
                 //formData.append("customer_auto_id", customer_auto_id);
                 //formData.append("customer_auto_id", 72);
-                formData.append("drawdown_id", data_id);
+                formData.append("drawdown_id", drawdown_id);
                 formData.append("doc_id", data_id);
                 //formData.append("file", ctrl.files[0]);
                 formData.append("cus_id", cus_id);
