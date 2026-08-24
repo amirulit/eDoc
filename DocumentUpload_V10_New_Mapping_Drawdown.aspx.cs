@@ -86,7 +86,7 @@ Upload Not Required
 
         //LoadCusList();
 
-        hfCusID.Value = Request.QueryString[3].ToString();
+        //hfCusID.Value = Request.QueryString[3].ToString();
     }
 
 
@@ -326,32 +326,23 @@ Upload Not Required
     }
     protected void LoadDocList()
     {
-        String cus_type = Request.QueryString[0].ToString();
+        String drawdown_id = Request.QueryString[0].ToString();
 
         //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
         //String c_type = Request.QueryString[2].ToString().Split('-')[0];
 
-        String cus_id = Request.QueryString[3].ToString();
+        //String cus_id = Request.QueryString[3].ToString();
 
 
         SqlConnection con = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
         SqlCommand cmd = con.CreateCommand();
         cmd.CommandType = CommandType.StoredProcedure;
 
-        cmd.CommandText = "usp_Checklist_Compress_V2";
+        cmd.CommandText = "usp_Checklist_Compress_V3";
         cmd.Connection = con;
+         
 
         /*
-        @CompanyCode 
-        @AccountTitle
-        @FathersName 
-        @MothersName 
-        @NationalID
-        @MobileNO
-        
-        @TIN
-        */
-        //'Part',72
         SqlParameter[] parameters = 
                     {
                         
@@ -363,8 +354,13 @@ Upload Not Required
                         ,new SqlParameter("@Search_COLL", "FI,PG,CG,TR,Assignment")
 
                     };
+        */
 
-                   
+        SqlParameter[] parameters = 
+                    {
+                        new SqlParameter("@drawdown_id", drawdown_id)
+                    };
+
 
         cmd.Parameters.AddRange(parameters);
 

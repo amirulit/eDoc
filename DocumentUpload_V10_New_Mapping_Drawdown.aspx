@@ -1288,27 +1288,15 @@
                 <table class="<%=DocType[i]%>  docTable" id="<%=DocType[i]%>" style="width: 100%">
                     <thead>
                         <tr>
-                            <th>
-                                id
-                            </th>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Required ?
-                            </th>
-                            <th>
-                                Document Obtained Status
-                            </th>
-                            <th>
-                                Details <span id="statusDetails"></span>
-                            </th>
-                         <th>Expiry</th>
-                         <th>Remarks
-                         </th>
-                            <th>
-                                Action
-                            </th>   <th>Upload Time</th>
+                            <th>id</th>
+                            <th>Name</th>
+                            <th>Required ?</th>
+                            <th>Document Obtained Status</th>
+                            <th>Details <span id="statusDetails"></span></th>
+                            <th>Expiry</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                            <th>Upload Time</th>
                         </tr>
                     </thead>
                     <tbody>

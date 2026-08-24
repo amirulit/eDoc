@@ -181,12 +181,12 @@
                 //getDetails(cus_type, cus_code)
 
                 var dd_id = $(this).attr("drawdown-id");
-                var cus_id = $(this).attr("cus-id");
-                var loan_natures = $(this).attr("loan-natures");
-                var securities = $(this).attr("securities");
+                //var cus_id = $(this).attr("cus-id");
+                //var loan_natures = $(this).attr("loan-natures");
+                //var securities = $(this).attr("securities");
 
 
-                alert(dd_id + '-' + cus_id + '-' + loan_natures + '-' + securities);
+                //alert(dd_id + '-' + cus_id + '-' + loan_natures + '-' + securities);
 
 
                 //var e_doc_id = $(this).attr("e-doc-id");
