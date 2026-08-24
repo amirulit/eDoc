@@ -170,7 +170,7 @@ Upload Not Required
                         //new SqlParameter("@customer_type",c_type)
                        //,new SqlParameter("@cus_id", cus_auto_id)
 
-                       new SqlParameter("@customer_type","Part")
+                        new SqlParameter("@customer_type","Part")
                        ,new SqlParameter("@cus_id", 72)
                        ,new SqlParameter("@drawdown_id",  Convert.ToInt32( Request.QueryString[0].ToString()))
 

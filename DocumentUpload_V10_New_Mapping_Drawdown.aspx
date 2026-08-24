@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DocumentUpload_V10_New_Mapping_CusTypeWise.aspx.cs"
-    Inherits="DocumentUpload_V10_New_Mapping_CusTypeWise" Debug="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DocumentUpload_V10_New_Mapping_Drawdown.aspx.cs"
+    Inherits="DocumentUpload_V10_New_Mapping_Drawdown" Debug="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

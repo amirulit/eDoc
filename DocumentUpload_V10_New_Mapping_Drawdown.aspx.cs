@@ -10,7 +10,7 @@ using System.IO;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 
-public partial class DocumentUpload_V10_New_Mapping_CusTypeWise : System.Web.UI.Page
+public partial class DocumentUpload_V10_New_Mapping_Drawdown : System.Web.UI.Page
 {
     /*
 Basic Documents
@@ -338,7 +338,7 @@ Upload Not Required
         SqlCommand cmd = con.CreateCommand();
         cmd.CommandType = CommandType.StoredProcedure;
 
-        cmd.CommandText = "usp_Document_Filtering_Customer_Type_Wise";
+        cmd.CommandText = "usp_Checklist_Compress_V2";
         cmd.Connection = con;
 
         /*
@@ -355,14 +355,16 @@ Upload Not Required
         SqlParameter[] parameters = 
                     {
                         
-                         new SqlParameter("@cus_type","JV")
-                        //,new SqlParameter("@cus_id", cus_id)
+                         new SqlParameter("@primary_cus_id","100052469")
+                        ,new SqlParameter("@drawdown_id", 1)
 
-                        //,new SqlParameter("@customer_type","Part")
-                        //,new SqlParameter("@cus_id", 72)
-                        //,new SqlParameter("@drawdown_id",  Convert.ToInt32( Request.QueryString[0].ToString()))
+                        ,new SqlParameter("@Search_CUS","PVT")
+                        ,new SqlParameter("@Search_LOAN", "OD,CC,EMFS,HBL,HP,SF")
+                        ,new SqlParameter("@Search_COLL", "FI,PG,CG,TR,Assignment")
 
                     };
+
+                   
 
         cmd.Parameters.AddRange(parameters);
 

@@ -136,9 +136,19 @@
                         //alert(msg.d);
 
                         if (message == "Data Saved") {
+
                             swal("Success!", "Data Saved Successfully. Drawdown ID : " + dd_id, "success");
+
                             $("#btnUpload").css({ "display": "block" });
+
                             $("#btnUpload").attr("drawdown-id", dd_id);
+
+
+                            $("#btnUpload").attr("cus-id", cus_ids);
+                            $("#btnUpload").attr("loan-natures", loan_natures);
+                            $("#btnUpload").attr("securities", securities);
+
+
                         }
 
                         else {
@@ -171,6 +181,14 @@
                 //getDetails(cus_type, cus_code)
 
                 var dd_id = $(this).attr("drawdown-id");
+                var cus_id = $(this).attr("cus-id");
+                var loan_natures = $(this).attr("loan-natures");
+                var securities = $(this).attr("securities");
+
+
+                alert(dd_id + '-' + cus_id + '-' + loan_natures + '-' + securities);
+
+
                 //var e_doc_id = $(this).attr("e-doc-id");
                 //var auto_id = $(this).attr("auto_id");
 
@@ -180,7 +198,7 @@
 
                 //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var2=" + auto_id + "&var3=" + e_doc_id;
 
-                url = "DocumentUpload_V9.aspx?var=" + dd_id;
+                url = "DocumentUpload_V10_New_Mapping_Drawdown.aspx?var=" + dd_id;
 
                 var width = screen.availWidth - 100;
                 var height = screen.availHeight - 100;

@@ -634,7 +634,7 @@ public class WebService3 : System.Web.Services.WebService
         }
 
         HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
-        HttpContext.Current.Response.Write(id);
+        HttpContext.Current.Response.Write(ErrorMSG);
         HttpContext.Current.Response.Flush();
     }
 
