@@ -27,17 +27,16 @@ public partial class SanctionUpload : System.Web.UI.Page
 
     public class Obj
     {
-        public String cus_ids;
-        public String loan_natures;
-        public String securities;
 
-        public String cus_name;
-        public String sanc_auth;
-        public String sanc_ref;
-        public String sanc_date;
-        public String liab_pos;
-        public String tot_exp;
-        public String cib_sts;
+        public String cus_ids;
+
+        public String sanction_reference;
+        public String sanction_date;
+        public String sanction_authority;
+
+        public String booking_branch;
+        public String sanction_doc;
+       
     }
 
 
@@ -135,8 +134,12 @@ public partial class SanctionUpload : System.Web.UI.Page
 
 
     [WebMethod(EnableSession = true)]
-    public static Object[] Drawdown_Save(Obj Obj)
+    public static Object[] Sanction_Upload(Obj Obj)
     {
+
+
+
+
          
         String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
 
@@ -145,7 +148,7 @@ public partial class SanctionUpload : System.Web.UI.Page
         String msg;
 
 
-        String Sanc_Date = Obj.sanc_date;
+        String Sanc_Date = Obj.sanction_date;
 
         Sanc_Date = Sanc_Date.ToString().Substring(6, 4) + '-' + Sanc_Date.ToString().Substring(3, 2) + '-' + Sanc_Date.ToString().Substring(0, 2);
 
@@ -201,43 +204,38 @@ public partial class SanctionUpload : System.Web.UI.Page
 
             SqlCommand command = new SqlCommand();
             command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = "usp_Drawdown_Save";
+            command.CommandText = "usp_SanctionUpload";
             command.Connection = connection;
-
-
 
             SqlParameter[] parameters = 
 
-
                     {
 
-
-                        //new SqlParameter("@cus_ids",Obj.cus_ids.ToString().Split(',')[0]), 
-                        new SqlParameter("@cus_ids",Obj.cus_ids), 
-                        new SqlParameter("@loan_natures",Obj.loan_natures), 
-                        new SqlParameter("@securities",Obj.securities), 
+                       
+                        new SqlParameter("@sanction_reference",Obj.sanction_reference), 
+                        new SqlParameter("@sanction_date",Sanc_Date), 
+                        new SqlParameter("@sanction_authority",Obj.sanction_authority), 
                         
-                        new SqlParameter("@cus_name",Obj.cus_name), 
-                        new SqlParameter("@sanc_authority",Obj.sanc_auth), 
-                        new SqlParameter("@sanc_reference_no",Obj.sanc_ref),
-                        new SqlParameter("@sanc_date",Sanc_Date),
-                        new SqlParameter("@liab_pos",Obj.liab_pos),
-
-                        new SqlParameter("@tot_exposure",Obj.tot_exp),
-                        new SqlParameter("@cib_status",Obj.cib_sts),
-                        new SqlParameter("@create_by","Test")
-                        //new SqlParameter("@tin",Obj.tin),
-                        //new SqlParameter("@pre_addr",Obj.pre_addr),
-                        //new SqlParameter("@per_addr",Obj.per_addr)
-
+                        new SqlParameter("@booking_branch",Obj.booking_branch), 
+                        new SqlParameter("@sanction_doc",Obj.sanction_doc), 
+                        new SqlParameter("@entry_by","Test"),
+                       
+                        new SqlParameter("@entry_time",DateTime.Now)
+                    
                     };
+
 
 
             command.Parameters.AddRange(parameters);
 
+
+            /*
             SqlParameter auto_id_parm = new SqlParameter("@auto_id", SqlDbType.Int);
             auto_id_parm.Direction = ParameterDirection.Output;
             command.Parameters.Add(auto_id_parm);
+
+            */
+
 
             /*
             connection.Open();
@@ -261,7 +259,35 @@ public partial class SanctionUpload : System.Web.UI.Page
             //drawdown_id = auto_id_parm.Value.ToString();
 
             msg = "Data Saved";
-            drawdown_id = auto_id_parm.Value.ToString();
+            //drawdown_id = auto_id_parm.Value.ToString();
+
+
+
+
+
+
+            HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
+
+            //Fetch the File Name.
+
+
+
+
+
+            //String fileName = Customer_Auto_ID + "_" + File_Auto_ID + "_" + postedFile.FileName + Path.GetExtension(postedFile.FileName);
+
+            String fileName = Obj.booking_branch + "-" + Obj.sanction_authority + "_" + postedFile.FileName;
+
+            //Save the File.
+            //postedFile.SaveAs(path + fileName);
+
+            //postedFile.SaveAs(@"E:\tt\" + fileName + "_" + Path.GetFileName(postedFile.FileName));
+
+            //postedFile.SaveAs(@"E:\CAD_Doc\" + fileName + "_ITD");
+
+            postedFile.SaveAs(@"E:\eDoc_SanctionDoc\" + fileName);
+
+
 
         }
         catch (Exception ex)

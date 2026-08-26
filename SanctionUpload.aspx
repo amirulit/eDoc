@@ -76,24 +76,33 @@
 
                 var obj = {};
 
-                var cus_ids = $('#hfSelected').val();
+                var cus_ids = $('#ContentPlaceHolder1_select1').val();
 
-                var loan_natures = $('#hfSelectedBranch').val();
+                var sanc_ref = $('#txtSancRef').val();
 
-                var securities = $('#hfSelectedSecurity').val();
+                var sanc_date = $('#txtSancDate').val();
 
-                alert(cus_ids + '-' + loan_natures + '-' + securities);
+                var sanc_auth = $('#select2').val();
+
+                var booking_branch = $('#ContentPlaceHolder1_select3').val();
+
+                var sanc_doc = "";
+
+
+
+
+
+                //alert(cus_ids + '-' + loan_natures + '-' + securities);
 
 
                 obj.cus_ids = cus_ids;
-                obj.loan_natures = loan_natures;
-                obj.securities = securities;
-                obj.sanc_auth = $("#select2").val();
-                obj.sanc_ref = $("#txtSancRef").val();
-                obj.sanc_date = $("#txtSancDate").val();
-                obj.liab_pos = $("#txtLiabPos").val();
-                obj.tot_exp = $("#txtExposure").val();
-                obj.cib_sts = $("#txtCIBSts").val();
+                obj.sanction_reference = sanc_ref;
+                obj.sanction_date = sanc_date;
+                obj.sanction_authority = sanc_auth;
+                obj.booking_branch = booking_branch;
+                obj.sanction_doc = sanc_doc;
+
+               
 
 
 
@@ -105,7 +114,7 @@
                     //processData: false,
 
                     type: "POST",
-                    url: "SanctionUpload.aspx/SanctionUpload",
+                    url: "SanctionUpload.aspx/Sanction_Upload",
                     data: '{Obj: ' + JSON.stringify(obj) + '}',
                     //data: formData,
                     dataType: "json",
@@ -123,16 +132,16 @@
 
                         if (message == "Data Saved") {
 
-                            swal("Success!", "Data Saved Successfully. Drawdown ID : " + dd_id, "success");
+                            swal("Success!", "Data Saved Successfully", "success");
 
-                            $("#btnUpload").css({ "display": "block" });
+//                            $("#btnUpload").css({ "display": "block" });
 
-                            $("#btnUpload").attr("drawdown-id", dd_id);
+//                            $("#btnUpload").attr("drawdown-id", dd_id);
 
 
-                            $("#btnUpload").attr("cus-id", cus_ids);
-                            $("#btnUpload").attr("loan-natures", loan_natures);
-                            $("#btnUpload").attr("securities", securities);
+//                            $("#btnUpload").attr("cus-id", cus_ids);
+//                            $("#btnUpload").attr("loan-natures", loan_natures);
+//                            $("#btnUpload").attr("securities", securities);
 
 
                         }

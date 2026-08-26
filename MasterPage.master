@@ -335,13 +335,13 @@
 
         <li>
           <a href="DrawdownCreate_V2.aspx">
-            <i class="fa fa-flag"></i> <span>New Drawdown</span>
+            <i class="fa fa-flag"></i> <span>New Check List</span>
           </a>
         </li>
 
         <li>
           <a href="DrawdownListing.aspx">
-            <i class="fa fa-flag"></i> <span>Drawdown Listing</span>
+            <i class="fa fa-flag"></i> <span>Check List Listing</span>
           </a>
         </li>
 
