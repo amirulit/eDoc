@@ -70,13 +70,116 @@
 
         $(document).ready(function () {
 
+
             $("#btnSave").click(function () {
+
+                var formData = new FormData();
+
+                formData.append("cus_ids", cus_ids);
+                formData.append("sanction_reference", sanc_ref);
+                formData.append("sanction_date", sanc_date);
+                formData.append("sanction_authority", sanc_auth);
+                formData.append("booking_branch", booking_branch);
+
+                var file = $("#sanc_doc")[0].files[0];
+
+                if (file) {
+                    formData.append("sanction_doc", file);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "SanctionUploadHandler.ashx",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+
+                    success: function (response) {
+
+                        if (response.message == "Data Saved") {
+                            swal("Success!", "Data Saved Successfully", "success");
+                        }
+                        else {
+                            swal("Error!", "Data not Saved!", "error");
+                        }
+                    },
+
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                        swal("Error!", "Data not Saved!", "error");
+                    }
+                });
+
+            });
+
+
+            $("#btnSave_22").click(function () {
+
+                var file = $("#sanc_doc")[0].files[0];
+
+                if (!file) {
+                    swal("Error!", "Please select sanction document!", "error");
+                    return false;
+                }
+
+                var formData = new FormData();
+                formData.append("file", file);
+
+                $.ajax({
+                    type: "POST",
+                    url: "UploadSanctionFile.ashx",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+
+                    success: function (response) {
+
+                        var sanc_doc = response.fileName;
+
+                        // Now call your existing WebMethod
+
+
+                        var obj = {};
+
+
+                        obj.cus_ids = cus_ids;
+                        obj.sanction_reference = sanc_ref;
+                        obj.sanction_date = sanc_date;
+                        obj.sanction_authority = sanc_auth;
+                        obj.booking_branch = booking_branch;
+                        obj.sanction_doc = sanc_doc;
+
+                        $.ajax({
+                            type: "POST",
+                            url: "SanctionUpload.aspx/Sanction_Upload",
+                            data: JSON.stringify({ Obj: obj }),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+
+                            success: function (msg) {
+                                // your existing success code
+                            },
+
+                            error: function () {
+                                swal("Error!", "Data not Saved!", "error");
+                            }
+                        });
+                    },
+
+                    error: function () {
+                        swal("Error!", "File upload failed!", "error");
+                    }
+                });
+
+            });
+
+            $("#btnSave_bk").click(function () {
 
                 //alert('dddddddddd');
 
                 var obj = {};
 
-                var cus_ids = $('#ContentPlaceHolder1_select1').val();
+                var cus_ids = $('#hfSelected').val();
 
                 var sanc_ref = $('#txtSancRef').val();
 
@@ -102,7 +205,7 @@
                 obj.booking_branch = booking_branch;
                 obj.sanction_doc = sanc_doc;
 
-               
+
 
 
 
@@ -134,14 +237,14 @@
 
                             swal("Success!", "Data Saved Successfully", "success");
 
-//                            $("#btnUpload").css({ "display": "block" });
+                            //                            $("#btnUpload").css({ "display": "block" });
 
-//                            $("#btnUpload").attr("drawdown-id", dd_id);
+                            //                            $("#btnUpload").attr("drawdown-id", dd_id);
 
 
-//                            $("#btnUpload").attr("cus-id", cus_ids);
-//                            $("#btnUpload").attr("loan-natures", loan_natures);
-//                            $("#btnUpload").attr("securities", securities);
+                            //                            $("#btnUpload").attr("cus-id", cus_ids);
+                            //                            $("#btnUpload").attr("loan-natures", loan_natures);
+                            //                            $("#btnUpload").attr("securities", securities);
 
 
                         }
