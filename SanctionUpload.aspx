@@ -73,6 +73,20 @@
 
             $("#btnSave").click(function () {
 
+
+
+
+                var cus_ids = $('#hfSelected').val();
+
+                var sanc_ref = $('#txtSancRef').val();
+
+                var sanc_date = $('#txtSancDate').val();
+
+                var sanc_auth = $('#select2').val();
+
+                var booking_branch = $('#ContentPlaceHolder1_select3').val();
+
+
                 var formData = new FormData();
 
                 formData.append("cus_ids", cus_ids);
@@ -86,6 +100,8 @@
                 if (file) {
                     formData.append("sanction_doc", file);
                 }
+
+
 
                 $.ajax({
                     type: "POST",
@@ -325,7 +341,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content-header">
     	<h1>
-        	Drawdown
+        	Sanction
         	 
         </h1>
         <ol class="breadcrumb">
@@ -403,7 +419,7 @@
                              
                               <div class="form-group">
                   <label for="exampleInputFile">Upload Sanction Document</label>
-                  <input type="file" id="exampleInputFile"/>
+                  <input type="file" id="sanc_doc"/>
                   
                 </div>
 
@@ -421,6 +437,6 @@
 				</div><!-- /.box -->
 			</div>
 		</div>
-
+        </div>
     </section>
 </asp:Content>

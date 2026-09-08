@@ -479,7 +479,7 @@
 
             $("#btnSearch").click(function () {
 
-                $('#btnUpload').css("display", "none");
+                $('#btnUpload').css("display", "block");
                 $('#btnAddiInfo').css("display", "none");
 
                 var cus_type = $("#Select1").val();
@@ -534,7 +534,7 @@
 
                 url = "DocumentUpload_V10_New_Mapping_CusTypeWise.aspx?var=" + cus_type + "&var2=" + auto_id + "&var3=" + e_doc_id + "&var4=" + cus_id;
 
-                
+
 
                 var width = screen.availWidth - 100;
                 var height = screen.availHeight - 100;
@@ -795,6 +795,12 @@
 
         });
     </script>
+    <style>
+        .btn-spaced
+        {
+            margin-right: 10px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content-header">
@@ -1049,14 +1055,20 @@
                   				</table>
                          
                             </div>
-                            <div class="box-footer">
-					 
-                            <button type="button"  id="btnSave" class="btn btn-primary">Submit</button>
-                            <button type="button"  id="btnAddiInfo" class="btn btn-primary"  style="display:none;">Add Owner Info</button>
-                            <button type="button"  id="btnUpload" class="btn btn-success" style="display:none;">Upload Docs</button>
-                           
+                           <div class="box-footer">
+    <button type="button" id="btnSave" class="btn btn-primary btn-spaced">
+        Submit
+    </button>
 
-						</div>
+    <button type="button" id="btnAddiInfo" class="btn btn-primary btn-spaced">
+        Add Owner Info
+    </button>
+
+    <button type="button" id="btnUpload" class="btn btn-success btn-spaced">
+        Upload Docs
+    </button>
+</div>
+
                         </div>
 
                      </div>

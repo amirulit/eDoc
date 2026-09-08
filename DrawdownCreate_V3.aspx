@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
-    CodeFile="DrawdownCreate_V2.aspx.cs" Inherits="DrawdownCreate_V2" Debug="true" %>
+    CodeFile="DrawdownCreate_V3.aspx.cs" Inherits="DrawdownCreate_V3" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style>
@@ -21,7 +21,7 @@
 
 
 
-            $("#txtSancDate").datepicker
+            $("#txtExpDate").datepicker
             ({
                 appendText: "(dd/mm/yy)",
                 dateFormat: "dd/mm/yy",
@@ -44,6 +44,21 @@
 
     </script>
     <script type="text/javascript">
+        $(document).ready(function () {
+
+            var urlParams = new URLSearchParams(window.location.search);
+
+            var sanctionId = urlParams.get('id');
+            var sanctionRef = urlParams.get('ref');
+
+            $('#Text1').val(sanctionId);
+            $('#Text2').val(sanctionRef);
+
+        });
+    </script>
+    <script type="text/javascript">
+
+
 
 
         $(document).ready(function () {
@@ -87,15 +102,20 @@
 
                 alert(cus_ids + '-' + loan_natures + '-' + securities);
 
+                obj.sanction_id = $("#Text1").val();
+                obj.sancton_refno = $("#Text2").val();
 
                 obj.cus_ids = cus_ids;
                 obj.loan_natures = loan_natures;
                 obj.securities = securities;
-                obj.sanc_auth = $("#select2").val();
-                obj.sanc_ref = $("#txtSancRef").val();
-                obj.sanc_date = $("#txtSancDate").val();
-                obj.liab_pos = $("#txtLiabPos").val();
-                obj.tot_exp = $("#txtExposure").val();
+                //obj.sanc_auth = $("#select2").val();
+
+                //obj.sanc_date = $("#txtSancDate").val();
+                //obj.liab_pos = $("#txtLiabPos").val();
+                //obj.tot_exp = $("#txtExposure").val();
+
+                obj.loan_amount = $("#Text3").val();
+                obj.expiry_date = $("#txtExpDate").val();
                 obj.cib_sts = $("#txtCIBSts").val();
 
 
@@ -108,7 +128,7 @@
                     //processData: false,
 
                     type: "POST",
-                    url: "DrawdownCreate_V2.aspx/Drawdown_Save",
+                    url: "DrawdownCreate_V3.aspx/Drawdown_Save",
                     data: '{Obj: ' + JSON.stringify(obj) + '}',
                     //data: formData,
                     dataType: "json",
@@ -116,15 +136,17 @@
 
                     success: function (msg) {
 
-                        var message = msg.d[0];
-                        var dd_id = msg.d[1];
+                        var status = msg.d[0];
+                        var message = msg.d[1];
+                        var dd_id = msg.d[2];
 
 
                         //alert("Data Saved Successfully.");
 
                         //alert(msg.d);
 
-                        if (message == "Data Saved") {
+                        if (status == 1) {
+                            //if (message == "Data Saved") {
 
                             swal("Success!", "Data Saved Successfully. Drawdown ID : " + dd_id, "success");
 
@@ -141,9 +163,11 @@
                         }
 
                         else {
-                            swal("Error!", "Data not Saved!", "error")
-                        }
+                            swal("Error!", "Data not Saved : " + message, "error");
 
+
+
+                        }
 
 
 
@@ -239,6 +263,25 @@
                 	<!--  //MSK-00097 form start -->
                             
                   		<div class="box-body">
+
+
+
+                         <div class="form-group"  >
+                      			<label for="">Sanction ID</label>
+                      			<input type="text" class="form-control" id="Text1" placeholder="Enter Santion Date"  disabled name="admission_fee" autocomplete="off"/>
+                    		</div>
+
+
+
+
+                             <div class="form-group"  >
+                      			<label for="">Sanction Reference</label>
+                      			<input type="text" class="form-control" id="Text2" placeholder="Enter Santion Date" disabled name="admission_fee" autocomplete="off"/>
+                    		</div>
+
+
+
+
                     		<div class="form-group"  >
                       	  <label for="ddlCustomer">Customer ID</label>
                   <select id="select1"   runat="server"  multiple    class="form-control">
@@ -253,7 +296,7 @@
               <input id="hfSelectedSecurity" type="hidden" />
        
                    
-                            
+                           <%-- 
                              <div class="form-group"  >
                       			<label for="">Sanction Authorty</label>
                       	   <select id="select2"         class="form-control">
@@ -268,7 +311,7 @@
 
                             </select>
              
-                    		</div>
+                    		</div>--%>
 
 
                               <div class="form-group"  >
@@ -296,14 +339,23 @@
              
                     		</div>
 
+                              <div class="form-group"  >
+                      			<label for="">Loan Amount</label>
+                      			<input type="text" class="form-control" id="Text3" placeholder="Enter Loan Amount" name="admission_fee" autocomplete="off"/>
+                    		</div>
+
+                              <div class="form-group"  >
+                      			<label for="">Expiry Date</label>
+                      			<input type="text" class="form-control" id="txtExpDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
+                    		</div>
+
+
+<%--
                             <div class="form-group" >
                       			<label for="">Sanction Refrence</label>
                       			<input type="text" class="form-control" id="txtSancRef" placeholder="Enter Santion Reference" name="name" autocomplete="off"/>
                     		</div>
-                            <div class="form-group"  >
-                      			<label for="">Santion Date</label>
-                      			<input type="text" class="form-control" id="txtSancDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
-                    		</div>
+                          
                              <div class="form-group"  >
                       			<label for="">Liability Position</label>
                       		
@@ -316,7 +368,7 @@
                       		
  <input id="txtExposure" type="text" class="form-control" />
 
-                    		</div>
+                    		</div>--%>
 
                               <div class="form-group"  >
                       			<label for="">CIB Status</label>
