@@ -103,6 +103,9 @@ Upload Not Required
 
             DocumentTableHtml = BuildDocumentTable();
         }
+
+
+
     }
 
     private string BuildDocumentTable()
@@ -110,7 +113,7 @@ Upload Not Required
         StringBuilder sb = new StringBuilder();
 
         // Document section names
-        string[] tabsName =
+        String[] tabsName =
     {
         "GENERAL DOCUMENTS",
         "MORTGAGE OF PROPERTIES",
@@ -130,7 +133,7 @@ Upload Not Required
     };
 
         // Document type
-        string[] docType =
+        String[] docType =
     {
         "GENERAL",
         "MORTGAGE",
@@ -150,7 +153,7 @@ Upload Not Required
     };
 
         // Serial
-        string[] docSerial =
+        String[] docSerial =
     {
         "A", "B", "C", "D", "E",
         "F", "G", "H", "I", "J",
@@ -158,8 +161,8 @@ Upload Not Required
     };
 
         // Map DocType -> DataTable
-        Dictionary<string, DataTable> tables =
-            new Dictionary<string, DataTable>(StringComparer.OrdinalIgnoreCase)
+        Dictionary<String, DataTable> tables =
+            new Dictionary<String, DataTable>(StringComparer.OrdinalIgnoreCase)
     {
         { "GENERAL", TableData_GENERAL },
         { "MORTGAGE", TableData_MORTGAGE },
@@ -229,12 +232,12 @@ Upload Not Required
             // Documents
             foreach (DataRow row in tableData.Rows)
             {
-                string sl = Convert.ToString(row["Sl"]);
-                string name = Convert.ToString(row["name"]);
-                string required = Convert.ToString(row["required"]);
-                string status = Convert.ToString(row["status"]);
-                string reason = Convert.ToString(row["reason"]);
-                string remarks = Convert.ToString(row["remarks"]);
+                String sl = Convert.ToString(row["Sl"]);
+                String name = Convert.ToString(row["name"]);
+                String required = Convert.ToString(row["required"]);
+                String status = Convert.ToString(row["status"]);
+                String reason = Convert.ToString(row["reason"]);
+                String remarks = Convert.ToString(row["remarks"]);
 
 
                 sb.AppendLine("<tr>");
@@ -307,6 +310,10 @@ Upload Not Required
 
 
         return sb.ToString();
+
+
+
+
     }
 
 

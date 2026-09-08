@@ -337,16 +337,38 @@ Upload Not Required
 
         byte[] pdfBytes = htmlToPdf.GeneratePdf(sb.ToString());
 
-
+        /*
         Response.Clear();
         Response.ContentType = "application/pdf";
         Response.AddHeader("content-disposition", "attachment;filename=Checklist.pdf");
         Response.BinaryWrite(pdfBytes);
         Response.End();
+        */
 
+
+        String folderPath = @"E:\eDoc_Checklist";
+        String filePath = Path.Combine(folderPath, "Checklist.pdf");
+
+        // Create folder if it doesn't exist
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        // Delete existing file
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+
+        // Save PDF
+        File.WriteAllBytes(filePath, pdfBytes);
 
 
         //return sb.ToString();
+
+
+
     }
 
 
