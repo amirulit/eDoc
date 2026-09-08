@@ -1,9 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Checklist_View.aspx.cs" Inherits="DocumentUpload_V10_New_Mapping_Drawdown"
-    Debug="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Checklist_View_V2.aspx.cs"
+    Inherits="Checklist_View_V2" Debug="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1" runat="server">
+<head runat="server">
     <title>Document Upload</title>
     <link href="bootstrap4/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/resources/demos/style.css" />
@@ -62,10 +62,28 @@
     </script>
     <script type="text/javascript">
 
+
+
+        function Forward() {
+            //alert(drawdown_id);
+            alert('Forward:' + drawdown_id);
+        }
+
+        function Decline() {
+            alert('Decline:' + drawdown_id);
+        }
+
+        function Pdf() {
+            alert('Pdf:' + drawdown_id);
+        }
+
+
+
         $(function () {
 
 
             //$(".docTable").DataTable();
+
 
 
 
@@ -1137,7 +1155,9 @@
             width: auto;
         }
     </style>
-    <style type="text/css">
+
+
+     <style type="text/css">
         .my-table
         {
             border-top: 1px solid #ddd !important;
@@ -1155,7 +1175,16 @@
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
         <input id="hfCusID" type="hidden" runat="server" />
         <input id="hfDrawdownID" type="hidden" runat="server" />
-        <input type="button" value="Close" onclick="window.close();" />
+        <input type="button" value="Close" onclick="window.close();"  class="btn   btn-danger"  />
+
+         <input type="button" value="Forward"  id="btnForward" onclick="javascript:Forward();"  class="btn btn-success"/>
+
+          <input type="button" value="Decline"  id="btnDecline"   onclick="javascript:Decline();"  class="btn btn-primary"/>
+
+           <input type="button" value="Pdf"  id="btnPdf"   onclick="javascript:Pdf();"  class="btn btn-info"/>
+
+
+
         <br />
         <br />
         <table>
@@ -1180,153 +1209,145 @@
         <asp:GridView ID="GridView1" runat="server">
         </asp:GridView>
         <br />
-        <div id="div" style="width: 100%;">
-            <table class="table table-condensed my-table ">
-                <thead>
-                    <tr>
-                        <th>
-                            SL#
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Required ?
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th>
-                            Reason
-                        </th>
-                        <th>
-                            Remarks
-                        </th>
-                        <th>
-                            Initial
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        for (int i = 0; i < TabsName.Length; i++)
-                        {
-                            var section_name = TabsName[i];
+        <div id="div" style="width: auto;">
+            <%--  <%
+                for (int i = 0; i < TabsName.Length; i++)
+                {
+                    var section_name = TabsName[i];
 
-                            var doc_Type = DocType[i];
+                    var doc_Type = DocType[i];
 
-                            var DocPosition = DocSerial[i];
-                    %>
-                    <% 
-                            if (doc_Type == "GENERAL")
-                            {
-                                TableData = TableData_GENERAL;
-                            }
-                            if (doc_Type == "MORTGAGE")
-                            {
-                                TableData = TableData_MORTGAGE;
-                            }
-                            if (doc_Type == "LIABILITY")
-                            {
-                                TableData = TableData_LIABILITY;
-                            }
-                            if (doc_Type == "HYPOTHECATION")
-                            {
-                                TableData = TableData_HYPOTHECATION;
-                            }
-                            if (doc_Type == "PLEDGE")
-                            {
-                                TableData = TableData_PLEDGE;
-                            }
-                            if (doc_Type == "ASSIGNMENT")
-                            {
-                                TableData = TableData_ASSIGNMENT;
-                            }
-                            if (doc_Type == "LIEN")
-                            {
-                                TableData = TableData_LIEN;
-                            }
-                            if (doc_Type == "SET")
-                            {
-                                TableData = TableData_SET;
-                            }
-                            if (doc_Type == "CHARGE")
-                            {
-                                TableData = TableData_CHARGE;
-                            }
-                            if (doc_Type == "SYNDICATION")
-                            {
-                                TableData = TableData_SYNDICATION;
-                            }
-                            if (doc_Type == "INSURANCE")
-                            {
-                                TableData = TableData_INSURANCE;
-                            }
-                            if (doc_Type == "UNDERTAKING")
-                            {
-                                TableData = TableData_UNDERTAKING;
-                            }
-                            if (doc_Type == "LETTER")
-                            {
-                                TableData = TableData_LETTER;
-                            }
-                            if (doc_Type == "IDBP")
-                            {
-                                TableData = TableData_IDBP;
-                            }
-                            if (doc_Type == "OTHER")
-                            {
-                                TableData = TableData_OTHER;
-                            }
+                    var DocPosition = DocSerial[i];
+            %>
+            <% 
+                    if (doc_Type == "GENERAL")
+                    {
+                        TableData = TableData_GENERAL;
+                    }
+                    if (doc_Type == "MORTGAGE")
+                    {
+                        TableData = TableData_MORTGAGE;
+                    }
+                    if (doc_Type == "LIABILITY")
+                    {
+                        TableData = TableData_LIABILITY;
+                    }
+                    if (doc_Type == "HYPOTHECATION")
+                    {
+                        TableData = TableData_HYPOTHECATION;
+                    }
+                    if (doc_Type == "PLEDGE")
+                    {
+                        TableData = TableData_PLEDGE;
+                    }
+                    if (doc_Type == "ASSIGNMENT")
+                    {
+                        TableData = TableData_ASSIGNMENT;
+                    }
+                    if (doc_Type == "LIEN")
+                    {
+                        TableData = TableData_LIEN;
+                    }
+                    if (doc_Type == "SET")
+                    {
+                        TableData = TableData_SET;
+                    }
+                    if (doc_Type == "CHARGE")
+                    {
+                        TableData = TableData_CHARGE;
+                    }
+                    if (doc_Type == "SYNDICATION")
+                    {
+                        TableData = TableData_SYNDICATION;
+                    }
+                    if (doc_Type == "INSURANCE")
+                    {
+                        TableData = TableData_INSURANCE;
+                    }
+                    if (doc_Type == "UNDERTAKING")
+                    {
+                        TableData = TableData_UNDERTAKING;
+                    }
+                    if (doc_Type == "LETTER")
+                    {
+                        TableData = TableData_LETTER;
+                    }
+                    if (doc_Type == "IDBP")
+                    {
+                        TableData = TableData_IDBP;
+                    }
+                    if (doc_Type == "OTHER")
+                    {
+                        TableData = TableData_OTHER;
+                    }
 
 
-                            String SL;
+                    String SL;
 
 
-                            String Name;
+                    String Name;
 
-                            String Required;
+                    String Required;
 
-                            String Status;
+                    String Status;
 
-                            String Reason;
+                    String Reason;
 
-                            String Initial;
 
-                            String Remarks;
 
-                   
+                    String Remarks;
+
+                    if (TableData.Rows.Count > 0)
+                    {
                         
                         
                         
                         
                         
-                    %>
-                    <%  if (TableData.Rows.Count > 0)
-                        {
-                    %>
-                    <tr>
-                        <td>
-                            <h3>
-                                <%=DocPosition%>.</h3>
-                        </td>
-                        <td colspan="6">
-                            <h3>
-                                <%=section_name%></h3>
-                        </td>
-                    </tr>
-                    <%
+            %>
+            <h3>
+                <%=DocPosition%>
+                <%=section_name%></h3>
+            <div id="<%=section_name%>">
+                <table class="<%=DocType[i]%>  docTable" id="<%=DocType[i]%>" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                SL#
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Required ?
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Reason
+                            </th>
+                            <th>
+                                Remarks
+                            </th>
+                            <th>
+                                Initial
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
                             
-                            for (var data = 0; data < TableData.Rows.Count; data++)
-                            {
+                        for (var data = 0; data < TableData.Rows.Count; data++)
+                        {
 
-                                SL = (TableData.Rows[data]["Sl"]).ToString();
+                            SL = (TableData.Rows[data]["Sl"]).ToString();
 
-                                Name = (TableData.Rows[data]["name"]).ToString();
-                                Required = (TableData.Rows[data]["required"]).ToString();
-                                Status = (TableData.Rows[data]["status"]).ToString();
-                                Reason = (TableData.Rows[data]["reason"]).ToString();
-                                Remarks = (TableData.Rows[data]["remarks"]).ToString();
+                            Name = (TableData.Rows[data]["name"]).ToString();
+                            Required = (TableData.Rows[data]["required"]).ToString();
+                            Status = (TableData.Rows[data]["status"]).ToString();
+                            Reason = (TableData.Rows[data]["reason"]).ToString();
+                            Remarks = (TableData.Rows[data]["remarks"]).ToString();
                             
                                 
                                  
@@ -1338,50 +1359,47 @@
                             
                             
                             
-                    %>
-                    <tr>
-                        <td>
-                            <%=SL %>
-                        </td>
-                        <td style="width: 33%;">
-                            <%=Name%>
-                        </td>
-                        <td>
-                            <%=Required%>
-                        </td>
-                        <td>
-                            <%=Status%>
-                        </td>
-                        <td>
-                            <%=Reason%>
-                        </td>
-                        <td>
-                            <%=Remarks%>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <%
-                            }
+                        %>
+                        <tr>
+                            <td>
+                                <%=SL %>
+                            </td>
+                            <td style="width: 33%;">
+                                <%=Name%>
+                            </td>
+                            <td>
+                                <%=Required%>
+                            </td>
+                            <td>
+                                <%=Status%>
+                            </td>
+                            <td>
+                                <%=Reason%>
+                            </td>
+                            <td>
+                                <%=Remarks%>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <%
+                        }
                             
             
-                    %>
-                    <!--
-                <input type="button" class="BulkUpload" value="Upload ALL" data-count="<%=TableData.Rows.Count %>" div-name="<%=DocType[i]%>" />
+                        %>
+                    </tbody>
+                </table>
+            </div>
+            <%
+                    }
 
-                <input id="Button1" type="button" value="button" class="ViewPDF" /><br />
-
-                <input id="showImageBtn" class="ViewImage" value="button" type="button" />
-                -->
-                    <%
-                        }
-
-                        }
+                }
                 
-                    %>
-                </tbody>
-            </table>
-            <!--dssdfsdfsfsdsfsdfsafsadf-->
+            %>
+            --%>
+            <div class="table-responsive">
+                <%= DocumentTableHtml %>
+            </div>
         </div>
         <br />
         <hr />
@@ -1391,7 +1409,7 @@
                     <i class="fa fa-bar-chart-o"></i>Any Other Document</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-condensed my-table">
+                <table class="table table-condensed">
                     <tr>
                         <td>
                             Document Details
@@ -1430,7 +1448,7 @@
                     </tr>
                 </table>
                 <br />
-                <table class="table table-condensed my-table" id="tblAnyOthDoc">
+                <table class="table table-condensed" id="tblAnyOthDoc">
                     <thead>
                         <tr>
                             <th>
@@ -1474,7 +1492,7 @@
                             </td>
                         </tr>
                         <%
-                        } %>
+                            } %>
                     </tbody>
                 </table>
             </div>
@@ -1490,7 +1508,7 @@
                     <i class="fa fa-bar-chart-o"></i>Exception</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-condensed my-table" id="tblException">
+                <table class="table table-condensed" id="tblException">
                     <thead>
                         <tr>
                             <th>
@@ -1534,7 +1552,7 @@
                             </td>
                         </tr>
                         <%
-                        } %>
+                            } %>
                     </tbody>
                 </table>
             </div>
@@ -1551,7 +1569,7 @@
             </div>
             <div class="panel-body">
                 <br />
-                <table class="table table-condensed my-table">
+                <table class="table table-condensed">
                     <thead>
                         <tr>
                             <th>

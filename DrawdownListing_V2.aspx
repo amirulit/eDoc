@@ -52,7 +52,43 @@
                 //DocumentUpload_V10_New_Mapping_Drawdown.aspx
                 //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-                url = "Checklist_View.aspx?var=" + drawdown_id + "&var1=" + cus_id;
+                url = "Checklist_View_V2.aspx?var=" + drawdown_id + "&var1=" + cus_id;
+
+
+                var width = screen.availWidth - 100;
+                var height = screen.availHeight - 100;
+                var left = parseInt((screen.availWidth / 2) - (width / 2));
+                var top = parseInt((screen.availHeight / 2) - (height / 2));
+                var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
+
+                //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
+                //var NWin = window.open("Menu.aspx", windowFeatures);
+                //alert(windowFeatures);
+                //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow.focus();
+
+            });
+
+
+
+
+            $("body").on("click", ".pdf", function () {
+
+                var cus_id = $(this).attr("cus-id");
+                //var auto_id = $(this).attr("auto-id");
+                //var e_doc_id = $(this).attr("edoc-id");
+                var drawdown_id = $(this).attr("drawdown-id");
+
+                //alert(cus_type + '-' + e_doc_id);
+                //DocumentUpload_V10_New_Mapping_Drawdown.aspx
+                //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
+
+                url = "Checklist_View_V2_PdfGen.aspx?var=" + drawdown_id + "&var1=" + cus_id;
 
 
                 var width = screen.availWidth - 100;
@@ -152,6 +188,9 @@
                         <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
   
 
+
+                        <a href="#"  class="btn btn-success btn-xs pdf" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Pdf Gen</a>                                    
+  
                         </td>                                
 </tr>
      <%
