@@ -9,7 +9,6 @@ using System.Web.Services;
 using System.IO;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
-using System.Configuration;
 
 public partial class DocumentUpload_V10_New_Mapping_Drawdown : System.Web.UI.Page
 {
@@ -83,7 +82,11 @@ Upload Not Required
         //txtCustomerType.Text = Request.QueryString[0].ToString();
         //txteDOCID.Text = Request.QueryString[1].ToString();
         //Admin = "Y";
-        LoadDocList();
+        
+        
+        //LoadDocList();
+
+        LoadCheckList();
 
         //LoadCusList();
         hfCusID.Value = Request.QueryString[1].ToString();
@@ -326,7 +329,7 @@ Upload Not Required
 
         }
     }
-    protected void LoadDocList()
+    protected void LoadCheckList()
     {
         String drawdown_id = Request.QueryString[0].ToString();
 
@@ -340,7 +343,7 @@ Upload Not Required
         SqlCommand cmd = con.CreateCommand();
         cmd.CommandType = CommandType.StoredProcedure;
 
-        cmd.CommandText = "usp_Checklist_Compress_V3";
+        cmd.CommandText = "usp_Checklist_View";
         cmd.Connection = con;
          
 
@@ -450,42 +453,6 @@ OTHER DOCUMENTS
             //lblError.Text = ex.Message;
         }
     }
-
-
-    [WebMethod]
-    public static bool Update_Status(string sanctionId, string sanctionRef)
-    {
-        try
-        {
-            string connectionString =
-                ConfigurationManager.ConnectionStrings["MyConnection"].ConnectionString;
-
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string sql = @"
-                    UPDATE YourTable
-                    SET SanctionReference = @SanctionReference
-                    WHERE SanctionID = @SanctionID";
-
-                using (SqlCommand cmd = new SqlCommand(sql, con))
-                {
-                    cmd.Parameters.AddWithValue("@SanctionID", sanctionId);
-                    cmd.Parameters.AddWithValue("@SanctionReference", sanctionRef);
-
-                    con.Open();
-
-                    int rows = cmd.ExecuteNonQuery();
-
-                    return rows > 0;
-                }
-            }
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-    }
-
 
     public class Obj
     {

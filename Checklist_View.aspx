@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DocumentUpload_V10_New_Mapping_Drawdown.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Checklist_View.aspx.cs"
     Inherits="DocumentUpload_V10_New_Mapping_Drawdown" Debug="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -23,14 +23,6 @@
     <script type="text/javascript" src="plugins/datatables/jquery.dataTables.min.js">
     </script>
     <script type="text/javascript" src="plugins/datatables/dataTables.bootstrap.min.js">
-    </script>
-
-      <script type="text/javascript">
-          $(document).ready(function () {
-
-             
-
-          });
     </script>
 
 
@@ -73,57 +65,15 @@
 
 
     <script type="text/javascript">
-        $(document).ready(function () {
+
+        $(function () {
 
 
-
-            var urlParams = new URLSearchParams(window.location.search);
-
-            //var sanctionId = urlParams.get('var');
-            //var sanctionRef = urlParams.get('ref');
-
-            //$('#Text1').val(sanctionId);
-            //$('#Text2').val(sanctionRef);
+            //$(".docTable").DataTable();
 
 
-
-
-            $('#btnUpdate').click(function () {
-
-                var sanctionId = $('#Text1').val();
-                var sanctionRef = $('#Text2').val();
-
-                $.ajax({
-                    type: "POST",
-                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/Update_Status",
-                    data: JSON.stringify({
-                        sanctionId: sanctionId,
-                        sanctionRef: sanctionRef
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-
-                    success: function (response) {
-
-                        if (response.d === true) {
-                            //alert("Updated successfully");
-                            alert(response.d ? "Updated successfully" : "Update failed");
-                        } else {
-                            alert("Update failed");
-                        }
-
-                    },
-
-                    error: function (xhr, status, error) {
-                        console.log(xhr.responseText);
-                        alert("Something went wrong");
-                    }
-                });
-
-            });
 
         });
-
 
     </script>
     <script type="text/javascript">
@@ -1204,7 +1154,7 @@
 
 
         <input  type="button" value="Close" onclick="window.close();"/>
-        <input id="btnSave" type="button" value="Save & Close" /><br />   <br />
+        <br />   <br />
         <table>
             <tr>
                 <td>
@@ -1231,7 +1181,7 @@
 
 
         <br />
-        <div id="accordion" style="width: auto;">
+        <div id="div" style="width: auto;">
 
 
             <%
@@ -1306,26 +1256,20 @@
                     }
 
 
-                    String expiry_req;
+                    String SL;
 
 
-                    Int32 doc_id;
+                    String Name;
 
-                    String cus_id;
+                    String Required;
 
-                    String file_name;
+                    String Status;
 
-                    String status;
+                    String Reason;
 
-                    String reason;
+                    String Initial;
 
-                    String date;
-                    
-                    String expiry;
-
-                    String remarks;
-
-                    Int32 id_to_delete=0;
+                    String Remarks;
 
                     if (TableData.Rows.Count > 0)
                     {
@@ -1343,45 +1287,32 @@
                 <table class="<%=DocType[i]%>  docTable" id="<%=DocType[i]%>" style="width: 100%">
                     <thead>
                         <tr>
-                            <th>id</th>
+                            <th>SL#</th>
                             <th>Name</th>
                             <th>Required ?</th>
-                            <th>Document Obtained Status</th>
-                            <th>Details <span id="statusDetails"></span></th>
-                            <th>Expiry</th>
+                            <th>Status</th>
+                            <th>Reason</th>
                             <th>Remarks</th>
-                            <th>Action</th>
-                            <th>Upload Time</th>
+                            <th>Initial</th>
                         </tr>
                     </thead>
                     <tbody>
+
                         <%
+                            
                         for (var data = 0; data < TableData.Rows.Count; data++)
                         {
 
-                            expiry_req = (TableData.Rows[data]["expiry"]).ToString();
-                                
-                                
-                            doc_id = Convert.ToInt32(TableData.Rows[data]["primary_key"]);
+                            SL = (TableData.Rows[data]["Sl"]).ToString();
 
-                            cus_id = TableData.Rows[data]["c_cus_id"].ToString();
-
-                            file_name = (TableData.Rows[data]["file_name"]).ToString();
-
-                            status = (TableData.Rows[data]["c_status"]).ToString();
-
-                            if (status == null || status == "")
-                            {
-                                status = "Obtained";
-                            }
-                            reason = (TableData.Rows[data]["c_reason"]).ToString();
-                            date = (TableData.Rows[data]["c_date"]).ToString();
-                            expiry = (TableData.Rows[data]["c_expiry"]).ToString();
-                            remarks = (TableData.Rows[data]["c_remarks"]).ToString();
-
-
-                            id_to_delete = TableData.Rows[data]["c_id"] == DBNull.Value ? 0 : Convert.ToInt32(TableData.Rows[data]["c_id"]);
+                            Name = (TableData.Rows[data]["name"]).ToString();
+                            Required = (TableData.Rows[data]["required"]).ToString();
+                            Status = (TableData.Rows[data]["status"]).ToString();
+                            Reason = (TableData.Rows[data]["reason"]).ToString();
+                            Remarks = (TableData.Rows[data]["remarks"]).ToString();
                             
+                                
+                                 
                             
                             
                             
@@ -1393,163 +1324,8 @@
                         %>
 
 
-                     <tr style="<%= id_to_delete > 0 ? "background-color: #ffe6e6;" : "" %>"  id="row_<%=doc_id %>">
-                           <td class="tdTopLeft">
-                                <%=TableData.Rows[data]["primary_key"]%>
-                            </td>
-                         <td class="tdTopLeft">
-                                <%=TableData.Rows[data]["Name"]%>
-                            </td>
-                         <td class="tdTopLeft">
-                                <%-- <%=TableData.Rows[data]["Required"]%>--%>
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>"
-                                    value="Y" <%=TableData.Rows[data]["Required"].ToString()=="Yes"?"checked":""%> />
-                                Yes
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>"
-                                    value="N" />No
-                            </td>
-                         <td class="tdTopLeft">
-                                <%--<%=TableData.Rows[data]["Obtained"]%>--%>
-                                <select id="ddl_<%=doc_id %>" data-id="<%=TableData.Rows[data]["primary_key"]%>" class="ddlStatus">
-                                    
-
-                                      <option value="Obtained" <%= status == "Obtained" ? "selected" : "" %>>
-        Obtained
-    </option>
-
-    <option value="Not" <%= status == "Not" ? "selected" : "" %>>
-        Not Obtained
-    </option>
-
-    <option value="Part" <%= status == "Part" ? "selected" : "" %>>
-        Partially Obtained
-    </option>
-
-                                </select>
-                            </td>
-                            <td style="white-space: nowrap;" class="details tdTopLeft">
-                                <div id="Obtained_<%=doc_id%>"     style="<%= status == "Obtained" ? "" : "display:none;" %>" >
-                                    <input type="file" class="file" id="fileInput_<%=doc_id %>" data-id="c" name="fileInput_<%=doc_id %>" />
-                                    <span id="<%=DocType[i]%>_id_<%=doc_id %>" class="id">
-                                        <%=doc_id%></span>
-                                    <input type="button" value="Upload" class="upload" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>"   style="display:none;"  />
-                                    <span id="div<%=DocType[i]%>StatusText_<%=doc_id %>">0%</span>
-                                </div>
-                              
-                                <div id="Not_<%=doc_id%>"   style="<%= status == "Not" ? "" : "display:none;" %>" >
-                                    Not Obtained Reasons :  <br />
-                              
-                                  
-                                    <input id="txtNotObtained_<%=doc_id %>" type="text" value="<%=reason %>"/>
-                                </div>
-                               
-                                <div id="Part_<%=doc_id%>"  style="<%= status == "Part" ? "" : "display:none;" %>">
-                               
-                                    Partially Obtained Reasons :  <br />
-                                    <input id="txtPartiallyObtained_<%=doc_id %>" type="text"   value="<%=reason %>" />
-                                     <br />
-                                    Deadline :  <br />
-                                    <input id="txtDeadline_<%=doc_id %>" type="text" class="datepicker"   value="<%=date %>"  />
-                                </div>
-
-                            
-                                 
-                                
-                               
-
-
-                            </td>
-
-
+                        <tr><td><%=SL %></td><td style="  width:33%;" ><%=Name%></td><td><%=Required%></td><td><%=Status%></td><td><%=Reason%></td><td><%=Remarks%></td><td></td></tr>
  
-                         <td class="tdTopLeft">
-
-                               <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker"  value="<%=expiry %>"   />
-
-
-                                
-                            </td>
-
-                        <td class="tdTopLeft">
-                             <input id="txtRemarks_<%=doc_id %>" type="text"   value="<%=remarks %>" />
-
-                               
-                            </td>
-                         <td class="tdTopLeft">
-
-                            <!-- style="<%= status == "Obtained" ? "display:none;" : "" %>"-->
-                            
-                             <input type="button" value="Save" id="btnSave_<%=doc_id%>"   class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>"   
-                             
-                             
-                             data-expiry="<%=expiry_req%>"
-                             
-                             
-                             
-                              />
-                                
-                                
-                        
-                                <input id="btnView<%=DocType[i]%>_<%=doc_id %>" type="button" value="View" class="View" data-id="<%=doc_id%>"
-
-                                 file-name="<%=file_name%>"
-
-                                     <%  if (file_name!=""){ %>
-                                    style="display: block;"
-
-                                     <%
-                            }
-                            else
-                            {
-                                        
-                                        
-                                         %>
-
-                                         style="display: none;" 
-
-                                         <%} %>
-                                          />
-
-
-                                <input id="btnDelete<%=DocType[i]%>_<%=doc_id %>" type="button" value="Delete" class="Delete" data-id="<%=doc_id%>" cusid="<%=cus_id%>"  data-deleteid="<%=id_to_delete%>"  file-name="<%=file_name%>"
-                                   
-                                     <%  if (id_to_delete > 0){
-                                     
-                                      %>
-                                    style="display: block;"
-
-                                     <%
-                            }
-                            else
-                            {
-                                        
-                                        
-                                         %>
-
-                                         style="display: none;" 
-
-                                         <%} %>
-                                          />
-
-                                   
-                                <% 
-                            /*
-                                    if (doc_Type == "GENERAL")
-                            {
-                            */
-
- 
-                                    /*
-                                }
-                                     */
-                            
-                                %>
-                            
-                            </td>
-                          <td class="tdTopLeft">
-                               <% =TableData.Rows[data]["upload_date_time"].ToString()%>
-                            </td>
-                        </tr>
                         <%
                         }
                             
@@ -1557,10 +1333,16 @@
                         %>
                     </tbody>
                 </table>
-                <input type="button" class="BulkUpload" value="Upload ALL" data-count="<%=TableData.Rows.Count %>"
-                    div-name="<%=DocType[i]%>" />
+
+                <!--
+                <input type="button" class="BulkUpload" value="Upload ALL" data-count="<%=TableData.Rows.Count %>" div-name="<%=DocType[i]%>" />
+
                 <input id="Button1" type="button" value="button" class="ViewPDF" /><br />
+
                 <input id="showImageBtn" class="ViewImage" value="button" type="button" />
+                -->
+
+
             </div>
             <%
                     }

@@ -2,7 +2,7 @@
     CodeFile="DrawdownCreate_V3.aspx.cs" Inherits="DrawdownCreate_V3" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <style>
+    <style type="text/css">
         .select2-container--default .select2-selection--multiple .select2-selection__choice
         {
             color: blue !important;
