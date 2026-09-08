@@ -382,10 +382,10 @@
 
                   			<input type="hidden" name="do" value="add_grade" />
                     		<button type="button" class="btn btn-primary" id="btnSave">Save</button>
+<%--
+                            --%><button type="button" class="btn btn-primary" id="Button1">Checkist Generate</button>
 
-                            <button type="button" class="btn btn-primary" id="Button1">Checkist Generate</button>
-
-                            <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Upload</button>
+                            <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Checkist Generate</button>
 
                   		</div>
                 	 

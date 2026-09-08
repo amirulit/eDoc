@@ -71,7 +71,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js">
     </script>
     <script type="text/javascript" src="plugins/daterangepicker/daterangepicker.js"></script>
-    <script>
+     <script type="text/javascript" >
 
 
         function login() {
@@ -81,17 +81,35 @@
                 backdrop: 'static',
                 keyboard: false
             });
+
+
             $('#loginFrom').modal('show');
         };
 
     </script>
+
+
+    <style>
+    
+    
+    #loginFrom .modal-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    width: 100%;
+    max-width: 500px;
+}
+
+    
+    </style>
 </head>
 <body onload="login()">
     <form id="form1" runat="server">
-    <img src="../uploads/bg.jpg" class="bg" />
+    <img src="../uploads/bg.jpg" class="bg" alt="" />
     <!--Success! - Insert-->
-    <div class="modal fade" id="loginFrom" tabindex="-1" role="dialog" aria-labelledby="loginFrom"
-        aria-hidden="true">
+    <div class="modal" id="loginFrom" tabindex="-1" role="dialog" aria-labelledby="loginFrom"     aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content ">
                 <div class="modal-header bg-aqua-gradient">

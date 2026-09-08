@@ -209,7 +209,7 @@
                   
                         	
                         <td>        
-
+                        <!--
                         <a href="#"  class="btn btn-success btn-xs edit" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>"  drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Edit</a>                                    
 
                         <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Document Upload</a>                                    
@@ -217,7 +217,7 @@
 
 
   <a href="#"  class="btn btn-success btn-xs initiate" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Initiate Checklist</a>                                    
-
+  -->
 
     <a href="DrawdownCreate_V2.aspx"  class="btn btn-success btn-xs" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Initiate Checklist</a>                                    
 

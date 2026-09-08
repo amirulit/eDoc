@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
-    CodeFile="ProfileListing.aspx.cs" Inherits="ProfileListing" %>
+    CodeFile="DrawdownListing_V2.aspx.cs" Inherits="DrawdownListing_V2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <script type="text/javascript">
@@ -8,17 +8,17 @@
 
             $("body").on("click", ".upload", function () {
 
-                var cus_type = $(this).attr("cus-type");
-                var auto_id = $(this).attr("auto-id");
-                var e_doc_id = $(this).attr("edoc-id");
-
                 var cus_id = $(this).attr("cus-id");
+                //var auto_id = $(this).attr("auto-id");
+                //var e_doc_id = $(this).attr("edoc-id");
+                var drawdown_id = $(this).attr("drawdown-id");
 
                 //alert(cus_type + '-' + e_doc_id);
+                //DocumentUpload_V10_New_Mapping_Drawdown.aspx
+                //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-                //url = "DocumentUpload_V8.aspx?var=" + cus_type + "&var3=" + cus_id;
+                url = "DocumentUpload_V10_New_Mapping_Drawdown.aspx?var=" + drawdown_id + "&var1=" + cus_id;
 
-                url = "DocumentUpload_V10_New_Mapping_CusTypeWise.aspx?var=" + cus_type + "&var2=&var3=" + cus_id;
 
                 var width = screen.availWidth - 100;
                 var height = screen.availHeight - 100;
@@ -50,19 +50,28 @@
         	<div class="col-md-12">
             	<div class="box">
                 	<div class="box-header">
-                  		<h3 class="box-title">Customer Listing </h3>
+                  		<h3 class="box-title">Drawdown Listing </h3>
                 	</div><!-- /.box-header -->
                 	<div class="box-body table-responsive"  >
                      
                 		<table id="example1" class="table table-bordered table-striped">
                     		<thead>
                             <tr>
-                        		<th>Cus ID</th>
-                            	<th>Cus Name</th>
-                            	<th>Cus Type</th>
+                        		<th>ID</th>
+                                <th>Drawdown ID</th>
+                                <th>Customer Type</th>
+                            	<th>Customer ID</th>
+                            	<th>Customer Name</th>
+                                <th>Loan Natures</th>
+                                <th>Securities</th>
+                                   <th>Loan Amount</th>
+                                      <th>Expiry Date</th>
+
+
                             	<th>Action</th>
-                                </tr>
+                                   </tr>
                         	</thead>
+                         
                         	<tbody>
     <%
                     
@@ -80,24 +89,37 @@
                             
 %>
 <tr>
-                        <td><%=TableData.Rows[data]["cus_code"]%></td>
+                        <td><%=TableData.Rows[data]["id"]%></td>
+                        <td><%=TableData.Rows[data]["dd_id"]%></td>
+                          <td><%=TableData.Rows[data]["cus_type"]%></td>
+                        <td><%=TableData.Rows[data]["cus_id"]%></td>
                         <td><%=TableData.Rows[data]["cus_name"]%></td>
-                        <td><%=TableData.Rows[data]["cus_type"]%></td>
+                          
+                          <td><%=TableData.Rows[data]["loan_natures"]%></td>
+                            <td><%=TableData.Rows[data]["securities"]%></td>
+                              <td><%=TableData.Rows[data]["loan_amount"]%></td>
+                                <td><%=TableData.Rows[data]["exp_date"]%></td>
+
+                  
                         	
                         <td>        
 
-                                    <a href="#"  class="btn btn-success btn-xs edit" cus-type="<%=TableData.Rows[data]["cus_type"]%>" cus-id="<%=TableData.Rows[data]["cus_code"]%>" >Edit</a>                                    
+                        <!--
+                        <a href="#"  class="btn btn-success btn-xs edit" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>"  drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Edit</a>                                    
 
-                                    <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["cus_type"]%>"   cus-id="<%=TableData.Rows[data]["cus_code"]%>">Document Upload</a>                                    
+                        <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Document Upload</a>                                    
+                        -->
 
-
+                        <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Upload</a>                                    
   
+
+
                         </td>                                
 </tr>
      <%
-            }
+                        }
 
-        }
+                    }
                                                    %>
                         	</tbody>
                     	</table>	                
