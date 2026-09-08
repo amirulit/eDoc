@@ -26,6 +26,8 @@ Undertaking
 Upload Not Required
  
     */
+
+    public String drawdown_id;
     public DataTable TableData;
 
     //public DataTable TableData_Basic;
@@ -347,7 +349,7 @@ Upload Not Required
 
 
         String folderPath = @"E:\eDoc_Checklist";
-        String filePath = Path.Combine(folderPath, "Checklist.pdf");
+        String filePath = Path.Combine(folderPath, drawdown_id + "_Checklist.pdf");
 
         // Create folder if it doesn't exist
         if (!Directory.Exists(folderPath))
@@ -609,7 +611,7 @@ Upload Not Required
     }
     protected void LoadCheckList()
     {
-        String drawdown_id = Request.QueryString[0].ToString();
+          drawdown_id = Request.QueryString[0].ToString();
 
         //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
         //String c_type = Request.QueryString[2].ToString().Split('-')[0];
