@@ -191,7 +191,7 @@ Upload Not Required
         sb.AppendLine("<th>Status</th>");
         sb.AppendLine("<th>Reason</th>");
         sb.AppendLine("<th>Remarks</th>");
-        sb.AppendLine("<th>Initial</th>");
+        //sb.AppendLine("<th>Initial</th>");
         sb.AppendLine("</tr>");
         sb.AppendLine("</thead>");
 
@@ -269,7 +269,7 @@ Upload Not Required
                     HttpUtility.HtmlEncode(remarks)
                 );
 
-                sb.AppendLine("<td></td>");
+                //sb.AppendLine("<td></td>");
 
                 sb.AppendLine("</tr>");
             }

@@ -67,6 +67,11 @@
         function Forward() {
             //alert(drawdown_id);
             alert('Forward:' + drawdown_id);
+
+
+
+
+
         }
 
         function Decline() {
@@ -1448,7 +1453,7 @@
                     </tr>
                 </table>
                 <br />
-                <table class="table table-condensed" id="tblAnyOthDoc">
+                <table class="table table-condensed my-table" id="tblAnyOthDoc">
                     <thead>
                         <tr>
                             <th>
@@ -1508,7 +1513,7 @@
                     <i class="fa fa-bar-chart-o"></i>Exception</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-condensed" id="tblException">
+                <table class="table table-condensed my-table" id="tblException">
                     <thead>
                         <tr>
                             <th>
@@ -1569,7 +1574,7 @@
             </div>
             <div class="panel-body">
                 <br />
-                <table class="table table-condensed">
+                <table class="table table-condensed my-table">
                     <thead>
                         <tr>
                             <th>
