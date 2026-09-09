@@ -1135,7 +1135,11 @@
         {
             display: inline-block;
             width: auto;
+            font-family: 'MyCambria';
+             
         }
+        
+        
     </style>
 
 

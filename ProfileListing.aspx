@@ -39,6 +39,7 @@
 
             });
 
+ 
 
         });
 
@@ -89,6 +90,9 @@
                                     <a href="#"  class="btn btn-success btn-xs edit" cus-type="<%=TableData.Rows[data]["cus_type"]%>" cus-id="<%=TableData.Rows[data]["cus_code"]%>" >Edit</a>                                    
 
                                     <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["cus_type"]%>"   cus-id="<%=TableData.Rows[data]["cus_code"]%>">Document Upload</a>                                    
+
+
+                                    <a href="SanctionUpload.aspx?CusID=<%=TableData.Rows[data]["cus_code"]%>"  class="btn btn-success btn-xs sanction" cus-type="<%=TableData.Rows[data]["cus_type"]%>"   cus-id="<%=TableData.Rows[data]["cus_code"]%>">New Sanction</a>                                    
 
 
   

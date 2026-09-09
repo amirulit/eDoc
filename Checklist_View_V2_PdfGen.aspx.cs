@@ -206,6 +206,8 @@ Upload Not Required
    th,
   td {
         border: 1px solid black;
+
+font-family:Cambria
     }
 
  .my-table
@@ -272,12 +274,12 @@ Upload Not Required
             // Documents
             foreach (DataRow row in tableData.Rows)
             {
-                string sl = Convert.ToString(row["Sl"]);
-                string name = Convert.ToString(row["name"]);
-                string required = Convert.ToString(row["required"]);
-                string status = Convert.ToString(row["status"]);
-                string reason = Convert.ToString(row["reason"]);
-                string remarks = Convert.ToString(row["remarks"]);
+                String sl = Convert.ToString(row["Sl"]);
+                String name = Convert.ToString(row["name"]);
+                String required = Convert.ToString(row["required"]);
+                String status = Convert.ToString(row["status"]);
+                String reason = Convert.ToString(row["reason"]);
+                String remarks = Convert.ToString(row["remarks"]);
 
 
                 sb.AppendLine("<tr>");
@@ -322,10 +324,56 @@ Upload Not Required
         sb.AppendLine("</tbody>");
         sb.AppendLine("</table>");
 
+        sb.AppendLine("<br/>");
+
+
+        String[] files =
+{
+    "20060630001_Scan_0002.jpg.jpg",
+    "20070610002_Scan_0001.jpg.jpg",
+    "20100816035_Signature Khurshed.jpg.jpg",
+    "20130331001_Sig_Misbah.jpg.jpg",
+    "20150406003_Sig_Pallab.jpg.jpg",
+    "20151227005_Sig_300-80.jpg.jpg"
+};
+
+
+ sb.AppendLine("<table><tbody><tr>");
+
+for (int i = 0; i < files.Length; i++)
+{
+    sb.AppendLine(@"
+        <td>
+            
+            <img  width=""100"" height=""80"" src=""file:///E:/SOD_Signature/" + files[i] + @"/>
+
+            ""<br/>"+"Name"+@"<br/>""
+
+            ""<br/>" + "Designation" + @"<br/>""
+
+        </td>");
+
+    if ((i + 1) % 4 == 0 && i + 1 < files.Length)
+    {
+        sb.AppendLine("</tr><tr>");
+    }
+}
+
+sb.AppendLine("</tr></tbody></table>");
+
+
+         
+
+
+
+
         /*
         var converter = new NReco.PdfGenerator.HtmlToPdfConverter();
         byte[] pdf = converter.GeneratePdf(sb.ToString());
         */
+
+
+
 
         var htmlToPdf = new HtmlToPdfConverter
         {
@@ -333,6 +381,11 @@ Upload Not Required
             Orientation = PageOrientation.Portrait,
             Margins = new PageMargins { Top = 20, Bottom = 20, Left = 15, Right = 15 }
         };
+
+
+
+        htmlToPdf.CustomWkHtmlArgs = "--enable-local-file-access";
+
 
         //var html = String.Format("<body>Hello world: {0}</body>", DateTime.Now);
 

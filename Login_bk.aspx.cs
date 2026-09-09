@@ -30,37 +30,4 @@ public partial class Login : System.Web.UI.Page
 
 
     }
-
-    protected void btnRM_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void btnCD_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void btnCI_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void btnMOP_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void btnHOB_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void btnAdmin_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void btnDM_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void btnUnitHead_Click(object sender, EventArgs e)
-    {
-
-    }
 }

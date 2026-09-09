@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login_bk.aspx.cs" Inherits="Login" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -71,7 +71,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js">
     </script>
     <script type="text/javascript" src="plugins/daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript">
+     <script type="text/javascript" >
 
 
         function login() {
@@ -87,78 +87,79 @@
         };
 
     </script>
+
+
     <style>
-        #loginFrom .modal-dialog
-        {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0;
-            width: 100%;
-            max-width: 500px;
-        }
-    </style>
-    <style>
-        html, body
-        {
-            height: 100%;
-            margin: 0;
-        }
-        
-        .login-wrapper
-        {
-            width: 35%;
-            height: 100vh;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .login-panel
-        {
-            width: 100%;
-        }
+    
+    
+    #loginFrom .modal-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    width: 100%;
+    max-width: 500px;
+}
+
+    
     </style>
 </head>
 <body onload="login()">
     <form id="form1" runat="server">
-    <div class="login-wrapper">
-        <div class="panel panel-primary login-panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    Login</h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group" id="divEmail">
-                    <label>
-                        Domain ID</label>
-                    <asp:TextBox ID="txtDomainID" runat="server" CssClass="form-control">
-                    </asp:TextBox>
+    <img src="../uploads/bg.jpg" class="bg" alt="" />
+    <!--Success! - Insert-->
+    <div class="modal" id="loginFrom" tabindex="-1" role="dialog" aria-labelledby="loginFrom"     aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div class="modal-header bg-aqua-gradient">
+                    <h4>
+                        User Login...!</h4>
                 </div>
-                <div class="form-group" id="divPassword">
-                    <label>
-                        Password</label>
-                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password">
-                    </asp:TextBox>
+                <div class="modal-body bgColorWhite">
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group" id="divEmail">
+                            <label for="">
+                                Domain ID</label>
+                            <%--<input type="text" class="form-control" id="email" placeholder="Enter email address"
+                                name="email" autocomplete="off">
+--%>
+                            <asp:TextBox ID="txtDomainID" runat="server" class="form-control"></asp:TextBox>
+
+                        </div>
+                        <div class="form-group" id="divPassword">
+                            <label for="">
+                                Password</label>
+                            <%--<input type="password" class="form-control" id="password" placeholder="Enter password"
+                                name="password" autocomplete="off">--%>
+
+                            <asp:TextBox ID="txtPassword"  class="form-control" TextMode="Password" runat="server"></asp:TextBox>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <input type="hidden" name="do" value="user_login" />
+                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" 
+                            onclick="btnSubmit_Click" />
+                    
+                   
+
+                        <asp:Button ID="btnRM" runat="server"   Text="Button" />
+                        <asp:Button ID="btnCD" runat="server" Text="Button" />
+                        <asp:Button ID="btnCI" runat="server" Text="Button" />
+                        <asp:Button ID="btnMOP" runat="server" Text="Button" />
+                        <asp:Button ID="btnHOB" runat="server" Text="Button" />
+                        <asp:Button ID="btnDM" runat="server" Text="Button" />
+                    
+                   
+
+                    </div>
+                    </form>
                 </div>
-            </div>
-            <div class="panel-footer">
-                <input type="hidden" name="do" value="user_login" />
-                <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-info" OnClick="btnSubmit_Click" />
-                <asp:Button ID="btnRM" runat="server" Text="RM" OnClick="btnRM_Click" CssClass="btn btn-default" />
-                <asp:Button ID="btnCD" runat="server" Text="CD" CssClass="btn btn-default" OnClick="btnCD_Click" />
-                <asp:Button ID="btnCI" runat="server" Text="CI" CssClass="btn btn-default" OnClick="btnCI_Click" />
-                <asp:Button ID="btnMOP" runat="server" Text="MOP" CssClass="btn btn-default" OnClick="btnMOP_Click" />
-                <asp:Button ID="btnHOB" runat="server" Text="HOB" CssClass="btn btn-default" OnClick="btnHOB_Click" />
-                <asp:Button ID="btnAdmin" runat="server" Text="Admin" CssClass="btn btn-default"
-                    OnClick="btnAdmin_Click" />
-                <asp:Button ID="btnDM" runat="server" Text="DM" CssClass="btn btn-default" OnClick="btnDM_Click" />
-                <asp:Button ID="btnUnitHead" runat="server" Text="Unit Head" CssClass="btn btn-default"
-                    OnClick="btnUnitHead_Click" />
             </div>
         </div>
     </div>
     </form>
 </body>
+</html>

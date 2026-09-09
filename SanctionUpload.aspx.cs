@@ -21,6 +21,25 @@ public partial class SanctionUpload : System.Web.UI.Page
 
         LoadBranch();
 
+
+        if (Request.QueryString.AllKeys.Contains("CusID"))
+        {
+            String CusID = Request.QueryString["CusID"].ToString();
+            //ddlCustomer.Items.FindByValue(CusID);
+
+            //ddlCustomer.SelectedIndex = ddlCustomer.Items.IndexOf(ddlCustomer.Items.FindByValue(CusID));
+
+            select1.Items.FindByValue(CusID).Selected = true;
+
+            //ddlCustomer.Items.FindByText(CusID).Selected = true;
+
+            /*
+            ListItem oItem = ddlCustomer.Items.FindByValue(CusID);
+            if (oItem != null) oItem.Selected = true;
+            */
+
+        }
+
     }
 
 
