@@ -298,4 +298,92 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
 
 
     }
+
+
+
+
+
+    [WebMethod(EnableSession = true)]
+    public static Object[] Checklist_Generate(Int32 drawdown_id)
+    {
+
+
+
+        Object[] details = null;
+
+        Int32 status;
+
+        String msg;
+
+
+
+        //String drawdown_id = Request.QueryString[0].ToString();
+
+        //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
+        //String c_type = Request.QueryString[2].ToString().Split('-')[0];
+
+        //String cus_id = Request.QueryString[3].ToString();
+
+
+        SqlConnection con = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
+        SqlCommand cmd = con.CreateCommand();
+        cmd.CommandType = CommandType.StoredProcedure;
+
+        cmd.CommandText = "usp_Checklist_Generate";
+        cmd.Connection = con;
+
+
+        /*
+        SqlParameter[] parameters = 
+                    {
+                        
+                         new SqlParameter("@primary_cus_id","100052469")
+                        ,new SqlParameter("@drawdown_id", 1)
+
+                        ,new SqlParameter("@Search_CUS","PVT")
+                        ,new SqlParameter("@Search_LOAN", "OD,CC,EMFS,HBL,HP,SF")
+                        ,new SqlParameter("@Search_COLL", "FI,PG,CG,TR,Assignment")
+
+                    };
+        */
+
+        SqlParameter[] parameters = 
+                    {
+                        new SqlParameter("@drawdown_id", drawdown_id)
+                    };
+
+
+        cmd.Parameters.AddRange(parameters);
+
+        cmd.CommandTimeout = 0;
+
+        con.Open();
+
+        //SqlDataAdapter da = new SqlDataAdapter(cmd);
+        //DataSet Ds = new DataSet();
+        try
+        {
+            //da.Fill(Ds);
+
+            cmd.ExecuteNonQuery();
+
+
+            status = 1;
+            msg = "Checklist Generated Successfully";
+        }
+
+
+        catch (Exception ex)
+        {
+            status = 0;
+            msg = "Checklist Generation Failed :" + ex.Message;
+
+        }
+
+        //return msg;
+
+        details = new object[] { status, msg };
+
+        return details;
+    }
 }

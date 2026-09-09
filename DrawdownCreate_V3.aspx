@@ -150,9 +150,9 @@
 
                             swal("Success!", "Data Saved Successfully. Drawdown ID : " + dd_id, "success");
 
-                            $("#btnUpload").css({ "display": "block" });
+                            $("#btnGenerate").css({ "display": "block" });
 
-                            $("#btnUpload").attr("drawdown-id", dd_id);
+                            $("#btnGenerate").attr("drawdown-id", dd_id);
 
 
                             $("#btnUpload").attr("cus-id", cus_ids);
@@ -183,6 +183,75 @@
                 return false;
 
 
+            });
+
+            $("#btnGenerate").click(function () {
+
+                var drawdown_id = $(this).attr("drawdown-id");
+
+                alert(drawdown_id);
+
+                $.ajax({
+
+                    //cache: false,
+                    //contentType: false,
+                    //processData: false,
+
+                    type: "POST",
+                    url: "DrawdownCreate_V3.aspx/Checklist_Generate",
+                    data: '{drawdown_id: ' + drawdown_id + '}',
+                    //data: formData,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+
+                    success: function (msg) {
+
+                        var status = msg.d[0];
+                        var message = msg.d[1];
+                        //var dd_id = msg.d[2];
+
+
+                        //alert("Data Saved Successfully.");
+
+                        //alert(msg.d);
+
+                        if (status == 1) {
+                            //if (message == "Data Saved") {
+
+                            swal("Success!", message, "success");
+
+                            $("#btnUpload").css({ "display": "block" });
+
+                            $("#btnUpload").attr("drawdown-id", drawdown_id);
+
+
+                            //$("#btnUpload").attr("cus-id", cus_ids);
+                            //$("#btnUpload").attr("loan-natures", loan_natures);
+                            //$("#btnUpload").attr("securities", securities);
+
+
+                        }
+
+                        else {
+
+                            swal("Error!", "Data not Saved : " + message, "error");
+
+
+
+                        }
+
+
+
+                    },
+                    error: function () {
+                        //alert("Error while inserting data");
+                        //sweetAlert("Oops...", "Something went wrong!", "error");
+                        //sweetAlert("Oops...", "Something went wrong!", "error");
+                        swal("Error!", "Data not Saved!", "error")
+                    }
+                });
+
+                return false;
             });
 
 
@@ -379,16 +448,19 @@
 
                   		</div><!-- /.box-body -->
                   		<div class="box-footer">
-
+                          <div style="display:flex; gap:10px; align-items:center;">
                   			<input type="hidden" name="do" value="add_grade" />
                     		<button type="button" class="btn btn-primary" id="btnSave">Save</button>
 <%--
-                            --%><button type="button" class="btn btn-primary" id="Button1">Checkist Generate</button>
+          <button type="button" class="btn btn-primary" id="Button1">Checkist Generate</button>                  --%>
 
-                            <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Checkist Generate</button>
+                            <button type="button" class="btn btn-primary" id="btnGenerate" style="  display:none;" >Checkist Generate</button>
+
+
+                            <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Upload</button>
 
                   		</div>
-                	 
+                	 </div>
 				</div><!-- /.box -->
 			</div>
 		</div>
