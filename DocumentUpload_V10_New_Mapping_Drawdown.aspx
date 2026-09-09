@@ -90,15 +90,19 @@
 
             $('#btnUpdate').click(function () {
 
-                var sanctionId = $('#Text1').val();
-                var sanctionRef = $('#Text2').val();
+
+                alert(drawdown_id);
+                alert(cus_id);
+
+                //var sanctionId = $('#Text1').val();
+                //var sanctionRef = $('#Text2').val();
 
                 $.ajax({
                     type: "POST",
                     url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/Update_Status",
                     data: JSON.stringify({
-                        sanctionId: sanctionId,
-                        sanctionRef: sanctionRef
+                        drawdown_id: drawdown_id,
+                        cus_id: cus_id
                     }),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -1218,7 +1222,7 @@
 
 
         <input  type="button" value="Close" onclick="window.close();"/>
-        <input id="btnSave" type="button" value="Save & Close" /><br />   <br />
+        <input id="btnUpdate" type="button" value="Save & Close" /><br />   <br />
         <table>
             <tr>
                 <td>

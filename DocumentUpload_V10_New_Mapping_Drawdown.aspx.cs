@@ -340,7 +340,7 @@ Upload Not Required
         SqlCommand cmd = con.CreateCommand();
         cmd.CommandType = CommandType.StoredProcedure;
 
-        cmd.CommandText = "usp_Checklist_Compress_V3";
+        cmd.CommandText = "usp_Checklist_Load_For_Upload";
         cmd.Connection = con;
          
 
@@ -453,12 +453,12 @@ OTHER DOCUMENTS
 
 
     [WebMethod]
-    public static bool Update_Status(string sanctionId, string sanctionRef)
+    public static bool Update_Status(string drawdown_id, string cus_id)
     {
         try
         {
             string connectionString =
-                ConfigurationManager.ConnectionStrings["MyConnection"].ConnectionString;
+                ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
