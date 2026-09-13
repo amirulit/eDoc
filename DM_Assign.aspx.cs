@@ -27,7 +27,7 @@ public partial class DM_Assign : System.Web.UI.Page
 
 
     [WebMethod]
-    public static string UpdateRecordMethod(string id, string value)
+    public static string AssignDM(Int32 drawdown_id, String dm)
     {
         string connString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
@@ -39,8 +39,9 @@ public partial class DM_Assign : System.Web.UI.Page
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 // Add parameters matching your stored procedure definition
-                cmd.Parameters.AddWithValue("@RecordID", id);
-                cmd.Parameters.AddWithValue("@NewValue", value);
+                cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
+                cmd.Parameters.AddWithValue("@dm", dm);
+                cmd.Parameters.AddWithValue("@by", "Test");
 
                 try
                 {

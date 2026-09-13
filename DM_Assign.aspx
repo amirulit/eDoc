@@ -2,9 +2,90 @@
     CodeFile="DM_Assign.aspx.cs" Inherits="DM_Assign" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+
+  <script type="text/javascript">
+
+      $(document).ready(function () {
+
+
+
+          $("#<%=Select1.ClientID%>").select2({
+
+              placeholder: "<--Select-->",
+              allowClear: true,
+              width: '100%'
+
+
+          });
+
+
+
+
+          $('#btnSubmit').click(function () {
+
+
+
+
+              //var currentValue = $("#lblID").text();
+              var id = $("#lblID").text(); // Or get from an input field
+
+              var $row = $("#row_" + id);
+
+
+              var dm = $("#<%=Select1.ClientID%>").val();
+
+              $.ajax({
+                  type: "POST",
+                  url: "DM_Assign.aspx/AssignDM", // Replace with your ASP.NET page name
+                  data: JSON.stringify({ drawdown_id: id, dm: dm }), // Parameters matching your Web Method
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function (response) {
+                      // Check if the server responded with success
+                      //if (response.d.includes("successfully")) {
+                      if (response.d == "Database updated successfully!") {
+
+                          alert('Assigned');
+                          // --- OPTION A: Change background color directly ---
+                          $row.css("background-color", "#d4edda"); // Soft green color
+
+                          // --- OPTION B: Add a CSS class (Recommended) ---
+                          // $row.addClass("row-updated");
+
+                          // Optional: How to verify if that step was successful?
+                          // You will see the row highlight in green immediately upon completion.
+                      } else {
+                          alert("Server error: " + response.d);
+                      }
+                  },
+                  error: function (xhr, status, error) {
+                      alert("Error: " + error);
+                  }
+              });
+
+
+
+
+          });
+
+
+      });
+
+
+
+
+    </script>
+
+
+
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+
+
+
 
             $("body").on("click", ".upload", function () {
 
@@ -77,45 +158,16 @@
 
 
             $("body").on("click", ".assign", function () {
-                var auto_id = $(this).attr("auto-id");
-                $("#lblID").text(  auto_id);
-                alert(auto_id);
+                var edoc_id = $(this).attr("edoc-id");
+                $("#lblID").text(edoc_id);
+                alert(edoc_id);
 
-                var $row = $(element).closest("tr");
+                //var $row = $(element).closest("tr");
 
 
-                function updateDatabaseRecord() {
-                    var recordId = $("#lblID").text(); // Or get from an input field
-                    var selectedVal = $("#Select1").val();
-
-                    $.ajax({
-                        type: "POST",
-                        url: "YourPageName.aspx/UpdateRecordMethod", // Replace with your ASP.NET page name
-                        data: JSON.stringify({ id: recordId, value: selectedVal }), // Parameters matching your Web Method
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (response) {
-                            // Check if the server responded with success
-                            if (response.d.includes("successfully")) {
-
-                                // --- OPTION A: Change background color directly ---
-                                $row.css("background-color", "#d4edda"); // Soft green color
-
-                                // --- OPTION B: Add a CSS class (Recommended) ---
-                                // $row.addClass("row-updated");
-
-                                // Optional: How to verify if that step was successful?
-                                // You will see the row highlight in green immediately upon completion.
-                            } else {
-                                alert("Server error: " + response.d);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            alert("Error: " + error);
-                        }
-                    });
-                }
             });
+
+
 
             $("body").on("click", ".pdf", function () {
 
@@ -188,7 +240,7 @@
                             </div><!--/.modal body-->
                             <div class="panel-footer bg-gray-light">
                                 <input type="hidden" id="id" name="id" value="" >
-                                <button type="button" onClick="Updatesubject(this)" id="btnSubmit1" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>         
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Assign</button>         
         	  				</div><!--/.panel-footer--> 
             			</div><!--/.panel-->
             		</div><!--/.col-md-6-->
@@ -242,7 +294,7 @@
             {
                             
 %>
-<tr id="row_<%=TableData.Rows[data]["id"]%>">
+<tr id="row_<%=TableData.Rows[data]["dd_id"]%>">
                         <td><%=TableData.Rows[data]["id"]%></td>
                         <td><%=TableData.Rows[data]["dd_id"]%></td>
                           <td><%=TableData.Rows[data]["cus_type"]%></td>
@@ -263,7 +315,7 @@
 
                         <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Document Upload</a>                                    
                         -->
-
+                        <!--
                         <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Upload</a>                                    
   
 
@@ -274,7 +326,7 @@
 
                         <a href="#"  class="btn btn-success btn-xs pdf" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Pdf Gen</a>                                    
   
-
+  -->
 
 
      <a href="#modalUpdateform"  class="btn btn-success btn-xs assign"  data-toggle="modal"  cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Assign DM</a>                                    
