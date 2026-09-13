@@ -341,7 +341,15 @@
             <i class="fa fa-flag"></i> <span>Check List Listing</span>
           </a>
         </li>
-
+         <li>
+          <a href="UserListing.aspx">
+            <i class="fa fa-flag"></i> <span>User Listing</span>
+          </a>
+        </li> <li>
+          <a href="DM_Assign.aspx">
+            <i class="fa fa-flag"></i> <span>Assign DM</span>
+          </a>
+        </li>
         <%
             }
              %>
