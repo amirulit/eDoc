@@ -483,7 +483,7 @@ OTHER DOCUMENTS
 
 
 
-
+    /*
     [WebMethod]
     public static bool Update_Status(string drawdown_id, string cus_id)
     {
@@ -517,7 +517,7 @@ OTHER DOCUMENTS
             return false;
         }
     }
-
+    */
 
     public class Obj
     {

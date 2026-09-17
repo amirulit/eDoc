@@ -1056,6 +1056,9 @@
                          
                             </div>
                            <div class="box-footer">
+
+
+                              <div style="display:flex; gap:10px; align-items:center;">
     <button type="button" id="btnSave" class="btn btn-primary btn-spaced">
         Submit
     </button>
@@ -1067,6 +1070,7 @@
     <button type="button" id="btnUpload" class="btn btn-success btn-spaced">
         Upload Docs
     </button>
+</div>
 </div>
 
                         </div>

@@ -101,6 +101,7 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
     <script type="text/javascript">
+
         $(function () {
 
             $('#image').change(function () {
@@ -163,7 +164,7 @@
 
                     type: "POST",
                     url: "New_V2.aspx/GetEmpInfo",
-                    //url: "http://10.10.100.68/HRM_API/HRM/GetEmpInfo/" + empid,
+                    //url: "http://10.10.100.82/HRM_API/HRM/GetEmpInfo/" + empid,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: JSON.stringify({ EmpId: EmpId }),
@@ -219,6 +220,142 @@
 
                     }
                 });
+            });
+
+
+
+
+            $("#btnCreateUser").click(function () {
+
+
+                var domain = $("#domain").val()
+
+                //alert('fffff');
+
+                //var EmpId = $("#empid").val();
+
+
+                //var formData = new FormData();
+                //formData.append("fileName", f.name);
+                //formData.append("file", f);
+
+
+                var formData = new FormData();
+
+
+                var role = $("#ddlrole").val();
+                //alert(role);
+                // Add form fields
+                //formData.append("empid", $("#empid").val());
+
+                formData.append("empid", $("#empid").val());
+                //formData.append("empid", empid);
+                formData.append("name", $("#name").val());
+                formData.append("designation", $("#designation").val());
+                //formData.append("role", $("#ddlrole").val());
+                formData.append("role", role);
+                formData.append("branchcode", $("#branchcode").val());
+                formData.append("branchname", $("#branchname").val());
+                formData.append("phone", $("#phone").val());
+                formData.append("domain", domain);
+
+
+
+
+                // Add file
+                var file = $("#image")[0].files[0];
+                if (!file) {
+                    alert("Please select a signature.");
+                    return;
+                }
+                formData.append("SignatureFile", file);
+                formData.append("fileName", file.name);
+
+                //alert('tttt');
+
+
+
+                $.ajax({
+
+
+                    url: 'WebService1.asmx/CreateUser',
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (Status) {
+
+                        //$("#fileProgress").hide();
+
+                        //$("#lblMessage").html("<b>" + fileName + "</b> has been uploaded.");
+
+                        /*
+                        swal("Success!", Status, "success");
+                        $("#email1").val(domain)
+                        $('#modalSignup').modal('hide');
+                        */
+
+                        if (Status.indexOf("1") !== -1) {
+
+                            swal("Success!", Status, "success");
+                            $("#email1").val(domain)
+                            $('#modalSignup').modal('hide');
+
+                        }
+
+                        if (Status.indexOf("0") !== -1) {
+                            swal("Error!", Status, "error");
+                        }
+
+
+                        //alert(Status);
+                        /*
+                        uploaded_files = uploaded_files + 1;
+
+                        if (uploaded_files == total_files) {
+                        uploaded_files = 0;
+                        alert('ALL Files Uploaded Sequentially');
+                        } else {
+                        up(i + 1);
+                        }
+                        */
+                    },
+                    xhr: function () {
+                        var fileXhr = $.ajaxSettings.xhr();
+                        //Check if upload property exists
+                        if (fileXhr.upload) {
+
+                            //update progressbar percent complete
+                            fileXhr.upload.addEventListener("progress", function (e) {
+                                if (e.lengthComputable) {
+                                    //$("#statustxt").attr({ value: e.loaded, max: e.total });
+                                    //console.log("Value = " + e.loaded + " :: Max =" + e.total);
+                                    var percentage = Math.floor((e.loaded / e.total) * 100);
+                                    console.log(f.name + ' : ' + percentage + '%');
+                                    //$("#statustxt").html(percentage + '%');
+                                    //$("#file_" + i).html(percentage + '%');
+
+                                    //$(this).parent().parent().css('backgroundColor', 'red');
+
+                                    //$("#file_" + i).parent().parent().css('backgroundColor', 'yellow');
+
+                                    //if (percentage >= 100)
+                                    //$("#file_" + i).parent().parent().css('backgroundColor', 'green');
+
+                                }
+                            }, false);
+                        }
+                        return fileXhr;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        //$("#file_" + i + "").html('0%');
+                        //$("#error_" + i + "").html(XMLHttpRequest.responseText + '-' + textStatus + '-' + errorThrown);
+                        //$("#error_" + i + "").html(XMLHttpRequest.status + '-' + XMLHttpRequest.statusText);
+                        alert("Whoops something went wrong!");
+                    }
+                });
+
             });
 
         });
@@ -351,15 +488,15 @@
                                             Signature</label>
                                         <div id="divImage">
                                             <img id="profile_pic" style="width: 130px; height: 150px; margin-bottom: 5px;" />
-                                            <input type="file" name="image" id="image" class="form-control" />
+                                            <input type="file" name="fileName" id="image" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="box-footer text-center">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="button"  id="btnCreateUser" class="btn btn-primary">
                                         Submit
                                     </button>
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="button" class="btn btn-success">
                                         Login
                                     </button>
                                     <a href="Login_V3.aspx" class="btn btn-success">Login</a>

@@ -234,7 +234,7 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
                         new SqlParameter("@securities",Obj.securities), 
 
                                    new SqlParameter("@loan_amount",Obj.loan_amount), 
-                                   new SqlParameter("@expiry_date",Obj.expiry_date), 
+                                   new SqlParameter("@expiry_date",exp_date), 
                         
                         //new SqlParameter("@cus_name",Obj.cus_name), 
                         //new SqlParameter("@sanc_authority",Obj.sanc_auth), 
