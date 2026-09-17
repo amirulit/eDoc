@@ -3,16 +3,24 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style type="text/css">
+        
+        
+        
         .select2-container--default .select2-selection--multiple .select2-selection__choice
         {
             color: blue !important;
         }
     </style>
+
+
+
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+
             $("#<%=select1.ClientID%>,#select2,#<%=select3.ClientID%>,#<%=select4.ClientID%>").select2({
                 placeholder: "<--Select-->",
                 allowClear: true

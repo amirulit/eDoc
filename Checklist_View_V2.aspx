@@ -5,10 +5,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Document Upload</title>
-    <link href="bootstrap4/bootstrap.css" rel="stylesheet" type="text/css" />
+   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" />
+
+
     <link rel="stylesheet" href="/resources/demos/style.css" />
     <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" />
+
+
+      <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
+
+
     <%--
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
@@ -24,8 +35,32 @@
     </script>
     <script type="text/javascript" src="plugins/datatables/dataTables.bootstrap.min.js">
     </script>
+
+    <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
+
+
+
+            $('#btnDecline').click(function () {
+                $('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID
+
+
+                //var edoc_id = $(this).attr("edoc-id");
+
+
+                $("#lblID").text(drawdown_id);
+                alert(drawdown_id);
+
+
+
+            });
+
+
+
+
             // Initialize the jQuery dialog
 
             $("#imageDialog").dialog({
@@ -1176,6 +1211,50 @@
 </head>
 <body>
     <form id="form1" runat="server">
+
+
+
+    
+    <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
+  		<div class="modal-dialog">
+    		<div class="container">
+            	<div class="row ">	
+           			<div class="col-md-6">
+                		<div class="panel">
+        					<div class="panel-heading bg-orange">                 
+        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          						<h4 class="modal-title custom_align" id="Heading">Decline</h4>
+                            </div>
+                            <div class="panel-body"> <!-- Start of modal body--> 
+
+                            ID # <span id="lblID" class="badge  badge-success"></span>
+
+                                <div class="form-group" id="divSubjectUpdate">
+                                    <label for="">Subject</label>
+                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off">
+                                </div> 
+                                <div class="form-group" id="div1">
+                                    <label for="">Decline Reason</label>
+                                     
+ 
+                                         <textarea id="TextArea1" cols="20" rows="2"  class="form-control"></textarea>
+</select>
+                                </div> 
+                            </div><!--/.modal body-->
+                            <div class="panel-footer bg-gray-light">
+                                <input type="hidden" id="id" name="id" value="" />
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Decline</button>         
+        	  				</div><!--/.panel-footer--> 
+            			</div><!--/.panel-->
+            		</div><!--/.col-md-6-->
+            	</div><!--/.row-->                                        
+        	</div><!-- /.modal-content -->  		 
+		</div><!-- /.modal-dialog -->            
+	</div><!--/.Modal-Update form -->   
+
+
+
+
     <div style="margin: 10px; padding: 10px;">
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
         <input id="hfCusID" type="hidden" runat="server" />
@@ -1184,7 +1263,7 @@
 
          <input type="button" value="Forward"  id="btnForward" onclick="javascript:Forward();"  class="btn btn-success"/>
 
-          <input type="button" value="Decline"  id="btnDecline"   onclick="javascript:Decline();"  class="btn btn-primary"/>
+          <input type="button" value="Decline"  id="btnDecline"    class="btn btn-primary"/>
 
            <input type="button" value="Pdf"  id="btnPdf"   onclick="javascript:Pdf();"  class="btn btn-info"/>
 
