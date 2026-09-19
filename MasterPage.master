@@ -329,6 +329,14 @@
             <i class="fa fa-flag"></i> <span>Sanction Listing</span>
           </a>
         </li>
+
+        <li>
+          <a href="SanctionListing_V2.aspx">
+            <i class="fa fa-flag"></i> <span>Checklist Iniatiate</span>
+          </a>
+        </li>
+
+
         <!--
         <li>
           <a href="DrawdownCreate_V2.aspx">

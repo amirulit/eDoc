@@ -1227,6 +1227,9 @@
                             </div>
                             <div class="panel-body"> <!-- Start of modal body--> 
 
+
+
+
                             ID # <span id="lblID" class="badge  badge-success"></span>
 
                                 <div class="form-group" id="divSubjectUpdate">

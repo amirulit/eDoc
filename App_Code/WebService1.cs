@@ -78,7 +78,7 @@ INSERT INTO [dbo].[t_User]
 
 )
      VALUES
-           ('" + empid + "','" + name + "','" + designation + "','" + role + "','" + branchcode.Replace("BD001", "") + "','" + branchname + "','" + phone + "','" + domain + "','" + fileName + @"','Active',getdate())
+           ('" + empid + "','" + name + "','" + designation + "','" + role + "','" + branchcode.Replace("BD001", "") + "','" + branchname + "','" + phone + "','" + domain + "','" + fileName + @"','Inactive',getdate())
         
         
         end
