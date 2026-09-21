@@ -3,19 +3,30 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style type="text/css">
+        
+        
         .select2-container--default .select2-selection--multiple .select2-selection__choice
         {
             color: blue !important;
         }
     </style>
+     <style type="text/css">
+        .tbl td
+        {
+            border-bottom: 1px solid blue;
+        }
+    </style>
+
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
+
+
     <script type="text/javascript">
 
         $(document).ready(function () {
 
+            var uploaded_files = 0;
 
-        
 
             var queryString = window.location.search;
 
@@ -55,6 +66,150 @@
             });
 
 
+
+            $('#fileUploadID').on("change", function () {
+
+                //uploadFile();
+
+                var f_name = '';
+                var f_size = '';
+
+                document.getElementById('r').innerHTML = '';
+                var filelists = '';
+
+                var fileUploadID = document.getElementById("fileUploadID");
+                var aryFiles = fileUploadID.files;
+                total_files = aryFiles.length;
+                for (var i = 0; i < aryFiles.length; i++) {
+
+                    f_name = aryFiles[i].name;
+                    f_size = (aryFiles[i].size / (1024 * 1024)).toFixed(2);
+
+
+                    filelists = filelists + "<tr><td>" + (i + 1) + "</td><td>" + f_name + "</td><td>" + f_size + "</td><td><span id='file_" + i + "'>0%</span><span id='error_" + i + "'></span></td></tr>";
+                    //filelists = filelists + "<tr><td>" + (i + 1) + "</td><td>" + aryFiles[i].name + "</td><td>" + aryFiles[i].size + "</td><td><span id='file_" + i + "'>0%</span></td></tr>";
+                    //alert(aryFiles[i].name);
+                }
+                filelists = "<table class='table'><thead><tr><th>SL</th><th>File Name</th><th>Size</th><th>Upload Status(%)</th></tr></thead>" + filelists + "</table>";
+                document.getElementById('r').innerHTML = filelists;
+
+            });
+
+
+            $("#btnSubmit").click(function () {
+
+                var dd_id = $(this).attr("dd-id");
+
+                alert(dd_id);
+                upload_sanction_letter(dd_id);
+
+            });
+
+
+            function upload_sanction_letter(dd_id) {
+
+                var filelists = '';
+                var fileUploadID = document.getElementById("fileUploadID");
+                var aryFiles = fileUploadID.files;
+                for (var i = 0; i < aryFiles.length; i++) {
+
+                    /*
+                    var fileName = aryFiles[i].name.startsWith("1111_");
+                    if (!fileName)
+                    alert("Please upload file with name starting with 1111_");
+                    else
+                    alert("Done.");
+                    */
+
+                    //alert(aryFiles[i].name);
+                    upload(aryFiles[i], i, dd_id);
+                    //filelists = filelists + "<tr><td>" + aryFiles[i].name + "</td><td><span id='" + i + "'></span></td></tr>";
+
+                }
+
+
+                //return "OK";
+
+                //MailSend(file_no, 22)
+
+                //setTimeout(MailSend(file_no, 22), 20000);
+
+
+            }
+
+
+
+
+
+
+            function upload(f, i, dd_id) {
+
+                //alert(f.name);
+
+                var formData = new FormData();
+                formData.append("dd_id", dd_id);
+                formData.append("file", f);
+
+                //alert('tttt'); 
+
+                $.ajax({
+
+
+                    url: 'WebService3.asmx/UploadFiles_2',
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (fileName) {
+
+                        $("#fileProgress").hide();
+                        $("#lblMessage").html("<b>" + fileName + "</b> has been uploaded.");
+
+                        uploaded_files = uploaded_files + 1;
+
+                        if (uploaded_files == total_files) {
+
+                            //alert('ALL');
+                            uploaded_files = 0;
+                            //MailSend(file_no, 22);
+
+                        }
+                    },
+                    xhr: function () {
+                        var fileXhr = $.ajaxSettings.xhr();
+                        //Check if upload property exists
+                        if (fileXhr.upload) {
+                            //update progressbar percent complete
+                            fileXhr.upload.addEventListener("progress", function (e) {
+                                if (e.lengthComputable) {
+                                    //$("#statustxt").attr({ value: e.loaded, max: e.total });
+                                    //console.log("Value = " + e.loaded + " :: Max =" + e.total);
+                                    var percentage = Math.floor((e.loaded / e.total) * 100);
+                                    console.log(f.name + ' : ' + percentage + '%');
+                                    $("#statustxt").html(percentage + '%');
+                                    $("#file_" + i + "").html(percentage + '%');
+                                }
+                            }, false);
+                        }
+                        return fileXhr;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $("#file_" + i + "").html('0%');
+                        //$("#error_" + i + "").html(XMLHttpRequest.responseText + '-' + textStatus + '-' + errorThrown);
+                        $("#error_" + i + "").html(XMLHttpRequest.status + '-' + XMLHttpRequest.statusText);
+                        //alert("Whoops something went wrong!");
+
+                        alert("Upload failed for file: " + dd_id + "\n\nUploading has been stopped.");
+
+
+                    }
+                });
+
+
+
+            }
+
         });
 
 
@@ -62,6 +217,8 @@
 
     </script>
     <script type="text/javascript">
+
+
         $(document).ready(function () {
 
             var urlParams = new URLSearchParams(window.location.search);
@@ -76,11 +233,10 @@
 
 
             $('#btnDocumentUpload').click(function () {
-                $('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID
 
+                $('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID 
 
-                var dd_id = $(this).attr("dd-id");
-
+                var dd_id = $(this).attr("dd-id"); 
 
                 $("#lblID").text(dd_id);
                 alert(drawdown_id);
@@ -195,6 +351,16 @@
                             $("#btnUpload").attr("securities", securities);
 
                             $("#btnDocumentUpload").attr("dd-id", dd_id);
+
+                            $("#btnSubmit").attr("dd-id", dd_id);
+
+
+                            $('#modalUpdateform').modal('show');
+
+                            //var dd_id = $(this).attr("dd-id");
+
+                            $("#lblID").text(dd_id);
+                            
                         }
 
                         else {
@@ -538,7 +704,7 @@
 				</div><!-- /.box -->
 			</div>
 		</div>
-
+        </div>
 
         
     
@@ -558,31 +724,41 @@
 
 
                             ID # <span id="lblID" class="badge  badge-success"></span>
-
+                            <!--
                                 <div class="form-group" id="divSubjectUpdate">
                                     <label for="">Subject</label>
-                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off">
+                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off"/>
                                 </div> 
-
+                                -->
                                  <div class="form-group" id="div2">
+                                 Please upload following documents :
+
                                  <ul>
                                  
-                                 <li>Checklist Scancopy</li>
-                                 <li>Accepted Scancopy</li>
-                                 <li>Board Resolution</li>
-                                   <li>Others</li>
+                                    <li>Checklist Scancopy</li>
+                                    <li>Accepted Scancopy</li>
+                                    <li>Board Resolution</li>
+                                    <li>Others</li>
+
+
                                  </ul>
                                  </div>
 
  
                                 <div class="form-group" id="div1">
-                                     <input id="File2" type="file" />
+                                     <input id="fileUploadID" type="file"  multiple />
  
                                 </div> 
+
+                                  <div id='r'>
+                        </div>
+
+
+
                             </div><!--/.modal body-->
                             <div class="panel-footer bg-gray-light">
                                 <input type="hidden" id="id" name="id" value="" />
-                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Decline</button>         
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
         	  				</div><!--/.panel-footer--> 
             			</div><!--/.panel-->
             		</div><!--/.col-md-6-->

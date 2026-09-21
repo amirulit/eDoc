@@ -37,8 +37,73 @@
 
                 newwindow.focus();
 
+
+
             });
 
+
+            $("body").on("click", ".reason", function () {
+
+                var dd_id = $(this).attr("drawdown-id");
+
+                $("#lblID").text(dd_id);
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/GetReason",
+                    data: JSON.stringify({
+                        drawdown_id: dd_id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+                    /*
+                        var item = response.d;
+
+                        var row = "<tr>" +
+            "<td>" + item.id + "</td>" +
+            "<td>" + item.cus_name + "</td>" +
+            "<td>" + item.cr_incharge_decline_reason + "</td>" +
+            "<td>" + item.hob_decline_reason + "</td>" +
+            "<td>" + item.dm_decline_reason + "</td>" +
+            "<td>" + item.unit_head_decline_reason + "</td>" +
+            "</tr>";
+
+            $("#reasonTable").html(row);
+            */
+
+
+                        var data = response.d;
+                        var html = "";
+
+                        $.each(data, function (key, value) {
+
+                            html += "<tr>";
+                            html += "<th>" + key + "</th>";
+                            html += "<td>" + (value == null ? "" : value) + "</td>";
+                            html += "</tr>";
+
+                        });
+
+
+                        $("#reasonTable").html(html);
+                        
+                    },
+
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+
+
+                $('#modalUpdateform').modal('show');
+
+
+
+
+            });
 
 
             $("body").on("click", ".view", function () {
@@ -117,6 +182,88 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content"> <!-- Start of table section -->
+
+
+    
+    <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
+  		<div class="modal-dialog">
+    		<div class="container">
+            	<div class="row ">	
+           			<div class="col-md-6">
+                		<div class="panel">
+        					<div class="panel-heading bg-orange">                 
+        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          						<h4 class="modal-title custom_align" id="Heading">Decline Reason</h4>
+                            </div>
+                            <div class="panel-body"> <!-- Start of modal body--> 
+
+
+                             ID # <span id="lblID" class="badge  badge-success"></span>
+
+
+                             <hr />
+                           
+                            <!--
+                                <div class="form-group" id="divSubjectUpdate">
+                                    <label for="">Subject</label>
+                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off"/>
+                                </div> 
+                              
+                                 <div class="form-group" id="div2">
+                                 Please upload following documents :
+
+                                 <ul>
+                                 
+                                    <li>Checklist Scancopy</li>
+                                    <li>Accepted Scancopy</li>
+                                    <li>Board Resolution</li>
+                                    <li>Others</li>
+
+
+                                 </ul>
+                                 </div>
+
+ 
+                                <div class="form-group" id="div1">
+                                     <input id="fileUploadID" type="file"  multiple />
+ 
+                                </div> 
+
+                                  <div id='r'>
+                        </div>
+                          -->
+
+                        <table id="reasonTable" class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Salary</th>
+             <th>Department</th>
+              <th>Department</th>
+        </tr>
+    </thead>
+
+    <tbody id="employeeBody">
+    </tbody>
+</table>
+
+
+                            </div><!--/.modal body-->
+                            <div class="panel-footer bg-gray-light">
+                                <input type="hidden" id="id" name="id" value="" />
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
+        	  				</div><!--/.panel-footer--> 
+            			</div><!--/.panel-->
+            		</div><!--/.col-md-6-->
+            	</div><!--/.row-->                                        
+        	</div><!-- /.modal-content -->  		 
+		</div><!-- /.modal-dialog -->            
+	</div><!--/.Modal-Update form -->   
+
+
+
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
             	<div class="box">
@@ -184,10 +331,11 @@
                         <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Upload</a>                                    
   
 
-
                         <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
   
-
+                        
+                        <a href="#"  class="btn btn-primary btn-xs reason" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
+  
 
                         <a href="#"  class="btn btn-success btn-xs pdf" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Pdf Gen</a>                                    
   

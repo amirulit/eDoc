@@ -916,79 +916,104 @@ public class WebService3 : System.Web.Services.WebService
     public void UploadFiles_2()
     {
 
-        //try
-        //{
+        try
+        {
 
-        //Create the Directory.
-        //string path = HttpContext.Current.Server.MapPath("~/Uploads/");
-        //if (!Directory.Exists(path))
-        //{
-        //Directory.CreateDirectory(path);
-        //}
+            //Create the Directory.
+            //string path = HttpContext.Current.Server.MapPath("~/Uploads/");
+            //if (!Directory.Exists(path))
+            //{
+            //Directory.CreateDirectory(path);
+            //}
 
-        //Fetch the File.
-        HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
+            //Fetch the File.
+            HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
 
-        //Fetch the File Name.
-        //String fileName = HttpContext.Current.Request.Form["fileName"] + "_" + Path.GetExtension(postedFile.FileName);
+            //Fetch the File Name.
+            //String fileName = HttpContext.Current.Request.Form["fileName"] + "_" + Path.GetExtension(postedFile.FileName);
 
-        Int32 file_no = Convert.ToInt32(HttpContext.Current.Request.Form["file_no"]);
+            Int32 dd_id = Convert.ToInt32(HttpContext.Current.Request.Form["dd_id"]);
 
-        String f_name = Path.GetFileName(postedFile.FileName);
+            String f_name = Path.GetFileName(postedFile.FileName);
 
-        String fileName = HttpContext.Current.Request.Form["file_no"] + "_" + Path.GetFileName(postedFile.FileName);
+            String fileName = HttpContext.Current.Request.Form["dd_id"] + "_" + Path.GetFileName(postedFile.FileName);
 
-        //String fileName = HttpContext.Current.Request.Form["file_no"] + "_" + f_name;
+            //String fileName = HttpContext.Current.Request.Form["file_no"] + "_" + f_name;
 
-        //Save the File.
-        //postedFile.SaveAs(path + fileName);
+            //Save the File.
+            //postedFile.SaveAs(path + fileName);
 
-        //postedFile.SaveAs(@"E:\tt\" + fileName + "_" + Path.GetFileName(postedFile.FileName));
+            //postedFile.SaveAs(@"E:\tt\" + fileName + "_" + Path.GetFileName(postedFile.FileName));
 
-        postedFile.SaveAs(@"E:\CAD_Doc\" + fileName);
+            postedFile.SaveAs(@"E:\eDoc_Upload_DM\" + fileName);
 
-        //String SqlStr = "Insert into t_LoanInfo_SanctionLetter values (" + file_no + ",'" + fileName + "',getdate(),'" + HttpContext.Current.Session["DomainID"] + "','Uploaded','" + HttpContext.Current.Session["BranchCode"] + "')  ";
+            //String SqlStr = "Insert into t_LoanInfo_SanctionLetter values (" + file_no + ",'" + fileName + "',getdate(),'" + HttpContext.Current.Session["DomainID"] + "','Uploaded','" + HttpContext.Current.Session["BranchCode"] + "')  ";
 
-        //File.AppendAllText(@"E:\LoanFileTracker_Error\Log.txt", SqlStr);
+            //File.AppendAllText(@"E:\LoanFileTracker_Error\Log.txt", SqlStr);
 
-        //SanctionLetterUpload(SqlStr); 
+            //SanctionLetterUpload(SqlStr); 
 
-        //Send OK Response to Client.
-        HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
-        HttpContext.Current.Response.Write(fileName);
-        HttpContext.Current.Response.Flush();
-
-        //}
-        //catch (Exception ex)
-        //{
-        //HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-        //HttpContext.Current.Response.Write(ex.Message);
-        //HttpContext.Current.Response.Flush();
-        //}
+            String err_msg = Document_Upload_DM(dd_id, f_name);
 
 
+            if (err_msg == "")
+            {
+                //Send OK Response to Client.
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+                HttpContext.Current.Response.Write(fileName);
+                HttpContext.Current.Response.Flush();
+            }
+            else
+            {
+                //Send OK Response to Client.
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+                HttpContext.Current.Response.Write(err_msg);
+                HttpContext.Current.Response.Flush();
+            }
+        }
+        catch (Exception ex)
+        {
+            HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            HttpContext.Current.Response.Write(ex.Message);
+            HttpContext.Current.Response.Flush();
+        }
 
     }
 
 
 
-    protected void SanctionLetterUpload(String SqlStr)
+    protected String Document_Upload_DM(Int32 dd_id, String file_name)
     {
 
         Int32 i;
 
         String ErrorMSG = "";
 
-        String ConStr = ConfigurationManager.ConnectionStrings["MBLFileTracker"].ConnectionString;
+        String ConStr = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
         SqlConnection connection = new SqlConnection(ConStr);
 
         SqlCommand command = new SqlCommand();
-        command.CommandType = CommandType.Text;
-        command.CommandText = SqlStr;
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_Document_Upload_By_DM";
         command.Connection = connection;
 
+        SqlParameter[] parameters = 
 
+
+                    {
+
+
+                        new SqlParameter("@drawdown_id",dd_id), 
+                        new SqlParameter("@file_name",file_name), 
+                        new SqlParameter("@by","Test")
+                    
+                    
+                    };
+
+
+        command.Parameters.AddRange(parameters);
+      
 
         try
         {
@@ -998,7 +1023,7 @@ public class WebService3 : System.Web.Services.WebService
             if (i > 0)
             {
                 //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('LOAN Proposal Created Successfully');window.location = 'ProposalListing.aspx';", true);
-                ErrorMSG = "OK";
+                ErrorMSG = "";
             }
             else
             {
@@ -1014,7 +1039,8 @@ public class WebService3 : System.Web.Services.WebService
 
             ErrorMSG = ex.Message;
         }
-        //return ErrorMSG;
+        return ErrorMSG;
+
     }
     [WebMethod(EnableSession = true)]
     public void Save_Indv()
