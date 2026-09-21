@@ -15,6 +15,22 @@
         $(document).ready(function () {
 
 
+        
+
+            var queryString = window.location.search;
+
+            //alert(queryString);
+            //Remove the leading '?' and split by '&'
+            var params = queryString.substring(1).split('&');
+
+            drawdown_id = params[0].split('=')[1];
+            //alert(drawdown_id);
+
+            $("#lblID").text(drawdown_id);
+
+
+
+
             $("#<%=select1.ClientID%>,#select2,#<%=select3.ClientID%>,#<%=select4.ClientID%>").select2({
                 placeholder: "<--Select-->",
                 allowClear: true
@@ -55,6 +71,23 @@
 
             $('#Text1').val(sanctionId);
             $('#Text2').val(sanctionRef);
+
+
+
+
+            $('#btnDocumentUpload').click(function () {
+                $('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID
+
+
+                var dd_id = $(this).attr("dd-id");
+
+
+                $("#lblID").text(dd_id);
+                alert(drawdown_id);
+
+
+
+            });
 
         });
     </script>
@@ -161,7 +194,7 @@
                             $("#btnUpload").attr("loan-natures", loan_natures);
                             $("#btnUpload").attr("securities", securities);
 
-
+                            $("#btnDocumentUpload").attr("dd-id", dd_id);
                         }
 
                         else {
@@ -310,6 +343,14 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content-header">
+
+
+    
+ 
+
+
+
+
     	<h1>
         	Drawdown
         	 
@@ -486,14 +527,73 @@
 
                             <button type="button" class="btn btn-primary" id="btnGenerate" style="  display:none;" >Checkist Generate</button>
 
+                            <button type="button" class="btn btn-success" id="btnDocumentUpload" style="  display:block;" >Document Upload</button>
 
-                            <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Upload</button>
+
+
+                            <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Checklist Upload</button>
 
                   		</div>
                 	 </div>
 				</div><!-- /.box -->
 			</div>
 		</div>
+
+
+        
+    
+    <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
+  		<div class="modal-dialog">
+    		<div class="container">
+            	<div class="row ">	
+           			<div class="col-md-6">
+                		<div class="panel">
+        					<div class="panel-heading bg-orange">                 
+        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          						<h4 class="modal-title custom_align" id="Heading">Document Upload</h4>
+                            </div>
+                            <div class="panel-body"> <!-- Start of modal body--> 
+
+
+
+
+                            ID # <span id="lblID" class="badge  badge-success"></span>
+
+                                <div class="form-group" id="divSubjectUpdate">
+                                    <label for="">Subject</label>
+                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off">
+                                </div> 
+
+                                 <div class="form-group" id="div2">
+                                 <ul>
+                                 
+                                 <li>Checklist Scancopy</li>
+                                 <li>Accepted Scancopy</li>
+                                 <li>Board Resolution</li>
+                                   <li>Others</li>
+                                 </ul>
+                                 </div>
+
+ 
+                                <div class="form-group" id="div1">
+                                     <input id="File2" type="file" />
+ 
+                                </div> 
+                            </div><!--/.modal body-->
+                            <div class="panel-footer bg-gray-light">
+                                <input type="hidden" id="id" name="id" value="" />
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Decline</button>         
+        	  				</div><!--/.panel-footer--> 
+            			</div><!--/.panel-->
+            		</div><!--/.col-md-6-->
+            	</div><!--/.row-->                                        
+        	</div><!-- /.modal-content -->  		 
+		</div><!-- /.modal-dialog -->            
+	</div><!--/.Modal-Update form -->   
+
+
+
+
 
     </section>
 </asp:Content>

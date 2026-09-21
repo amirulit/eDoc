@@ -408,9 +408,11 @@
                     success: function (msg) {
 
 
+                        //alert(msg.d);
+
                         //alert("Data Saved Successfully.");
 
-                        if (msg.d = "Data Saved") {
+                        if (msg.d == "Data Saved") {
                             swal("Success!", "Data Saved Successfully.", "success")
                             //$("#txtSubject").val('');
                             //$("#txtDetails").val('');
@@ -457,7 +459,8 @@
                     },
                     error: function () {
                         //alert("Error while inserting data");
-                        sweetAlert("Oops...", "Something went wrong!", "error");
+                        //sweetAlert("Oops...", "Something went wrong!", "error");
+                        swal("Error!", "Data not Saved!", "error")
                     }
                 });
                 return false;

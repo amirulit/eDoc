@@ -317,6 +317,131 @@ Upload Not Required
     }
 
 
+    [WebMethod(EnableSession = true)]
+    public static String Save_Decline_Reason(Int32 drawdown_id, String reason)
+    {
+
+        String DomainID = HttpContext.Current.Session["DomainID"].ToString();
+        //String BranchCode = HttpContext.Current.Session["BranchCode"].ToString();
+        //String BranchName = HttpContext.Current.Session["BranchName"].ToString(); 
+
+        String ipAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+        if (String.IsNullOrEmpty(ipAddress))
+        {
+            ipAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+        }
+
+        String Role = HttpContext.Current.Session["Role"].ToString();
+
+        Utility u = new Utility();
+
+        //Object[] details = null;
+        String msg = "";
+
+        //String e_doc_id = "";
+        //Int32 auto_id = 0;
+
+        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        SqlConnection connection = new SqlConnection(ConStr);
+
+        SqlCommand command = new SqlCommand();
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_DeclineSave";
+        command.Connection = connection;
+
+
+        command.Parameters.Add(new SqlParameter("@drawdown_id", drawdown_id));
+        command.Parameters.Add(new SqlParameter("@reason", reason));
+        command.Parameters.Add(new SqlParameter("@role", Role));
+        command.Parameters.Add(new SqlParameter("@by", DomainID));
+
+        connection.Open();
+        Int32 i = command.ExecuteNonQuery();
+        connection.Close();
+
+        if (i > 0)
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
+            msg = "Data Saved";
+        }
+        else
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
+            msg = "Data Not Saved";
+        }
+
+
+        return msg;
+
+
+    }
+
+
+
+    [WebMethod(EnableSession = true)]
+    public static String Forward(Int32 drawdown_id)
+    {
+
+        String DomainID = HttpContext.Current.Session["DomainID"].ToString();
+        //String BranchCode = HttpContext.Current.Session["BranchCode"].ToString();
+        //String BranchName = HttpContext.Current.Session["BranchName"].ToString(); 
+
+        String ipAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+        if (String.IsNullOrEmpty(ipAddress))
+        {
+            ipAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+        }
+
+        String Role = HttpContext.Current.Session["Role"].ToString();
+
+        Utility u = new Utility();
+
+        //Object[] details = null;
+        String msg = "";
+
+        //String e_doc_id = "";
+        //Int32 auto_id = 0;
+
+        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        SqlConnection connection = new SqlConnection(ConStr);
+
+        SqlCommand command = new SqlCommand();
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_Forward";
+        command.Connection = connection;
+
+
+        command.Parameters.Add(new SqlParameter("@drawdown_id", drawdown_id));
+        //command.Parameters.Add(new SqlParameter("@reason", reason));
+        command.Parameters.Add(new SqlParameter("@role", Role));
+        command.Parameters.Add(new SqlParameter("@by", DomainID));
+
+        
+
+        connection.Open();
+        Int32 i = command.ExecuteNonQuery();
+        connection.Close();
+
+        if (i > 0)
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
+            msg = "Data Saved";
+        }
+        else
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
+            msg = "Data Not Saved";
+        }
+
+
+        return msg;
+
+
+    }
+
+
 
     [WebMethod(EnableSession = true)]
     public static String Save_DocumentUpload_Drawdown(Obj Obj)

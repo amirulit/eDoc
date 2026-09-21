@@ -40,18 +40,23 @@
 
 
     <script language="javascript" type="text/javascript">
+
+
         $(document).ready(function () {
 
-
+           
 
             $('#btnDecline').click(function () {
+
                 $('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID
 
 
                 //var edoc_id = $(this).attr("edoc-id");
 
 
-                $("#lblID").text(drawdown_id);
+                //$("#lblID").text(drawdown_id);
+
+
                 alert(drawdown_id);
 
 
@@ -59,6 +64,143 @@
             });
 
 
+
+
+
+            $('#btnDeclineSave').click(function () {
+
+                //$('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID
+
+
+                //var edoc_id = $(this).attr("edoc-id");
+
+
+                //$("#lblID").text(drawdown_id);
+                //alert(drawdown_id);
+
+                var drawdown_id = $("#lblID").text();
+
+                //var drawdown_id = drawdown_id; // if this variable already exists
+                var reason = $("#txtDeclineReason").val();
+
+                if (!reason || reason.trim() === "") {
+                    alert("Please enter decline reason.");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "Checklist_View_V2.aspx/Save_Decline_Reason",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id,
+                        reason: reason
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var msg = response.d;
+
+                        if (msg === "Data Saved") {
+                            alert("Decline reason saved successfully.");
+
+                            // Close modal if required
+                            $("#modalUpdateform").modal("hide");
+
+                            // Do whatever you want after save
+                            // location.reload();
+                        }
+                        else {
+                            alert(msg);
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+
+                        console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
+
+                        alert("Error while saving decline reason.");
+                    }
+                });
+
+
+
+            });
+
+
+
+
+
+            $('#btnForward').click(function () {
+
+                //$('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID
+
+
+                //var edoc_id = $(this).attr("edoc-id");
+
+
+                //$("#lblID").text(drawdown_id);
+                //alert(drawdown_id);
+
+                var drawdown_id = $("#lblID").text();
+
+                //var drawdown_id = drawdown_id; // if this variable already exists
+                //var reason = $("#txtDeclineReason").val();
+
+                //if (!reason || reason.trim() === "") {
+                    //alert("Please enter decline reason.");
+                    //return;
+                //}
+
+                $.ajax({
+
+                    type: "POST",
+                    url: "Checklist_View_V2.aspx/Forward",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var msg = response.d;
+
+                        if (msg === "Data Saved") {
+
+                            alert("Forwarded saved successfully.");
+
+                            // Close modal if required
+
+                            $("#modalUpdateform").modal("hide");
+
+                            // Do whatever you want after save
+                            // location.reload();
+
+
+
+                        }
+                        else {
+                            alert(msg);
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+
+                        console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
+
+                        alert("Error while saving decline reason.");
+                    }
+                });
+
+
+
+            });
 
 
             // Initialize the jQuery dialog
@@ -874,10 +1016,16 @@
             var params = queryString.substring(1).split('&');
 
             drawdown_id = params[0].split('=')[1];
-            alert(drawdown_id);
+            //alert(drawdown_id);
+
+            $("#lblID").text(drawdown_id);
+
+
             //var customer_auto_id = params[1].split('=')[1];
             cus_id = params[1].split('=')[1];
-            alert(cus_id);
+            //alert(cus_id);
+
+
             //alert(customer_auto_id);
             //var customer_edoc_id = params[2].split('=')[1];
             //alert(customer_edoc_id);
@@ -1232,21 +1380,18 @@
 
                             ID # <span id="lblID" class="badge  badge-success"></span>
 
-                                <div class="form-group" id="divSubjectUpdate">
-                                    <label for="">Subject</label>
-                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off">
-                                </div> 
+                                
                                 <div class="form-group" id="div1">
                                     <label for="">Decline Reason</label>
                                      
  
-                                         <textarea id="TextArea1" cols="20" rows="2"  class="form-control"></textarea>
-</select>
+                                         <textarea id="txtDeclineReason" cols="20" rows="2"  class="form-control"></textarea>
+ 
                                 </div> 
                             </div><!--/.modal body-->
                             <div class="panel-footer bg-gray-light">
                                 <input type="hidden" id="id" name="id" value="" />
-                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Decline</button>         
+                                <button type="button"   id="btnDeclineSave" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Decline</button>         
         	  				</div><!--/.panel-footer--> 
             			</div><!--/.panel-->
             		</div><!--/.col-md-6-->
@@ -1264,7 +1409,7 @@
         <input id="hfDrawdownID" type="hidden" runat="server" />
         <input type="button" value="Close" onclick="window.close();"  class="btn   btn-danger"  />
 
-         <input type="button" value="Forward"  id="btnForward" onclick="javascript:Forward();"  class="btn btn-success"/>
+         <input type="button" value="Forward"  id="btnForward"  class="btn btn-success"/>
 
           <input type="button" value="Decline"  id="btnDecline"    class="btn btn-primary"/>
 
