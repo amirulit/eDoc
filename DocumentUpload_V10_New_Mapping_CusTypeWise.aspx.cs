@@ -9,6 +9,7 @@ using System.Web.Services;
 using System.IO;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Configuration;
 
 public partial class DocumentUpload_V10_New_Mapping_CusTypeWise : System.Web.UI.Page
 {
@@ -102,7 +103,13 @@ Upload Not Required
         //String e_doc_id = "";
         //Int32 auto_id = 0;
 
-        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+        //String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+
+        String ConStr = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+
+
 
         SqlConnection connection = new SqlConnection(ConStr);
 
@@ -355,7 +362,7 @@ Upload Not Required
         SqlParameter[] parameters = 
                     {
                         
-                         new SqlParameter("@cus_type","JV")
+                         new SqlParameter("@cus_type",cus_type)
                         //,new SqlParameter("@cus_id", cus_id)
 
                         //,new SqlParameter("@customer_type","Part")

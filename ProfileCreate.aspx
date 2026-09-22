@@ -326,7 +326,7 @@
                 obj.edoc_id = $("#txteDocID").val();
                 obj.cus_code = $("#txtCustomerCode").val();
 
-                if (c_type == 'INDV') {
+                if (c_type == 'IND') {
 
                     obj.name = $("#txtName").val();
                     obj.fname = $("#txtFName").val();
@@ -341,7 +341,7 @@
                     obj.per_addr = $("#txtPerAddr").val();
                 }
 
-                if (c_type == 'PROP') {
+                if (c_type == 'PRP') {
 
                     obj.name = $("#txtNameProp").val();
 
@@ -354,7 +354,7 @@
                     obj.per_addr = $("#txtPerAddrProp").val();
                 }
 
-                if (c_type == 'PART') {
+                if (c_type == 'PRT') {
 
                     obj.name = $("#txtNamePart").val();
 
@@ -367,7 +367,7 @@
                     obj.per_addr = $("#txtPerAddrPart").val();
                 }
 
-                if (c_type == 'COMP') {
+                if (c_type == 'PVT') {
 
                     obj.name = $("#txtNameCom").val();
 

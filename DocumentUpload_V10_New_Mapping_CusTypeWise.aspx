@@ -283,15 +283,15 @@
 
 
 
-                alert(data_id);
-                alert(cus_id);
+                //alert(data_id);
+                //alert(cus_id);
 
                 //alert(div_name);
 
 
                 var required = $('input[name="opt_req_' + data_id + '"]:checked').val();
 
-                alert(required);
+                //alert(required);
 
 
                 //var ddl = $("#ddl_" + data_id).val()
@@ -817,13 +817,13 @@
             var params = queryString.substring(1).split('&');
 
             cus_type = params[0].split('=')[1];
-            alert(cus_type);
+            //alert(cus_type);
             var customer_auto_id = params[1].split('=')[1];
             //alert(customer_auto_id);
             var customer_edoc_id = params[2].split('=')[1];
             //alert(customer_edoc_id);
             cus_id = params[3].split('=')[1];
-            alert(cus_id);
+            //alert(cus_id);
 
             //File Upload
 
