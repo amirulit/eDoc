@@ -19,6 +19,12 @@
 
       <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
 
+<%--
+      <link href="bootstrap4/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/resources/demos/style.css" />
+    <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" />--%>
+
 
     <%--
 

@@ -282,6 +282,107 @@ Upload Not Required
         sb.AppendLine("</tbody>");
         sb.AppendLine("</table>");
 
+
+        sb.AppendLine("<b>Any other document(s) eequierd as per sanction but not incorporaetd in the checklist:</b>");
+
+        if (TableData_AnyOtherDocument.Rows.Count == 0)
+        {
+            sb.AppendLine("<table class='table table-condensed my-table'><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>");
+        }
+        else
+        {
+
+            sb.AppendLine("<table  class='table table-condensed my-table'>");
+
+            foreach (DataRow row in TableData_AnyOtherDocument.Rows)
+            {
+
+                String sl = Convert.ToString(row["doc_sl"]);
+                String name = Convert.ToString(row["doc_name"]); 
+                String status = Convert.ToString(row["status"]);
+                String reason = Convert.ToString(row["details"]);
+                //String remarks = Convert.ToString(row["remarks"]);
+
+
+                sb.AppendLine("<tr>");
+
+                sb.AppendFormat(
+                    "<td>{0}</td>",
+                    HttpUtility.HtmlEncode(sl)
+                );
+
+                sb.AppendFormat(
+                    "<td style='width:33%;'>{0}</td>",
+                    HttpUtility.HtmlEncode(name)
+                );
+
+               
+
+                sb.AppendFormat(
+                    "<td>{0}</td>",
+                    HttpUtility.HtmlEncode(status)
+                );
+
+                sb.AppendFormat(
+                    "<td>{0}</td>",
+                    HttpUtility.HtmlEncode(reason)
+                );
+
+                sb.AppendLine("<td></td>");
+
+                sb.AppendLine("<td></td>");
+
+                sb.AppendLine("</tr>");
+            }
+        }
+
+        sb.AppendLine("<tr><td colspan='6'><h3>Confirmation</h3></td></tr>");
+
+        sb.AppendLine("<tr><td>SL</td><td>Question</td><td>Reply(Yes/No)</td><td>Initial</td><td>If no reasons</td><td>Initial</td></tr>");
+        foreach (DataRow row in TableData_Confirmation.Rows)
+        {
+
+            String id = Convert.ToString(row["id"]);
+            String question = Convert.ToString(row["question"]);
+            String reply = Convert.ToString(row["reply"]);
+            String reason = Convert.ToString(row["reason"]);
+           
+
+
+            sb.AppendLine("<tr>");
+
+            sb.AppendFormat(
+                "<td>{0}</td>",
+                HttpUtility.HtmlEncode(id)
+            );
+
+            sb.AppendFormat(
+                "<td style='width:33%;'>{0}</td>",
+                HttpUtility.HtmlEncode(question)
+            );
+
+
+
+            sb.AppendFormat(
+                "<td>{0}</td>",
+                HttpUtility.HtmlEncode(reply)
+            );
+
+            sb.AppendLine("<td></td>");
+
+            sb.AppendFormat(
+                "<td>{0}</td>",
+                HttpUtility.HtmlEncode(reason)
+            );
+
+            sb.AppendLine("<td></td>");
+
+            sb.AppendLine("</tr>");
+        }
+        sb.AppendLine("</table>");
+       
+
+
         /*
         var converter = new NReco.PdfGenerator.HtmlToPdfConverter();
         var sb = String.Format("<body>Hello world: {0}</body>", DateTime.Now);

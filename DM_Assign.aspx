@@ -299,12 +299,12 @@
                         <td><%=TableData.Rows[data]["dd_id"]%></td>
                           <td><%=TableData.Rows[data]["cus_type"]%></td>
                         <td><%=TableData.Rows[data]["cus_id"]%></td>
-                        <td><%=TableData.Rows[data]["cus_name"]%></td>
+                        <td><%=TableData.Rows[data]["cus_name_2"]%></td>
                           
                           <td><%=TableData.Rows[data]["loan_natures"]%></td>
                             <td><%=TableData.Rows[data]["securities"]%></td>
                               <td><%=TableData.Rows[data]["loan_amount"]%></td>
-                                <td><%=TableData.Rows[data]["exp_date"]%></td>
+                                <td><%=TableData.Rows[data]["exp_date_2"]%></td>
 
                   
                         	

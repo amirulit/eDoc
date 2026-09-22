@@ -497,15 +497,15 @@ OTHER DOCUMENTS
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@drawdown_id", SqlDbType.Int).Value = drawdown_id;
-                cmd.Parameters.Add("@by", SqlDbType.VarChar,500).Value = DomainID;
-                //cmd.Parameters.Add("@cus_id", SqlDbType.NVarChar, 255).Value = cus_id ?? (object)DBNull.Value;
+                cmd.Parameters.Add("@by", SqlDbType.VarChar, 500).Value = DomainID;
 
                 con.Open();
 
-                int rows = Convert.ToInt32(cmd.ExecuteScalar());
+                int result = Convert.ToInt32(cmd.ExecuteScalar());
 
-                return rows > 0;
+                return result == 1;
             }
+
         }
         catch
         {
