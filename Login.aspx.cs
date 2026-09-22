@@ -16,6 +16,8 @@ public partial class Login : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
 
+        Session["DomainID"] = "md.amirul@mblbd.com";
+
         Session["Role"] = 2;
 
         Session["UserType"] = "CADMaker";

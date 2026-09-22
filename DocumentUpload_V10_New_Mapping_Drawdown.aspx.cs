@@ -457,8 +457,7 @@ OTHER DOCUMENTS
 
         try
         {
-            string connectionString =
-                ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+            String connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand("dbo.UpdateSanctionReference", con))
@@ -467,6 +466,39 @@ OTHER DOCUMENTS
 
                 cmd.Parameters.Add("@drawdown_id", SqlDbType.Int).Value = drawdown_id;
                 cmd.Parameters.Add("@cus_id", SqlDbType.NVarChar, 255).Value = cus_id ?? (object)DBNull.Value;
+
+                con.Open();
+
+                int rows = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return rows > 0;
+            }
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
+
+    [WebMethod]
+    public static bool Finish(Int32 drawdown_id)
+    {
+        String DomainID = HttpContext.Current.Session["DomainID"].ToString();
+
+
+        try
+        {
+            String connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("usp_Checklist_Fillup_Finish", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@drawdown_id", SqlDbType.Int).Value = drawdown_id;
+                cmd.Parameters.Add("@by", SqlDbType.VarChar,500).Value = DomainID;
+                //cmd.Parameters.Add("@cus_id", SqlDbType.NVarChar, 255).Value = cus_id ?? (object)DBNull.Value;
 
                 con.Open();
 

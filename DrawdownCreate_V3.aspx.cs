@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Web.Services;
 using System.Data;
+using System.Configuration;
 
 public partial class DrawdownCreate_V3 : System.Web.UI.Page
 {
@@ -307,6 +308,7 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
     public static Object[] Checklist_Generate(Int32 drawdown_id)
     {
 
+        String DomainID = HttpContext.Current.Session["DomainID"].ToString();
 
 
         Object[] details = null;
@@ -326,6 +328,10 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
 
 
         SqlConnection con = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
+
+        //String connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+
         SqlCommand cmd = con.CreateCommand();
         cmd.CommandType = CommandType.StoredProcedure;
 
@@ -349,7 +355,9 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
 
         SqlParameter[] parameters = 
                     {
-                        new SqlParameter("@drawdown_id", drawdown_id)
+                        new SqlParameter("@drawdown_id", drawdown_id),
+                        new SqlParameter("@by",DomainID)
+
                     };
 
 
@@ -386,5 +394,6 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
         details = new object[] { status, msg };
 
         return details;
+
     }
 }

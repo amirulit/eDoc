@@ -5,6 +5,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Document Upload</title>
+
+
+
+
+
+
+
+
+
+
+
+
     <link href="bootstrap4/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/resources/demos/style.css" />
     <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
@@ -91,15 +103,15 @@
             $('#btnUpdate').click(function () {
 
 
-                alert(drawdown_id);
-                alert(cus_id);
+                //alert(drawdown_id);
+                //alert(cus_id);
 
                 //var sanctionId = $('#Text1').val();
                 //var sanctionRef = $('#Text2').val();
 
                 $.ajax({
                     type: "POST",
-                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/Update_Status",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/Finish",
                     data: JSON.stringify({
                         drawdown_id: drawdown_id,
                         cus_id: cus_id
@@ -1231,7 +1243,7 @@
 
 
         <input  type="button" value="Close" onclick="window.close();"/>
-        <input id="btnUpdate" type="button" value="Save & Close" /><br />   <br />
+        <input id="btnUpdate" type="button" value="Finish & Close" /><br />   <br />
         <table>
             <tr>
                 <td>
