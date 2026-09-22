@@ -75,7 +75,7 @@ Upload Not Required
 
         TabsName = ("GENERAL DOCUMENTS~MORTGAGE OF PROPERTIES~LIABILITY TAKE OVER FROM OTHER BANKS~HYPOTHECATION OF STOCK/ MACHINERY & EQUIPMENT/ RECEIVABLES~PLEDGE OF SHARES~ASSIGNMENT~LIEN~SET-OFF~CHARGE WITH RJSC~SYNDICATION~INSURANCE POLICY~UNDERTAKING~LETTER OF GUARANTEE~IDBP/ FDBP~OTHER DOCUMENTS").Split('~');
         DocType = ("GENERAL~MORTGAGE~LIABILITY~HYPOTHECATION~PLEDGE~ASSIGNMENT~LIEN~SET~CHARGE~SYNDICATION~INSURANCE~UNDERTAKING~LETTER~IDBP~OTHER").Split('~');
-        DocSerial = ("A~B~C~D~E~F~G~H~I~J~K~L~M~N~O").Split('~');;
+        DocSerial = ("A~B~C~D~E~F~G~H~I~J~K~L~M~N~O").Split('~'); ;
 
 
         //txtCustomerType.Text = Request.QueryString[0].ToString();
@@ -372,7 +372,7 @@ Upload Not Required
             msg = "Data Not Saved";
         }
 
-        
+
 
         return msg;
 
@@ -402,7 +402,7 @@ Upload Not Required
         command.Parameters.Add(new SqlParameter("@status", status));
         command.Parameters.Add(new SqlParameter("@details", details));
         command.Parameters.Add(new SqlParameter("@deadline", details));
-        
+
 
 
         //command.Parameters.AddRange(parameters);
@@ -420,7 +420,7 @@ Upload Not Required
             msg = "Data Not Saved";
         }
 
-       
+
 
         return msg;
     }
@@ -448,7 +448,7 @@ Upload Not Required
         command.Parameters.Add(new SqlParameter("@reply", reply));
         command.Parameters.Add(new SqlParameter("@reason", reason));
         command.Parameters.Add(new SqlParameter("@input_by", "test"));
-        
+
 
         try
         {
@@ -486,7 +486,7 @@ Upload Not Required
         public String details;
 
         public String deadline;
-         
+
 
     }
 
@@ -536,7 +536,7 @@ select o.id,o.doc_name,o.status,o.details,o.deadline  from [dbo].[t_OtherDocumen
         return details.ToArray();
 
     }
-     [WebMethod]
+    [WebMethod]
     public static ExceptionData[] GetDataAnyOthDoc() //Show the details of the data after insert in HTML Table
     {
         String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
@@ -574,5 +574,4 @@ select o.id,o.doc_name,o.status,o.details,o.deadline  from [dbo].[t_OtherDocumen
 
         return details.ToArray();
     }
-    
 }

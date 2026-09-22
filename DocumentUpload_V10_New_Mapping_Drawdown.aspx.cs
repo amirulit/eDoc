@@ -77,7 +77,7 @@ Upload Not Required
 
         TabsName = ("GENERAL DOCUMENTS~MORTGAGE OF PROPERTIES~LIABILITY TAKE OVER FROM OTHER BANKS~HYPOTHECATION OF STOCK/ MACHINERY & EQUIPMENT/ RECEIVABLES~PLEDGE OF SHARES~ASSIGNMENT~LIEN~SET-OFF~CHARGE WITH RJSC~SYNDICATION~INSURANCE POLICY~UNDERTAKING~LETTER OF GUARANTEE~IDBP/ FDBP~OTHER DOCUMENTS").Split('~');
         DocType = ("GENERAL~MORTGAGE~LIABILITY~HYPOTHECATION~PLEDGE~ASSIGNMENT~LIEN~SET~CHARGE~SYNDICATION~INSURANCE~UNDERTAKING~LETTER~IDBP~OTHER").Split('~');
-        DocSerial = ("A~B~C~D~E~F~G~H~I~J~K~L~M~N~O").Split('~');;
+        DocSerial = ("A~B~C~D~E~F~G~H~I~J~K~L~M~N~O").Split('~'); ;
 
 
         //txtCustomerType.Text = Request.QueryString[0].ToString();
@@ -118,7 +118,7 @@ Upload Not Required
 
         command.Parameters.Add(new SqlParameter("@required", Obj.required));
         command.Parameters.Add(new SqlParameter("@status", Obj.status));
-        command.Parameters.Add(new SqlParameter("@reason", Obj.reason));
+        command.Parameters.Add(new SqlParameter("@reason", Obj.details));
 
         if (Obj.deadline != "")
         {
@@ -342,7 +342,7 @@ Upload Not Required
 
         cmd.CommandText = "usp_Checklist_Load_For_Upload";
         cmd.Connection = con;
-         
+
 
         /*
         SqlParameter[] parameters = 
@@ -424,11 +424,11 @@ OTHER DOCUMENTS
             TableData_OTHER = Ds.Tables[14];
 
 
-            
+
             TableData_Exception = Ds.Tables[15];
             TableData_AnyOtherDocument = Ds.Tables[16];
             TableData_Confirmation = Ds.Tables[17];
-            
+
 
 
             GridView1.DataSource = Ds.Tables[18];
@@ -482,6 +482,264 @@ OTHER DOCUMENTS
     }
 
 
+    [WebMethod]
+    public static ExceptionData[] GetData(Int32 drawdown_id) //Show the details of the data after insert in HTML Table
+    {
+        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        DataTable TableData = new DataTable();
+
+        var details = new List<ExceptionData>();
+
+        using (var con = new SqlConnection(ConStr))
+        {
+            String query = @"select
+
+	row_number() over (order by id asc )  doc_sl
+	,e.*
+from
+(
+select d.id,d.doc_name,d.status,d.details,d.deadline from [dbo].[t_DocumentStatus] d where status in ('Part','Not')
+union all
+select o.id,o.doc_name,o.status,o.details,o.deadline  from [dbo].[t_OtherDocuments] o  where o.status not in  ('Obtained')
+)e";
+
+            //const string query = "select * from [dbo].[t_DocumentStatus] where status in ('Part','Not') ";
+
+            query = @"
+
+select 
+	row_number() over (order by id asc )  doc_sl
+	,*
+from 
+(
+select
+	e.id
+	,e.name doc_name
+	,e.status
+	,e.reason details
+	,convert(varchar(10),e.date,103)deadline
+from
+(
+
+select e.*,m.name from t_Drawdown_Document_Master m
+join
+(
+
+select * from [dbo].[t_Uploads_Drawdown] d where status in ('Part','Not')   and drawdown_id=@drawdown_id
+union 
+select * from [dbo].[t_Uploads_Drawdown] o where o.status not in  ('Obtained') and drawdown_id=@drawdown_id
+
+
+)e
+on
+e.doc_id=m.primary_key
+)e
+union
+
+select id,doc_name,status,details,deadline from t_OtherDocuments where drawdown_id=@drawdown_id and status in ('Part','Not')
+)e
+
+
+
+";
+
+
+
+
+            using (var cmd = new SqlCommand(query, con))
+            {
+
+                cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
+
+
+                using (var sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    TableData.Clear();
+                    sda.Fill(TableData);
+                    details.AddRange(from DataRow dtrow in TableData.Rows
+                                     select new ExceptionData
+                                     {
+                                         doc_sl = Convert.ToInt32(dtrow["doc_sl"]),
+                                         doc_name = dtrow["doc_name"].ToString(),
+                                         status = dtrow["status"].ToString(),
+                                         details = dtrow["details"].ToString(),
+                                         deadline = dtrow["deadline"].ToString()
+                                     });
+                }
+            }
+        }
+
+        return details.ToArray();
+
+    }
+
+
+
+
+
+    [WebMethod(EnableSession = true)]
+    public static String Save_AnyDoc(Obj Obj)
+    {
+        //Object[] details = null;
+        String msg = "";
+
+        //String e_doc_id = "";
+        //Int32 auto_id = 0;
+
+        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        SqlConnection connection = new SqlConnection(ConStr);
+
+        SqlCommand command = new SqlCommand();
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_Save_Other_Documents";
+        command.Connection = connection;
+
+        command.Parameters.Add(new SqlParameter("@drawdown_id", Obj.drawdown_id));
+        command.Parameters.Add(new SqlParameter("@doc_name", Obj.doc_name));
+        command.Parameters.Add(new SqlParameter("@status", Obj.status));
+        command.Parameters.Add(new SqlParameter("@details", Obj.details));
+        command.Parameters.Add(new SqlParameter("@deadline", Obj.deadline));
+        command.Parameters.Add(new SqlParameter("@input_by", "test"));
+
+
+        //command.Parameters.AddRange(parameters);
+        connection.Open();
+        Int32 i = command.ExecuteNonQuery();
+        connection.Close();
+        if (i > 0)
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
+            msg = "Data Saved";
+        }
+        else
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
+            msg = "Data Not Saved";
+        }
+
+
+
+        return msg;
+
+    }
+
+
+    [WebMethod(EnableSession = true)]
+    public static String SaveOtherDocuments(Int32 dd_id, String doc_name, String status, String details)
+    {
+        //Object[] details = null;
+        String msg = "";
+
+        //String e_doc_id = "";
+        //Int32 auto_id = 0;
+
+        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        SqlConnection connection = new SqlConnection(ConStr);
+
+        SqlCommand command = new SqlCommand();
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_Save_Other_Documents";
+        command.Connection = connection;
+
+        command.Parameters.Add(new SqlParameter("@drawdown_id", dd_id));
+        command.Parameters.Add(new SqlParameter("@doc_name", doc_name));
+        command.Parameters.Add(new SqlParameter("@status", status));
+        command.Parameters.Add(new SqlParameter("@details", details));
+        command.Parameters.Add(new SqlParameter("@deadline", details));
+
+
+
+        //command.Parameters.AddRange(parameters);
+        connection.Open();
+        Int32 i = command.ExecuteNonQuery();
+        connection.Close();
+        if (i > 0)
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
+            msg = "Data Saved";
+        }
+        else
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
+            msg = "Data Not Saved";
+        }
+
+
+
+        return msg;
+    }
+
+    [WebMethod(EnableSession = true)]
+    public static String SaveConfirmation(Int32 dd_id, Int32 question_id, String reply, String reason)
+    {
+        //Object[] details = null;
+        String msg = "";
+
+        //String e_doc_id = "";
+        //Int32 auto_id = 0;
+
+        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        SqlConnection connection = new SqlConnection(ConStr);
+
+        SqlCommand command = new SqlCommand();
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_Save_Confirmation_Reply";
+        command.Connection = connection;
+
+        command.Parameters.Add(new SqlParameter("@drawdown_id", dd_id));
+        command.Parameters.Add(new SqlParameter("@question_id", question_id));
+        command.Parameters.Add(new SqlParameter("@reply", reply));
+        command.Parameters.Add(new SqlParameter("@reason", reason));
+        command.Parameters.Add(new SqlParameter("@input_by", "test"));
+
+
+        try
+        {
+            //command.Parameters.AddRange(parameters);
+            connection.Open();
+            Int32 i = command.ExecuteNonQuery();
+            connection.Close();
+            if (i > 0)
+            {
+                //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
+                msg = "Data Saved";
+            }
+            else
+            {
+                //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
+                msg = "Data Not Saved";
+            }
+
+        }
+        catch (Exception ex)
+        {
+            msg = ex.Message;
+        }
+
+        return msg;
+    }
+
+
+
+    public class ExceptionData
+    {
+        public Int32 doc_sl;
+        public String doc_name;
+        public String status;
+        public String details;
+
+        public String deadline;
+
+
+    }
+
+
 
     /*
     [WebMethod]
@@ -522,6 +780,8 @@ OTHER DOCUMENTS
     public class Obj
     {
 
+        public String doc_name;
+
         public String cus_id;
         public Int32 doc_id;
         public Int32 drawdown_id;
@@ -529,6 +789,9 @@ OTHER DOCUMENTS
         public String required;
         public String status;
         public String reason;
+
+        public String details;
+
         public String deadline;
 
 
@@ -693,126 +956,17 @@ OTHER DOCUMENTS
             msg = "Data Not Saved";
         }
 
-        
+
 
         return msg;
 
     }
 
 
-    [WebMethod(EnableSession = true)]
-    public static String SaveOtherDocuments(Int32 dd_id, String doc_name, String status, String details)
-    {
-        //Object[] details = null;
-        String msg = "";
 
-        //String e_doc_id = "";
-        //Int32 auto_id = 0;
-
-        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
-
-        SqlConnection connection = new SqlConnection(ConStr);
-
-        SqlCommand command = new SqlCommand();
-        command.CommandType = CommandType.StoredProcedure;
-        command.CommandText = "usp_Save_Other_Documents";
-        command.Connection = connection;
-
-        command.Parameters.Add(new SqlParameter("@drawdown_id", dd_id));
-        command.Parameters.Add(new SqlParameter("@doc_name", doc_name));
-        command.Parameters.Add(new SqlParameter("@status", status));
-        command.Parameters.Add(new SqlParameter("@details", details));
-        command.Parameters.Add(new SqlParameter("@deadline", details));
-        
-
-
-        //command.Parameters.AddRange(parameters);
-        connection.Open();
-        Int32 i = command.ExecuteNonQuery();
-        connection.Close();
-        if (i > 0)
-        {
-            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
-            msg = "Data Saved";
-        }
-        else
-        {
-            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
-            msg = "Data Not Saved";
-        }
-
-       
-
-        return msg;
-    }
-
-    [WebMethod(EnableSession = true)]
-    public static String SaveConfirmation(Int32 dd_id, Int32 question_id, String reply, String reason)
-    {
-        //Object[] details = null;
-        String msg = "";
-
-        //String e_doc_id = "";
-        //Int32 auto_id = 0;
-
-        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
-
-        SqlConnection connection = new SqlConnection(ConStr);
-
-        SqlCommand command = new SqlCommand();
-        command.CommandType = CommandType.StoredProcedure;
-        command.CommandText = "usp_Save_Confirmation_Reply";
-        command.Connection = connection;
-
-        command.Parameters.Add(new SqlParameter("@drawdown_id", dd_id));
-        command.Parameters.Add(new SqlParameter("@question_id", question_id));
-        command.Parameters.Add(new SqlParameter("@reply", reply));
-        command.Parameters.Add(new SqlParameter("@reason", reason));
-        command.Parameters.Add(new SqlParameter("@input_by", "test"));
-        
-
-        try
-        {
-            //command.Parameters.AddRange(parameters);
-            connection.Open();
-            Int32 i = command.ExecuteNonQuery();
-            connection.Close();
-            if (i > 0)
-            {
-                //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
-                msg = "Data Saved";
-            }
-            else
-            {
-                //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
-                msg = "Data Not Saved";
-            }
-
-        }
-        catch (Exception ex)
-        {
-            msg = ex.Message;
-        }
-
-        return msg;
-    }
-
-
-
-    public class ExceptionData
-    {
-        public Int32 doc_sl;
-        public String doc_name;
-        public String status;
-        public String details;
-
-        public String deadline;
-         
-
-    }
 
     [WebMethod]
-    public static ExceptionData[] GetData() //Show the details of the data after insert in HTML Table
+    public static ExceptionData[] GetDataAnyOthDoc(Int32 drawdown_id) //Show the details of the data after insert in HTML Table
     {
         String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
 
@@ -822,58 +976,15 @@ OTHER DOCUMENTS
 
         using (var con = new SqlConnection(ConStr))
         {
-            String query = @"select
-	row_number() over (order by id asc )  doc_sl
-	,e.*
-from
-(
-select d.id,d.doc_name,d.status,d.details,d.deadline from [dbo].[t_DocumentStatus] d where status in ('Part','Not')
-union all
-select o.id,o.doc_name,o.status,o.details,o.deadline  from [dbo].[t_OtherDocuments] o  where o.status not in  ('Obtained')
-)e";
-
-            //const string query = "select * from [dbo].[t_DocumentStatus] where status in ('Part','Not') ";
-            using (var cmd = new SqlCommand(query, con))
-            {
-                using (var sda = new SqlDataAdapter())
-                {
-                    cmd.Connection = con;
-                    sda.SelectCommand = cmd;
-                    TableData.Clear();
-                    sda.Fill(TableData);
-                    details.AddRange(from DataRow dtrow in TableData.Rows
-                                     select new ExceptionData
-                                     {
-                                         doc_sl = Convert.ToInt32(dtrow["doc_sl"]),
-                                         doc_name = dtrow["doc_name"].ToString(),
-                                         status = dtrow["status"].ToString(),
-                                         details = dtrow["details"].ToString(),
-                                         deadline = dtrow["deadline"].ToString()
-                                     });
-                }
-            }
-        }
-
-        return details.ToArray();
-
-    }
-     [WebMethod]
-    public static ExceptionData[] GetDataAnyOthDoc() //Show the details of the data after insert in HTML Table
-    {
-        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
-
-        DataTable TableData = new DataTable();
-
-        var details = new List<ExceptionData>();
-
-        using (var con = new SqlConnection(ConStr))
-        {
-            String query = @"select  row_number() over (order by id asc) doc_sl,o.* from [dbo].[t_OtherDocuments] o where o.status in  ('Obtained')";
+            String query = @"select  row_number() over (order by id asc) doc_sl,o.* from [dbo].[t_OtherDocuments] o where o.status in  ('Obtained') and drawdown_id=@drawdown_id";
 
 
             //const string query = "select row_number() over (order by id asc )  doc_sl  ,o.* from [dbo].[t_OtherDocuments] o  ";
             using (var cmd = new SqlCommand(query, con))
             {
+                cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
+
+
                 using (var sda = new SqlDataAdapter())
                 {
                     cmd.Connection = con;
@@ -895,5 +1006,4 @@ select o.id,o.doc_name,o.status,o.details,o.deadline  from [dbo].[t_OtherDocumen
 
         return details.ToArray();
     }
-    
 }

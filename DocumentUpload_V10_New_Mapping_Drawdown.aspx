@@ -427,7 +427,7 @@
                             $("#btnDelete" + div_name + "_" + data_id).attr("doc-id", data_id);
                             $("#btnDelete" + div_name + "_" + data_id).css("display", "block");
 
-
+                            LoadDocStatus_Exception(drawdown_id);
 
                         }
 
@@ -579,11 +579,15 @@
 
             function LoadDocStatus_Exception() {
 
+                alert(drawdown_id);
+
+
+
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: "DocumentUpload_V9.aspx/GetData",
-                    data: {},
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/GetData",
+                    data: JSON.stringify({ drawdown_id: drawdown_id }),
                     dataType: "json",
                     success: function (data) {
                         //$('#tblException tbody').remove();
@@ -667,7 +671,11 @@
 
                 obj.doc_name = anyDocName
                 obj.status = ddlAnyDocStatus;
-                obj.drawdown_id = 1; // $("#txteDocID").val();
+                //obj.drawdown_id = 1; // $("#txteDocID").val();
+
+                obj.drawdown_id = drawdown_id; // $("#txteDocID").val();
+
+
                 //obj.doc_sl = data_id; // $("#txtCustomerCode").val();
 
                 var not_reason = $("#txtAnyDocReason").val();
@@ -708,7 +716,7 @@
                     //processData: false,
 
                     type: "POST",
-                    url: "DocumentUpload_V9.aspx/Save_AnyDoc",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/Save_AnyDoc",
                     data: '{Obj: ' + JSON.stringify(obj) + '}',
                     //data: formData,
                     dataType: "json",
@@ -729,6 +737,7 @@
                                 Load_AnyOthDoc_Status();
                             }
                             if (ddlAnyDocStatus == 'Not' || ddlAnyDocStatus == 'Part') {
+                                Load_AnyOthDoc_Status();
                                 LoadDocStatus_Exception();
                             }
 
@@ -758,8 +767,8 @@
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: "DocumentUpload_V9.aspx/GetDataAnyOthDoc",
-                    data: {},
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/GetDataAnyOthDoc",
+                    data: JSON.stringify({ drawdown_id: drawdown_id }),
                     dataType: "json",
                     success: function (data) {
                         //$('#tblAnyOthDoc tbody').remove();
@@ -819,7 +828,7 @@
 
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: "DocumentUpload_V9.aspx/SaveConfirmation",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/SaveConfirmation",
                     data: '{dd_id:' + 1 + ',question_id: ' + data_id + ',reply:"' + rdo_conf + '",reason:"' + reason + '"}',
 
                     //data: '{"Loan_ID":"' + loan_id + '","Category":' + category + ',"MV":' + mv + ',"FSV":' + fsv + ',"Valuation_Date":"' + valuation_date + '"}',
