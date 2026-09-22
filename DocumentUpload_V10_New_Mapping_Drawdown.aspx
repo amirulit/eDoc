@@ -829,7 +829,7 @@
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/SaveConfirmation",
-                    data: '{dd_id:' + 1 + ',question_id: ' + data_id + ',reply:"' + rdo_conf + '",reason:"' + reason + '"}',
+                    data: '{dd_id:' + drawdown_id + ',question_id: ' + data_id + ',reply:"' + rdo_conf + '",reason:"' + reason + '"}',
 
                     //data: '{"Loan_ID":"' + loan_id + '","Category":' + category + ',"MV":' + mv + ',"FSV":' + fsv + ',"Valuation_Date":"' + valuation_date + '"}',
 

@@ -609,7 +609,7 @@
                             $('#btnUpload').attr("cus-id", $("#txtCustomerCode").val());
 
 
-                            if (cus_type == "INDV") {
+                            if (cus_type == "IND") {
 
                                 $('#divCusIndvInfo').css("display", "block");
                                 $('#divCusPropInfo').css("display", "none");
@@ -639,7 +639,7 @@
 
                             }
 
-                            if (cus_type == "PROP") {
+                            if (cus_type == "PRP") {
 
                                 $('#divCusIndvInfo').css("display", "none");
                                 $('#divCusPropInfo').css("display", "block");
@@ -658,7 +658,7 @@
                                 $("#txtPerAddrProp").val(data.d.ltCusPermanentAddress);
                             }
 
-                            if (cus_type == "PART") {
+                            if (cus_type == "PRT") {
 
                                 $('#divCusIndvInfo').css("display", "none");
                                 $('#divCusPropInfo').css("display", "none");
@@ -678,7 +678,7 @@
 
                             }
 
-                            if (cus_type == "COMP") {
+                            if (cus_type == "PVT") {
 
                                 $('#divCusIndvInfo').css("display", "none");
                                 $('#divCusPropInfo').css("display", "none");
@@ -843,11 +843,15 @@
 
 <select id="Select1" class="form-control">
 <option value=""><-Select-></option>
-<option value="INDV">Individual</option>
-<option  value="PROP">Propreitor</option>
-<option  value="PART">Partnership</option>
-<option  value="COMP">Company</option>
+<option value="IND">Individual</option>
+<option  value="PRP">Propreitorship</option>
+<option  value="PRT">Partnership</option>
+<option  value="PVT">Pvt. Ltd. Company</option>
+<option  value="PVT">Public Ltd. Company</option>
 <option  value="JV">Joint Venture</option>
+<option  value="SOC">Society</option>
+<option  value="NGO">NGO</option>
+<option  value="OPC">One Person Company</option>
 
 
 </select>
