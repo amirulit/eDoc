@@ -798,7 +798,7 @@
 
         });
     </script>
-    <style>
+    <style type="text/css">
         .btn-spaced
         {
             margin-right: 10px;

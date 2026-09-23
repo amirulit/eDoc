@@ -338,7 +338,9 @@ Upload Not Required
 
         sb.AppendLine("<tr><td colspan='6'><h3>Confirmation</h3></td></tr>");
 
-        sb.AppendLine("<tr><td>SL</td><td>Question</td><td>Reply(Yes/No)</td><td>Initial</td><td>If no reasons</td><td>Initial</td></tr>");
+        sb.AppendLine("<tr><td><b>SL</b></td><td><b>Question</b></td><td><b>Reply(Yes/No)</b></td><td><b>Initial</b></td><td><b>If no reasons</b></td><td><b>Initial</b></td></tr>");
+
+
         foreach (DataRow row in TableData_Confirmation.Rows)
         {
 
@@ -379,8 +381,62 @@ Upload Not Required
 
             sb.AppendLine("</tr>");
         }
+
+
         sb.AppendLine("</table>");
-       
+
+        sb.AppendLine("<b>We have verified the above securities and confirm the accuracy of information contained hereabove. The requierd document securities are in place are enforcable subject to the exceptions mention below :</b>");
+
+        sb.AppendLine("<table class='table table-condensed my-table'><tr><td colspan='4'><h3>Exceptions of sanction terms, in respect of document, security,  and covenants/conditions if any</h3></td></tr>");
+        sb.AppendLine("<tr><td><b>Sl. No</b></td><td><b>Particulars of Exception</b></td><td><b>Reason</b></td><td><b>Expected of Completion/Regularaization</b></td></tr>");
+
+        if (TableData_Exception.Rows.Count >=1)
+        {
+
+            foreach (DataRow row in TableData_Exception.Rows)
+            {
+
+
+                String id = Convert.ToString(row["doc_sl"]);
+                String doc_name = Convert.ToString(row["doc_name"]);
+                String details = Convert.ToString(row["details"]);
+                String deadline = Convert.ToString(row["deadline"]);
+
+
+                sb.AppendLine("<tr>");
+
+                sb.AppendFormat(
+                    "<td>{0}</td>",
+                    HttpUtility.HtmlEncode(id)
+                );
+
+                sb.AppendFormat(
+                    "<td style='width:33%;'>{0}</td>",
+                    HttpUtility.HtmlEncode(doc_name)
+                );
+
+
+
+                sb.AppendFormat(
+                    "<td>{0}</td>",
+                    HttpUtility.HtmlEncode(details)
+                );
+
+             
+
+                sb.AppendFormat(
+                    "<td>{0}</td>",
+                    HttpUtility.HtmlEncode(deadline)
+                );
+
+                sb.AppendLine("</tr>");
+
+
+            }
+        }
+
+        sb.AppendLine("</table>");
+
 
 
         /*

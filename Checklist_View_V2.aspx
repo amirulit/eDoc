@@ -1641,6 +1641,7 @@
         </div>
         <br />
         <hr />
+        <!--
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -1686,6 +1687,7 @@
                     </tr>
                 </table>
                 <br />
+                
                 <table class="table table-condensed my-table" id="tblAnyOthDoc">
                     <thead>
                         <tr>
@@ -1735,11 +1737,14 @@
                 </table>
             </div>
         </div>
+        -->
         <br />
         <hr />
         <% //if (TableData_Exception.Rows.Count > 0)
                             //{
         %>
+
+        <!--
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -1789,17 +1794,22 @@
                                 <%=TableData_Exception.Rows[data]["deadline"]%>
                             </td>
                         </tr>
-                        <%
-                            } %>
+                        <%  
+                            
+                            } 
+                            
+                            %>
                     </tbody>
                 </table>
             </div>
         </div>
+        -->
         <%
                             //}
         %>
         <br />
         <hr />
+        <!--
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -1858,6 +1868,7 @@
                 </table>
             </div>
         </div>
+        -->
         <br />
         <div id="modal_dialog" style="display: none">
             This is a Modal Background popup

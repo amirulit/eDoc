@@ -286,53 +286,73 @@
       
       <div class="user-panel">
       	<div class="pull-left image">
-        	<img src="user2-160x160.jpg" class="img-circle" alt="User Image">
+        	<img src="user2-160x160.jpg" class="img-circle" alt="User Image"/>
         </div>
         <div class="pull-left info">
         	<p>Test</p>
-            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            
         </div>
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
+        <li class="header">Menu</li>
         <li class="active treeview">
           <a href="Dashboard.aspx">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
 
-        <%  if (Session["UserType"].ToString() == "CADMaker")
-            { %>
+        <%  
+            if (Role == 1  || Role==2)
+            {
+                 %>
         
          <li>
           <a href="ProfileCreate.aspx">
-            <i class="fa fa-flag"></i> <span>Customer Profile Create</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Customer Profile Create</span>
           </a>
         </li>
 
            <li>
           <a href="ProfileListing.aspx">
-            <i class="fa fa-flag"></i> <span>Customer Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Customer Listing</span>
           </a>
         </li>
 
+        <%
+            }
+             %>
+
+              <%  
+            if (Role == 3)
+            {
+                 %>
+        
+        
         <li>
           <a href="SanctionUpload.aspx">
-            <i class="fa fa-flag"></i> <span>Sanction Upload</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Sanction Upload</span>
           </a>
         </li>
 
 
          <li>
           <a href="SanctionListing_V2.aspx">
-            <i class="fa fa-flag"></i> <span>Sanction Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Sanction Listing</span>
           </a>
         </li>
+        <%} %>
+
+         <%  
+            if (Role == 1  || Role==2)
+            {
+                 %>
+        
+
 
         <li>
           <a href="SanctionListing_V2.aspx">
-            <i class="fa fa-flag"></i> <span>Checklist Iniatiate</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Checklist Iniatiate</span>
           </a>
         </li>
 
@@ -340,36 +360,55 @@
         <!--
         <li>
           <a href="DrawdownCreate_V2.aspx">
-            <i class="fa fa-flag"></i> <span>New Check List</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>New Check List</span>
           </a>
         </li>
         -->
-        <li>
+      
+
+        <%} %>
+
+        <% if (Role == 5)
+           {%>
+
+           <li>
           <a href="DrawdownListing_V2.aspx">
-            <i class="fa fa-flag"></i> <span>Check List Listing</span>
-          </a>
-        </li>
-         <li>
-          <a href="UserListing.aspx">
-            <i class="fa fa-flag"></i> <span>User Listing</span>
-          </a>
-        </li> <li>
-          <a href="DM_Assign.aspx">
-            <i class="fa fa-flag"></i> <span>Assign DM</span>
-          </a>
-        </li>
-        <%
-            }
-             %>
- <%  if (Session["UserType"].ToString() == "CADChecker")
-     { %>
-         <li>
-          <a href="DrawdownListing.aspx">
-            <i class="fa fa-flag"></i> <span>Drawdown Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Check List Listing</span>
           </a>
         </li>
 
+
         <%} %>
+
+        <%if (Role == 99)
+          {%>
+         <li>
+          <a href="UserListing.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>User Listing</span>
+          </a>
+        </li> <li>
+          <a href="DM_Assign.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Assign DM</span>
+          </a>
+        </li>
+       
+
+       <%} %>
+
+
+       <li>
+          <a href="Report.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Report</span>
+          </a>
+        </li>
+
+
+
+        <li>
+          <a href="Logout.aspx">
+            <i class="fa fa-sign-out "></i> <span>Logout</span>
+          </a>
+        </li>
 
         <%--
         <li class="treeview">
