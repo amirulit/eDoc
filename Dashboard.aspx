@@ -2,6 +2,9 @@
     CodeFile="Dashboard.aspx.cs" Inherits="Dashboard" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+
+
     <link href="bootstrap4/boostrap.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
 
@@ -15,9 +18,24 @@
         });
 
     </script>
+
+    <style type="text/css">
+    
+    .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header .close {
+    margin-top: 0;
+}
+
+    
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-   <section class="content-header">
+    <section class="content-header">
       <h1>
         Dashboard
        
@@ -142,8 +160,8 @@
             <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">New Members</span>
-              <span class="info-box-number">2,000</span>
+              <span class="info-box-text">LLI Pending</span>
+              <span class="info-box-number">5</span>
             </div>
             <!-- /.info-box-content -->
           </div>

@@ -87,7 +87,7 @@
         };
 
     </script>
-    <style>
+    <style type="text/css">
         #loginFrom .modal-dialog
         {
             position: fixed;
@@ -99,7 +99,7 @@
             max-width: 500px;
         }
     </style>
-    <style>
+  <style type="text/css">
         html, body
         {
             height: 100%;
@@ -108,7 +108,7 @@
         
         .login-wrapper
         {
-            width: 35%;
+            width: 60%;
             height: 100vh;
             margin: 0 auto;
             display: flex;

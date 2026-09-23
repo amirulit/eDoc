@@ -4,9 +4,31 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
+
+
+
+     <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#Select1").select2({
+                placeholder: "<--Select-->",
+                allowClear: true
+            });
+
+
+
+        });
+
+
+
+
+    </script>
+
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+
 
 
             $("#Checkbox1").click(function () {
