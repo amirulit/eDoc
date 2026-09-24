@@ -11,13 +11,17 @@ namespace CAD.DataAccess
 {
     public partial class SSCCreation : System.Web.UI.Page
     {
+        public Int32 drawdown_id;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            drawdown_id = Convert.ToInt32(Request.QueryString[0].ToString());
         }
+
+
         protected void btnDownload_Click(object sender, EventArgs e)
         {
-            int drawdownId = Convert.ToInt32(219);
+            int drawdownId = Convert.ToInt32(drawdown_id);
             //int sscNumber = GetNextSscNumber(); // your auto-generation logic
 
             byte[] pdfBytes = SscPdfGenerator.GenerateSscPdf(drawdownId);
@@ -29,9 +33,11 @@ namespace CAD.DataAccess
             Response.End();
 
         }
+
+
         protected void btnDownloadCond_Click(object sender, EventArgs e)
         {
-            int drawdownId = Convert.ToInt32(216);
+            int drawdownId = Convert.ToInt32(drawdown_id);
             //int sscNumber = GetNextSscNumber(); // your auto-generation logic
 
             byte[] pdfBytes = SscPdfGenerator.GenerateSscConditionalPdf(drawdownId);

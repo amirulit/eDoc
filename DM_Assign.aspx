@@ -220,18 +220,22 @@
                 		<div class="panel">
         					<div class="panel-heading bg-orange">                 
         						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-          						<h4 class="modal-title custom_align" id="Heading">Assign DM</h4>
+          						<h4 class="modal-title custom_align" id="Heading">Assign Documentation Manager</h4>
                             </div>
                             <div class="panel-body"> <!-- Start of modal body--> 
 
                             ID # <span id="lblID" class="badge  badge-success"></span>
 
+                                <!--
                                 <div class="form-group" id="divSubjectUpdate">
                                     <label for="">Subject</label>
                                     <input class="form-control" type="text" id="name1" name="name" autocomplete="off">
                                 </div> 
+
+                                -->
+
                                 <div class="form-group" id="div1">
-                                    <label for="">DM</label>
+                                    <label for="">Documentation Manager</label>
                                      <select id="Select1"  class="form-control" runat="server" >
  
 

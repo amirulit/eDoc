@@ -126,6 +126,10 @@
                         if (response.d === true) {
                             //alert("Updated successfully");
                             alert(response.d ? "Updated successfully" : "Update failed");
+
+                            window.close();
+
+
                         } else {
                             alert("Update failed");
                         }
@@ -593,7 +597,7 @@
 
             function LoadDocStatus_Exception() {
 
-                alert(drawdown_id);
+                //alert(drawdown_id);
 
 
 
@@ -897,10 +901,10 @@
             var params = queryString.substring(1).split('&');
 
             drawdown_id = params[0].split('=')[1];
-            alert(drawdown_id);
+            //alert(drawdown_id);
             //var customer_auto_id = params[1].split('=')[1];
             cus_id = params[1].split('=')[1];
-            alert(cus_id);
+            //alert(cus_id);
             //alert(customer_auto_id);
             //var customer_edoc_id = params[2].split('=')[1];
             //alert(customer_edoc_id);
@@ -1244,8 +1248,12 @@
         <input id="hfDrawdownID" type="hidden" runat="server" />
 
 
-        <input  type="button" value="Close" onclick="window.close();"/>
-        <input id="btnUpdate" type="button" value="Finish & Close" /><br />   <br />
+        <input  type="button" value="Close" onclick="window.close();" class="btn btn-danger"/>
+        <input id="btnUpdate" type="button" value="Finish & Close"  class="btn btn-success" />
+        <br />   
+        <br />
+
+        <!--
         <table>
             <tr>
                 <td>
@@ -1269,7 +1277,7 @@
         <asp:GridView ID="GridView1" runat="server">
         </asp:GridView>
 
-
+        -->
 
         <br />
         <div id="accordion" style="width: auto;">
