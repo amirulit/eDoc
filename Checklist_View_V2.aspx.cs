@@ -75,6 +75,8 @@ Upload Not Required
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
+
         Role = Convert.ToInt32(Session["Role"].ToString());
 
 

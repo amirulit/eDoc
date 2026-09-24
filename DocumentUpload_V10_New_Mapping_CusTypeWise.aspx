@@ -1538,6 +1538,8 @@
         </div>
         <br />
         <hr />
+
+        <!--
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -1584,6 +1586,10 @@
                 </table>
                </div>
         </div>
+
+        -->
+
+
         <br />
         <div id="modal_dialog" style="display: none">
             This is a Modal Background popup

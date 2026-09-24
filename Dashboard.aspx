@@ -31,6 +31,17 @@
     margin-top: 0;
 }
 
+
+.small-box {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+
+.info-box {
+    border-radius: 10px;
+    overflow: hidden;
+}
     
     </style>
 </asp:Content>
@@ -55,7 +66,7 @@
             <div class="inner">
               <h3>150</h3>
 
-              <p>Relation ManagerM</p>
+              <p>Relation Manager</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
