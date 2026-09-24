@@ -223,15 +223,7 @@ font-family:Cambria
             border: 1px solid #ddd !important;
         }
 
-.no-border {
-    border: none;
-    border-collapse: collapse;
-}
 
-.no-border th,
-.no-border td {
-    border: none !important;
-}
 </style>
 ");
 
@@ -239,9 +231,7 @@ font-family:Cambria
 
         String CustomerName=TableData_Customer.Rows[0]["cus_name"].ToString();
 
-        sb.AppendLine("<table class='no-border'><thead><tr><th style='text-align :center;'>Mercantile Bank PLC</th></tr><thead><tr><th style='text-align :center;'>Main Branch</th></tr></thead></table></br></br></br>");
-
-        sb.AppendLine("<table class='table table-condensed my-table'><thead><tr><td>Customer Name : " + CustomerName + "</td></tr></thead></table>");
+        sb.AppendLine("<table class='table table-condensed my-table'><thead><tr><td>Customer Name:" + CustomerName + "</td></tr></thead></table>");
         
         
         sb.AppendLine("<table class='table table-condensed my-table'>");
@@ -502,6 +492,8 @@ font-family:Cambria
 
 
         sb.AppendLine("<br/>");
+
+
         String[] files =
 {
     "20060630001_Scan_0002.jpg.jpg",
@@ -512,29 +504,33 @@ font-family:Cambria
     "20151227005_Sig_300-80.jpg.jpg"
 };
 
-        sb.AppendLine("<table style='width:100%; border-collapse:collapse;'><tbody><tr>");
 
-        for (int i = 0; i < files.Length; i++)
-        {
-            String imagePath = "file:///E:/SOD_Signature/" + files[i];
+ sb.AppendLine("<table><tbody><tr>");
 
-            sb.AppendLine(String.Format(@"
-        <td style='width:25%; text-align:center; vertical-align:top;'>
-            <img src='{0}' width='100' height='80' />
-            <br />
-            Name
-            <br />
-            Designation
-            <br />
-        </td>", imagePath));
 
-            if ((i + 1) % 4 == 0 && i + 1 < files.Length)
-            {
-                sb.AppendLine("</tr><tr>");
-            }
-        }
 
-        sb.AppendLine("</tr></tbody></table>");
+
+for (int i = 0; i < files.Length; i++)
+{
+    sb.AppendLine(@"
+        <td>
+            
+            <img  width=""100"" height=""80"" src=""file:///E:/SOD_Signature/" + files[i] + @"/>
+
+            ""<br/>"+"Name"+@"<br/>""
+
+            ""<br/>" + "Designation" + @"<br/>""
+
+        </td>");
+
+    if ((i + 1) % 4 == 0 && i + 1 < files.Length)
+    {
+        sb.AppendLine("</tr><tr>");
+    }
+}
+
+sb.AppendLine("</tr></tbody></table>");
+
 
          
 
@@ -597,16 +593,6 @@ font-family:Cambria
         //return sb.ToString();
 
 
-
-        // Show PDF in browser
-        Response.Clear();
-        Response.ContentType = "application/pdf";
-        Response.AddHeader(
-            "Content-Disposition",
-            "inline; filename=" + drawdown_id + "_Checklist.pdf"
-        );
-        Response.BinaryWrite(pdfBytes);
-        Response.End();
 
     }
 
@@ -953,8 +939,8 @@ OTHER DOCUMENTS
             
 
 
-            //GridView1.DataSource = Ds.Tables[18];
-            //GridView1.DataBind();
+            GridView1.DataSource = Ds.Tables[18];
+            GridView1.DataBind();
 
 
             //GridView1.DataSource = Ds.Tables[0];
