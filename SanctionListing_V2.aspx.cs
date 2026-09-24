@@ -11,9 +11,14 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 {
     public DataTable TableData;
 
+    public Int32 Role;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         TableData = Listing();
+
+
+        Role = Convert.ToInt32(Session["Role"].ToString());
     }
 
 

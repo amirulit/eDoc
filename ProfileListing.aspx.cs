@@ -15,7 +15,8 @@ public partial class ProfileListing : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        TableData = Listing(); Role = Convert.ToInt32(Session["Role"].ToString());
+        TableData = Listing();
+        Role = Convert.ToInt32(Session["Role"].ToString());
     }
 
 
