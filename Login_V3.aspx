@@ -170,10 +170,13 @@
                                 <button type="submit" class="btn btn-success">
                                     Login
                                 </button>
-                                 <button type="button" class="btn btn-primary">
-                                    New?
-                                </button>
+
+
+                                 
                                 <a href="New_V2.aspx" class="btn  btn-primary">New?</a>
+
+
+
                             </div>
                         </div>
                     </div>

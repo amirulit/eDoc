@@ -100,6 +100,19 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+
+
+
+
+
+
+
+
+    <script src="sweet_alert.js" type="text/javascript"></script>
+    <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
+
+
     <script type="text/javascript">
 
         $(function () {
@@ -281,6 +294,7 @@
                     url: 'WebService1.asmx/CreateUser',
                     type: 'POST',
                     data: formData,
+               
                     cache: false,
                     contentType: false,
                     processData: false,
@@ -296,6 +310,8 @@
                         $('#modalSignup').modal('hide');
                         */
 
+
+                       
                         if (Status.indexOf("1") !== -1) {
 
                             swal("Success!", Status, "success");
@@ -308,6 +324,21 @@
                             swal("Error!", Status, "error");
                         }
 
+
+                        // If response is already an object
+                        /*
+                        var result = Status.d;
+
+                        if (result.status === 1) {
+                            swal("Success!", result.message, "success");
+
+                            $("#email1").val(domain);
+                            $("#modalSignup").modal("hide");
+                        }
+                        else {
+                            swal("Error!", result.message, "error");
+                        }
+                        */
 
                         //alert(Status);
                         /*
@@ -332,7 +363,7 @@
                                     //$("#statustxt").attr({ value: e.loaded, max: e.total });
                                     //console.log("Value = " + e.loaded + " :: Max =" + e.total);
                                     var percentage = Math.floor((e.loaded / e.total) * 100);
-                                    console.log(f.name + ' : ' + percentage + '%');
+                                    console.log(file.name + ' : ' + percentage + '%');
                                     //$("#statustxt").html(percentage + '%');
                                     //$("#file_" + i).html(percentage + '%');
 
@@ -354,6 +385,8 @@
                         //$("#error_" + i + "").html(XMLHttpRequest.status + '-' + XMLHttpRequest.statusText);
                         alert("Whoops something went wrong!");
                     }
+
+
                 });
 
             });
@@ -494,11 +527,9 @@
                                 </div>
                                 <div class="box-footer text-center">
                                     <button type="button"  id="btnCreateUser" class="btn btn-primary">
-                                        Submit
+                                        Create User
                                     </button>
-                                    <button type="button" class="btn btn-success">
-                                        Login
-                                    </button>
+                                   
                                     <a href="Login_V3.aspx" class="btn btn-success">Login</a>
                                 </div>
                             </div>

@@ -127,7 +127,7 @@
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
 		<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-       		<span class="sr-only">Toggle navigation</span>
+       		<span class="sr-only">Toggle navigation</span><b><%=Name%></b>
        	</a>
 		<div class="navbar-custom-menu">
 			<ul class="nav navbar-nav">
@@ -329,6 +329,13 @@
           </a>
         </li>
 
+           <li>
+          <a href="SanctionListing_V2.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Checklist Initiate</span>
+          </a>
+        </li>
+
+
         <%
             }
              %>
@@ -337,7 +344,17 @@
                   if (Role == 3)
                   {
                  %>
-        
+        <li>
+          <a href="ProfileCreate.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Customer Profile Create</span>
+          </a>
+        </li>
+
+           <li>
+          <a href="ProfileListing.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Customer Listing</span>
+          </a>
+        </li>
         
         <li>
           <a href="SanctionUpload.aspx">
@@ -360,9 +377,9 @@
         
 
 
-        <li>
-          <a href="SanctionListing_V2.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Checklist Iniatiate</span>
+         <li>
+          <a href="DrawdownListing_V2.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Check List Listing</span>
           </a>
         </li>
 
@@ -376,10 +393,13 @@
         -->
       
 
-        <%} %>
+        <%
+            }
+             %>
 
-        <% if (Role == 5)
-           {%>
+        <% if (Role == 5 || Role == 10 || Role == 15 || Role == 20)
+           {
+               %>
 
            <li>
           <a href="DrawdownListing_V2.aspx">
@@ -388,10 +408,14 @@
         </li>
 
 
-        <%} %>
+        <%
+            }
+             %>
 
-        <%if (Role == 99)
-          {%>
+        <%
+            if (Role == 99)
+          {
+              %>
          <li>
           <a href="UserListing.aspx">
             <i class="fa fa-arrow-circle-o-right"></i> <span>User Listing</span>
@@ -403,7 +427,9 @@
         </li>
        
 
-       <%} %>
+       <%
+           }
+            %>
 
 
        <li>

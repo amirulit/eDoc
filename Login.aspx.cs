@@ -40,6 +40,8 @@ public partial class Login : System.Web.UI.Page
     {
         Session["DomainID"] = "RM";
 
+        Session["Name"] = "Relationship Manager";
+
         Session["Role"] = 1;
 
         Session["UserType"] = "CADMaker";
@@ -56,6 +58,8 @@ public partial class Login : System.Web.UI.Page
     protected void btnCD_Click(object sender, EventArgs e)
     {
         Session["DomainID"] = "CD";
+
+        Session["Name"] = "Credit Division";
 
         Session["Role"] = 3;
 
@@ -74,6 +78,8 @@ public partial class Login : System.Web.UI.Page
     {
         Session["DomainID"] = "CI";
 
+        Session["Name"] = "Credit Incharge";
+
         Session["Role"] = 5;
 
         Session["UserType"] = "CADMaker";
@@ -91,7 +97,9 @@ public partial class Login : System.Web.UI.Page
     {
         Session["DomainID"] = "md.amirul@mblbd.com";
 
-        Session["Role"] = 2;
+        Session["Name"] = "Manager Operation";
+
+        Session["Role"] = 10;
 
         Session["UserType"] = "CADMaker";
 
@@ -107,6 +115,9 @@ public partial class Login : System.Web.UI.Page
     protected void btnHOB_Click(object sender, EventArgs e)
     {
         Session["DomainID"] = "HOB";
+
+
+        Session["Name"] = "Head of Branch";
 
         Session["Role"] = 15;
 
@@ -125,6 +136,10 @@ public partial class Login : System.Web.UI.Page
     {
         Session["DomainID"] = "Admin";
 
+
+        Session["Name"] = "Admin";
+
+
         Session["Role"] = 99;
 
         Session["UserType"] = "CADMaker";
@@ -142,6 +157,8 @@ public partial class Login : System.Web.UI.Page
     {
         Session["DomainID"] = "DM";
 
+        Session["Name"] = "Documentation Manager";
+
         Session["Role"] = 2;
 
         Session["UserType"] = "CADMaker";
@@ -158,6 +175,9 @@ public partial class Login : System.Web.UI.Page
     protected void btnUnitHead_Click(object sender, EventArgs e)
     {
         Session["DomainID"] = "UH";
+
+
+        Session["Name"] = "Unit Head";
 
         Session["Role"] = 20;
 

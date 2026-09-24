@@ -9,6 +9,8 @@ public partial class MasterPage : System.Web.UI.MasterPage
 {
     public Int32 Role;
 
+    public String Name;
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -16,6 +18,9 @@ public partial class MasterPage : System.Web.UI.MasterPage
         //Session["UserType"] = "cadmaker";
 
         Role = Convert.ToInt32(Session["Role"].ToString());
+
+
+        Name = Session["Name"].ToString();
 
     }
 }

@@ -108,7 +108,7 @@
         
         .login-wrapper
         {
-            width: 60%;
+            width: 50%;
             height: 100vh;
             margin: 0 auto;
             display: flex;

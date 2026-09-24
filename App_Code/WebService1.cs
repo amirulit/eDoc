@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Web.Script.Serialization;
 
 /// <summary>
 /// Summary description for WebService1
@@ -123,6 +124,25 @@ INSERT INTO [dbo].[t_User]
                     //HttpContext.Current.Response.Write(fileName);
                     HttpContext.Current.Response.Write(Status);
                     HttpContext.Current.Response.Flush();
+
+
+                    /*
+                    DB_Sts = 1;
+
+                    var result = new
+                    {
+                        status = DB_Sts,
+                        message = "User Created Successfully!"
+                    };
+
+                    string json = new JavaScriptSerializer().Serialize(result);
+
+                    HttpContext.Current.Response.Clear();
+                    HttpContext.Current.Response.ContentType = "application/json; charset=utf-8";
+                    HttpContext.Current.Response.Write(json);
+                    HttpContext.Current.Response.End();
+                    */
+
                 }
                 else
                 {
@@ -133,6 +153,24 @@ INSERT INTO [dbo].[t_User]
                     //HttpContext.Current.Response.Write(fileName);
                     HttpContext.Current.Response.Write(Status);
                     HttpContext.Current.Response.Flush();
+
+
+                    /*
+                    DB_Sts = 0;
+
+                    var result = new
+                    {
+                        status = DB_Sts,
+                        message = "User creation failed!"
+                    };
+
+                    string json = new JavaScriptSerializer().Serialize(result);
+
+                    HttpContext.Current.Response.ContentType = "application/json";
+                    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+                    HttpContext.Current.Response.Write(json);
+                    HttpContext.Current.Response.End();
+                    */
                 }
             }
             catch (Exception ex)
@@ -147,6 +185,25 @@ INSERT INTO [dbo].[t_User]
                 //HttpContext.Current.Response.Write(fileName);
                 HttpContext.Current.Response.Write(Status);
                 HttpContext.Current.Response.Flush();
+
+
+                /*
+                DB_Sts = 0;
+
+                var result = new
+                {
+                    status = DB_Sts,
+                    message = "User creation failed!"
+                };
+
+                string json = new JavaScriptSerializer().Serialize(result);
+
+                HttpContext.Current.Response.ContentType = "application/json";
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+                HttpContext.Current.Response.Write(json);
+                HttpContext.Current.Response.End();
+                */
+
             }
 
         }
