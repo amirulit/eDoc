@@ -287,7 +287,7 @@ Upload Not Required
 
         if (TableData_AnyOtherDocument.Rows.Count == 0)
         {
-            sb.AppendLine("<table class='table table-condensed my-table'><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>");
+            sb.AppendLine("<table class='table table-condensed my-table'><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         }
         else
         {
