@@ -70,9 +70,13 @@ Upload Not Required
 
     public String Admin;
 
+    public Int32 Role;
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Role = Convert.ToInt32(Session["Role"].ToString());
+
 
         TabsName = ("Basic Documents~Charge Documents~Liability Takeover~Loan Documents~Mortgage Document~Other Documents~Syndication/Pledge Doc.~Undertaking").Split('~');
         DocType = ("Basic~Charge~Liability~Loan~Mortgage~Other~Syndication~Undertaking").Split('~');

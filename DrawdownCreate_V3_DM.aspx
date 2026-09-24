@@ -656,7 +656,7 @@
                     		</div>
 
 
-
+                            <!--
 
                             <div class="form-group"  >
                       			<label for="">Document Upload</label>
@@ -680,6 +680,8 @@
              
                     		</div>
 
+                            -->
+
 
 
 
@@ -691,13 +693,15 @@
 <%--
           <button type="button" class="btn btn-primary" id="Button1">Checkist Generate</button>                  --%>
 
-                            <button type="button" class="btn btn-primary" id="btnGenerate" style="  display:none;" >Checkist Generate</button>
+                            <button type="button" class="btn btn-success" id="btnGenerate" style="  display:none;">Checkist Generate</button>
 
-                            <button type="button" class="btn btn-success" id="btnDocumentUpload" style="  display:block;" >Document Upload</button>
+                            <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;">Checklist Upload</button>
+
+                            <button type="button" class="btn btn-success" id="btnDocumentUpload" style="  display:none;">Document Upload</button>
 
 
 
-                            <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Checklist Upload</button>
+                      
 
                   		</div>
                 	 </div>
