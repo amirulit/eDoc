@@ -4,7 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
 
-  <script type="text/javascript">
+    <script type="text/javascript">
 
       $(document).ready(function () {
 
