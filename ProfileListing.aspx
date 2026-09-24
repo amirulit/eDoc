@@ -18,7 +18,7 @@
 
                 //url = "DocumentUpload_V8.aspx?var=" + cus_type + "&var3=" + cus_id;
 
-                url = "DocumentUpload_V10_New_Mapping_CusTypeWise.aspx?var=" + cus_type + "&var2=&var3=" + cus_id;
+                url = "DocumentUpload_V10_New_Mapping_CusTypeWise.aspx?var=" + cus_type + "&var2=&var3=&var4=" + cus_id;
 
                 var width = screen.availWidth - 100;
                 var height = screen.availHeight - 100;
@@ -92,8 +92,12 @@
                                     <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["cus_type"]%>"   cus-id="<%=TableData.Rows[data]["cus_code"]%>">Document Upload</a>                                    
 
 
+                                    <%  if (Role == 3)
+                                        { %>
+
                                     <a href="SanctionUpload.aspx?CusID=<%=TableData.Rows[data]["cus_code"]%>"  class="btn btn-success btn-xs sanction" cus-type="<%=TableData.Rows[data]["cus_type"]%>"   cus-id="<%=TableData.Rows[data]["cus_code"]%>">New Sanction</a>                                    
 
+                                    <%} %>
 
   
                         </td>                                

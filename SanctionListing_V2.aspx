@@ -99,7 +99,13 @@
   
   -->
 
+
+  <a href="#"  class="btn btn-success btn-xs view" cus-type="<%=TableData.Rows[data]["id"]%>"  drawdown-id="<%=TableData.Rows[data]["id"]%>">View</a>                                    
+
+
+  <!--
                         <a href="DrawdownCreate_V3.aspx?id=<%=TableData.Rows[data]["id"]%>&ref=<%=TableData.Rows[data]["sanction_reference"]%>"  class="btn btn-success btn-xs" cus-type="<%=TableData.Rows[data]["id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["id"]%>" drawdown-id="<%=TableData.Rows[data]["id"]%>">Initiate Checklist</a>                                    
+                        -->
 
 
 

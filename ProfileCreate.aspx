@@ -504,7 +504,7 @@
 
             $("#btnSearch").click(function () {
 
-                $('#btnUpload').css("display", "block");
+                //$('#btnUpload').css("display", "block");
                 $('#btnAddiInfo').css("display", "none");
 
                 var cus_type = $("#Select1").val();
@@ -1096,7 +1096,7 @@
         Add Owner Info
     </button>
 
-    <button type="button" id="btnUpload" class="btn btn-success btn-spaced">
+    <button type="button" id="btnUpload" class="btn btn-success btn-spaced" style="display:none;">
         Upload Docs
     </button>
 </div>

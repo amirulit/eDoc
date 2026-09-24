@@ -1598,10 +1598,17 @@
                         %>
                     </tbody>
                 </table>
+
+                <!--
                 <input type="button" class="BulkUpload" value="Upload ALL" data-count="<%=TableData.Rows.Count %>"
                     div-name="<%=DocType[i]%>" />
                 <input id="Button1" type="button" value="button" class="ViewPDF" /><br />
                 <input id="showImageBtn" class="ViewImage" value="button" type="button" />
+
+                -->
+
+
+
             </div>
             <%
                     }

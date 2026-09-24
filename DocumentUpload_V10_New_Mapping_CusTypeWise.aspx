@@ -1284,6 +1284,8 @@
                 <%=DocPosition%>
               
                 <%=section_name%></h3>
+
+
             <div id="<%=section_name%>">
                 <table class="<%=DocType[i]%>  docTable" id="<%=DocType[i]%>" style="width: 100%">
                     <thead>
@@ -1514,10 +1516,17 @@
                         %>
                     </tbody>
                 </table>
+
+                <!--
                 <input type="button" class="BulkUpload" value="Upload ALL" data-count="<%=TableData.Rows.Count %>"
                     div-name="<%=DocType[i]%>" />
                 <input id="Button1" type="button" value="button" class="ViewPDF" /><br />
                 <input id="showImageBtn" class="ViewImage" value="button" type="button" />
+
+                -->
+
+
+
             </div>
             <%
                     }
