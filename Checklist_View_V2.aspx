@@ -1435,6 +1435,8 @@
 
         <br />
         <br />
+
+        <!--
         <table>
             <tr>
                 <td>
@@ -1456,6 +1458,17 @@
         <br />
         <asp:GridView ID="GridView1" runat="server">
         </asp:GridView>
+
+        -->
+
+
+         <br />
+
+        Customer Name :<span class="badge badge-success "><%=CustomerName %></span>
+
+        <br />
+        <br />
+
         <br />
         <div id="div" style="width: auto;">
             <%--  <%

@@ -310,6 +310,7 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
 
         String DomainID = HttpContext.Current.Session["DomainID"].ToString();
 
+        Int32 Role = Convert.ToInt32(HttpContext.Current.Session["Role"].ToString());
 
         Object[] details = null;
 

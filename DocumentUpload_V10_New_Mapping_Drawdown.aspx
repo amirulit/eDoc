@@ -1280,6 +1280,15 @@
         -->
 
         <br />
+
+        Customer Name :<span class="badge badge-success "><%=CustomerName %></span>
+
+        <br />
+        <br />
+
+
+
+        <br />
         <div id="accordion" style="width: auto;">
 
 

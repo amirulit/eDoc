@@ -72,6 +72,7 @@ Upload Not Required
 
     public Int32 Role;
 
+    public String CustomerName;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -945,8 +946,10 @@ OTHER DOCUMENTS
             
 
 
-            GridView1.DataSource = Ds.Tables[18];
-            GridView1.DataBind();
+            //GridView1.DataSource = Ds.Tables[18];
+            //GridView1.DataBind();
+
+            CustomerName = Ds.Tables[18].Rows[0]["cus_name"].ToString();
 
 
             //GridView1.DataSource = Ds.Tables[0];

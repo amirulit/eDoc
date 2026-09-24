@@ -237,13 +237,13 @@ font-family:Cambria
 
         // Table opening
 
-        String CustomerName=TableData_Customer.Rows[0]["cus_name"].ToString();
+        String CustomerName = TableData_Customer.Rows[0]["cus_name"].ToString();
 
         sb.AppendLine("<table class='no-border'><thead><tr><th style='text-align :center;'>Mercantile Bank PLC</th></tr><thead><tr><th style='text-align :center;'>Main Branch</th></tr></thead></table></br></br></br>");
 
         sb.AppendLine("<table class='table table-condensed my-table'><thead><tr><td>Customer Name : " + CustomerName + "</td></tr></thead></table>");
-        
-        
+
+
         sb.AppendLine("<table class='table table-condensed my-table'>");
 
         // Header
@@ -498,7 +498,7 @@ font-family:Cambria
             }
         }
 
-        sb.AppendLine("</table>"); 
+        sb.AppendLine("</table>");
 
 
         sb.AppendLine("<br/>");
@@ -511,6 +511,41 @@ font-family:Cambria
     "20150406003_Sig_Pallab.jpg.jpg",
     "20151227005_Sig_300-80.jpg.jpg"
 };
+
+
+
+        /*OLD Code*/
+        /*
+         
+        
+ sb.AppendLine("<table><tbody><tr>");
+
+
+
+
+for (int i = 0; i < files.Length; i++)
+{
+    sb.AppendLine(@"
+        <td>
+            
+            <img  width=""100"" height=""80"" src=""file:///E:/SOD_Signature/" + files[i] + @"/>
+
+            ""<br/>"+"Name"+@"<br/>""
+
+            ""<br/>" + "Designation" + @"<br/>""
+
+        </td>");
+
+    if ((i + 1) % 4 == 0 && i + 1 < files.Length)
+    {
+        sb.AppendLine("</tr><tr>");
+    }
+}
+
+sb.AppendLine("</tr></tbody></table>");
+
+    
+        */
 
         sb.AppendLine("<table style='width:100%; border-collapse:collapse;'><tbody><tr>");
 
@@ -528,6 +563,37 @@ font-family:Cambria
             <br />
         </td>", imagePath));
 
+
+
+
+            /*For Base64 images*/
+
+            /*
+            string imagePath = @"E:\SOD_Signature\" + files[i];
+
+byte[] imageBytes = File.ReadAllBytes(imagePath);
+string base64 = Convert.ToBase64String(imageBytes);
+
+string imageSrc = "data:image/jpeg;base64," + base64;
+
+sb.AppendLine(String.Format(@"
+   <td style='width:25%; text-align:center; vertical-align:top;'>
+       <img src='{0}' width='100' height='80' />
+       <br />
+       Name
+       <br />
+       Designation
+   </td>", imageSrc));
+
+            if ((i + 1) % 4 == 0 && i + 1 < files.Length)
+            {
+                sb.AppendLine("</tr><tr>");
+            }
+             
+            */
+
+
+
             if ((i + 1) % 4 == 0 && i + 1 < files.Length)
             {
                 sb.AppendLine("</tr><tr>");
@@ -536,7 +602,7 @@ font-family:Cambria
 
         sb.AppendLine("</tr></tbody></table>");
 
-         
+
 
 
 
@@ -598,15 +664,16 @@ font-family:Cambria
 
 
 
-        // Show PDF in browser
+        //Show PDF in browser
         Response.Clear();
         Response.ContentType = "application/pdf";
-        Response.AddHeader(
-            "Content-Disposition",
-            "inline; filename=" + drawdown_id + "_Checklist.pdf"
-        );
+        Response.AddHeader("Content-Disposition", "inline; filename=" + drawdown_id + "_Checklist.pdf");
         Response.BinaryWrite(pdfBytes);
         Response.End();
+
+
+
+
 
     }
 
