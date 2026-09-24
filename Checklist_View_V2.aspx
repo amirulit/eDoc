@@ -5,27 +5,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Document Upload</title>
-   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" />
-
-
     <link rel="stylesheet" href="/resources/demos/style.css" />
     <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" />
-
-
-      <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
-
-<%--
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
+    <%--
       <link href="bootstrap4/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/resources/demos/style.css" />
     <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" />--%>
-
-
     <%--
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
@@ -41,16 +33,13 @@
     </script>
     <script type="text/javascript" src="plugins/datatables/dataTables.bootstrap.min.js">
     </script>
-
     <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-
-
     <script language="javascript" type="text/javascript">
 
 
         $(document).ready(function () {
 
-           
+
 
             $('#btnDecline').click(function () {
 
@@ -157,8 +146,8 @@
                 //var reason = $("#txtDeclineReason").val();
 
                 //if (!reason || reason.trim() === "") {
-                    //alert("Please enter decline reason.");
-                    //return;
+                //alert("Please enter decline reason.");
+                //return;
                 //}
 
                 $.ajax({
@@ -1366,9 +1355,7 @@
             width: auto;
         }
     </style>
-
-
-     <style type="text/css">
+    <style type="text/css">
         .my-table
         {
             border-top: 1px solid #ddd !important;
@@ -1382,119 +1369,111 @@
 </head>
 <body>
     <form id="form1" runat="server">
-
-
-
-    
-    <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
-  		<div class="modal-dialog">
-    		<div class="container">
-            	<div class="row ">	
-           			<div class="col-md-6">
-                		<div class="panel">
-        					<div class="panel-heading bg-orange">                 
-        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-          						<h4 class="modal-title custom_align" id="Heading">Decline</h4>
+    <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-6">
+                        <div class="panel">
+                            <div class="panel-heading bg-orange">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                                <h4 class="modal-title custom_align" id="Heading">
+                                    Decline</h4>
                             </div>
-                            <div class="panel-body"> <!-- Start of modal body--> 
-
-
-
-
-                            ID # <span id="lblID" class="badge  badge-success"></span>
-
-                                
+                            <div class="panel-body">
+                                <!-- Start of modal body-->
+                                ID # <span id="lblID" class="badge  badge-success"></span>
                                 <div class="form-group" id="div1">
-                                    <label for="">Decline Reason</label>
-                                     
- 
-                                         <textarea id="txtDeclineReason" cols="20" rows="2"  class="form-control"></textarea>
- 
-                                </div> 
-                            </div><!--/.modal body-->
+                                    <label for="">
+                                        Decline Reason</label>
+                                    <textarea id="txtDeclineReason" cols="20" rows="2" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <!--/.modal body-->
                             <div class="panel-footer bg-gray-light">
                                 <input type="hidden" id="id" name="id" value="" />
-                                <button type="button"   id="btnDeclineSave" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Decline</button>         
-        	  				</div><!--/.panel-footer--> 
-            			</div><!--/.panel-->
-            		</div><!--/.col-md-6-->
-            	</div><!--/.row-->                                        
-        	</div><!-- /.modal-content -->  		 
-		</div><!-- /.modal-dialog -->            
-	</div><!--/.Modal-Update form -->   
-
-
-
-    
-    
-    <div class="modal" id="modalUpdateform2" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
-  		<div class="modal-dialog">
-    		<div class="container">
-            	<div class="row ">	
-           			<div class="col-md-6">
-                		<div class="panel">
-        					<div class="panel-heading bg-orange">                 
-        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-          						<h4 class="modal-title custom_align" id="H1">Feedback</h4>
+                                <button type="button" id="btnDeclineSave" class="btn btn-info" style="width: 100%;">
+                                    <span class="glyphicon glyphicon-ok-sign"></span>Decline</button>
                             </div>
-                            <div class="panel-body"> <!-- Start of modal body--> 
-
-
-
-
-                          Drawdown ID # <span id="lblID2" class="badge  badge-success"></span>
-                          <br />
-                          Document ID # <span id="lblID3" class="badge  badge-success"></span>
-
-                                
+                            <!--/.panel-footer-->
+                        </div>
+                        <!--/.panel-->
+                    </div>
+                    <!--/.col-md-6-->
+                </div>
+                <!--/.row-->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!--/.Modal-Update form -->
+    <div class="modal" id="modalUpdateform2" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-6">
+                        <div class="panel">
+                            <div class="panel-heading bg-orange">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                                <h4 class="modal-title custom_align" id="H1">
+                                    Feedback</h4>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Start of modal body-->
+                                Drawdown ID # <span id="lblID2" class="badge  badge-success"></span>
+                                <br />
+                                Document ID # <span id="lblID3" class="badge  badge-success"></span>
                                 <div class="form-group" id="div3">
-                                    <label for="">Feedback</label>
-                                     
- 
-                                         <textarea id="Textarea1" cols="20" rows="2"  class="form-control"></textarea>
- 
-                                </div> 
-                            </div><!--/.modal body-->
+                                    <label for="">
+                                        Feedback</label>
+                                    <textarea id="Textarea1" cols="20" rows="2" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <!--/.modal body-->
                             <div class="panel-footer bg-gray-light">
                                 <input type="hidden" id="Hidden1" name="id" value="" />
-                                <button type="button"   id="Button1" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Feedback</button>         
-        	  				</div><!--/.panel-footer--> 
-            			</div><!--/.panel-->
-            		</div><!--/.col-md-6-->
-            	</div><!--/.row-->                                        
-        	</div><!-- /.modal-content -->  		 
-		</div><!-- /.modal-dialog -->            
-	</div><!--/.Modal-Update form -->   
-
-
-
-    <div style="margin: 10px; padding: 10px;">
+                                <button type="button" id="Button1" class="btn btn-info" style="width: 100%;">
+                                    <span class="glyphicon glyphicon-ok-sign"></span>Feedback</button>
+                            </div>
+                            <!--/.panel-footer-->
+                        </div>
+                        <!--/.panel-->
+                    </div>
+                    <!--/.col-md-6-->
+                </div>
+                <!--/.row-->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!--/.Modal-Update form -->
+   <div class="clearfix" style="margin: 10px; padding: 10px;">
+   
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
         <input id="hfCusID" type="hidden" runat="server" />
         <input id="hfDrawdownID" type="hidden" runat="server" />
-        <input type="button" value="Close" onclick="window.close();"  class="btn   btn-danger"  />
-
+        <input type="button" value="Close" onclick="window.close();" class="btn   btn-danger" />
         <% 
             if (Role == 2 || Role == 5 || Role == 8 || Role == 10 || Role == 15 || Role == 20)
-           { 
+            { 
                
-               %>
-
-         <input type="button" value="Forward"  id="btnForward"  class="btn btn-success"/>
-
-          <input type="button" value="Decline"  id="btnDecline"    class="btn btn-primary"/>
-
-          <%
-              }
-               %>
-
-          <%--<input type="button" value="Pdf"  id="btnPdf"   onclick="javascript:Pdf();"  class="btn btn-info"/>--%>
-
-
-
+        %>
+        <input type="button" value="Forward" id="btnForward" class="btn btn-success" />
+        <input type="button" value="Decline" id="btnDecline" class="btn btn-primary" />
+        <%
+           }
+        %>
+        <%--<input type="button" value="Pdf"  id="btnPdf"   onclick="javascript:Pdf();"  class="btn btn-info"/>--%>
         <br />
         <br />
-
         <!--
         <table>
             <tr>
@@ -1519,15 +1498,12 @@
         </asp:GridView>
 
         -->
-
-
-         <br />
-
+        <br />
+    </div>
+    <div style="margin: 10px; padding: 10px;">
         Customer Name :<span class="badge badge-success "><%=CustomerName %></span>
-
         <br />
         <br />
-
         <br />
         <div id="div" style="width: auto;">
             <%--  <%
@@ -1720,10 +1696,6 @@
             <div class="table-responsive">
                 <%= DocumentTableHtml %>
             </div>
-
-            
-
-
         </div>
         <br />
         <hr />
@@ -1829,7 +1801,6 @@
         <% //if (TableData_Exception.Rows.Count > 0)
                             //{
         %>
-
         <!--
         <div class="panel panel-primary">
             <div class="panel-heading">

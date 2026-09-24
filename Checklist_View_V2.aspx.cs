@@ -250,6 +250,9 @@ Upload Not Required
 
                 String primary_key = Convert.ToString(row["primary_key"]);
 
+
+                 String file_name = Convert.ToString(row["file_name"]);
+
                 sb.AppendLine("<tr>");
 
                 sb.AppendFormat(
@@ -282,10 +285,16 @@ Upload Not Required
                     HttpUtility.HtmlEncode(remarks)
                 );
 
+                if (file_name != "")
+                {
+                    sb.AppendLine("<td><input id='btnView_" + primary_key + "' type='button'  data-id='" + primary_key + "' file-name='" + file_name + "' class='btn btn-info btn-sm View' value='View' /></td>");
+                }
+                else
+                {
+                    sb.AppendLine("<td></td>");
+                }
 
-                sb.AppendLine("<td><input id='btnFeedback_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-info view' value='View' /></td>");
-
-                sb.AppendLine("<td><input id='btnFeedback_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-info feedback' value='Feedback' /></td>");
+                sb.AppendLine("<td><input id='btnFeedback_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-info btn-sm feedback' value='Feedback' /></td>");
 
                 sb.AppendLine("</tr>");
             }
