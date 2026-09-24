@@ -1238,6 +1238,40 @@
             border: 1px solid #ddd !important;
         }
     </style>
+
+    <style type="text/css">
+    
+    .rounded {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.rounded  th,
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+.rounded  th:last-child,
+td:last-child {
+  border-right: none;
+}
+
+.rounded  tr:last-child td {
+  border-bottom: none;
+}
+
+.rounded  th {
+  background: #f5f5f5;
+}
+
+    
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -1398,7 +1432,7 @@
               
                 <%=section_name%></h3>
             <div id="<%=section_name%>">
-                <table class="<%=DocType[i]%>  docTable" id="<%=DocType[i]%>" style="width: 100%">
+                <table class="<%=DocType[i]%>  docTable rounded" id="<%=DocType[i]%>" style="width: 100%">
                     <thead>
                         <tr>
                             <th>id</th>
@@ -1522,7 +1556,7 @@
  
                          <td class="tdTopLeft">
 
-                               <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker"  value="<%=expiry %>"   />
+                               <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker" style="width:80px;"  value="<%=expiry %>"   />
 
 
                                 

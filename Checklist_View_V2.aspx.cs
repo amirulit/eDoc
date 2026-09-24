@@ -201,7 +201,8 @@ Upload Not Required
         sb.AppendLine("<th>Status</th>");
         sb.AppendLine("<th>Reason</th>");
         sb.AppendLine("<th>Remarks</th>");
-        //sb.AppendLine("<th>Initial</th>");
+        sb.AppendLine("<th>View</th>");
+        sb.AppendLine("<th>Feedback</th>");
         sb.AppendLine("</tr>");
         sb.AppendLine("</thead>");
 
@@ -229,7 +230,7 @@ Upload Not Required
             );
 
             sb.AppendFormat(
-                "<td colspan='6'><h3>{0}</h3></td>",
+                "<td colspan='7'><h3>{0}</h3></td>",
                 HttpUtility.HtmlEncode(tabsName[i])
             );
 
@@ -246,6 +247,8 @@ Upload Not Required
                 String reason = Convert.ToString(row["reason"]);
                 String remarks = Convert.ToString(row["remarks"]);
 
+
+                String primary_key = Convert.ToString(row["primary_key"]);
 
                 sb.AppendLine("<tr>");
 
@@ -279,7 +282,10 @@ Upload Not Required
                     HttpUtility.HtmlEncode(remarks)
                 );
 
-                //sb.AppendLine("<td></td>");
+
+                sb.AppendLine("<td><input id='btnFeedback_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-info view' value='View' /></td>");
+
+                sb.AppendLine("<td><input id='btnFeedback_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-info feedback' value='Feedback' /></td>");
 
                 sb.AppendLine("</tr>");
             }
@@ -290,11 +296,11 @@ Upload Not Required
         sb.AppendLine("</table>");
 
 
-        sb.AppendLine("<b>Any other document(s) eequierd as per sanction but not incorporaetd in the checklist:</b>");
+        sb.AppendLine("<b>Any other document(s) requierd as per sanction but not incorporaetd in the checklist:</b>");
 
         if (TableData_AnyOtherDocument.Rows.Count == 0)
         {
-            sb.AppendLine("<table class='table table-condensed my-table'><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+            sb.AppendLine("<table class='table table-condensed my-table'><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         }
         else
         {
@@ -339,13 +345,15 @@ Upload Not Required
 
                 sb.AppendLine("<td></td>");
 
+                sb.AppendLine("<td></td>");
+
                 sb.AppendLine("</tr>");
             }
         }
 
-        sb.AppendLine("<tr><td colspan='6'><h3>Confirmation</h3></td></tr>");
+        sb.AppendLine("<tr><td colspan='7'><h3>Confirmation</h3></td></tr>");
 
-        sb.AppendLine("<tr><td><b>SL</b></td><td><b>Question</b></td><td><b>Reply(Yes/No)</b></td><td><b>Initial</b></td><td><b>If no reasons</b></td><td><b>Initial</b></td></tr>");
+        sb.AppendLine("<tr><td><b>SL</b></td><td><b>Question</b></td><td><b>Reply(Yes/No)</b></td><td><b>Initial</b></td><td><b>If no reasons</b></td><td><b>Initial</b></td><td></td></tr>");
 
 
         foreach (DataRow row in TableData_Confirmation.Rows)
@@ -383,6 +391,8 @@ Upload Not Required
                 "<td>{0}</td>",
                 HttpUtility.HtmlEncode(reason)
             );
+
+            sb.AppendLine("<td></td>");
 
             sb.AppendLine("<td></td>");
 

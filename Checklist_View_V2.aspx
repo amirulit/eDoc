@@ -440,8 +440,25 @@
                 }
             });
 
+            //<input id='btnFeedback_2' type='button'  data-id='2' class='btn btn-info feedback' value='Feedback' />
+
+            $(".feedback").click(function () {
+
+                var data_id = $(this).attr("data-id");
+
+                alert(data_id);
 
 
+                $('#modalUpdateform2').modal('show');
+
+
+                $("#lblID2").text(drawdown_id);
+
+                $("#lblID3").text(data_id);
+
+
+
+            });
 
             $(".save").click(function () {
 
@@ -1408,6 +1425,48 @@
 
 
 
+    
+    
+    <div class="modal" id="modalUpdateform2" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
+  		<div class="modal-dialog">
+    		<div class="container">
+            	<div class="row ">	
+           			<div class="col-md-6">
+                		<div class="panel">
+        					<div class="panel-heading bg-orange">                 
+        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          						<h4 class="modal-title custom_align" id="H1">Feedback</h4>
+                            </div>
+                            <div class="panel-body"> <!-- Start of modal body--> 
+
+
+
+
+                          Drawdown ID # <span id="lblID2" class="badge  badge-success"></span>
+                          <br />
+                          Document ID # <span id="lblID3" class="badge  badge-success"></span>
+
+                                
+                                <div class="form-group" id="div3">
+                                    <label for="">Feedback</label>
+                                     
+ 
+                                         <textarea id="Textarea1" cols="20" rows="2"  class="form-control"></textarea>
+ 
+                                </div> 
+                            </div><!--/.modal body-->
+                            <div class="panel-footer bg-gray-light">
+                                <input type="hidden" id="Hidden1" name="id" value="" />
+                                <button type="button"   id="Button1" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Feedback</button>         
+        	  				</div><!--/.panel-footer--> 
+            			</div><!--/.panel-->
+            		</div><!--/.col-md-6-->
+            	</div><!--/.row-->                                        
+        	</div><!-- /.modal-content -->  		 
+		</div><!-- /.modal-dialog -->            
+	</div><!--/.Modal-Update form -->   
+
+
 
     <div style="margin: 10px; padding: 10px;">
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
@@ -1661,6 +1720,10 @@
             <div class="table-responsive">
                 <%= DocumentTableHtml %>
             </div>
+
+            
+
+
         </div>
         <br />
         <hr />
