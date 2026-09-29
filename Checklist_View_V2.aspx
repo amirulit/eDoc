@@ -1499,11 +1499,20 @@
                             </div>
                             <div class="panel-body">
                                 <!-- Start of modal body-->
-                                Drawdown ID # <span id="lblID2" class="badge  badge-success"></span>
-                                <br />
-                                Document ID # <span id="lblID3" class="badge  badge-success"></span>
-                                <br />
-                                Document Name # <span id="lblDocName"  ></span>
+
+                              <table class="table   table-responsive ">
+                              
+                              <tr><td>Drawdown ID #</td><td><span id="lblID2" class="badge  badge-success"></span></td></tr>
+                              
+
+                              <tr><td>Document ID #</td><td> <span id="lblID3" class="badge  badge-success"></span></td></tr>
+
+                              <tr><td>Document Name #</td><td><span id="lblDocName"  ></span></td></tr>
+
+
+                              </table>
+                               
+                                 
                                 <div class="form-group" id="div3">
                                     <label for="">
                                         Query</label>

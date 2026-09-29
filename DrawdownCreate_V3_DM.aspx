@@ -42,9 +42,10 @@
 
 
 
-            $("#<%=select1.ClientID%>,#select2,#<%=select3.ClientID%>,#<%=select4.ClientID%>").select2({
+            $("#<%=select1.ClientID%>,#select2,#<%=select3.ClientID%>,#<%=select4.ClientID%>,#<%=select8.ClientID%>").select2({
                 placeholder: "<--Select-->",
-                allowClear: true
+                allowClear: true,  
+                width:"100%"
             });
 
 
@@ -734,7 +735,7 @@
                                     <input class="form-control" type="text" id="name1" name="name" autocomplete="off"/>
                                 </div> 
                                 -->
-                                 <div class="form-group" id="div2">
+                                <%-- <div class="form-group" id="div2">
                                  Please upload following documents :
 
                                  <ul>
@@ -746,7 +747,24 @@
 
 
                                  </ul>
-                                 </div>
+                                 </div>--%>
+
+
+                                  <div class="form-group"  >
+                      			<label for="">Document Type</label>
+                      	     <select id="select8"   runat="server"       class="form-control">
+                   <option value="Checklist Scancopy">Checklist Scancopy</option>
+                   <option value="Accepted Scancopy">Accepted Scancopy</option>
+                   <option value="Board Resolution">Board Resolution</option>
+                   <option value="Others">Others</option>
+                  
+                   
+                  
+                   </select>
+
+                       
+             
+                    		</div>
 
  
                                 <div class="form-group" id="div1">

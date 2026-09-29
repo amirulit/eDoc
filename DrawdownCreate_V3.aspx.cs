@@ -146,9 +146,13 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
     [WebMethod(EnableSession = true)]
     public static Object[] Drawdown_Save(Obj Obj)
     {
+        Int32 Role = Convert.ToInt32(HttpContext.Current.Session["Role"].ToString());
+
 
         String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
 
+       
+        
         Object[] details = null;
 
         Int32 status;
@@ -248,7 +252,9 @@ public partial class DrawdownCreate_V3 : System.Web.UI.Page
                         //new SqlParameter("@create_by","Test")
                         //new SqlParameter("@tin",Obj.tin),
                         //new SqlParameter("@pre_addr",Obj.pre_addr),
-                        //new SqlParameter("@per_addr",Obj.per_addr)
+
+
+                        new SqlParameter("@input_by_role",(Role==1?"RM":"DM"))
 
                     };
 
