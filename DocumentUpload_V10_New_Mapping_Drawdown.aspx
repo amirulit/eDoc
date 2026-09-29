@@ -1459,7 +1459,7 @@
                             
                             
                         %>
-                        <tr style="<%= id_to_delete > 0 ? "background-color: #ffe6e6;": "" %>" id="row_<%=doc_id %>">
+                        <tr style="<%= id_to_delete > 0 ? "background-color: #ffe6e6;": "" %>" id="row_<%=doc_id %>"  data-id="<%=doc_id %>"    >
                             <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["primary_key"]%>
                             </td>
