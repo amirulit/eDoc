@@ -62,6 +62,73 @@
 
 
 
+            $('#btnQuerySave').click(function () {
+
+                //$('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID
+
+
+                //var edoc_id = $(this).attr("edoc-id");
+
+
+                //$("#lblID").text(drawdown_id);
+                //alert(drawdown_id);
+
+                var drawdown_id = $("#lblID2").text();
+
+                var doc_primary_key = $("#lblID3").text();
+
+                //var drawdown_id = drawdown_id; // if this variable already exists
+                var query = $("#txtQuery").val();
+
+                if (!query || query.trim() === "") {
+                    alert("Please enter query reason.");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "Checklist_View_V2.aspx/Save_Query_Reason",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id,
+                        doc_primary_key: doc_primary_key,
+                        query: query
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var msg = response.d;
+
+                        if (msg === "Data Saved") {
+                            alert("query reason saved successfully.");
+                            $("#txtQuery").val('')
+                            // Close modal if required
+                            $("#modalUpdateform").modal("hide");
+
+                            // Do whatever you want after save
+                            // location.reload();
+                        }
+                        else {
+                            alert(msg);
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+
+                        console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
+
+                        alert("Error while saving query reason.");
+                    }
+                });
+
+
+
+            });
+
+
             $('#btnDeclineSave').click(function () {
 
                 //$('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID
@@ -431,11 +498,16 @@
 
             //<input id='btnFeedback_2' type='button'  data-id='2' class='btn btn-info feedback' value='Feedback' />
 
-            $(".feedback").click(function () {
+            $(".query").click(function () {
 
                 var data_id = $(this).attr("data-id");
 
                 alert(data_id);
+
+
+                var secondTdContent = $(this).closest('tr').find('td:eq(1)').text().trim();
+
+                $('#lblDocName').text(secondTdContent);
 
 
                 $('#modalUpdateform2').modal('show');
@@ -1423,24 +1495,26 @@
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 </button>
                                 <h4 class="modal-title custom_align" id="H1">
-                                    Feedback</h4>
+                                    Query</h4>
                             </div>
                             <div class="panel-body">
                                 <!-- Start of modal body-->
                                 Drawdown ID # <span id="lblID2" class="badge  badge-success"></span>
                                 <br />
                                 Document ID # <span id="lblID3" class="badge  badge-success"></span>
+                                <br />
+                                Document Name # <span id="lblDocName"  ></span>
                                 <div class="form-group" id="div3">
                                     <label for="">
-                                        Feedback</label>
-                                    <textarea id="Textarea1" cols="20" rows="2" class="form-control"></textarea>
+                                        Query</label>
+                                    <textarea id="txtQuery" cols="20" rows="2" class="form-control"></textarea>
                                 </div>
                             </div>
                             <!--/.modal body-->
                             <div class="panel-footer bg-gray-light">
                                 <input type="hidden" id="Hidden1" name="id" value="" />
-                                <button type="button" id="Button1" class="btn btn-info" style="width: 100%;">
-                                    <span class="glyphicon glyphicon-ok-sign"></span>Feedback</button>
+                                <button type="button" id="btnQuerySave" class="btn btn-info" style="width: 100%;">
+                                    <span class="glyphicon glyphicon-ok-sign"></span>Send</button>
                             </div>
                             <!--/.panel-footer-->
                         </div>

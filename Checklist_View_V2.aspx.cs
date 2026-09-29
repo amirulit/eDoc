@@ -202,7 +202,7 @@ Upload Not Required
         sb.AppendLine("<th>Reason</th>");
         sb.AppendLine("<th>Remarks</th>");
         sb.AppendLine("<th>View</th>");
-        sb.AppendLine("<th>Feedback</th>");
+        sb.AppendLine("<th>Query</th>");
         sb.AppendLine("</tr>");
         sb.AppendLine("</thead>");
 
@@ -294,7 +294,7 @@ Upload Not Required
                     sb.AppendLine("<td></td>");
                 }
 
-                sb.AppendLine("<td><input id='btnFeedback_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-info btn-sm feedback' value='Feedback' /></td>");
+                sb.AppendLine("<td><input id='btnQuery_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-info btn-sm query' value='Query' /></td>");
 
                 sb.AppendLine("</tr>");
             }
@@ -560,6 +560,67 @@ Upload Not Required
 
     }
 
+
+
+    [WebMethod(EnableSession = true)]
+    public static String Save_Query_Reason(Int32 drawdown_id, Int32 doc_primary_key, String query)
+    {
+
+        String DomainID = HttpContext.Current.Session["DomainID"].ToString();
+        //String BranchCode = HttpContext.Current.Session["BranchCode"].ToString();
+        //String BranchName = HttpContext.Current.Session["BranchName"].ToString(); 
+
+        String ipAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+        if (String.IsNullOrEmpty(ipAddress))
+        {
+            ipAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+        }
+
+        Int32 Role = Convert.ToInt32(HttpContext.Current.Session["Role"].ToString());
+
+
+        Utility u = new Utility();
+
+        //Object[] details = null;
+        String msg = "";
+
+        //String e_doc_id = "";
+        //Int32 auto_id = 0;
+
+        String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        SqlConnection connection = new SqlConnection(ConStr);
+
+        SqlCommand command = new SqlCommand();
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_QuerySave";
+        command.Connection = connection;
+
+
+        command.Parameters.Add(new SqlParameter("@drawdown_id", drawdown_id));
+        command.Parameters.Add(new SqlParameter("@doc_primary_key", doc_primary_key));
+        command.Parameters.Add(new SqlParameter("@query", query));
+        command.Parameters.Add(new SqlParameter("@query_by_role", Role));
+
+        connection.Open();
+        Int32 i = command.ExecuteNonQuery();
+        connection.Close();
+
+        if (i > 0)
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);
+            msg = "Data Saved";
+        }
+        else
+        {
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! Input Saved Failed');", true);
+            msg = "Data Not Saved";
+        }
+
+
+        return msg;
+
+    }
 
 
     [WebMethod(EnableSession = true)]
