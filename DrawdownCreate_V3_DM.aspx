@@ -44,8 +44,8 @@
 
             $("#<%=select1.ClientID%>,#select2,#<%=select3.ClientID%>,#<%=select4.ClientID%>,#<%=select8.ClientID%>").select2({
                 placeholder: "<--Select-->",
-                allowClear: true,  
-                width:"100%"
+                allowClear: true,
+                width: "100%"
             });
 
 
@@ -147,8 +147,14 @@
 
                 //alert(f.name);
 
+                var doc_type = $('#<%=select8.ClientID%>').val()
+
                 var formData = new FormData();
+
                 formData.append("dd_id", dd_id);
+
+                formData.append("doc_type", doc_type);
+
                 formData.append("file", f);
 
                 //alert('tttt'); 
@@ -171,7 +177,8 @@
 
                         if (uploaded_files == total_files) {
 
-                            //alert('ALL');
+                            alert(doc_type + ' Uploaded');
+
                             uploaded_files = 0;
                             //MailSend(file_no, 22);
 

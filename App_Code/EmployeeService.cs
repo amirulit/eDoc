@@ -55,7 +55,7 @@ public class EmployeeService
 
         Employee emp = new Employee();
 
-        String T24_API_Address = "http://10.10.100.68/HRM_API/api/T24/GetEmployeeInfo";
+        String T24_API_Address = "http://10.10.100.82/HRM_API/api/T24/GetEmployeeInfo";
 
         //String T24_API_Address = "http://10.10.100.68/HRM_API/HRM/GetEmpInfo";
 

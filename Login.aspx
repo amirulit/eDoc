@@ -1,11 +1,15 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
+
+
 <head runat="server">
     <title></title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        name="viewport" />
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <!-- Font Awesome -->
@@ -71,6 +75,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js">
     </script>
     <script type="text/javascript" src="plugins/daterangepicker/daterangepicker.js"></script>
+
+
     <script type="text/javascript">
 
 
@@ -86,8 +92,12 @@
             $('#loginFrom').modal('show');
         };
 
+
+
     </script>
     <style type="text/css">
+        
+        
         #loginFrom .modal-dialog
         {
             position: fixed;
@@ -98,35 +108,67 @@
             width: 100%;
             max-width: 500px;
         }
+        
+        
     </style>
-  <style type="text/css">
+
+
+    <style type="text/css">
+        
+        
         html, body
         {
             height: 100%;
             margin: 0;
         }
         
+        
         .login-wrapper
         {
             width: 33%;
-            height: 100vh;
-            margin: 0 auto;
+            height: auto;
+            margin: 100px auto 0;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
+        
+        
         .login-panel
         {
             width: 100%;
         }
+        
+        
+        .welcome-banner
+        {
+            width: 100%;
+            height: 200px;
+            background-color: #0d6efd;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            margin-bottom: 0;
+        }
+        
+        
+        
     </style>
 </head>
+
 <body onload="login()">
+
     <form id="form1" runat="server">
-
-   
-
+    <div class="welcome-banner">
+      <h1>Welcome to MBPLC Document Management System (DMS)</h1>
+    </div>
     <div class="login-wrapper">
         <div class="panel panel-primary login-panel">
             <div class="panel-heading">
@@ -149,7 +191,8 @@
             </div>
             <div class="panel-footer">
                 <input type="hidden" name="do" value="user_login" />
-                <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-info" OnClick="btnSubmit_Click" Visible="false" />
+                <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-info" OnClick="btnSubmit_Click"
+                    Visible="false" />
                 <asp:Button ID="btnRM" runat="server" Text="RM" OnClick="btnRM_Click" CssClass="btn btn-default" />
                 <asp:Button ID="btnCD" runat="server" Text="CD" CssClass="btn btn-default" OnClick="btnCD_Click" />
                 <asp:Button ID="btnCI" runat="server" Text="CI" CssClass="btn btn-default" OnClick="btnCI_Click" />
@@ -160,15 +203,12 @@
                 <asp:Button ID="btnDM" runat="server" Text="DM" CssClass="btn btn-default" OnClick="btnDM_Click" />
                 <asp:Button ID="btnUnitHead" runat="server" Text="Unit Head" CssClass="btn btn-default"
                     OnClick="btnUnitHead_Click" />
-
-                  <hr />
-
-
-                     <a href="New_V2.aspx" class="btn  btn-primary">New?</a>
-
-                       <a href="Login_V3.aspx" class="btn btn-success">Login</a>
+                <hr />
+                <a href="New_V2.aspx" class="btn  btn-primary">New?</a> <a href="Login_V3.aspx" class="btn btn-success">
+                    Login</a>
             </div>
         </div>
     </div>
+
     </form>
 </body>

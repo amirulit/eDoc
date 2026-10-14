@@ -934,6 +934,8 @@ public class WebService3 : System.Web.Services.WebService
 
             Int32 dd_id = Convert.ToInt32(HttpContext.Current.Request.Form["dd_id"]);
 
+            String doc_type = HttpContext.Current.Request.Form["doc_type"].ToString();
+
             String f_name = Path.GetFileName(postedFile.FileName);
 
             String fileName = HttpContext.Current.Request.Form["dd_id"] + "_" + Path.GetFileName(postedFile.FileName);
@@ -953,7 +955,7 @@ public class WebService3 : System.Web.Services.WebService
 
             //SanctionLetterUpload(SqlStr); 
 
-            String err_msg = Document_Upload_DM(dd_id, f_name);
+            String err_msg = Document_Upload_DM(dd_id, doc_type, f_name);
 
 
             if (err_msg == "")
@@ -977,12 +979,11 @@ public class WebService3 : System.Web.Services.WebService
             HttpContext.Current.Response.Write(ex.Message);
             HttpContext.Current.Response.Flush();
         }
-
     }
 
 
 
-    protected String Document_Upload_DM(Int32 dd_id, String file_name)
+    protected String Document_Upload_DM(Int32 dd_id, String doc_type, String file_name)
     {
 
         Int32 i;
@@ -1005,6 +1006,7 @@ public class WebService3 : System.Web.Services.WebService
 
 
                         new SqlParameter("@drawdown_id",dd_id), 
+                        new SqlParameter("@file_type",doc_type), 
                         new SqlParameter("@file_name",file_name), 
                         new SqlParameter("@by","Test")
                     
@@ -1042,6 +1044,8 @@ public class WebService3 : System.Web.Services.WebService
         return ErrorMSG;
 
     }
+
+
     [WebMethod(EnableSession = true)]
     public void Save_Indv()
     {

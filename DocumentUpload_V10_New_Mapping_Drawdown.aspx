@@ -1388,7 +1388,7 @@
             %>
             <h3>
                 <%=DocPosition%>
-                <%=section_name%></h3>
+                <%=section_name%>(<%=TableData.Rows.Count%>)</h3>
             <div id="<%=section_name%>">
                 <table class="<%=DocType[i]%>  docTable rounded" id="<%=DocType[i]%>" style="width: 100%">
                     <thead>
@@ -1589,7 +1589,7 @@
                     <i class="fa fa-bar-chart-o"></i>Any Other Document</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-condensed">
+                <table class="table table-condensed  docTable rounded">
                     <tr>
                         <td>
                             Document Details
@@ -1628,7 +1628,7 @@
                     </tr>
                 </table>
                 <br />
-                <table class="table table-condensed my-table" id="tblAnyOthDoc">
+                <table class="table table-condensed my-table  docTable rounded" id="tblAnyOthDoc">
                     <thead>
                         <tr>
                             <th>
@@ -1688,7 +1688,7 @@
                     <i class="fa fa-bar-chart-o"></i>Exception</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-condensed my-table" id="tblException">
+                <table class="table table-condensed my-table  docTable rounded" id="tblException">
                     <thead>
                         <tr>
                             <th>
@@ -1749,7 +1749,7 @@
             </div>
             <div class="panel-body">
                 <br />
-                <table class="table table-condensed my-table">
+                <table class="table table-condensed my-table  docTable rounded">
                     <thead>
                         <tr>
                             <th>
