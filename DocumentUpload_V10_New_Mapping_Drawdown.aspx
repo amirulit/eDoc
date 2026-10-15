@@ -1246,13 +1246,17 @@
 </head>
 <body>
     <form id="form1" runat="server">
+
+    <div style="text-align: center;  padding-top:10px;">
+     <input type="button" value="Close" onclick="window.close();" class="btn btn-danger" />
+        <input id="btnUpdate" type="button" value="Finish & Close" class="btn btn-success" />
+        
+    </div>
     <div style="margin: 10px; padding: 10px;">
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
         <input id="hfCusID" type="hidden" runat="server" />
         <input id="hfDrawdownID" type="hidden" runat="server" />
-        <input type="button" value="Close" onclick="window.close();" class="btn btn-danger" />
-        <input id="btnUpdate" type="button" value="Finish & Close" class="btn btn-success" />
-        <br />
+       
         <br />
         <!--
         <table>

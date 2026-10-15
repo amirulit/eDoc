@@ -1542,11 +1542,9 @@
 
 
    <!---->
-   
-        <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
-        <input id="hfCusID" type="hidden" runat="server" />
-        <input id="hfDrawdownID" type="hidden" runat="server" />
-        <input type="button" value="Close" onclick="window.close();" class="btn   btn-danger" />
+
+    <div style="text-align: center;  padding-top:10px;">
+      <input type="button" value="Close" onclick="window.close();" class="btn   btn-danger" />
         <% 
             if (Role == 2 || Role == 5 || Role == 8 || Role == 10 || Role == 15 || Role == 20)
             { 
@@ -1559,6 +1557,12 @@
         %>
         <%--<input type="button" value="Pdf"  id="btnPdf"   onclick="javascript:Pdf();"  class="btn btn-info"/>--%>
         <br />
+    </div>
+   
+        <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
+        <input id="hfCusID" type="hidden" runat="server" />
+        <input id="hfDrawdownID" type="hidden" runat="server" />
+      
         <br />
         <!--
         <table>

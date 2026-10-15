@@ -394,7 +394,7 @@
       
 
         <%
-            }
+             }
              %>
 
         <% if (Role == 5 || Role == 10 || Role == 15 || Role == 20)
@@ -409,12 +409,12 @@
 
 
         <%
-            }
+           }
              %>
 
         <%
             if (Role == 99)
-          {
+            {
               %>
          <li>
           <a href="UserListing.aspx">
@@ -428,7 +428,7 @@
        
 
        <%
-           }
+          }
             %>
 
 
@@ -483,5 +483,7 @@
      </footer>
     </div>
     </form>
+    <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
+    </asp:ContentPlaceHolder>
 </body>
 </html>
