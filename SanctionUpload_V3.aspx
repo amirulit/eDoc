@@ -15,218 +15,40 @@
     </style>
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
+   
+
+    <script src="SanctionUpload.js" type="text/javascript"></script>
+
+
     <script type="text/javascript">
+
 
         $(document).ready(function () {
 
-            var cusList = [];
-            var loanNatureList = [];
 
-            loadDropdownData();
+            $("#txtSanctionDate").datepicker
+            ({
+                appendText: "(dd/mm/yy)",
+                dateFormat: "dd/mm/yy",
+                altField: "#datepicker-4",
+                altFormat: "DD, d MM, yy",
+                showOn: "both",
+                buttonImageOnly: true,
+                buttonImage: "calender.gif",
+                buttonText: "Calendar",
+                changeMonth: true,
+                changeYear: true
 
-            function loadDropdownData() {
-                $.ajax({
-                    type: "POST",
-                    url: "SanctionUpload_V3.aspx/GetDropdownData",
-                    data: "{}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-
-                    success: function (response) {
-
-                        cusList = response.d.cusList;
-                        loanNatureList = response.d.loanNatureList;
-
-                        // Both lists are now available
-                        addFacilityRow();
-                    },
-
-                    error: function (xhr, status, error) {
-                        alert("Unable to load dropdown data.");
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-
-            //addFacilityRow();
-
-
-            var facilityCounter = 1;
-
-            function addFacilityRow() {
-
-                facilityCounter++;
-
-                var row =
-        '<tr class="facility-row"><td class="sl-no"></td>' +
-
-            '<td>' +
-                '<select type="text" class="customerId" ' +
-                'placeholder="Customer ID" required</select>' +
-            '</td>' +
-
-            '<td>' +
-                '<select class="natureOfFacility" required ' +
-                //                'style="width:200px">' +
-                //                    '<option value="">Select Facility</option>' +
-                //                    '<option value="Term Loan">Term Loan</option>' +
-                //                    '<option value="Overdraft">Overdraft</option>' +
-                //                    '<option value="Bank Guarantee">Bank Guarantee</option>' +
-                //                    '<option value="Letter of Credit">Letter of Credit</option>' +
-                '</select>' +
-            '</td>' +
-
-            '<td>' +
-                '<input type="number" class="amount" ' +
-                'placeholder="Amount" min="0" step="0.01" required />' +
-            '</td>' +
-
-            '<td>' +
-                '<input type="text" class="validity date" required />' +
-            '</td>' +
-
-            '<td>' +
-                '<button type="button" class="remove-btn">Remove</button>' +
-            '</td>' +
-
-        '</tr>';
-
-                var $row = $(row);
-
-
-                var $dropdown = $row.find(".customerId");
-
-                //Bind database records to the dropdown
-                $.each(cusList, function (index, item) {
-                    $dropdown.append(
-            $("<option></option>")
-                .val(item.id)
-                .text(item.text)
-        );
-                });
-
-                $dropdown = $row.find(".natureOfFacility");
-
-                //Bind database records to the dropdown
-                $.each(loanNatureList, function (index, item) {
-                    $dropdown.append(
-            $("<option></option>")
-                .val(item.short_name)
-                .text(item.name)
-        );
-                });
-
-
-                $("#facilityBody").append($row);
-
-                updateSerialNumbers();
-
-                initializeDatepicker();
-
-                // Initialize Select2 for this new row
-
-                $row.find(".customerId").select2({
-                    width: "200px",
-                    placeholder: "Select Customer",
-                    allowClear: true
-                });
-
-                // Initialize Select2 for this new row
-
-                $row.find(".natureOfFacility").select2({
-                    width: "200px",
-                    placeholder: "Select Facility",
-                    allowClear: true
-                });
-
-
-            }
-
-
-            $("#facilityBody").on("click", ".remove-btn", function () {
-
-                var $row = $(this).closest("tr");
-
-                //$row.find(".natureOfFacility").select2("destroy");
-                $row.remove();
-
-                //facilityCounter--;
-
-                //alert(facilityCounter);
-
-                updateSerialNumbers();
             });
+           
 
 
-
-
-            $("#btnAddMore").on("click", function () {
-                addFacilityRow();
-            });
-
-            function updateSerialNumbers() {
-                $("#facilityBody tr").each(function (index) {
-                    $(this).find(".sl-no").text(index + 1);
-                });
-            }
 
 
             $("#select1,#select2,#<%=select3.ClientID%>").select2({
                 placeholder: "<--Select-->",
                 allowClear: true
             });
-
-
-
-            /*
-            $("#txtSancDate,.date").datepicker
-            ({
-            appendText: "(dd/mm/yy)",
-            dateFormat: "dd/mm/yy",
-            altField: "#datepicker-4",
-            altFormat: "DD, d MM, yy",
-            showOn: "both",
-            buttonImageOnly: true,
-            buttonImage: "calender.gif",
-            buttonText: "Calendar",
-            changeMonth: true,
-            changeYear: true
-
-            });
-            */
-
-            initializeDatepicker();
-
-
-            function initializeDatepicker() {
-                $("#txtSancDate, .date").each(function () {
-                    if (!$(this).hasClass("hasDatepicker")) {
-                        $(this).datepicker({
-                            //appendText: "(dd/mm/yy)",
-                            dateFormat: "dd/mm/yy",
-                            altField: "#datepicker-4",
-                            altFormat: "DD, d MM, yy",
-                            showOn: "both",
-                            buttonImageOnly: true,
-                            buttonImage: "calender.gif",
-                            buttonText: "Calendar",
-                            changeMonth: true,
-                            changeYear: true
-                        });
-                    }
-                });
-            }
-
-        });
-
-
-
-
-    </script>
-    <script type="text/javascript">
-
-
-        $(document).ready(function () {
 
 
 
@@ -555,7 +377,7 @@
 
                           <div class="form-group" >
                       			        <label for="">EDoc ID#</label>
-                      			        <input type="text" class="form-control" id="Text1"  name="name" autocomplete="off"/>
+                      			        <input type="text" class="form-control" id="txtEdocId"  name="name" autocomplete="off"/>
                     		    </div>
                         </div>
 
@@ -593,7 +415,7 @@
                             <div class="col-md-6">
                                 <div class="form-group" >
                       			        <label for="">Sanction Reference</label>
-                      			        <input type="text" class="form-control" id="txtSancRef" placeholder="Enter Santion Reference" name="name" autocomplete="off"/>
+                      			        <input type="text" class="form-control" id="txtSanctionReference" placeholder="Enter Santion Reference" name="name" autocomplete="off"/>
                     		    </div>
 
                             </div>
@@ -606,7 +428,7 @@
 
                    <div class="col-md-6"> <div class="form-group"  >
                       			<label for="">Santion Date</label>
-                      			<input type="text" class="form-control" id="txtSancDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
+                      			<input type="text" class="form-control" id="txtSanctionDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
                     		</div></div>
                    
                       <div class="col-md-6">    
@@ -701,6 +523,8 @@
                   		<div class="box-footer">
                   			<input type="hidden" name="do" value="add_grade" />
                     		<button type="button" class="btn btn-primary" id="btnSave">Save</button>
+
+                            <button type="button" class="btn btn-primary" id="btnSave2">Save</button>
 
                             <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Upload</button>
 

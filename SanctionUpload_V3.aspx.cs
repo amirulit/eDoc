@@ -74,15 +74,17 @@ public partial class SanctionUpload_V3 : System.Web.UI.Page
             FROM t_CustomerInfo";
 
             using (SqlCommand cmd = new SqlCommand(customerQuery, con))
-            using (SqlDataReader dr = cmd.ExecuteReader())
             {
-                while (dr.Read())
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    result.cusList.Add(new Customer
+                    while (dr.Read())
                     {
-                        id = dr["cus_code"].ToString(),
-                        text = dr["cid"].ToString()
-                    });
+                        result.cusList.Add(new Customer
+                        {
+                            id = dr["cus_code"].ToString(),
+                            text = dr["cid"].ToString()
+                        });
+                    }
                 }
             }
 
@@ -93,15 +95,17 @@ public partial class SanctionUpload_V3 : System.Web.UI.Page
             FROM t_LoanNature";
 
             using (SqlCommand cmd = new SqlCommand(loanQuery, con))
-            using (SqlDataReader dr = cmd.ExecuteReader())
             {
-                while (dr.Read())
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    result.loanNatureList.Add(new LoanNature
+                    while (dr.Read())
                     {
-                        name = dr["name"].ToString(),
-                        short_name = dr["short_name"].ToString()
-                    });
+                        result.loanNatureList.Add(new LoanNature
+                        {
+                            name = dr["name"].ToString(),
+                            short_name = dr["short_name"].ToString()
+                        });
+                    }
                 }
             }
         }
@@ -161,6 +165,9 @@ public partial class SanctionUpload_V3 : System.Web.UI.Page
         public string id { get; set; }
         public string text { get; set; }
     }
+
+
+
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
@@ -236,7 +243,246 @@ public partial class SanctionUpload_V3 : System.Web.UI.Page
         return loanList;
     }
 
-     
+
+
+    public class SanctionRequest
+    {
+        public string EdocId { get; set; }
+        public string Branch { get; set; }
+        public string SanctionReference { get; set; }
+        public DateTime SanctionDate { get; set; }
+        public string Segment { get; set; }
+        public string ApprovalAuthority { get; set; }
+
+        public List<FacilityRequest> Facilities { get; set; }
+    }
+
+    public class FacilityRequest
+    {
+        public string CustomerId { get; set; }
+        public string NatureOfFacility { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime Validity { get; set; }
+    }
+
+    public class SaveResult
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+    }
+
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static SaveResult SaveSanction(SanctionRequest request)
+    {
+        if (request == null ||
+            string.IsNullOrWhiteSpace(request.Branch) ||
+            string.IsNullOrWhiteSpace(request.SanctionReference) ||
+            string.IsNullOrWhiteSpace(request.Segment) ||
+            string.IsNullOrWhiteSpace(request.ApprovalAuthority) ||
+            request.Facilities == null ||
+            request.Facilities.Count == 0)
+        {
+            return new SaveResult
+            {
+                Success = false,
+                Message = "Please provide all required sanction details."
+            };
+        }
+
+        if (request.SanctionDate == default(DateTime))
+        {
+            return new SaveResult
+            {
+                Success = false,
+                Message = "Invalid sanction date."
+            };
+        }
+
+        foreach (FacilityRequest facility in request.Facilities)
+        {
+            if (facility == null ||
+                string.IsNullOrWhiteSpace(facility.CustomerId) ||
+                string.IsNullOrWhiteSpace(facility.NatureOfFacility) ||
+                facility.Amount < 0 ||
+                facility.Validity == default(DateTime))
+            {
+                return new SaveResult
+                {
+                    Success = false,
+                    Message = "Invalid facility details."
+                };
+            }
+        }
+
+        string connectionString =
+            ConfigurationManager
+                .ConnectionStrings["dbConn"]
+                .ConnectionString;
+
+        try
+        {
+            using (SqlConnection con =
+                new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                using (SqlTransaction transaction =
+                    con.BeginTransaction())
+                {
+                    try
+                    {
+                        int sanctionId;
+
+                        // Insert master record
+                        string masterSql = @"
+                                INSERT INTO dbo.SanctionMaster
+                                (
+                                    Branch,
+                                    SanctionReference,
+                                    SanctionDate,
+                                    Segment,
+                                    ApprovalAuthority
+                                )
+                                VALUES
+                                (
+                                    @Branch,
+                                    @Reference,
+                                    @SanctionDate,
+                                    @Segment,
+                                    @Authority
+                                );
+
+                                SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+                        using (SqlCommand cmd =
+                            new SqlCommand(
+                                masterSql, con, transaction))
+                        {
+                            cmd.Parameters.Add(
+                                "@Branch",
+                                SqlDbType.NVarChar, 100)
+                                .Value = request.Branch.Trim();
+
+                            cmd.Parameters.Add(
+                                "@Reference",
+                                SqlDbType.NVarChar, 100)
+                                .Value =
+                                    request.SanctionReference.Trim();
+
+                            cmd.Parameters.Add(
+                                "@SanctionDate",
+                                SqlDbType.Date)
+                                .Value = request.SanctionDate.Date;
+
+                            cmd.Parameters.Add(
+                                "@Segment",
+                                SqlDbType.NVarChar, 100)
+                                .Value = request.Segment.Trim();
+
+                            cmd.Parameters.Add(
+                                "@Authority",
+                                SqlDbType.NVarChar, 150)
+                                .Value =
+                                    request.ApprovalAuthority.Trim();
+
+                            sanctionId = Convert.ToInt32(
+                                cmd.ExecuteScalar());
+                        }
+
+                        // Insert all facility records
+                        string facilitySql = @"
+                                INSERT INTO dbo.SanctionFacility
+                                (
+                                    SanctionId,
+                                    CustomerId,
+                                    NatureOfFacility,
+                                    Amount,
+                                    Validity
+                                )
+                                VALUES
+                                (
+                                    @SanctionId,
+                                    @CustomerId,
+                                    @Nature,
+                                    @Amount,
+                                    @Validity
+                                );";
+
+                        foreach (FacilityRequest facility
+                            in request.Facilities)
+                        {
+                            using (SqlCommand cmd =
+                                new SqlCommand(
+                                    facilitySql,
+                                    con,
+                                    transaction))
+                            {
+                                cmd.Parameters.Add(
+                                    "@SanctionId",
+                                    SqlDbType.Int)
+                                    .Value = sanctionId;
+
+                                cmd.Parameters.Add(
+                                    "@CustomerId",
+                                    SqlDbType.NVarChar, 50)
+                                    .Value =
+                                        facility.CustomerId.Trim();
+
+                                cmd.Parameters.Add(
+                                    "@Nature",
+                                    SqlDbType.NVarChar, 150)
+                                    .Value =
+                                        facility.NatureOfFacility.Trim();
+
+                                SqlParameter amountParam =
+                                    cmd.Parameters.Add(
+                                        "@Amount",
+                                        SqlDbType.Decimal);
+
+                                amountParam.Precision = 18;
+                                amountParam.Scale = 2;
+                                amountParam.Value = facility.Amount;
+
+                                cmd.Parameters.Add(
+                                    "@Validity",
+                                    SqlDbType.Date)
+                                    .Value = facility.Validity.Date;
+
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        transaction.Commit();
+
+                        return new SaveResult
+                        {
+                            Success = true,
+                            Message = "Sanction saved successfully." + sanctionId
+                        };
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log ex on the server using your logging framework.
+            // Do not return database exception details to the client.
+
+            return new SaveResult
+            {
+                Success = false,
+                Message =  "Unable to save sanction details. Please try again."
+            };
+        }
+    }
 
     protected void LoadBranch()
     {
