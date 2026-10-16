@@ -17,9 +17,20 @@
 
         $(document).ready(function () {
 
-            loadCusList();
 
             var cusList = [];
+
+            var loanNatureList = [];
+
+
+            loadCusList();
+
+            loadLoanNature();
+
+
+            //addFacilityRow();
+
+           
 
             function loadCusList() {
 
@@ -44,7 +55,43 @@
                 });
             }
 
+            function loadLoanNature() {
+                $.ajax({
+                    type: "POST",
+                    url: "SanctionUpload_V2.aspx/LoadLoanNature",
+                    data: "{}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
 
+                    success: function (response) {
+
+                        loanNatureList = response.d;
+                        /*
+                        var dropdown = $("#select3");
+
+                        dropdown.empty();
+                        dropdown.append(
+                $("<option></option>")
+                    .val("")
+                    .text("-- Select Loan Nature --")
+            );
+
+                        $.each(response.d, function (i, item) {
+                            dropdown.append(
+                    $("<option></option>")
+                        .val(item.short_name)
+                        .text(item.name)
+                );
+                        });
+                        */
+
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error("Error loading loan nature:", error);
+                    }
+                });
+            }
 
             //addFacilityRow();
 
@@ -65,12 +112,12 @@
 
             '<td>' +
                 '<select class="natureOfFacility" required ' +
-                'style="width:200px">' +
-                    '<option value="">Select Facility</option>' +
-                    '<option value="Term Loan">Term Loan</option>' +
-                    '<option value="Overdraft">Overdraft</option>' +
-                    '<option value="Bank Guarantee">Bank Guarantee</option>' +
-                    '<option value="Letter of Credit">Letter of Credit</option>' +
+//                'style="width:200px">' +
+//                    '<option value="">Select Facility</option>' +
+//                    '<option value="Term Loan">Term Loan</option>' +
+//                    '<option value="Overdraft">Overdraft</option>' +
+//                    '<option value="Bank Guarantee">Bank Guarantee</option>' +
+//                    '<option value="Letter of Credit">Letter of Credit</option>' +
                 '</select>' +
             '</td>' +
 
@@ -94,7 +141,7 @@
 
                 var $dropdown = $row.find(".customerId");
 
-                // Bind database records to the dropdown
+                //Bind database records to the dropdown
                 $.each(cusList, function (index, item) {
                     $dropdown.append(
             $("<option></option>")
@@ -103,34 +150,47 @@
         );
                 });
 
+                $dropdown = $row.find(".natureOfFacility");
 
+                //Bind database records to the dropdown
+                $.each(loanNatureList, function (index, item) {
+                    $dropdown.append(
+            $("<option></option>")
+                .val(item.short_name)
+                .text(item.name)
+        );
+                });
 
 
                 $("#facilityBody").append($row);
 
                 initializeDatepicker();
 
-
+                // Initialize Select2 for this new row
+                /*
                 $row.find(".customerId").select2({
                     width: "200px",
                     placeholder: "Select Customer",
                     allowClear: true
                 });
-
+                */
                 // Initialize Select2 for this new row
-
+                /*
                 $row.find(".natureOfFacility").select2({
                     width: "200px",
                     placeholder: "Select Facility",
                     allowClear: true
                 });
-
+                */
 
             }
 
 
             $("#facilityBody").on("click", ".remove-btn", function () {
-                $(this).closest("tr").remove();
+                var $row = $(this).closest("tr");
+
+                $row.find(".natureOfFacility").select2("destroy");
+                $row.remove();
             });
 
 

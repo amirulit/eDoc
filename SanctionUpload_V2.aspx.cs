@@ -91,7 +91,11 @@ public partial class SanctionUpload_V2 : System.Web.UI.Page
         }
     }
 
-
+    public class Customer
+    {
+        public string id { get; set; }
+        public string text { get; set; }
+    }
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
@@ -99,8 +103,7 @@ public partial class SanctionUpload_V2 : System.Web.UI.Page
     {
         List<Customer> result = new List<Customer>();
 
-        string cs = ConfigurationManager
-            .ConnectionStrings["dbConn"].ConnectionString;
+        String cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
         using (SqlConnection con = new SqlConnection(cs))
         using (SqlCommand cmd = new SqlCommand(
@@ -124,42 +127,50 @@ public partial class SanctionUpload_V2 : System.Web.UI.Page
         return result;
     }
 
-    public class Customer
+  
+
+    public class LoanNature
     {
-        public string id { get; set; }
-        public string text { get; set; }
+        public string name { get; set; }
+        public string short_name { get; set; }
     }
 
-
-    protected void LoadLoanNature()
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static List<LoanNature> LoadLoanNature()
     {
-        //String cus_type = Request.QueryString[0].ToString();
-        //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
-        //String c_type = Request.QueryString[2].ToString().Split('-')[0];
+        List<LoanNature> loanList = new List<LoanNature>();
 
+        string connectionString =
+            ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
-        SqlConnection con = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
-        SqlCommand cmd = con.CreateCommand();
-        cmd.CommandType = CommandType.Text;
-
-        cmd.CommandText = "select loan_nature name,loan_nature_short short_name from t_LoanNature";
-        cmd.Connection = con;
-
-        SqlDataAdapter da = new SqlDataAdapter(cmd);
-        DataSet Ds = new DataSet();
-        try
+        using (SqlConnection con = new SqlConnection(connectionString))
         {
-            da.Fill(Ds);
-            select3.DataSource = Ds.Tables[0];
-            select3.DataTextField = "name";
-            select3.DataValueField = "short_name";
-            select3.DataBind();
+            string query = @"SELECT left(loan_nature,50) AS name,
+                                loan_nature_short AS short_name
+                         FROM t_LoanNature";
+
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        loanList.Add(new LoanNature
+                        {
+                            name = reader["name"].ToString(),
+                            short_name = reader["short_name"].ToString()
+                        });
+                    }
+                }
+            }
         }
-        catch (Exception ex)
-        {
-            Response.Write(ex.Message);
-        }
+
+        return loanList;
     }
+
 
     protected void LoadBranch()
     {
