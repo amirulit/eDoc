@@ -31,7 +31,7 @@ public partial class SanctionUpload_V3 : System.Web.UI.Page
 
             //ddlCustomer.SelectedIndex = ddlCustomer.Items.IndexOf(ddlCustomer.Items.FindByValue(CusID));
 
-            select1.Items.FindByValue(CusID).Selected = true;
+            //select1.Items.FindByValue(CusID).Selected = true;
 
             //ddlCustomer.Items.FindByText(CusID).Selected = true;
 
@@ -145,10 +145,10 @@ public partial class SanctionUpload_V3 : System.Web.UI.Page
         try
         {
             da.Fill(Ds);
-            select1.DataSource = Ds.Tables[0];
-            select1.DataTextField = "cid";
-            select1.DataValueField = "cus_code";
-            select1.DataBind();
+            //select1.DataSource = Ds.Tables[0];
+            //select1.DataTextField = "cid";
+            //select1.DataValueField = "cus_code";
+            //select1.DataBind();
         }
         catch (Exception ex)
         {

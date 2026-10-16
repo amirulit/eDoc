@@ -8,13 +8,10 @@
             color: blue !important;
         }
         
-        #tblLoan th ,td 
+        #tblLoan th, td
         {
-            padding:5px;
+            padding: 5px;
         }
-        
-        
-        
     </style>
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
@@ -147,6 +144,7 @@
 
 
             $("#facilityBody").on("click", ".remove-btn", function () {
+
                 var $row = $(this).closest("tr");
 
                 //$row.find(".natureOfFacility").select2("destroy");
@@ -173,7 +171,7 @@
             }
 
 
-            $("#<%=select1.ClientID%>,#select2,#<%=select3.ClientID%>").select2({
+            $("#select1,#select2,#<%=select3.ClientID%>").select2({
                 placeholder: "<--Select-->",
                 allowClear: true
             });
@@ -232,7 +230,7 @@
 
 
 
-            $('#<%=select1.ClientID%>').on('change', function () {
+            $('#select1>').on('change', function () {
                 $('#hfSelected').val($(this).val());
             });
 
@@ -548,6 +546,26 @@
                   		<div class="box-body">
 
 
+
+                         <div class="row">
+                        
+                        
+                        
+                        <div class="col-md-6">
+
+                          <div class="form-group" >
+                      			        <label for="">EDoc ID#</label>
+                      			        <input type="text" class="form-control" id="Text1"  name="name" autocomplete="off"/>
+                    		    </div>
+                        </div>
+
+                        <div class="col-md-6">
+
+
+                        </div>
+
+                        </div>
+
                         <div class="row">
                         
                         
@@ -555,14 +573,12 @@
                         <div class="col-md-6">
                         
                         
-                        
-                    		<div class="form-group"  >
-                      	  <label for="ddlCustomer">Customer ID</label>
-                  <select id="select1"   runat="server"  multiple    class="form-control">
-                  
-                   
-                  
-                   </select>
+                         
+                              <div class="form-group"  >
+                      			<label for="">Booking Branch</label>
+                      	        <select id="select3"   runat="server"       class="form-control">
+                                </select>
+                    	 
                    
                     
               <input id="hfSelected" type="hidden" />
@@ -616,7 +632,28 @@
  <div class="row">
                    
 
-                   <div class="col-md-6"></div>
+                   <div class="col-md-6">
+                   
+                   
+                     <div class="form-group"  >
+                      			<label for="">Apprioval Authorty</label>
+                      	   <select id="select1"         class="form-control">
+                           
+                           <option value=""><--Select--></option>
+                           <option value="CRM">CRM</option>
+                           
+                           <option value="CBD">CBD</option>
+                           <option value="Agri">Agri</option>
+
+                           <option value="SME">SME</option>
+
+                            </select>
+             
+                    		</div>
+                   
+                   
+                   
+                   </div>
                    
                       <div class="col-md-6"></div>
                    
@@ -630,11 +667,6 @@
                         
 
 
-                              <div class="form-group"  >
-                      			<label for="">Booking Branch</label>
-                      	        <select id="select3"   runat="server"       class="form-control">
-                                </select>
-                    		</div>
 
  
                              
@@ -643,23 +675,24 @@
                   <input type="file" id="sanc_doc"/>
                   
                 </div>
-
+                 <h3>Facility Details</h3>
                 <hr />
 
-                 <h3>Facility Details</h3>
+                
 
     <button type="button" id="btnAddMore">+ Add More</button>
 
-    <table id="tblLoan" class="table  table-responsive ">
+    <table id="tblLoan" class="table  table-responsive table-bordered ">
         <thead>
             <tr>
                
- <th>SL#</th>
-                 <th>Customer ID</th>
+                <th>SL#</th>
+                <th>Customer ID</th>
                 <th>Nature of Facility</th>
                 <th>Amount</th>
                 <th>Validity</th>
                 <th>Action</th>
+
             </tr>
         </thead>
         <tbody id="facilityBody"></tbody>
@@ -675,7 +708,7 @@
                 	 
 				</div><!-- /.box -->
 			</div>
-		</div>
+		 
       
     </section>
 </asp:Content>
