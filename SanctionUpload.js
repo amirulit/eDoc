@@ -85,6 +85,17 @@ $(document).ready(function () {
                 .val(item.id)
                 .text(item.text)
         );
+
+
+            
+
+         ("#ddlCustomerCode").append(
+            $("<option></option>")
+                .val(item.id)
+                .text(item.text)
+        );
+
+
         });
 
         $dropdown = $row.find(".natureOfFacility");
@@ -96,6 +107,16 @@ $(document).ready(function () {
                 .val(item.short_name)
                 .text(item.name)
         );
+
+
+        ("#ddlLoanNature").append(
+            $("<option></option>")
+                .val(item.short_name)
+                .text(item.name)
+        );
+
+
+
         });
 
 
