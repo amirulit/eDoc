@@ -65,6 +65,9 @@ $(document).ready(function () {
     // Add a loan row
     $("#btnAdd").on("click", function () {
 
+
+
+
         var customerCode = $.trim($("#ddlCustomerCode").val());
         var loanNature = $("#ddlLoanNature").val();
         var amount = $("#txtAmount").val();
