@@ -1,0 +1,353 @@
+
+<!-- Loan input form -->
+<div class="row">
+    <div class="col-md-3">
+        <label>Customer Code</label>
+        <input type="text" id="txtCustomerCode" class="form-control"
+               placeholder="Customer Code" />
+    </div>
+
+    <div class="col-md-3">
+        <label>Loan Nature</label>
+        <select id="ddlLoanNature" class="form-control">
+            <option value="">-- Select Loan Nature --</option>
+            <option value="Personal Loan">Personal Loan</option>
+            <option value="Home Loan">Home Loan</option>
+            <option value="Business Loan">Business Loan</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <label>Amount</label>
+        <input type="number" id="txtAmount" class="form-control"
+               min="0.01" step="0.01" placeholder="Amount" />
+    </div>
+
+    <div class="col-md-2">
+        <label>Validity</label>
+        <input type="date" id="txtValidity" class="form-control" />
+    </div>
+
+    <div class="col-md-2">
+        <label>&nbsp;</label>
+        <button type="button" id="btnAdd" class="btn btn-primary form-control">
+            + Add
+        </button>
+    </div>
+</div>
+
+<hr />
+
+<!-- Added loan rows -->
+<table class="table table-bordered table-striped" id="tblLoans">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Customer Code</th>
+            <th>Loan Nature</th>
+            <th>Amount</th>
+            <th>Validity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<button type="button" id="btnSaveAll" class="btn btn-success">
+    Save All
+</button>
+
+<span id="lblMessage" style="margin-left:10px;"></span>
+
+
+
+
+$(document).ready(function () {
+
+    var loans = [];
+
+    // Add a loan row
+    $("#btnAdd").on("click", function () {
+
+        var customerCode = $.trim($("#txtCustomerCode").val());
+        var loanNature = $("#ddlLoanNature").val();
+        var amount = $("#txtAmount").val();
+        var validity = $("#txtValidity").val();
+
+        if (!customerCode || !loanNature || !amount || !validity) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (!Number.isFinite(Number(amount)) || Number(amount) <= 0) {
+            alert("Please enter a valid amount greater than zero.");
+            return;
+        }
+
+        loans.push({
+            CustomerCode: customerCode,
+            LoanNature: loanNature,
+            Amount: Number(amount),
+            Validity: validity
+        });
+
+        renderTable();
+
+        // Clear fields after adding
+        $("#txtCustomerCode").val("");
+        $("#ddlLoanNature").val("");
+        $("#txtAmount").val("");
+        $("#txtValidity").val("");
+        $("#txtCustomerCode").focus();
+    });
+
+    // Render all rows safely
+    function renderTable() {
+
+        var tbody = $("#tblLoans tbody");
+        tbody.empty();
+
+        $.each(loans, function (index, loan) {
+
+            var tr = $("<tr>");
+
+            $("<td>").text(index + 1).appendTo(tr);
+            $("<td>").text(loan.CustomerCode).appendTo(tr);
+            $("<td>").text(loan.LoanNature).appendTo(tr);
+            $("<td>").text(loan.Amount.toFixed(2)).appendTo(tr);
+            $("<td>").text(loan.Validity).appendTo(tr);
+
+            var removeButton = $("<button>", {
+                type: "button",
+                class: "btn btn-danger btn-sm",
+                text: "Remove"
+            });
+
+            removeButton.on("click", function () {
+                loans.splice(index, 1);
+                renderTable();
+            });
+
+            $("<td>").append(removeButton).appendTo(tr);
+            tbody.append(tr);
+        });
+    }
+
+    // Save all rows through ASP.NET WebMethod
+    $("#btnSaveAll").on("click", function () {
+
+        if (loans.length === 0) {
+            alert("Please add at least one loan.");
+            return;
+        }
+
+        var button = $(this);
+        button.prop("disabled", true);
+        $("#lblMessage").text("Saving...");
+
+        $.ajax({
+            type: "POST",
+            url: "LoanEntry.aspx/SaveAllLoans",
+            data: JSON.stringify({ loans: loans }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+
+                var result = response.d;
+
+                if (result && result.Success) {
+                    alert(result.Message);
+
+                    loans = [];
+                    renderTable();
+                    $("#lblMessage").text(result.Message);
+                } else {
+                    $("#lblMessage").text(
+                        result ? result.Message : "Unable to save."
+                    );
+                }
+            },
+
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                $("#lblMessage").text("Error saving loan records.");
+            },
+
+            complete: function () {
+                button.prop("disabled", false);
+            }
+        });
+    });
+
+});
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Web.Services;
+using System.Web.Script.Services;
+
+public partial class LoanEntry : System.Web.UI.Page
+{
+    public class LoanEntryModel
+    {
+        public string CustomerCode { get; set; }
+        public string LoanNature { get; set; }
+        public decimal Amount { get; set; }
+        public string Validity { get; set; }
+    }
+
+    public class SaveResult
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static SaveResult SaveAllLoans(List<LoanEntryModel> loans)
+    {
+        if (loans == null || loans.Count == 0)
+        {
+            return new SaveResult
+            {
+                Success = false,
+                Message = "No loan records received."
+            };
+        }
+
+        // Validate the received data on the server.
+        foreach (var loan in loans)
+        {
+            DateTime validityDate;
+
+            if (loan == null ||
+                string.IsNullOrWhiteSpace(loan.CustomerCode) ||
+                string.IsNullOrWhiteSpace(loan.LoanNature) ||
+                loan.Amount <= 0 ||
+                !DateTime.TryParseExact(
+                    loan.Validity,
+                    "yyyy-MM-dd",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out validityDate))
+            {
+                return new SaveResult
+                {
+                    Success = false,
+                    Message = "Invalid loan data. Please check all fields."
+                };
+            }
+        }
+
+        string connectionString =
+            ConfigurationManager.ConnectionStrings["MyConnection"]
+                                 .ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+            con.Open();
+
+            using (SqlTransaction transaction = con.BeginTransaction())
+            {
+                try
+                {
+                    string sql = @"
+                        INSERT INTO dbo.CustomerLoans
+                        (
+                            CustomerCode,
+                            LoanNature,
+                            Amount,
+                            Validity
+                        )
+                        VALUES
+                        (
+                            @CustomerCode,
+                            @LoanNature,
+                            @Amount,
+                            @Validity
+                        )";
+
+                    foreach (var loan in loans)
+                    {
+                        using (SqlCommand cmd =
+                            new SqlCommand(sql, con, transaction))
+                        {
+                            cmd.Parameters.Add(
+                                "@CustomerCode", SqlDbType.NVarChar, 50)
+                                .Value = loan.CustomerCode.Trim();
+
+                            cmd.Parameters.Add(
+                                "@LoanNature", SqlDbType.NVarChar, 100)
+                                .Value = loan.LoanNature.Trim();
+
+                            SqlParameter amountParam =
+                                cmd.Parameters.Add(
+                                    "@Amount", SqlDbType.Decimal);
+
+                            amountParam.Precision = 18;
+                            amountParam.Scale = 2;
+                            amountParam.Value = loan.Amount;
+
+                            cmd.Parameters.Add(
+                                "@Validity", SqlDbType.Date)
+                                .Value = DateTime.ParseExact(
+                                    loan.Validity,
+                                    "yyyy-MM-dd",
+                                    CultureInfo.InvariantCulture);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    transaction.Commit();
+
+                    return new SaveResult
+                    {
+                        Success = true,
+                        Message = loans.Count +
+                                  " loan record(s) saved successfully."
+                    };
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+
+                    // Log the exception on the server in production.
+                    return new SaveResult
+                    {
+                        Success = false,
+                        Message = "Failed to save records. No records were saved."
+                    };
+                }
+            }
+        }
+    }
+}
+
+
+
+CREATE TABLE dbo.CustomerLoans
+(
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerCode NVARCHAR(50) NOT NULL,
+    LoanNature NVARCHAR(100) NOT NULL,
+    Amount DECIMAL(18,2) NOT NULL,
+    Validity DATE NOT NULL
+);
+
+
+
+<connectionStrings>
+    <add name="MyConnection"
+         connectionString="Data Source=YOUR_SERVER;Initial Catalog=YOUR_DATABASE;Integrated Security=True;"
+         providerName="System.Data.SqlClient" />
+</connectionStrings>
+
+

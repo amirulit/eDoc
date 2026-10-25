@@ -1,0 +1,224 @@
+
+<div class="row">
+    <div class="col-md-3">
+        <label>Customer Code</label>
+        <select id="ddlCustomerCode" class="form-control">
+            <option value="">-- Select Customer --</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label>Loan Nature</label>
+        <select id="ddlLoanNature" class="form-control">
+            <option value="">-- Select Loan Nature --</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <label>Amount</label>
+        <input type="number" id="txtAmount"
+               class="form-control" min="0.01" step="0.01" />
+    </div>
+
+    <div class="col-md-2">
+        <label>Validity</label>
+        <input type="date" id="txtValidity" class="form-control" />
+    </div>
+
+    <div class="col-md-2">
+        <label>&nbsp;</label>
+        <button type="button" id="btnAdd"
+                class="btn btn-primary form-control">
+            + Add
+        </button>
+    </div>
+</div>
+
+<hr />
+
+<table class="table table-bordered table-striped" id="tblLoans">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Customer Code</th>
+            <th>Loan Nature</th>
+            <th>Amount</th>
+            <th>Validity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<button type="button" id="btnSaveAll" class="btn btn-success">
+    Save All
+</button>
+<span id="lblMessage"></span>
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Web.Services;
+using System.Web.Script.Services;
+
+public class DropdownItem
+{
+    public string Value { get; set; }
+    public string Text { get; set; }
+}
+
+[WebMethod]
+[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+public static List<DropdownItem> GetCustomerCodes()
+{
+    var items = new List<DropdownItem>();
+
+    string cs = ConfigurationManager
+        .ConnectionStrings["MyConnection"].ConnectionString;
+
+    using (SqlConnection con = new SqlConnection(cs))
+    using (SqlCommand cmd = new SqlCommand(
+        @"SELECT CustomerCode
+          FROM dbo.Customers
+          ORDER BY CustomerCode", con))
+    {
+        con.Open();
+
+        using (SqlDataReader dr = cmd.ExecuteReader())
+        {
+            while (dr.Read())
+            {
+                string code = dr["CustomerCode"].ToString();
+
+                items.Add(new DropdownItem
+                {
+                    Value = code,
+                    Text = code
+                });
+            }
+        }
+    }
+
+    return items;
+}
+
+[WebMethod]
+[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+public static List<DropdownItem> GetLoanNatures()
+{
+    var items = new List<DropdownItem>();
+
+    string cs = ConfigurationManager
+        .ConnectionStrings["MyConnection"].ConnectionString;
+
+    using (SqlConnection con = new SqlConnection(cs))
+    using (SqlCommand cmd = new SqlCommand(
+        @"SELECT LoanNatureId, LoanNatureName
+          FROM dbo.LoanNature
+          ORDER BY LoanNatureName", con))
+    {
+        con.Open();
+
+        using (SqlDataReader dr = cmd.ExecuteReader())
+        {
+            while (dr.Read())
+            {
+                items.Add(new DropdownItem
+                {
+                    Value = dr["LoanNatureId"].ToString(),
+                    Text = dr["LoanNatureName"].ToString()
+                });
+            }
+        }
+    }
+
+    return items;
+}
+
+
+
+$(document).ready(function () {
+
+    loadCustomerCodes();
+    loadLoanNatures();
+
+    function loadCustomerCodes() {
+        $.ajax({
+            type: "POST",
+            url: "LoanEntry.aspx/GetCustomerCodes",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+                var ddl = $("#ddlCustomerCode");
+                ddl.empty();
+                ddl.append(new Option("-- Select Customer --", ""));
+
+                $.each(response.d, function (i, item) {
+                    ddl.append(new Option(item.Text, item.Value));
+                });
+            },
+
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                alert("Unable to load customer codes.");
+            }
+        });
+    }
+
+    function loadLoanNatures() {
+        $.ajax({
+            type: "POST",
+            url: "LoanEntry.aspx/GetLoanNatures",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+                var ddl = $("#ddlLoanNature");
+                ddl.empty();
+                ddl.append(new Option("-- Select Loan Nature --", ""));
+
+                $.each(response.d, function (i, item) {
+                    ddl.append(new Option(item.Text, item.Value));
+                });
+            },
+
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                alert("Unable to load loan natures.");
+            }
+        });
+    }
+
+    // Continue with your existing Add, Remove and Save All code here.
+});
+
+
+var customerCode = $("#ddlCustomerCode").val();
+var customerName = $("#ddlCustomerCode option:selected").text();
+
+var loanNatureId = $("#ddlLoanNature").val();
+var loanNatureName = $("#ddlLoanNature option:selected").text();
+
+var amount = $("#txtAmount").val();
+var validity = $("#txtValidity").val();
+
+if (!customerCode || !loanNatureId || !amount || !validity) {
+    alert("Please select customer, loan nature, amount and validity.");
+    return;
+}
+
+loans.push({
+    CustomerCode: customerCode,
+    CustomerName: customerName,
+    LoanNature: loanNatureId,
+    LoanNatureName: loanNatureName,
+    Amount: Number(amount),
+    Validity: validity
+});
+
