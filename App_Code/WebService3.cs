@@ -913,6 +913,138 @@ public class WebService3 : System.Web.Services.WebService
     }
 
     [WebMethod]
+    public void UploadFiles_CD()
+    {
+
+        try
+        {
+
+            //Create the Directory.
+            //string path = HttpContext.Current.Server.MapPath("~/Uploads/");
+            //if (!Directory.Exists(path))
+            //{
+            //Directory.CreateDirectory(path);
+            //}
+
+            //Fetch the File.
+            HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
+
+            //Fetch the File Name.
+            //String fileName = HttpContext.Current.Request.Form["fileName"] + "_" + Path.GetExtension(postedFile.FileName);
+
+            Int32 edoc_id = Convert.ToInt32(HttpContext.Current.Request.Form["edoc_id"]);
+
+            String doc_type = HttpContext.Current.Request.Form["doc_type"].ToString();
+
+            String f_name = Path.GetFileName(postedFile.FileName);
+
+            String fileName = HttpContext.Current.Request.Form["edoc_id"] + "_" + Path.GetFileName(postedFile.FileName);
+
+            //String fileName = HttpContext.Current.Request.Form["file_no"] + "_" + f_name;
+
+            //Save the File.
+            //postedFile.SaveAs(path + fileName);
+
+            //postedFile.SaveAs(@"E:\tt\" + fileName + "_" + Path.GetFileName(postedFile.FileName));
+
+            postedFile.SaveAs(@"E:\eDoc_SanctionDoc\" + fileName);
+
+            //String SqlStr = "Insert into t_LoanInfo_SanctionLetter values (" + file_no + ",'" + fileName + "',getdate(),'" + HttpContext.Current.Session["DomainID"] + "','Uploaded','" + HttpContext.Current.Session["BranchCode"] + "')  ";
+
+            //File.AppendAllText(@"E:\LoanFileTracker_Error\Log.txt", SqlStr);
+
+            //SanctionLetterUpload(SqlStr); 
+
+            String err_msg = Document_Upload_CD(edoc_id, doc_type, f_name);
+
+
+            if (err_msg == "")
+            {
+                //Send OK Response to Client.
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+                HttpContext.Current.Response.Write(fileName);
+                HttpContext.Current.Response.Flush();
+            }
+            else
+            {
+                //Send OK Response to Client.
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.OK;
+                HttpContext.Current.Response.Write(err_msg);
+                HttpContext.Current.Response.Flush();
+            }
+        }
+        catch (Exception ex)
+        {
+            HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            HttpContext.Current.Response.Write(ex.Message);
+            HttpContext.Current.Response.Flush();
+        }
+    }
+
+
+    protected String Document_Upload_CD(Int32 edoc_id, String doc_type, String file_name)
+    {
+
+        Int32 i;
+
+        String ErrorMSG = "";
+
+        String ConStr = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+        SqlConnection connection = new SqlConnection(ConStr);
+
+        SqlCommand command = new SqlCommand();
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "usp_Document_Upload_By_CD";
+        command.Connection = connection;
+
+        SqlParameter[] parameters = 
+
+
+                    {
+
+
+                        new SqlParameter("@edoc_id",edoc_id), 
+                        new SqlParameter("@file_type",doc_type), 
+                        new SqlParameter("@file_name",file_name), 
+                        new SqlParameter("@by","Test")
+                    
+                    
+                    };
+
+
+        command.Parameters.AddRange(parameters);
+
+
+        try
+        {
+            connection.Open();
+            i = command.ExecuteNonQuery();
+            connection.Close();
+            if (i > 0)
+            {
+                //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('LOAN Proposal Created Successfully');window.location = 'ProposalListing.aspx';", true);
+                ErrorMSG = "";
+            }
+            else
+            {
+                ErrorMSG = "Error";
+                //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('OOOOOOOOOOPPS ! LOAN Proposal Creation failed');", true);
+            }
+        }
+
+        catch (Exception ex)
+        {
+            //lblStatus.Text = ex.Message;
+            //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Error Occured : " + ex.Message + "');", true);
+
+            ErrorMSG = ex.Message;
+        }
+        return ErrorMSG;
+
+    }
+
+    [WebMethod]
     public void UploadFiles_2()
     {
 
@@ -980,7 +1112,6 @@ public class WebService3 : System.Web.Services.WebService
             HttpContext.Current.Response.Flush();
         }
     }
-
 
 
     protected String Document_Upload_DM(Int32 dd_id, String doc_type, String file_name)

@@ -886,7 +886,7 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
         SqlCommand cmd = con.CreateCommand();
         cmd.CommandType = CommandType.Text;
 
-        cmd.CommandText = "select branch_code code,branch_name name from t_BranchInfo";
+        cmd.CommandText = " select '' code,'<--Select-->' name  union  all select branch_code code,branch_name name from t_BranchInfo";
         cmd.Connection = con;
 
         SqlDataAdapter da = new SqlDataAdapter(cmd);

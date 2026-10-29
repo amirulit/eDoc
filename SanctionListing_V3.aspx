@@ -560,6 +560,13 @@
                             //$("#btnUpload").attr("securities", securities);
 
 
+                            $('#modalUpdateform').modal('show');
+
+                            //var dd_id = $(this).attr("dd-id");
+
+                            $("#lblID").text(dd_id);
+
+
                         }
 
                         else {
@@ -774,6 +781,10 @@
     <!-- Start of table section -->
 
 
+    
+
+
+
     <div class="modal" id="sanctionModal" tabindex="-1" role="dialog" aria-labelledby="sanctionModalLabel">
 
     <div class="modal-dialog  modal-lg " role="document" >
@@ -782,7 +793,7 @@
 
             <div class="modal-header bg-primary">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="sanctionModalLabel">    Select Facility
+                <h4 class="modal-title" id="sanctionModalLabel">Select Facility
                 </h4>
             </div>
 

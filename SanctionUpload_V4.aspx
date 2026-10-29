@@ -49,7 +49,7 @@
 
 
 
-            $("#select1,#select2,#<%=select3.ClientID%>").select2({
+            $("#select1,#select2,#ContentPlaceHolder1_select3").select2({
                 placeholder: "<--Select-->",
                 allowClear: true
             });
@@ -269,6 +269,12 @@
                             //                            $("#btnUpload").attr("securities", securities);
 
 
+                            $('#modalUpdateform').modal('show');
+
+                            //var dd_id = $(this).attr("dd-id");
+
+                            $("#lblID").text(dd_id);
+
                         }
 
                         else {
@@ -361,6 +367,85 @@
 	</section>
     <!-- Main content -->
     <section class="content">
+
+
+    
+    
+    <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
+  		<div class="modal-dialog">
+    		<div class="container">
+            	<div class="row ">	
+           			<div class="col-md-6">
+                		<div class="panel">
+        					<div class="panel-heading bg-orange">                 
+        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          						<h4 class="modal-title custom_align" id="Heading">Document Upload</h4>
+                            </div>
+                            <div class="panel-body"> <!-- Start of modal body--> 
+
+
+
+
+                            ID # <span id="lblID" class="badge  badge-success"></span>
+                            <!--
+                                <div class="form-group" id="divSubjectUpdate">
+                                    <label for="">Subject</label>
+                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off"/>
+                                </div> 
+                                -->
+                                <%-- <div class="form-group" id="div2">
+                                 Please upload following documents :
+
+                                 <ul>
+                                 
+                                    <li>Checklist Scancopy</li>
+                                    <li>Accepted Scancopy</li>
+                                    <li>Board Resolution</li>
+                                    <li>Others</li>
+
+
+                                 </ul>
+                                 </div>--%>
+
+
+                                  <div class="form-group"  >
+                      			<label for="">Document Type</label>
+                      	     <select id="select8"   runat="server"       class="form-control">
+
+
+                   <option value="Sanction Document">Sanction Document</option>
+                   <option value="Others">Others</option>
+                  
+                   
+                  
+                   </select>
+
+                       
+             
+                    		</div>
+
+ 
+                                <div class="form-group" id="div1">
+                                     <input id="fileUploadID" type="file"  multiple />
+ 
+                                </div> 
+
+                                  <div id='r'>
+                        </div>
+
+
+
+                            </div><!--/.modal body-->
+                            <div class="panel-footer bg-gray-light">
+                                <input type="hidden" id="id" name="id" value="" />
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
+        	  				</div><!--/.panel-footer--> 
+            			</div><!--/.panel-->
+            		</div><!--/.col-md-6-->
+            	</div><!--/.row-->                                        
+        	</div><!-- /.modal-content -->  		 
+		</div><!-- /.modal-dialog -->            
+	</div><!--/.Modal-Update form -->   
 
 
     <div class="row">
@@ -497,10 +582,10 @@
                             
 
 
-                        
+                        <hr />
 
 
-
+                        <!--
  
                              
                               <div class="form-group">
@@ -508,6 +593,12 @@
                   <input type="file" id="sanc_doc"/>
                   
                 </div>
+
+
+                -->
+
+
+
                  <h3>Facility Details</h3>
                 <hr />
 
@@ -568,10 +659,9 @@
     </thead>
     <tbody></tbody>
 </table>
+ 
 
-<button type="button" id="btnSaveAll" class="btn btn-success">
-    Save All
-</button>
+
 
 
 <span id="lblMessage"></span>
@@ -589,6 +679,10 @@
                   		</div><!-- /.box-body -->
                   		<div class="box-footer">
                   			<input type="hidden" name="do" value="add_grade" />
+
+                            <button type="button" id="btnSaveAll" class="btn btn-success">Save All</button>
+
+
                     		<button type="button" class="btn btn-primary" id="btnSave">Save</button>
 
                             <button type="button" class="btn btn-primary" id="btnSave2">Save</button>
