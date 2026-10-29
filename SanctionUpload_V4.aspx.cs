@@ -9,6 +9,7 @@ using System.Web.Services;
 using System.Data;
 using System.Web.Script.Services;
 using System.Configuration;
+using System.IO;
 
 public partial class SanctionUpload_V4 : System.Web.UI.Page
 {
@@ -42,8 +43,34 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
         }
 
+
+        if (!IsPostBack)
+        {
+            LoadNextRefNo();
+        }
+
     }
 
+
+
+
+    private void LoadNextRefNo()
+    {
+        string connectionString =ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+        string query = @"
+
+	SELECT NEXT VALUE FOR EDOC_Seq AS EDOC_Seq;";
+
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+                txtEdocId.Text = Convert.ToString(cmd.ExecuteScalar());
+            }
+        }
+    }
 
     public class DropdownData
     {
@@ -175,9 +202,9 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand(
                 @"
-            SELECT LEFT(loan_nature, 20) AS name,
-                   loan_nature_short AS short_name
-            FROM t_LoanNature", con))
+            SELECT LEFT(loan_nature, 70) AS name,
+                   id id
+            FROM t_LoanNature_V2", con))
             {
                 con.Open();
 
@@ -187,7 +214,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
                     {
                         items.Add(new DropdownItem
                         {
-                            Value = dr["short_name"].ToString(),
+                            Value = dr["id"].ToString(),
                             Text = dr["name"].ToString()
                         });
                     }
@@ -331,24 +358,26 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
 
 
-    public class SanctionRequest
+    public class SanctionUpload
     {
         public string EdocId { get; set; }
         public string Branch { get; set; }
         public string SanctionReference { get; set; }
-        public DateTime SanctionDate { get; set; }
+        public string SanctionDate { get; set; }
         public string Segment { get; set; }
         public string ApprovalAuthority { get; set; }
+        public Double TotalAmount { get; set; }
 
-        public List<FacilityRequest> Facilities { get; set; }
+        public List<FacilityDetail> Facilities { get; set; }
     }
 
-    public class FacilityRequest
+    public class FacilityDetail
     {
-        public string CustomerId { get; set; }
-        public string NatureOfFacility { get; set; }
+        public string CustomerCode { get; set; }
+        public string CustomerName { get; set; }
+        public string LoanNature { get; set; }
         public decimal Amount { get; set; }
-        public DateTime Validity { get; set; }
+        public string Validity { get; set; }
     }
 
     public class SaveResult
@@ -359,17 +388,31 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
 
 
+
+
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static SaveResult SaveSanction(SanctionRequest request)
+    public static SaveResult SaveSanction_V2(SanctionUpload request)
     {
+
+        String refno;
+
+        String Sql = "";
+
+        String Sts;
+
+        int sanctionId;
+
+        String edoc_ref_no;
+
+
+        String Inputter = HttpContext.Current.Session["DomainID"].ToString();
+
         if (request == null ||
-            string.IsNullOrWhiteSpace(request.Branch) ||
-            string.IsNullOrWhiteSpace(request.SanctionReference) ||
-            string.IsNullOrWhiteSpace(request.Segment) ||
-            string.IsNullOrWhiteSpace(request.ApprovalAuthority) ||
-            request.Facilities == null ||
-            request.Facilities.Count == 0)
+            String.IsNullOrWhiteSpace(request.Branch) ||
+            String.IsNullOrWhiteSpace(request.SanctionReference) ||
+            String.IsNullOrWhiteSpace(request.Segment) ||
+            String.IsNullOrWhiteSpace(request.ApprovalAuthority) || request.Facilities == null || request.Facilities.Count == 0)
         {
             return new SaveResult
             {
@@ -377,7 +420,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
                 Message = "Please provide all required sanction details."
             };
         }
-
+        /*
         if (request.SanctionDate == default(DateTime))
         {
             return new SaveResult
@@ -386,14 +429,15 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
                 Message = "Invalid sanction date."
             };
         }
+        */
 
-        foreach (FacilityRequest facility in request.Facilities)
+        foreach (FacilityDetail facility in request.Facilities)
         {
             if (facility == null ||
-                string.IsNullOrWhiteSpace(facility.CustomerId) ||
-                string.IsNullOrWhiteSpace(facility.NatureOfFacility) ||
-                facility.Amount < 0 ||
-                facility.Validity == default(DateTime))
+                String.IsNullOrWhiteSpace(facility.CustomerCode) ||
+                String.IsNullOrWhiteSpace(facility.LoanNature) ||
+                facility.Amount < 0 /*|| facility.Validity == default(DateTime)*/
+                )
             {
                 return new SaveResult
                 {
@@ -403,7 +447,266 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
             }
         }
 
-        string connectionString =
+        String connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+
+
+
+        Sql = @"
+
+                
+
+DECLARE @FileCreatedDate DATE = GETDATE();
+DECLARE @Year INT = YEAR(@FileCreatedDate);
+DECLARE @NextNumber INT;
+DECLARE @edoc_ref_no varchar(500);
+
+SELECT @NextNumber =
+    ISNULL(count(*), 0) + 1
+FROM t_Sanction_Master
+WHERE   YEAR(entry_time) = @Year;
+
+set @edoc_ref_no=CONCAT(@Year, '', FORMAT(@NextNumber, '00000')) 
+
+
+
+INSERT INTO [dbo].[t_Sanction_Master]
+           ([edoc_id]
+           ,[edoc_refno]
+           ,[booking_branch]
+           ,[sanction_reference]
+           ,[sanction_date]
+           ,[sanction_segment]
+           ,[sanction_approval_authority]
+           ,[total_amount]
+           ,[customer_id]
+           ,[sanction_doc]
+           ,[status]
+           ,[ssc_status]
+           ,[entry_by]
+           ,[entry_time]
+           ,[sanction_reference_org]
+           ,[sanction_date_org]
+           ,[sanction_segment_org]
+           ,[sanction_Approval_authority_org]
+           ,[entry_by_org]
+           ,[entry_time_org])
+     VALUES
+           (" + request.EdocId + @"
+           ,@edoc_ref_no
+           ,'" + request.Branch + @"'
+           ,'" + request.SanctionReference + @"'
+           ,'" + request.SanctionDate + @"'
+           ,'" + request.Segment + @"'
+           ,'" + request.ApprovalAuthority + @"'
+           ," + request.TotalAmount + @"
+           ,null
+           ,null
+           ,1
+           ,1
+           ,'" + Inputter + @"'
+           ,getdate()
+           ,'" + request.SanctionReference + @"'
+           ,'" + request.SanctionDate + @"'
+           ,'" + request.Segment + @"'
+           ,'" + request.ApprovalAuthority + @"'
+           ,'" + Inputter + @"'
+           ,getdate()
+
+
+)";
+
+
+          Sql = Sql + @"  --SELECT CAST(SCOPE_IDENTITY() AS INT);
+
+select @edoc_ref_no edoc_ref_no
+
+";
+
+
+
+
+        foreach (FacilityDetail facility
+in request.Facilities)
+        {
+
+            Sql = Sql + @"
+
+
+ 
+
+
+
+
+INSERT INTO [dbo].[t_Sanction_Master_Details]
+           ([edoc_id]
+           ,[edoc_refno]
+           ,[sanction_reference]
+           ,[customer_id]
+           ,[customer_name]
+           ,[loan_nature]
+           ,[loan_nature_edoc]
+           ,[currency]
+           ,[amount]
+           ,[validity]
+           ,[entry_by]
+           ,[entry_time]
+           ,[sanction_reference_org]
+           ,[facility_nature_org]
+           ,[currency_org]
+           ,[amount_org]
+           ,[validity_org]
+           ,[entry_by_org]
+           ,[entry_time_org])
+     VALUES
+           (" + request.EdocId + @"
+
+         ,@edoc_ref_no
+         ,'" + request.SanctionReference + @"'
+         ,'" + facility.CustomerCode + @"'
+         ,'" + facility.CustomerName + @"'
+         ,'" + facility.LoanNature + @"'
+         ,'" + facility.LoanNature + @"'
+         ,'BDT'
+         ,'" + facility.Amount + @"'
+         ,'" + facility.Validity + @"'
+         ,'" + Inputter + @"'
+         ,getdate()
+         ,'" + request.SanctionReference + @"'
+         ,'" + facility.LoanNature + @"'
+         ,'BDT'
+         ,'" + facility.Amount + @"'
+         ,'" + facility.Validity + @"'
+         ,'" + Inputter + @"'
+         ,getdate()
+
+
+)
+ 
+";
+
+        }
+
+
+
+        String InputDate = System.DateTime.Now.ToString("yyyyMMdd");
+
+        //File.WriteAllText(@"E:\SOD\Sql.sql", Sql);
+        File.AppendAllText(@"E:\eDoc_SQL\Sql_" + InputDate + ".sql", Sql + "\n\n===============================================================\n");
+
+
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+
+
+
+                //SqlCommand cmd = new SqlCommand(Sql, conn, transaction);
+                SqlCommand cmd = new SqlCommand(Sql, conn);
+
+                //cmd.ExecuteNonQuery();
+
+                //sanctionId = Convert.ToInt32(cmd.ExecuteScalar());
+
+                edoc_ref_no = Convert.ToString(cmd.ExecuteScalar());
+
+                
+
+                //object result = cmd.ExecuteScalar();
+
+                //sl = Convert.ToInt32(result);
+
+                //refno = result.ToString();
+
+                //transaction.Commit();
+                //return "Records inserted successfully!";
+                Sts = "Records inserted successfully!";
+
+
+
+
+            }
+
+            return new SaveResult
+            {
+                Success = true,
+                Message = "Sanction saved successfully." + edoc_ref_no
+            };
+
+
+        }
+        catch (Exception ex)
+        {
+            // Log ex on the server using your logging framework.
+            // Do not return database exception details to the client.
+
+
+            Sts = "Error: " + ex.Message;
+
+
+            File.AppendAllText(@"E:\SOD_SQL\SqlError_" + InputDate + ".sql", Sts + "\n\n===============================================================\n");
+
+            return new SaveResult
+            {
+                Success = false,
+                Message = "Unable to save sanction details. Please try again."
+            };
+        }
+    }
+
+
+
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static SaveResult SaveSanction(SanctionUpload request)
+    {
+        if (request == null ||
+            String.IsNullOrWhiteSpace(request.Branch) ||
+            String.IsNullOrWhiteSpace(request.SanctionReference) ||
+            String.IsNullOrWhiteSpace(request.Segment) ||
+            String.IsNullOrWhiteSpace(request.ApprovalAuthority) || request.Facilities == null || request.Facilities.Count == 0)
+        {
+            return new SaveResult
+            {
+                Success = false,
+                Message = "Please provide all required sanction details."
+            };
+        }
+
+        //if (request.SanctionDate == default(DateTime))
+        //{
+        //    return new SaveResult
+        //    {
+        //        Success = false,
+        //        Message = "Invalid sanction date."
+        //    };
+        //}
+
+        foreach (FacilityDetail facility in request.Facilities)
+        {
+            if (facility == null ||
+                String.IsNullOrWhiteSpace(facility.CustomerCode) ||
+                String.IsNullOrWhiteSpace(facility.LoanNature) ||
+                facility.Amount < 0 
+                
+                /*||
+                facility.Validity == default(DateTime)*/
+                )
+            {
+                return new SaveResult
+                {
+                    Success = false,
+                    Message = "Invalid facility details."
+                };
+            }
+        }
+
+        String connectionString =
             ConfigurationManager
                 .ConnectionStrings["dbConn"]
                 .ConnectionString;
@@ -458,10 +761,10 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
                                 .Value =
                                     request.SanctionReference.Trim();
 
-                            cmd.Parameters.Add(
-                                "@SanctionDate",
-                                SqlDbType.Date)
-                                .Value = request.SanctionDate.Date;
+                            //cmd.Parameters.Add(
+                            //    "@SanctionDate",
+                            //    SqlDbType.Date)
+                            //    .Value = request.SanctionDate.Date;
 
                             cmd.Parameters.Add(
                                 "@Segment",
@@ -497,7 +800,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
                                     @Validity
                                 );";
 
-                        foreach (FacilityRequest facility
+                        foreach (FacilityDetail facility
                             in request.Facilities)
                         {
                             using (SqlCommand cmd =
@@ -515,13 +818,13 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
                                     "@CustomerId",
                                     SqlDbType.NVarChar, 50)
                                     .Value =
-                                        facility.CustomerId.Trim();
+                                        facility.CustomerCode.Trim();
 
                                 cmd.Parameters.Add(
                                     "@Nature",
                                     SqlDbType.NVarChar, 150)
                                     .Value =
-                                        facility.NatureOfFacility.Trim();
+                                        facility.LoanNature.Trim();
 
                                 SqlParameter amountParam =
                                     cmd.Parameters.Add(
@@ -532,10 +835,10 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
                                 amountParam.Scale = 2;
                                 amountParam.Value = facility.Amount;
 
-                                cmd.Parameters.Add(
-                                    "@Validity",
-                                    SqlDbType.Date)
-                                    .Value = facility.Validity.Date;
+                                //cmd.Parameters.Add(
+                                //    "@Validity",
+                                //    SqlDbType.Date)
+                                //    .Value = facility.Validity.Date;
 
                                 cmd.ExecuteNonQuery();
                             }
@@ -569,6 +872,8 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
             };
         }
     }
+
+
 
     protected void LoadBranch()
     {

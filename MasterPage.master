@@ -78,6 +78,7 @@
     <script type="text/javascript" src="plugins/daterangepicker/daterangepicker.js"></script>
     <!-- page script -->
     <script type="text/javascript">
+
         $(function () {
 
             $(".docTable").DataTable();
@@ -91,6 +92,7 @@
                 "autoWidth": false
             });
         });
+
     </script>
     <!-- Here is the End of page script-->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

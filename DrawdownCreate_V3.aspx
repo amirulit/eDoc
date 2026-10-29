@@ -472,6 +472,6 @@
 				</div><!-- /.box -->
 			</div>
 		</div>
-
+        </div>
     </section>
 </asp:Content>

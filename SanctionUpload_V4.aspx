@@ -2,6 +2,8 @@
     CodeFile="SanctionUpload_V4.aspx.cs" Inherits="SanctionUpload_V4" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+
     <style type="text/css">
         .select2-container--default .select2-selection--multiple .select2-selection__choice
         {
@@ -13,23 +15,25 @@
             padding: 5px;
         }
     </style>
+
+
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
-   
-
     <script src="SanctionUpload_V2.js" type="text/javascript"></script>
-
-
     <script type="text/javascript">
 
 
         $(document).ready(function () {
 
 
-            $("#txtSanctionDate").datepicker
+            $("#txtSanctionDate,#txtValidity").datepicker
             ({
-                appendText: "(dd/mm/yy)",
-                dateFormat: "dd/mm/yy",
+                //appendText: "(dd/mm/yy)",
+                //dateFormat: "dd/mm/yy",
+
+                appendText: "(yy-mm-dd)",
+                dateFormat: "yy-mm-dd",
+
                 altField: "#datepicker-4",
                 altFormat: "DD, d MM, yy",
                 showOn: "both",
@@ -40,7 +44,7 @@
                 changeYear: true
 
             });
-           
+
 
 
 
@@ -336,6 +340,10 @@
 
             });
 
+
+
+
+
         });
 
     </script>
@@ -377,7 +385,10 @@
 
                           <div class="form-group" >
                       			        <label for="">EDoc ID#</label>
-                      			        <input type="text" class="form-control" id="txtEdocId"  name="name" autocomplete="off"/>
+
+                                        <asp:TextBox ID="txtEdocId" runat="server" class="form-control"   disabled ></asp:TextBox>
+
+                      			        
                     		    </div>
                         </div>
 
@@ -458,7 +469,7 @@
                    
                    
                      <div class="form-group"  >
-                      			<label for="">Apprioval Authorty</label>
+                      			<label for="">Approval Authorty</label>
                       	   <select id="select1"         class="form-control">
                            
                            <option value=""><--Select--></option>
@@ -530,7 +541,7 @@
 
     <div class="col-md-2">
         <label>Validity</label>
-        <input type="date" id="txtValidity" class="form-control" />
+        <input type="text" id="txtValidity" class="form-control" />
     </div>
 
     <div class="col-md-2">
@@ -541,7 +552,6 @@
         </button>
     </div>
 </div>
-
 <hr />
 
 <table class="table table-bordered table-striped" id="tblLoans">
@@ -549,6 +559,7 @@
         <tr>
             <th>SL</th>
             <th>Customer Code</th>
+            <th>Customer Name</th>
             <th>Loan Nature</th>
             <th>Amount</th>
             <th>Validity</th>
@@ -561,6 +572,8 @@
 <button type="button" id="btnSaveAll" class="btn btn-success">
     Save All
 </button>
+
+
 <span id="lblMessage"></span>
 
 
@@ -588,6 +601,7 @@
 			</div>
 		 
       
+</div>
     </section>
 </asp:Content>
 <asp:Content ID="aa" ContentPlaceHolderID="ScriptContent" runat="server">

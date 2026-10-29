@@ -69,6 +69,7 @@ $(document).ready(function () {
 
 
         var customerCode = $.trim($("#ddlCustomerCode").val());
+        var customerName = $("#ddlCustomerCode option:selected").text();
         var loanNature = $("#ddlLoanNature").val();
         var amount = $("#txtAmount").val();
         var validity = $("#txtValidity").val();
@@ -88,6 +89,7 @@ $(document).ready(function () {
 
         loans.push({
             CustomerCode: customerCode,
+            CustomerName: customerName,
             LoanNature: loanNature,
             Amount: Number(amount),
             Validity: validity
@@ -119,6 +121,8 @@ $(document).ready(function () {
 
             $("<td>").text(index + 1).appendTo(tr);
             $("<td>").text(loan.CustomerCode).appendTo(tr);
+            $("<td>").text(loan.CustomerName).appendTo(tr);
+
             $("<td>").text(loan.LoanNature).appendTo(tr);
             $("<td>").text(loan.Amount.toFixed(2)).appendTo(tr);
             $("<td>").text(loan.Validity).appendTo(tr);
@@ -142,21 +146,144 @@ $(document).ready(function () {
 
 
     // Save all rows through ASP.NET WebMethod
+    /*
     $("#btnSaveAll").on("click", function () {
 
-        if (loans.length === 0) {
-            alert("Please add at least one loan.");
-            return;
-        }
+    if (loans.length === 0) {
+    alert("Please add at least one loan.");
+    return;
+    }
+
+    var button = $(this);
+    button.prop("disabled", true);
+    $("#lblMessage").text("Saving...");
+
+    $.ajax({
+    type: "POST",
+    url: "SanctionUpload_V4.aspx/SaveAllLoans",
+    data: JSON.stringify({ loans: loans }),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+
+    success: function (response) {
+
+    var result = response.d;
+
+    if (result && result.Success) {
+    alert(result.Message);
+
+    loans = [];
+    renderTable();
+    $("#lblMessage").text(result.Message);
+    } else {
+    $("#lblMessage").text(
+    result ? result.Message : "Unable to save."
+    );
+    }
+    },
+
+    error: function (xhr) {
+    console.error(xhr.responseText);
+    $("#lblMessage").text("Error saving loan records.");
+    },
+
+    complete: function () {
+    button.prop("disabled", false);
+    }
+    });
+    });
+    */
+
+    $("#btnSaveAll").on("click", function () {
+
+
+
+        // Optional: Clear the array first if you want to fresh-load it from the table
+
+
+
+        var data = {};
+
+
+
+
+        data.EdocId = $("#ContentPlaceHolder1_txtEdocId").val();
+        data.Branch = $("#ContentPlaceHolder1_select3").val();
+        data.SanctionReference = $("#txtSanctionReference").val();
+        data.SanctionDate = $("#txtSanctionDate").val();
+        data.Segment = $("#select2").val();
+        data.ApprovalAuthority = $("#select1").val();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var tot_amount = 0.00;
+
+        var facilityDetails = [];
+
+        // Iterate through each row in the table body
+        $("#tblLoans tbody tr").each(function () {
+
+            var $row = $(this);
+
+            // Extract text from specific columns based on your renderTable structure:
+            var customerCode = $row.find("td:eq(1)").text().trim();
+            var customerName = $row.find("td:eq(2)").text().trim();
+
+            var loanNature = $row.find("td:eq(3)").text().trim();
+            var amountText = $row.find("td:eq(4)").text().trim();
+            var validity = $row.find("td:eq(5)").text().trim();
+
+            // Convert the amount string back to a float (removes commas if formatting added them)
+            var amount = parseFloat(amountText.replace(/,/g, "")) || 0;
+
+            tot_amount = tot_amount + amount
+
+            customerName = customerName.split("-")[0];
+
+
+            // Push the structured object into your loans array
+            facilityDetails.push({
+                CustomerCode: customerCode,
+                CustomerName: customerName,
+                LoanNature: loanNature,
+                Amount: amount,
+                Validity: validity
+            });
+        });
+
+
+        data.TotalAmount = tot_amount;
+
+        data.Facilities = facilityDetails;
+
+        console.log(data);
+
+
 
         var button = $(this);
         button.prop("disabled", true);
         $("#lblMessage").text("Saving...");
 
+
+
         $.ajax({
             type: "POST",
-            url: "SanctionUpload_V4.aspx/SaveAllLoans",
-            data: JSON.stringify({ loans: loans }),
+            url: "SanctionUpload_V4.aspx/SaveSanction_V2",
+            data: JSON.stringify({ request: data }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
 
@@ -167,13 +294,11 @@ $(document).ready(function () {
                 if (result && result.Success) {
                     alert(result.Message);
 
-                    loans = [];
-                    renderTable();
+                    //loans = [];
+                    //renderTable();
                     $("#lblMessage").text(result.Message);
                 } else {
-                    $("#lblMessage").text(
-                        result ? result.Message : "Unable to save."
-                    );
+                    $("#lblMessage").text(result ? result.Message : "Unable to save.");
                 }
             },
 
@@ -185,9 +310,14 @@ $(document).ready(function () {
             complete: function () {
                 button.prop("disabled", false);
             }
-        });
-    });
 
+
+        });
+
+
+
+
+    });
 
 
 
