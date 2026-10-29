@@ -298,7 +298,7 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
                         new SqlParameter("@edoc_refno",edocRefNo), 
 
 
-
+                          new SqlParameter("@row_ids",rowIds), 
                         new SqlParameter("@cus_ids",customerIds), 
                         new SqlParameter("@cus_types",customerTypes), 
                         new SqlParameter("@loan_types",loanTypes), 
