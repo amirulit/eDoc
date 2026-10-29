@@ -49,9 +49,10 @@
 
 
 
-            $("#select1,#select2,#ContentPlaceHolder1_select3").select2({
+            $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8").select2({
                 placeholder: "<--Select-->",
-                allowClear: true
+                allowClear: true,
+                width: "100%"
             });
 
 
@@ -410,7 +411,7 @@
 
                                   <div class="form-group"  >
                       			<label for="">Document Type</label>
-                      	     <select id="select8"   runat="server"       class="form-control">
+                      	     <select id="select8"        class="form-control">
 
 
                    <option value="Sanction Document">Sanction Document</option>
