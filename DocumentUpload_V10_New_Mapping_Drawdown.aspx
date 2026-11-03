@@ -1128,6 +1128,61 @@
 
             });
 
+
+            $('#btnOpenModal').click(function () {
+                $('#myModal').modal('show');
+            });
+
+
+        });
+
+    </script>
+    <script type="text/javascript">
+
+        $(function () {
+
+
+            $("#detailModal").dialog({
+                autoOpen: false,
+                modal: true,
+                width: "90%",
+                maxWidth: 1100,
+                height: "auto",
+                resizable: true,
+                draggable: true,
+                closeOnEscape: true,
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            //$("body").on("click", ".V", function () {
+
+
+            //$(".V").click(function () {
+
+            $(".details").click(function () {
+
+
+                var keyNo = $(this).attr("data-keyNo");
+
+                //alert(id);
+
+                $("#keyNo").val(keyNo);
+
+
+                $("#detailModal").dialog("open");
+
+
+
+
+            });
+
+
+
+
         });
 
     </script>
@@ -1246,17 +1301,65 @@
 </head>
 <body>
     <form id="form1" runat="server">
-
-    <div style="text-align: center;  padding-top:10px;">
-     <input type="button" value="Close" onclick="window.close();" class="btn btn-danger" />
+    <div id="detailModal" title="Document Details" style="display: none;">
+        <div class="form-group">
+            <label>
+                Primary Key No.</label>
+            <select id="ddlPK" class="form-control">
+                <option value="">Select Primary Key</option>
+                <option value="7">7 - Approval Authority</option>
+                <option value="43">43 - Deed Number</option>
+                <option value="44">44 - Original/Certified/Photocopy</option>
+                <option value="45">45 - Deed Number</option>
+                <option value="46">46 - Deed Number</option>
+                <option value="49">49 - Deed Number</option>
+                <option value="53">53 - Khatian Number</option>
+                <option value="62">62 - Valuation Company</option>
+                <option value="74">74 - Deed Number</option>
+                <option value="80">80 - Original/Certified</option>
+                <option value="82">82 - Original/Certified</option>
+                <option value="85">85 - Deed Number</option>
+                <option value="86">86 - Deed Number</option>
+                <option value="143">143 - Submission Number</option>
+                <option value="145">145 - Submission Number</option>
+                <option value="186">186 - Guarantor Company</option>
+                <option value="211">211 - ECAI Name</option>
+            </select>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="tblInput">
+                <thead>
+                    <tr id="inputHeader">
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="inputRow">
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-right mb-3">
+            <button type="button" id="btnAdd" class="btn btn-primary" disabled>
+                Add Record
+            </button>
+        </div>
+        <hr />
+        <h6>
+            Saved Records</h6>
+        <div id="savedRecords">
+        </div>
+    </div>
+    <div style="text-align: center; padding-top: 10px;">
+        <input type="button" value="Close" onclick="window.close();" class="btn btn-danger" />
         <input id="btnUpdate" type="button" value="Finish & Close" class="btn btn-success" />
-        
+        <button type="button" id="btnOpenModal" class="btn btn-primary" style="display: block;">
+            Open Modal
+        </button>
     </div>
     <div style="margin: 10px; padding: 10px;">
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
         <input id="hfCusID" type="hidden" runat="server" />
         <input id="hfDrawdownID" type="hidden" runat="server" />
-       
         <br />
         <!--
         <table>
@@ -1463,7 +1566,8 @@
                             
                             
                         %>
-                        <tr style="<%= id_to_delete > 0 ? "background-color: #ffe6e6;": "" %>" id="row_<%=doc_id %>"  data-id="<%=doc_id %>"    >
+                        <tr style="<%= id_to_delete > 0 ? "background-color: #ffe6e6;": "" %>" id="row_<%=doc_id %>"
+                            data-id="<%=doc_id %>">
                             <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["primary_key"]%>
                             </td>
@@ -1559,6 +1663,7 @@
                             </td>
                             <td class="tdTopLeft">
                                 <% =TableData.Rows[data]["upload_date_time"].ToString()%>
+                                <input type="button" value="Details" class="details" data-keyno="<%=doc_id %>" />
                             </td>
                         </tr>
                         <%

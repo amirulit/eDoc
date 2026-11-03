@@ -877,9 +877,13 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
 
     protected void LoadBranch()
     {
+        
+
         //String cus_type = Request.QueryString[0].ToString();
         //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
         //String c_type = Request.QueryString[2].ToString().Split('-')[0];
+
+
 
 
         SqlConnection con = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
@@ -887,6 +891,10 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
         cmd.CommandType = CommandType.Text;
 
         cmd.CommandText = " select '' code,'<--Select-->' name  union  all select branch_code code,branch_name name from t_BranchInfo";
+
+        //cmd.CommandText = "  select branch_code code,branch_name name from t_BranchInfo";
+
+
         cmd.Connection = con;
 
         SqlDataAdapter da = new SqlDataAdapter(cmd);

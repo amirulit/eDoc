@@ -10,6 +10,7 @@ using System.IO;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Configuration;
+using System.Web.Script.Services;
 
 public partial class DocumentUpload_V10_New_Mapping_Drawdown : System.Web.UI.Page
 {
@@ -327,7 +328,7 @@ Upload Not Required
         {
 
         }
-    }
+    } 
     protected void LoadDocList()
     {
         String drawdown_id = Request.QueryString[0].ToString();
@@ -437,7 +438,7 @@ OTHER DOCUMENTS
             //GridView1.DataBind();
 
 
-            CustomerName=Ds.Tables[18].Rows[0]["cus_name"].ToString();
+            CustomerName = Ds.Tables[18].Rows[0]["cus_name"].ToString();
 
 
             //GridView1.DataSource = Ds.Tables[0];

@@ -47,7 +47,8 @@
 
 
 
-
+//            $("#ContentPlaceHolder1_select3 option[value='']").length ||
+//    $("#ContentPlaceHolder1_select3").prepend('<option value=""></option>');
 
             $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8").select2({
                 placeholder: "<--Select-->",
