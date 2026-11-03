@@ -417,30 +417,26 @@
             }
 
 
+            $(document).on("click", ".btnDelete", function (e) {
 
-            $(document).on("click", ".btnDelete", function () {
+                e.preventDefault();
+                e.stopPropagation();
 
                 var id = $(this).attr("data-id");
-
                 var keyNo = $("#hdnKeyNo").val();
 
                 if (!confirm("Are you sure you want to delete?")) {
-                    return;
+                    return false;
                 }
 
                 $.ajax({
-
                     type: "POST",
-
                     url: "SecurityInfo_V2.aspx/DeleteChecklist",
-
                     data: JSON.stringify({
                         id: id,
                         applicationId: 1001
                     }),
-
                     contentType: "application/json; charset=utf-8",
-
                     dataType: "json",
 
                     success: function (response) {
@@ -453,12 +449,14 @@
 
                     },
 
-                    error: function () {
-                        alert("Error saving information");
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        alert("Error deleting record");
                     }
 
                 });
 
+                return false;
             });
 
         });

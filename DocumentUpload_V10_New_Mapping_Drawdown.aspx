@@ -1142,6 +1142,10 @@
         $(function () {
 
 
+            var currentFields = [];
+
+
+
             $("#detailModal").dialog({
                 autoOpen: false,
                 modal: true,
@@ -1166,22 +1170,283 @@
             $(".details").click(function () {
 
 
-                var keyNo = $(this).attr("data-keyNo");
+                var pk = $(this).attr("data-keyNo");
+
+                var value = $(this).closest("tr").find("td").eq(1).text();
+
+                $("#detailModal").dialog("option", "title", value); ;
+
+
 
                 //alert(id);
 
-                $("#keyNo").val(keyNo);
+                $("#hdnKeyNo").val(pk);
+
+
+
 
 
                 $("#detailModal").dialog("open");
 
 
+                $.ajax({
+                    type: "POST",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/LoadFields",
+                    //data: JSON.stringify({ pk: parseInt(pk, 10) }),
+                    data: JSON.stringify({ pk: parseInt(pk) }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
 
+                    success: function (res) {
+
+                        currentFields = res.d;
+
+                        loadSavedRecords(pk);
+
+                        $('#inputHeader').empty();
+                        $('#inputRow').empty();
+
+                        $.each(currentFields, function (i, field) {
+
+                            $('#inputHeader').append($('<th>').text(field.Name));
+
+                            var input;
+
+                            if (field.Type === 'select') {
+
+                                input = $('<select class="form-control">').append('<option value="">Select</option>');
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/LoadLookup",
+                                    data: JSON.stringify({
+                                        lookupType: field.LookupType
+                                    }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    async: false,
+
+                                    success: function (r) {
+                                        $.each(r.d, function (j, value) {
+                                            input.append($('<option>').val(value).text(value));
+                                        });
+                                    }
+                                });
+
+                            } else {
+                                input = $('<input class="form-control">').attr('type', field.Type === 'date' ? 'text' : field.Type === 'number' ? 'number' : 'text').attr('placeholder', field.Type === 'date' ? 'dd/mm/yyyy' : '');
+
+                                if (field.Type === 'date') {
+                                    input.css({
+                                        'height': '38px',
+                                        'min-height': '38px',
+                                        'box-sizing': 'border-box'
+                                    });
+
+                                    input.datepicker({ appendText: "(dd/mm/yy)",
+                                        dateFormat: "dd/mm/yy",
+                                        altField: "#datepicker-4",
+                                        altFormat: "DD, d MM, yy",
+                                        showOn: "both",
+                                        buttonImageOnly: true,
+                                        buttonImage: "calender.gif",
+                                        buttonText: "Calendar",
+                                        changeMonth: true,
+                                        changeYear: true,
+                                        yearRange: "1900:2050"
+                                    });
+
+
+                                } 
+
+
+                            }
+
+                            $('#inputRow').append($('<td>').append(input));
+
+
+
+
+                        });
+
+
+
+                        $('#btnAdd').prop('disabled', false);
+
+
+
+
+                    }
+                });
+
+                //loadSavedRecords(pk);
 
             });
 
 
+            $('#btnAdd').click(function () {
 
+                //var pk = parseInt($('#ddlPK').val(), 10);
+
+                var pk = $("#hdnKeyNo").val();
+
+
+                var values = [];
+                var valid = true;
+
+                $('#inputRow input, #inputRow select').each(function (i) {
+
+                    var value = $(this).val();
+
+                    if (!value) {
+                        alert(currentFields[i].Name + ' is required.');
+                        valid = false;
+                        return false;
+                    }
+
+                    values.push(value);
+
+
+                });
+
+                if (!valid) return;
+
+                $.ajax({
+                    type: "POST",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/SaveRecord",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id,
+                        pk: pk,
+                        values: values
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (res) {
+
+                        if (res.d) {
+
+                            $('#inputRow input, #inputRow select').val('');
+
+                            loadSavedRecords(pk);
+                        }
+                    },
+
+                    error: function (xhr) {
+                        alert(xhr.responseJSON && xhr.responseJSON.Message ? xhr.responseJSON.Message : 'Unable to save record.');
+                    }
+                });
+            });
+
+
+
+
+
+            function loadSavedRecords(pk) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/LoadRecords",
+                    //data: JSON.stringify({ pk: parseInt(pk, 10) }),
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id,
+                        pk: pk
+
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (res) {
+
+                        var html = '';
+
+                        if (res.d.length === 0) {
+                            $('#savedRecords').html('<p>No saved records.</p>');
+                            return;
+                        }
+
+                        html += '<div class="table-responsive">';
+                        html += '<table class="table table-bordered table-sm">';
+                        html += '<thead><tr><th>ID#</th>';
+
+                        $.each(currentFields, function (i, f) {
+                            html += '<th>' + $('<div>').text(f.Name).html() + '</th>';
+                        });
+
+                        html += '<th>Action</th></tr></thead><tbody>';
+
+                        $.each(res.d, function (i, r) {
+
+                            html += '<tr><td>' + r.RecordId + '</td>';
+
+                            for (var j = 1; j <= currentFields.length; j++) {
+
+                                var value = r['Value0' + j] || '';
+
+                                html += '<td>' + $('<div>').text(value).html() + '</td>';
+                            }
+
+                            html += '<td>';
+                            html += '<button type="button" ';
+                            html += 'class="btn btn-danger btn-sm btnDelete" ';
+                            html += 'data-id="' + r.RecordId + '">';
+                            html += 'Delete</button></td>';
+
+                            html += '</tr>';
+                        });
+
+                        html += '</tbody></table></div>';
+
+                        $('#savedRecords').html(html);
+
+
+                    }
+                });
+            }
+
+
+            $(document).on("click", ".btnDelete", function (e) {
+
+                e.preventDefault();
+
+                e.stopPropagation();
+
+                var id = $(this).attr("data-id");
+                var keyNo = $("#hdnKeyNo").val();
+
+                if (!confirm("Are you sure you want to delete?")) {
+                    return false;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/DeleteRecord",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id,
+                        recordId: id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d.Success) {
+                            loadSavedRecords(keyNo);
+                        } else {
+                            alert(response.d.Message);
+                        }
+
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        alert("Error deleting record");
+                    }
+
+                });
+
+                return false;
+            });
 
         });
 
@@ -1302,7 +1567,9 @@
 <body>
     <form id="form1" runat="server">
     <div id="detailModal" title="Document Details" style="display: none;">
-        <div class="form-group">
+
+
+       <%-- <div class="form-group">
             <label>
                 Primary Key No.</label>
             <select id="ddlPK" class="form-control">
@@ -1325,7 +1592,12 @@
                 <option value="186">186 - Guarantor Company</option>
                 <option value="211">211 - ECAI Name</option>
             </select>
-        </div>
+        </div>--%>
+
+
+          <input type="hidden" id="hdnKeyNo" />
+
+
         <div class="table-responsive">
             <table class="table table-bordered" id="tblInput">
                 <thead>
