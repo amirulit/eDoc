@@ -94,6 +94,144 @@ Upload Not Required
     }
 
 
+    public class IncompleteRow
+    {
+        public string PrimaryKey { get; set; }
+        public string Required { get; set; }
+        public string Status { get; set; }
+    }
+
+
+
+    [WebMethod]
+    public static string SaveIncompleteRows(String cusid,
+        Int32 drawdownId,
+        List<IncompleteRow> rows)
+    {
+        if (rows == null || rows.Count == 0)
+            return "No records found!";
+
+        string connStr = ConfigurationManager
+            .ConnectionStrings["dbConn"]
+            .ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(connStr))
+        {
+            con.Open();
+
+            using (SqlTransaction tran = con.BeginTransaction())
+            {
+                try
+                {
+                    // 1. Create DataTable
+                    DataTable dt = new DataTable();
+
+
+                    dt.Columns.Add("CusId", typeof(string));
+                    dt.Columns.Add("DrawdownId", typeof(int));
+                    dt.Columns.Add("PrimaryKey", typeof(int));
+                    dt.Columns.Add("Required", typeof(string));
+                    dt.Columns.Add("Status", typeof(string));
+
+                    foreach (var item in rows)
+                    {
+                        dt.Rows.Add(
+                            cusid,
+                            drawdownId,
+                            Convert.ToInt32(item.PrimaryKey),
+                            item.Required,
+                            item.Status
+                        );
+                    }
+
+                    // 2. Create temporary table
+                    string createTemp = @"
+                    CREATE TABLE #TempIncompleteRows
+                    (
+                        CusId VARCHAR(50),
+                        DrawdownId INT,
+                        PrimaryKey INT,
+                        Required VARCHAR(5),
+                        Status VARCHAR(50)
+                    )";
+
+                    using (SqlCommand cmd = new SqlCommand(
+                        createTemp, con, tran))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 3. Bulk insert into temporary table
+                    using (SqlBulkCopy bulk = new SqlBulkCopy(
+                        con,
+                        SqlBulkCopyOptions.Default,
+                        tran))
+                    {
+                        bulk.DestinationTableName = "#TempIncompleteRows";
+
+                        bulk.ColumnMappings.Add("CusId", "CusId");
+                        bulk.ColumnMappings.Add("DrawdownId", "DrawdownId");
+                        bulk.ColumnMappings.Add("PrimaryKey", "PrimaryKey");
+                        bulk.ColumnMappings.Add("Required", "Required");
+                        bulk.ColumnMappings.Add("Status", "Status");
+
+                        bulk.WriteToServer(dt);
+                    }
+
+                    // 4. Update actual table
+                    String updateSql = @"
+
+                    
+
+delete t_Uploads_Drawdown  where  drawdown_id=@DrawdownId and doc_id  in (select PrimaryKey   from  #TempIncompleteRows where DrawdownId=@DrawdownId)
+
+
+
+INSERT INTO [dbo].[t_Uploads_Drawdown]
+           (
+            [cus_id]
+           ,[drawdown_id]
+           ,[doc_id]
+           ,[required]
+           ,[status]
+           ,[upload_date_time]
+           ,[upload_by]
+           ,[upload_ip])
+
+select CusId,DrawdownId,PrimaryKey,Required,Status,getdate(),@upload_by,@upload_ip from #TempIncompleteRows"
+
+
+
+
+                        ;
+
+                    using (SqlCommand cmd = new SqlCommand(updateSql, con, tran))
+                    {
+                        cmd.Parameters.Add("@DrawdownId", SqlDbType.VarChar).Value = drawdownId;
+                        cmd.Parameters.Add("@upload_by", SqlDbType.VarChar).Value = "Test";
+                        cmd.Parameters.Add("@upload_ip", SqlDbType.VarChar).Value = "127.0.0.1";
+
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+                    // 5. Commit transaction
+                    tran.Commit();
+
+                    return "Data saved successfully!";
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    throw new Exception(
+                        "Error saving incomplete rows: " + ex.Message
+                    );
+                }
+            }
+        }
+    }
+
+
 
     [WebMethod(EnableSession = true)]
     public static String Save_DocumentUpload_Drawdown(Obj Obj)

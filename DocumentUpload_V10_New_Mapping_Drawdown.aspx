@@ -1156,6 +1156,10 @@
                         deleteBtn.hide();
 
                         row.css("background-color", "#ffe6e6");
+
+                        $('#row_' + data_id).attr('data-done', 'N');
+
+
                     },
 
                     error: function (xhr, status, error) {
@@ -1536,7 +1540,7 @@
           $(function () {
 
 
-              $(document).on('click', '.BulkSave', function () {
+              $(document).on('click', '.BulkCheck', function () {
 
                   var tableId = $(this).attr('doc-table');
 
@@ -1565,6 +1569,99 @@
 
     </script>
 
+    
+      <script type="text/javascript">
+
+
+
+          $(function () {
+
+
+
+              $(document).on('click', '.BulkSave', function () {
+
+                  //var drawdownId = $('#hdnDrawdownId').val();
+
+                  var drawdownId = drawdown_id;
+
+                  var cusid = cus_id;
+
+                  var tableId = $(this).attr('doc-table');
+
+                  var table = $('#' + tableId);
+
+                  var notDoneRows = table.find('tbody tr[data-done="N"]');
+
+                  if (notDoneRows.length === 0) {
+                      alert('All rows completed!');
+                      return false;
+                  }
+
+                  var rowsData = [];
+
+                  notDoneRows.each(function () {
+
+                      var row = $(this);
+                      var key = row.attr('data-id');
+
+                      var required = row.find('input[name="opt_req_' + key + '"]:checked').val() || '';
+
+                      if (required == "Y" || required == "N") {
+
+                          var ddlStatus = row.find('.ddlStatus').val() || '';
+
+                          rowsData.push({
+                              PrimaryKey: key,
+                              Required: required,
+                              Status: ddlStatus
+                          });
+                      }
+
+                  });
+
+                  if (rowsData.length == 0) {
+
+                      alert('Nothing selected');
+
+                      return false;
+                  }
+
+
+                  //console.log(rowsData);
+
+                  //return false;
+
+                  // Send to ASP.NET WebMethod
+                  $.ajax({
+                      type: "POST",
+                      url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/SaveIncompleteRows",
+                      data: JSON.stringify({
+
+                          cusid: cusid,
+                          drawdownId: drawdownId,
+                          rows: rowsData
+                      }),
+                      contentType: "application/json; charset=utf-8",
+                      dataType: "json",
+
+                      success: function (response) {
+
+                          alert(response.d);
+
+                      },
+
+                      error: function (xhr) {
+                          alert('Error: ' + xhr.responseText);
+                      }
+                  });
+
+              });
+
+          });
+
+
+
+   </script>
 
     <style type="text/css">
         
@@ -2213,7 +2310,11 @@
                         %>
                     </tbody>
                 </table>
-                <input type="button" class="BulkSave" value="Save ALL" data-count="<%=TableData.Rows.Count %>" div-name="<%=DocType[i]%>"  id="btn_"<%=DocType %>  doc-table="<%=DocType[i] %>" />
+                <input type="button" class="BulkCheck" value="Check ALL" data-count="<%=TableData.Rows.Count %>" div-name="<%=DocType[i]%>"  id="btn_"<%=DocType %>  doc-table="<%=DocType[i] %>" />
+
+                <input type="button" class="BulkSave" value="Save ALL" data-count="<%=TableData.Rows.Count %>" div-name="<%=DocType[i]%>"  id="Button1"<%=DocType %>  doc-table="<%=DocType[i] %>" />
+
+
                 <!--
                
                 <input id="Button1" type="button" value="button" class="ViewPDF" /><br />
