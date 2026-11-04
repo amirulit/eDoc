@@ -25,6 +25,8 @@
     <script type="text/javascript" src="plugins/datatables/dataTables.bootstrap.min.js">
     </script>
     <script type="text/javascript">
+
+
         $(document).ready(function () {
 
 
@@ -141,6 +143,8 @@
     <script type="text/javascript">
 
         $(function () {
+
+
             $(".datepicker").datepicker({ appendText: "(dd/mm/yy)",
                 dateFormat: "dd/mm/yy",
                 altField: "#datepicker-4",
@@ -153,6 +157,8 @@
                 changeYear: true,
                 yearRange: "1900:2050"
             });
+
+
         });
 
     </script>
@@ -275,20 +281,27 @@
 
                     $("#btnSave_" + data_id).val("Upload&Save");
                 }
-
-                if (sts == "Not") {
-                    $("#Obtained_" + data_id).css("display", "none");
-                    $("#Not_" + data_id).css("display", "block");
-                    $("#Part_" + data_id).css("display", "none");
-
-                }
-
                 if (sts == "Part") {
                     $("#Obtained_" + data_id).css("display", "none");
                     $("#Not_" + data_id).css("display", "none");
                     $("#Part_" + data_id).css("display", "block");
 
                 }
+
+                /*
+                if (sts == "Not") {
+                $("#Obtained_" + data_id).css("display", "none");
+                $("#Not_" + data_id).css("display", "block");
+                $("#Part_" + data_id).css("display", "none");
+
+                }
+                if (sts == "Part") {
+                $("#Obtained_" + data_id).css("display", "none");
+                $("#Not_" + data_id).css("display", "none");
+                $("#Part_" + data_id).css("display", "block");
+
+                }
+                */
             });
 
 
@@ -302,7 +315,11 @@
 
                 var expiry_req = $(this).attr("data-expiry");
 
-                alert(expiry_req);
+                //if (expiry_req == "Y") {
+
+                //alert("expiry date can not blank");
+                //return;
+                //}
 
                 var ddl = $("#ddl_" + data_id).val()
 
@@ -344,8 +361,17 @@
 
                 var required = $('input[name="opt_req_' + data_id + '"]:checked').val();
 
-                alert(required);
+                //alert(required);
 
+                if (required == "Y" || required == "N") {
+
+
+                }
+                else {
+
+                    alert('Pls select an option');
+                    return false;
+                }
 
                 //var ddl = $("#ddl_" + data_id).val()
 
@@ -367,15 +393,18 @@
                 var part_reason = $("#txtPartiallyObtained_" + data_id).val();
                 var part_deadline = $("#txtDeadline_" + data_id).val();
 
+                /*
                 if (ddl == 'Not') {
-                    obj.details = not_reason;
-                    if (not_reason == '') {
-                        alert('Pls put reason');
-                        return false;
-                    }
+                obj.details = not_reason;
+                if (not_reason == '') {
+                alert('Pls put reason');
+                return false;
                 }
+                }
+                */
 
                 if (ddl == 'Part') {
+
                     obj.details = part_reason;
                     obj.deadline = part_deadline
                     if (part_reason == '' || part_deadline == '') {
@@ -420,6 +449,8 @@
                             $("#row_" + data_id).css({ "background-color": "#ffe6e6" });
 
 
+                            $('#row_' + data_id).attr('data-done', 'Y');
+
                             //alert(cus_id);
 
                             $("#btnDelete" + div_name + "_" + data_id).attr("cusid", cus_id);
@@ -459,8 +490,11 @@
 
                 var required = $('input[name="opt_req_' + data_id + '"]:checked').val();
 
-                if (required == null) {
-                    required = '';
+                //alert(required);
+
+                if (!required) {
+                    alert('Please select an option');
+                    return false;
                 }
 
                 alert(required);
@@ -468,10 +502,11 @@
                 alert(data_id + '-' + div_name);
 
                 var expiry = $("#txtExpiry_" + data_id).val();
-
-                if (expiry == "") {
-                    alert('expiry can not empty');
-                    return;
+                if (expiry_req == "Y") {
+                    if (expiry == "") {
+                        alert('expiry can not empty');
+                        return;
+                    }
                 }
 
                 var remarks = $("#txtRemarks_" + data_id).val();
@@ -540,7 +575,12 @@
 
                         $("#row_" + data_id).css({ "background-color": "#ffe6e6" });
 
+
+                        $('#row_' + data_id).attr('data-done', 'Y');
+
                         //swal("Success!", "Uploaded", "success");
+
+                        alert('Document Uploaded');
 
 
 
@@ -1137,6 +1177,25 @@
         });
 
     </script>
+       <script type="text/javascript">
+
+           $(function () {
+
+
+                /*
+               $(document).on('change', '.docTable input[type=radio]', function () {
+
+                   var $row = $(this).closest('tr');
+                   var isNo = $(this).val() === 'N';
+                   $row.find('td').not(':eq(0),:eq(1),:eq(2),:eq(7)').toggleClass('disabled-cell', isNo).find('input, select, textarea, button').prop('disabled', isNo);
+
+               });
+               */
+
+
+           });
+
+    </script>
     <script type="text/javascript">
 
         $(function () {
@@ -1149,7 +1208,7 @@
             $("#detailModal").dialog({
                 autoOpen: false,
                 modal: true,
-                width: "90%",
+                width: "50%",
                 maxWidth: 1100,
                 height: "auto",
                 resizable: true,
@@ -1167,7 +1226,7 @@
 
             //$(".V").click(function () {
 
-            $(".details").click(function () {
+            $(".docDetails").click(function () {
 
 
                 var pk = $(this).attr("data-keyNo");
@@ -1234,17 +1293,29 @@
                                 });
 
                             } else {
-                                input = $('<input class="form-control">').attr('type', field.Type === 'date' ? 'text' : field.Type === 'number' ? 'number' : 'text').attr('placeholder', field.Type === 'date' ? 'dd/mm/yyyy' : '');
+
+                                /*
+                                
+                                input = $('<input class="form-control">')
+                                .attr('type', field.Type === 'date' ? 'text' :
+                                field.Type === 'number' ? 'number' : 'text')
+                                .attr('placeholder', field.Type === 'date' ? 'dd/mm/yyyy' : '')
+                                .attr('name', field.Name)
+                                .attr('id', field.Name);
+                                
+                                */
+
+                                input = $('<input class="form-control">').attr('type', field.Type === 'date' ? 'text' : field.Type === 'number' ? 'number' : 'text').attr('placeholder', field.Type === 'date' ? 'yyyy-mm-yy' : '');
 
                                 if (field.Type === 'date') {
-                                    input.css({
-                                        'height': '38px',
-                                        'min-height': '38px',
-                                        'box-sizing': 'border-box'
-                                    });
+                                    //                                    input.css({
+                                    //                                        'height': '38px',
+                                    //                                        'min-height': '38px',
+                                    //                                        'box-sizing': 'border-box'
+                                    //                                    });
 
-                                    input.datepicker({ appendText: "(dd/mm/yy)",
-                                        dateFormat: "dd/mm/yy",
+                                    input.datepicker({ appendText: "(yy-mm-dd)",
+                                        dateFormat: "yy-mm-dd",
                                         altField: "#datepicker-4",
                                         altFormat: "DD, d MM, yy",
                                         showOn: "both",
@@ -1253,14 +1324,20 @@
                                         buttonText: "Calendar",
                                         changeMonth: true,
                                         changeYear: true,
-                                        yearRange: "1900:2050"
+                                        yearRange: "1900:2099"
                                     });
 
 
-                                } 
+                                }
 
 
                             }
+
+                            input.css({
+                                'height': '38px',
+                                'min-height': '38px',
+                                'box-sizing': 'border-box'
+                            });
 
                             $('#inputRow').append($('<td>').append(input));
 
@@ -1401,6 +1478,8 @@
 
 
                     }
+
+
                 });
             }
 
@@ -1451,6 +1530,45 @@
         });
 
     </script>
+
+      <script type="text/javascript">
+
+          $(function () {
+
+
+              $(document).on('click', '.BulkSave', function () {
+
+                  var tableId = $(this).attr('doc-table');
+
+                  var table = $('#' + tableId);
+
+                  var notDoneRows = table.find('tbody tr[data-done="N"]');
+
+                  if (notDoneRows.length > 0) {
+
+                      alert('Please save all documents before proceeding.');
+
+                      // Highlight incomplete rows
+                      notDoneRows.css('background-color', '#ffe0b2');
+
+                      return false;
+                  }
+
+                  alert('All rows completed successfully!');
+
+              });
+
+          });
+
+
+
+
+    </script>
+
+
+    <style type="text/css">
+        
+    </style>
     <style type="text/css">
         .tdTopLeft
         {
@@ -1563,13 +1681,78 @@
             background: #f5f5f5;
         }
     </style>
+    <style type="text/css">
+        .custom-card
+        {
+            height: 100%;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            transition: 0.3s ease;
+        }
+        .custom-card:hover
+        {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            border-color: #0d6efd;
+        }
+        .custom-card .card-header
+        {
+            background: #0d6efd;
+            color: #fff;
+            text-align: center;
+            padding: 18px 10px;
+            font-size: 20px;
+            font-weight: 600;
+            border: none;
+        }
+        .custom-card .card-body
+        {
+            padding: 20px;
+        }
+        .custom-card ul
+        {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .custom-card ul li
+        {
+            padding: 10px 5px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            font-size: 15px;
+        }
+        .custom-card ul li:last-child
+        {
+            border-bottom: none;
+        }
+    </style>
+
+    <style type="text/css">
+    
+    .disabled-cell {
+    background-color: #d3d3d3 !important;
+    opacity: 0.7;
+}
+    
+    
+    .datepicker:disabled {
+    background-color: #e5e5e5 !important;
+    color: #777 !important;
+    cursor: not-allowed;
+    opacity: 1;
+}
+    
+    </style>
+
 </head>
 <body>
     <form id="form1" runat="server">
     <div id="detailModal" title="Document Details" style="display: none;">
-
-
-       <%-- <div class="form-group">
+        <%-- <div class="form-group">
             <label>
                 Primary Key No.</label>
             <select id="ddlPK" class="form-control">
@@ -1593,11 +1776,7 @@
                 <option value="211">211 - ECAI Name</option>
             </select>
         </div>--%>
-
-
-          <input type="hidden" id="hdnKeyNo" />
-
-
+        <input type="hidden" id="hdnKeyNo" />
         <div class="table-responsive">
             <table class="table table-bordered" id="tblInput">
                 <thead>
@@ -1624,9 +1803,6 @@
     <div style="text-align: center; padding-top: 10px;">
         <input type="button" value="Close" onclick="window.close();" class="btn btn-danger" />
         <input id="btnUpdate" type="button" value="Finish & Close" class="btn btn-success" />
-        <button type="button" id="btnOpenModal" class="btn btn-primary" style="display: block;">
-            Open Modal
-        </button>
     </div>
     <div style="margin: 10px; padding: 10px;">
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
@@ -1661,6 +1837,71 @@
         <br />
         Customer Name :<span class="badge badge-success "><%=CustomerName %></span>
         <br />
+
+        <!--
+        <div class="container mt-5">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="custom-card">
+                        <div class="card-header">
+                            Basic Plan</div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Dashboard</li>
+                                <li>User Profile</li>
+                                <li>Settings</li>
+                                <li>Support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="custom-card">
+                        <div class="card-header">
+                            Standard Plan</div>
+                        <div class="card-body">
+                            <ul>
+                                <li>All Basic Features</li>
+                                <li>Reports</li>
+                                <li>Analytics</li>
+                                <li>Notifications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="custom-card">
+                        <div class="card-header">
+                            Premium Plan</div>
+                        <div class="card-body">
+                            <ul>
+                                <li>All Standard Features</li>
+                                <li>Advanced Reports</li>
+                                <li>API Access</li>
+                                <li>Priority Support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="custom-card">
+                        <div class="card-header">
+                            Enterprise Plan</div>
+                        <div class="card-body">
+                            <ul>
+                                <li>All Premium Features</li>
+                                <li>Team Management</li>
+                                <li>Custom Solutions</li>
+                                <li>24/7 Support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        -->
+
         <br />
         <br />
         <div id="accordion" style="width: auto;">
@@ -1738,6 +1979,7 @@
 
                     String expiry_req;
 
+                    String radio;
 
                     Int32 doc_id;
 
@@ -1755,7 +1997,13 @@
 
                     String remarks;
 
+                    Int32 doc_pk = 0;
+
                     Int32 id_to_delete = 0;
+
+                    Int32 c_id = 0;
+                    
+                    
 
                     if (TableData.Rows.Count > 0)
                     {
@@ -1773,7 +2021,7 @@
                     <thead>
                         <tr>
                             <th>
-                                id
+                                Doc Primary Key
                             </th>
                             <th>
                                 Name
@@ -1806,6 +2054,8 @@
                         for (var data = 0; data < TableData.Rows.Count; data++)
                         {
 
+                            radio = (TableData.Rows[data]["c_required"]).ToString();
+
                             expiry_req = (TableData.Rows[data]["expiry"]).ToString();
 
 
@@ -1827,19 +2077,20 @@
                             remarks = (TableData.Rows[data]["c_remarks"]).ToString();
 
 
+                            expiry_req = TableData.Rows[data]["expiry"] == DBNull.Value ? "" : TableData.Rows[data]["expiry"].ToString();
+
                             id_to_delete = TableData.Rows[data]["c_id"] == DBNull.Value ? 0 : Convert.ToInt32(TableData.Rows[data]["c_id"]);
-                            
-                            
-                            
-                            
-                            
-                            
+
+
+                            doc_pk = TableData.Rows[data]["doc_pk"] == DBNull.Value ? 0 : Convert.ToInt32(TableData.Rows[data]["doc_pk"]);
+
+
+                            c_id= TableData.Rows[data]["c_id"] == DBNull.Value ? 0 : Convert.ToInt32(TableData.Rows[data]["c_id"]);
                             
                             
                             
                         %>
-                        <tr style="<%= id_to_delete > 0 ? "background-color: #ffe6e6;": "" %>" id="row_<%=doc_id %>"
-                            data-id="<%=doc_id %>">
+                        <tr style="<%= id_to_delete > 0 ? "background-color: #ffe6e6;": "" %>" id="row_<%=doc_id %>"  data-id="<%=doc_id %>" data-done="<%= id_to_delete > 0 ? "Y": "N" %>">
                             <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["primary_key"]%>
                             </td>
@@ -1848,11 +2099,8 @@
                             </td>
                             <td class="tdTopLeft">
                                 <%-- <%=TableData.Rows[data]["Required"]%>--%>
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
-                                    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="Y" <%=TableData.Rows[data]["Required"].ToString()=="Yes"?"checked":""%> />
-                                Yes
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
-                                    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="N" />No
+                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="Y" <%=TableData.Rows[data]["c_required"].ToString()=="Y"?"checked":""%> />Yes
+                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="N" <%=TableData.Rows[data]["c_required"].ToString()=="N"?"checked":""%>/>No
                             </td>
                             <td class="tdTopLeft">
                                 <%--<%=TableData.Rows[data]["Obtained"]%>--%>
@@ -1860,9 +2108,10 @@
                                     class="ddlStatus">
                                     <option value="Obtained" <%= status == "Obtained" ? "selected" : "" %>>Obtained
                                     </option>
-                                    <option value="Not" <%= status == "Not" ? "selected" : "" %>>Not Obtained </option>
-                                    <option value="Part" <%= status == "Part" ? "selected" : "" %>>Partially Obtained
+                                    <option value="Part" <%= status == "Part" ? "selected" : "" %>>Not Obtained </option>
+                                    <%--<option value="Part" <%= status == "Part" ? "selected" : "" %>>Partially Obtained
                                     </option>
+                                    --%>
                                 </select>
                             </td>
                             <td style="white-space: nowrap;" class="details tdTopLeft">
@@ -1880,7 +2129,7 @@
                                     <input id="txtNotObtained_<%=doc_id %>" type="text" value="<%=reason %>" />
                                 </div>
                                 <div id="Part_<%=doc_id%>" style="<%= status == "Part" ? "": "display:none;" %>">
-                                    Partially Obtained Reasons :
+                                    Not Obtained Reasons :
                                     <br />
                                     <input id="txtPartiallyObtained_<%=doc_id %>" type="text" value="<%=reason %>" />
                                     <br />
@@ -1890,8 +2139,21 @@
                                 </div>
                             </td>
                             <td class="tdTopLeft">
-                                <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker" style="width: 80px;"
-                                    value="<%=expiry %>" />
+                                <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker" style="width: 80px;" 
+                                      value="<%=expiry %>" 
+                                    
+                                    
+                                      <%= (expiry_req == "Y") ? "" : "disabled" %>
+                                    
+                                    
+                                    />
+
+                                    <% if (expiry_req == "Y")
+                                       { %>
+                                       <span style="color:Red;  font-weight:bold;  ">***</span>
+                                       
+                                    <%} %>
+
                             </td>
                             <td class="tdTopLeft">
                                 <input id="txtRemarks_<%=doc_id %>" type="text" value="<%=remarks %>" />
@@ -1921,21 +2183,27 @@
                                         
                                          %> style="display: none;" <%} %> />
                                 <% 
-                            /*
+                                       /*
                                     if (doc_Type == "GENERAL")
                             {
                             */
 
 
-                            /*
-                        }
-                             */
+                                       /*
+                                   }
+                                        */
                             
                                 %>
                             </td>
                             <td class="tdTopLeft">
                                 <% =TableData.Rows[data]["upload_date_time"].ToString()%>
-                                <input type="button" value="Details" class="details" data-keyno="<%=doc_id %>" />
+                                <%  if (doc_pk != 0)
+                                    { 
+                                %>
+                                <input type="button" value="Details" class="docDetails" data-keyno="<%=doc_id %>" />
+                                <%
+                                    }
+                                %>
                             </td>
                         </tr>
                         <%
@@ -1945,8 +2213,7 @@
                         %>
                     </tbody>
                 </table>
-                <input type="button" class="BulkUpload" value="Upload ALL" data-count="<%=TableData.Rows.Count %>"
-                    div-name="<%=DocType[i]%>" />
+                <input type="button" class="BulkSave" value="Save ALL" data-count="<%=TableData.Rows.Count %>" div-name="<%=DocType[i]%>"  id="btn_"<%=DocType %>  doc-table="<%=DocType[i] %>" />
                 <!--
                
                 <input id="Button1" type="button" value="button" class="ViewPDF" /><br />
@@ -1956,7 +2223,7 @@
             </div>
             <%
                     }
-
+                    
                 }
                 
             %>
@@ -1989,8 +2256,8 @@
                         <td>
                             <select id="ddlAnyDoc">
                                 <option value="Obtained">Obtained</option>
-                                <option value="Not">Not Obtained</option>
-                                <option value="Part">Partially Obtained</option>
+                                <option value="Part">Not Obtained</option>
+                                <%--<option value="Part">Partially Obtained</option>--%>
                             </select>
                         </td>
                         <td>
@@ -2000,7 +2267,7 @@
                                 Not Obtained Reasons :<input type="text" id="txtAnyDocReason" />
                             </div>
                             <div id="Part" style="display: none;">
-                                Partially Obtained Reasons :
+                                Not Obtained Reasons :
                                 <input type="text" id="txtAnyDocPart" />
                                 Deadline :
                                 <input type="text" id="txtAnyDocDeadline" class="datepicker" /></div>

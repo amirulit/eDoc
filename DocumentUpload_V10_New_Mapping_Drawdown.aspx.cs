@@ -572,8 +572,7 @@ OTHER DOCUMENTS
                 break;
 
             case 44:
-                add("Original/Certified/Photocopy",
-                    "select", "ORIGINAL_TYPE");
+                add("Original/Certified/Photocopy", "select", "ORIGINAL_TYPE");
                 add("Deed Number", "number", "");
                 add("Date", "date", "");
                 break;
