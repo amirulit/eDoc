@@ -485,7 +485,7 @@
 
                             alert("Data Saved Successfully.");
 
-                            $("#row_" + data_id).css({ "background-color": "#ffe6e6" });
+                            $("#row_" + data_id).css({ "background-color": "#90EE90" });
 
 
                             $('#row_' + data_id).attr('data-done', 'Y');
@@ -612,7 +612,7 @@
 
 
 
-                        $("#row_" + data_id).css({ "background-color": "#ffe6e6" });
+                        $("#row_" + data_id).css({ "background-color": "#90EE90" });
 
 
                         $('#row_' + data_id).attr('data-done', 'Y');
@@ -1199,6 +1199,17 @@
                         $('#row_' + data_id).attr('data-done', 'N');
 
 
+                        $('#txtPartiallyObtained_' + data_id).val('');
+                        $('#txtDeadline_' + data_id).val('');
+                        $('#txtNotObtained_' + data_id).val('');
+                        $('#fileInput_' + data_id).val('');
+
+
+
+
+
+
+
                     },
 
                     error: function (xhr, status, error) {
@@ -1632,16 +1643,27 @@
                   var notDoneRows = table.find('tbody tr[data-done="N"]');
 
                   if (notDoneRows.length === 0) {
+
+
                       alert('All rows completed!');
+
+
+
+
+
                       return false;
                   }
 
                   var rowsData = [];
 
+
+
                   notDoneRows.each(function () {
 
                       var row = $(this);
                       var key = row.attr('data-id');
+
+
 
                       var required = row.find('input[name="opt_req_' + key + '"]:checked').val() || '';
 
@@ -1654,6 +1676,8 @@
                               Required: required,
                               Status: ddlStatus
                           });
+
+
 
 
                       } else {
@@ -1698,7 +1722,11 @@
 
                           alert(response.d);
 
+                          $.each(rowsData, function (index, item) {
 
+                              $('#row_' + item.PrimaryKey).attr('data-done', 'Y').css('background-color', '#90EE90');
+
+                          });
 
                       },
 
@@ -2165,6 +2193,8 @@
             <h3>
                 <%=DocPosition%>
                 <%=section_name%>(<%=TableData.Rows.Count%>)</h3>
+
+
             <div id="<%=section_name%>">
                 <table class="<%=DocType[i]%>  docTable rounded" id="<%=DocType[i]%>" style="width: 100%">
                     <thead>
@@ -2239,7 +2269,7 @@
                             
                             
                         %>
-                        <tr style="<%= id_to_delete > 0 ? "background-color: #ffe6e6;": "" %>" id="row_<%=doc_id %>"  data-id="<%=doc_id %>" data-done="<%= id_to_delete > 0 ? "Y": "N" %>">
+                        <tr style="<%= id_to_delete > 0 ? "background-color: #90EE90;": "" %>" id="row_<%=doc_id %>"  data-id="<%=doc_id %>" data-done="<%= id_to_delete > 0 ? "Y": "N" %>">
                             <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["primary_key"]%>
                             </td>
