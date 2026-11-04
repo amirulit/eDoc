@@ -88,6 +88,45 @@
             $('#btnUpdate').click(function () {
 
 
+
+
+                var hasIncomplete = false;
+
+                // Iterate through all document tables
+                $('.docTable').each(function () {
+
+                    var table = $(this);
+
+                    // Find incomplete rows in current table
+                    var notDoneRows = table.find('tbody tr[data-done="N"]');
+
+                    if (notDoneRows.length > 0) {
+
+                        hasIncomplete = true;
+
+                        // Highlight incomplete rows
+                        notDoneRows.css('background-color', '#ffe0b2');
+
+                    } else {
+
+                        // Remove previous highlighting
+                        table.find('tbody tr').css('background-color', '');
+
+                    }
+
+                });
+
+                if (hasIncomplete) {
+                    alert('Please fillup all documents before proceeding.');
+                    return false;
+                }
+
+                alert('All documents completed successfully!');
+
+                return false;
+
+
+
                 //alert(drawdown_id);
                 //alert(cus_id);
 
@@ -1615,13 +1654,20 @@
                               Required: required,
                               Status: ddlStatus
                           });
+
+
+                      } else {
+                          row.css('background-color', '#ffe0b2');
                       }
 
                   });
 
+
+
+
                   if (rowsData.length == 0) {
 
-                      alert('Nothing selected');
+                      alert('No document selected');
 
                       return false;
                   }
@@ -1631,7 +1677,9 @@
 
                   //return false;
 
-                  // Send to ASP.NET WebMethod
+                  //Send to ASP.NET WebMethod
+
+
                   $.ajax({
                       type: "POST",
                       url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/SaveIncompleteRows",
@@ -1640,6 +1688,8 @@
                           cusid: cusid,
                           drawdownId: drawdownId,
                           rows: rowsData
+
+
                       }),
                       contentType: "application/json; charset=utf-8",
                       dataType: "json",
@@ -1647,6 +1697,8 @@
                       success: function (response) {
 
                           alert(response.d);
+
+
 
                       },
 
