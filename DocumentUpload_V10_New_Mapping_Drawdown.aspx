@@ -32,6 +32,8 @@
 
 
         });
+
+
     </script>
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
@@ -1731,7 +1733,9 @@
                       },
 
                       error: function (xhr) {
+
                           alert('Error: ' + xhr.responseText);
+
                       }
                   });
 
@@ -1743,7 +1747,40 @@
 
    </script>
 
+   <script type="text/javascript">
+
+
+
+       $(function () {
+
+
+           $(document).on('change', '.docTable input[type=radio]', function () {
+
+
+               var $row = $(this).closest('tr');
+               var isNo = $(this).val() === 'N';
+
+               $row.find('td').not(':eq(0), :eq(1), :eq(2), :eq(7)').toggleClass('disabled-cell', isNo).find('input, select, textarea, button').prop('disabled', isNo);
+
+
+
+           });
+
+       });
+       
+       
+       </script>
+
+
     <style type="text/css">
+        
+        
+        
+.disabled-cell {
+    background-color: #e9ecef;
+    opacity: 0.6;
+}
+
         
     </style>
     <style type="text/css">

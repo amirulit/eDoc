@@ -363,7 +363,7 @@
                             $("#btnSubmit").attr("dd-id", dd_id);
 
 
-                            $('#modalUpdateform').modal('show');
+                            //$('#modalUpdateform').modal('show');
 
                             //var dd_id = $(this).attr("dd-id");
 
