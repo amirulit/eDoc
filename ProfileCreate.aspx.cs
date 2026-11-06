@@ -164,23 +164,46 @@ public partial class ProfileCreate : System.Web.UI.Page
                 JObject jbj2 = JObject.Parse(jsonArray[0].ToString());
 
 
+                //String customerMnemonic="";
+                //String ltCusFathernamec = "";
+                //String ltCusMothernamec = "";
+                //String shortNamec = "";
+                //String tinIdc = "";
+                //String genderc = "";
+                //String smsNumberc = "";
+                //String presentAddressc = "";
+                //String ltCusPermanentAddresc = ""; ;
+                //String legalIdc = "";
+
+                //String legalDocumentNamec = "";
+                //String ltCusSourceofFundsc = "";
+                //String ltCusOccupationc = "";
+                //String motherCompanyc = "";
+
+
+
+
+
+
+
                 obj = new
                 {
                     StatusCode = "0000",
                     StatusText = "SUCCESS",
-                    customerMnemonic = jbj2["customerMnemonic"].ToString(),
-                    ltCusFathername = jbj2["ltCusFathername"].ToString(),
-                    ltCusMothername = jbj2["ltCusMothername"].ToString(),
-                    shortName = jbj2["shortName"].ToString(),
-                    tinId = jbj2["tinId"].ToString(),
-                    gender = jbj2["gender"].ToString(),
-                    smsNumber = jbj2["smsNumber"].ToString(),
-                    presentAddress = jbj2["presentAddress"].ToString(),
-                    ltCusPermanentAddress = (jbj2["ltCusPermanentAddress"].ToString()),
-                    legalId = jbj2["legalId"].ToString(),
-                    legalDocumentName = (jbj2["legalDocumentName"].ToString()),
-                    ltCusSourceofFunds = jbj2["ltCusSourceofFunds"].ToString(),
-                    ltCusOccupation = (jbj2["ltCusOccupation"].ToString())
+                    customerMnemonic = jbj2["customerMnemonic"] != null ? jbj2["customerMnemonic"].ToString() : null,
+                    ltCusFathername = jbj2["ltCusFathername"] != null ? jbj2["ltCusFathername"].ToString() : null,
+                    ltCusMothername = jbj2["ltCusMothername"] != null ? jbj2["ltCusMothername"].ToString() : null,
+                    shortName = jbj2["shortName"] != null ? jbj2["shortName"].ToString() : null,
+                    tinId = jbj2["tinId"] != null ? jbj2["tinId"].ToString() : null,
+                    gender = jbj2["gender"] != null ? jbj2["gender"].ToString() : null,
+                    smsNumber = jbj2["smsNumber"] != null ? jbj2["smsNumber"].ToString() : null,
+                    presentAddress = jbj2["presentAddress"] != null ? jbj2["presentAddress"].ToString() : null,
+                    ltCusPermanentAddress = jbj2["ltCusPermanentAddress"] != null ? jbj2["ltCusPermanentAddress"].ToString() : null,
+                    legalId = jbj2["legalId"] != null ? jbj2["legalId"].ToString() : null,
+                    legalDocumentName = jbj2["legalDocumentName"] != null ? jbj2["legalDocumentName"].ToString() : null,
+                    ltCusSourceofFunds = jbj2["ltCusSourceofFunds"] != null ? jbj2["ltCusSourceofFunds"].ToString() : null,
+                    ltCusOccupation = jbj2["ltCusOccupation"] != null ? jbj2["ltCusOccupation"].ToString() : null,
+                    motherCompany = jbj2["motherCompany"] != null ? jbj2["motherCompany"].ToString() : null
                 };
             }
         }
@@ -203,20 +226,19 @@ public partial class ProfileCreate : System.Web.UI.Page
 
     public class Obj
     {
-        public String cus_type;
-        public String edoc_id;
-        public String cus_code;
-        public String name;
-        public String fname;
-        public String mname;
-        public String legal_id;
-        public String legal_doc_name;
-        public String gender;
-        public String tin;
-        public String pre_addr;
-        public String per_addr;
-
-
+        public String cus_type { get; set; }
+        public String edoc_id { get; set; }
+        public String cus_code { get; set; }
+        public String name { get; set; }
+        public String fname { get; set; }
+        public String mname { get; set; }
+        public String legal_id { get; set; }
+        public String legal_doc_name { get; set; }
+        public String gender { get; set; }
+        public String tin { get; set; }
+        public String pre_addr { get; set; }
+        public String per_addr { get; set; }
+        public String mother_company { get; set; }
     }
 
     
@@ -364,7 +386,8 @@ public partial class ProfileCreate : System.Web.UI.Page
                         new SqlParameter("@gender",Obj.gender),
                         new SqlParameter("@tin",Obj.tin),
                         new SqlParameter("@pre_addr",Obj.pre_addr),
-                        new SqlParameter("@per_addr",Obj.per_addr)
+                        new SqlParameter("@per_addr",Obj.per_addr),
+                        new SqlParameter("@mother_company",Obj.mother_company)
 
                     };
 

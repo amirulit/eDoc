@@ -896,7 +896,7 @@
                     		<thead>
                             <tr>
                         		<th>ID</th>
-                                <th>Ref NO#</th>
+                                <th>EDOC Ref NO#</th>
                             	<th>Branch</th>
                             	<th>Sanction Ref NO#</th>
                             	<th>Sanction Date</th>
@@ -945,11 +945,11 @@
                         	
                         <td>        
 
-
+                          <!--
                         <a href="javascript:void(0);" onclick="openSanctionModal();">Click Me</a>
 
 
-                        <!--
+                      
                         <a href="#"  class="btn btn-success btn-xs edit" cus-type="<%=TableData.Rows[data]["id"]%>"  drawdown-id="<%=TableData.Rows[data]["id"]%>">Edit</a>                                    
 
                         <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["id"]%>" drawdown-id="<%=TableData.Rows[data]["id"]%>">Document Upload</a>                                    
@@ -959,7 +959,7 @@
 
   <a href="#"  class="btn btn-info btn-xs view"  id="btnView_<%=id %>"  data-id="<%=TableData.Rows[data]["edoc_id"]%>">View</a>                                    
 
-
+  <!--
 <%  
                 if (Role == 1)
                 { 
@@ -979,7 +979,7 @@
 
                             <%} %>
                               
-
+                              -->
 
 
                         </td>                                

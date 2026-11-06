@@ -1181,6 +1181,7 @@
 
 
                 $.ajax({
+
                     url: 'DocumentUpload_V10_New_Mapping_Drawdown.aspx/DeleteDocument',
                     type: 'POST',
                     contentType: "application/json; charset=utf-8",
@@ -1188,6 +1189,7 @@
                     dataType: "json",
 
                     success: function (data) {
+
                         alert(data.d);
 
                         //$("#btnView" + div_name + "_" + data_id).css("display", "none");
@@ -1207,7 +1209,9 @@
                         $('#fileInput_' + data_id).val('');
 
 
+                        $('#txtRemarks_' + data_id).val('');
 
+                        $('#row_' + data_id).find('td').eq(8).empty();
 
 
 
@@ -1233,23 +1237,23 @@
         });
 
     </script>
-       <script type="text/javascript">
+    <script type="text/javascript">
 
-           $(function () {
-
-
-                /*
-               $(document).on('change', '.docTable input[type=radio]', function () {
-
-                   var $row = $(this).closest('tr');
-                   var isNo = $(this).val() === 'N';
-                   $row.find('td').not(':eq(0),:eq(1),:eq(2),:eq(7)').toggleClass('disabled-cell', isNo).find('input, select, textarea, button').prop('disabled', isNo);
-
-               });
-               */
+        $(function () {
 
 
-           });
+            /*
+            $(document).on('change', '.docTable input[type=radio]', function () {
+
+            var $row = $(this).closest('tr');
+            var isNo = $(this).val() === 'N';
+            $row.find('td').not(':eq(0),:eq(1),:eq(2),:eq(7)').toggleClass('disabled-cell', isNo).find('input, select, textarea, button').prop('disabled', isNo);
+
+            });
+            */
+
+
+        });
 
     </script>
     <script type="text/javascript">
@@ -1586,202 +1590,218 @@
         });
 
     </script>
+    <script type="text/javascript">
 
-      <script type="text/javascript">
-
-          $(function () {
+        $(function () {
 
 
-              $(document).on('click', '.BulkCheck', function () {
+            $(document).on('click', '.BulkCheck', function () {
 
-                  var tableId = $(this).attr('doc-table');
+                var tableId = $(this).attr('doc-table');
 
-                  var table = $('#' + tableId);
+                var table = $('#' + tableId);
 
-                  var notDoneRows = table.find('tbody tr[data-done="N"]');
+                var notDoneRows = table.find('tbody tr[data-done="N"]');
 
-                  if (notDoneRows.length > 0) {
+                if (notDoneRows.length > 0) {
 
-                      alert('Please save all documents before proceeding.');
+                    alert('Please save all documents before proceeding.');
 
-                      // Highlight incomplete rows
-                      notDoneRows.css('background-color', '#ffe0b2');
+                    // Highlight incomplete rows
+                    notDoneRows.css('background-color', '#ffe0b2');
 
-                      return false;
-                  }
+                    return false;
+                }
 
-                  alert('All rows completed successfully!');
+                alert('All rows completed successfully!');
 
-              });
+            });
 
-          });
+        });
 
 
 
 
     </script>
+    <script type="text/javascript">
 
-    
-      <script type="text/javascript">
 
 
+        $(function () {
 
-          $(function () {
 
 
+            $(document).on('click', '.BulkSave', function () {
 
-              $(document).on('click', '.BulkSave', function () {
+                //var drawdownId = $('#hdnDrawdownId').val();
 
-                  //var drawdownId = $('#hdnDrawdownId').val();
+                var drawdownId = drawdown_id;
 
-                  var drawdownId = drawdown_id;
+                var cusid = cus_id;
 
-                  var cusid = cus_id;
+                var tableId = $(this).attr('doc-table');
 
-                  var tableId = $(this).attr('doc-table');
+                var table = $('#' + tableId);
 
-                  var table = $('#' + tableId);
+                var notDoneRows = table.find('tbody tr[data-done="N"]');
 
-                  var notDoneRows = table.find('tbody tr[data-done="N"]');
+                if (notDoneRows.length === 0) {
 
-                  if (notDoneRows.length === 0) {
 
+                    alert('All rows completed!');
 
-                      alert('All rows completed!');
 
 
 
 
+                    return false;
+                }
 
-                      return false;
-                  }
+                var rowsData = [];
 
-                  var rowsData = [];
 
 
+                notDoneRows.each(function () {
 
-                  notDoneRows.each(function () {
+                    var row = $(this);
+                    var key = row.attr('data-id');
 
-                      var row = $(this);
-                      var key = row.attr('data-id');
 
 
+                    var required = row.find('input[name="opt_req_' + key + '"]:checked').val() || '';
 
-                      var required = row.find('input[name="opt_req_' + key + '"]:checked').val() || '';
+                    if (required == "Y" || required == "N") {
 
-                      if (required == "Y" || required == "N") {
+                        var ddlStatus = row.find('.ddlStatus').val() || '';
 
-                          var ddlStatus = row.find('.ddlStatus').val() || '';
+                        rowsData.push({
+                            PrimaryKey: key,
+                            Required: required,
+                            Status: ddlStatus
+                        });
 
-                          rowsData.push({
-                              PrimaryKey: key,
-                              Required: required,
-                              Status: ddlStatus
-                          });
 
 
 
+                    } else {
+                        row.css('background-color', '#ffe0b2');
+                    }
 
-                      } else {
-                          row.css('background-color', '#ffe0b2');
-                      }
+                });
 
-                  });
 
 
 
+                if (rowsData.length == 0) {
 
-                  if (rowsData.length == 0) {
+                    alert('No document selected');
 
-                      alert('No document selected');
+                    return false;
+                }
 
-                      return false;
-                  }
 
+                //console.log(rowsData);
 
-                  //console.log(rowsData);
+                //return false;
 
-                  //return false;
+                //Send to ASP.NET WebMethod
 
-                  //Send to ASP.NET WebMethod
 
+                $.ajax({
+                    type: "POST",
+                    url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/SaveIncompleteRows",
+                    data: JSON.stringify({
 
-                  $.ajax({
-                      type: "POST",
-                      url: "DocumentUpload_V10_New_Mapping_Drawdown.aspx/SaveIncompleteRows",
-                      data: JSON.stringify({
+                        cusid: cusid,
+                        drawdownId: drawdownId,
+                        rows: rowsData
 
-                          cusid: cusid,
-                          drawdownId: drawdownId,
-                          rows: rowsData
 
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
 
-                      }),
-                      contentType: "application/json; charset=utf-8",
-                      dataType: "json",
+                    success: function (response) {
 
-                      success: function (response) {
+                        alert(response.d);
 
-                          alert(response.d);
+                        $.each(rowsData, function (index, item) {
 
-                          $.each(rowsData, function (index, item) {
+                            $('#row_' + item.PrimaryKey).attr('data-done', 'Y').css('background-color', '#90EE90');
 
-                              $('#row_' + item.PrimaryKey).attr('data-done', 'Y').css('background-color', '#90EE90');
+                        });
 
-                          });
+                    },
 
-                      },
+                    error: function (xhr) {
 
-                      error: function (xhr) {
+                        alert('Error: ' + xhr.responseText);
 
-                          alert('Error: ' + xhr.responseText);
+                    }
+                });
 
-                      }
-                  });
+            });
 
-              });
+        });
 
-          });
 
 
+    </script>
+    <script type="text/javascript">
 
-   </script>
 
-   <script type="text/javascript">
 
+        $(function () {
 
 
-       $(function () {
+            /*
+            $(document).on('change', '.docTable input[type=radio]', function () {
+            var $row = $(this).closest('tr');
+            var isNo = $(this).val() === 'N';
+            $row.find('td').not(':eq(0), :eq(1), :eq(2), :eq(7)').toggleClass('disabled-cell', isNo).find('input, select, textarea, button').prop('disabled', isNo);
+            });
+            */
 
 
-           $(document).on('change', '.docTable input[type=radio]', function () {
+            function applyRadioRules($row, selectedValue) {
 
+                var isNo = selectedValue === 'N';
 
-               var $row = $(this).closest('tr');
-               var isNo = $(this).val() === 'N';
+                $row.find('td').not(':eq(0), :eq(1), :eq(2), :eq(7)').toggleClass('disabled-cell', isNo).find('input, select, textarea, button').prop('disabled', isNo);
 
-               $row.find('td').not(':eq(0), :eq(1), :eq(2), :eq(7)').toggleClass('disabled-cell', isNo).find('input, select, textarea, button').prop('disabled', isNo);
 
+            }
 
+            // Apply rules to all rows on page load
+            $('.docTable tr').each(function () {
 
-           });
+                var selectedValue = $(this).find('input[type=radio]:checked').val();
 
-       });
+                if (selectedValue) {
+                    applyRadioRules($(this), selectedValue);
+                }
+
+            });
+
+            // Apply rules when radio selection changes
+            $(document).on('change', '.docTable input[type=radio]', function () {
+
+                var $row = $(this).closest('tr');
+
+                applyRadioRules($row, $(this).val());
+
+            });
+
+        });
        
        
-       </script>
-
-
+    </script>
     <style type="text/css">
-        
-        
-        
-.disabled-cell {
-    background-color: #e9ecef;
-    opacity: 0.6;
-}
-
-        
+        .disabled-cell
+        {
+            background-color: #e9ecef;
+            opacity: 0.6;
+        }
     </style>
     <style type="text/css">
         .tdTopLeft
@@ -1944,24 +1964,22 @@
             border-bottom: none;
         }
     </style>
-
     <style type="text/css">
-    
-    .disabled-cell {
-    background-color: #d3d3d3 !important;
-    opacity: 0.7;
-}
-    
-    
-    .datepicker:disabled {
-    background-color: #e5e5e5 !important;
-    color: #777 !important;
-    cursor: not-allowed;
-    opacity: 1;
-}
-    
+        .disabled-cell
+        {
+            background-color: #d3d3d3 !important;
+            opacity: 0.7;
+        }
+        
+        
+        .datepicker:disabled
+        {
+            background-color: #e5e5e5 !important;
+            color: #777 !important;
+            cursor: not-allowed;
+            opacity: 1;
+        }
     </style>
-
 </head>
 <body>
     <form id="form1" runat="server">
@@ -2051,7 +2069,6 @@
         <br />
         Customer Name :<span class="badge badge-success "><%=CustomerName %></span>
         <br />
-
         <!--
         <div class="container mt-5">
             <div class="row g-4">
@@ -2115,7 +2132,6 @@
         </div>
 
         -->
-
         <br />
         <br />
         <div id="accordion" style="width: auto;">
@@ -2216,8 +2232,8 @@
                     Int32 id_to_delete = 0;
 
                     Int32 c_id = 0;
-                    
-                    
+
+                    String opt_man = "";
 
                     if (TableData.Rows.Count > 0)
                     {
@@ -2230,8 +2246,6 @@
             <h3>
                 <%=DocPosition%>
                 <%=section_name%>(<%=TableData.Rows.Count%>)</h3>
-
-
             <div id="<%=section_name%>">
                 <table class="<%=DocType[i]%>  docTable rounded" id="<%=DocType[i]%>" style="width: 100%">
                     <thead>
@@ -2301,12 +2315,13 @@
                             doc_pk = TableData.Rows[data]["doc_pk"] == DBNull.Value ? 0 : Convert.ToInt32(TableData.Rows[data]["doc_pk"]);
 
 
-                            c_id= TableData.Rows[data]["c_id"] == DBNull.Value ? 0 : Convert.ToInt32(TableData.Rows[data]["c_id"]);
-                            
-                            
+                            c_id = TableData.Rows[data]["c_id"] == DBNull.Value ? 0 : Convert.ToInt32(TableData.Rows[data]["c_id"]);
+
+                            opt_man = TableData.Rows[data]["opt_man"] == DBNull.Value ? "" : TableData.Rows[data]["opt_man"].ToString();
                             
                         %>
-                        <tr style="<%= id_to_delete > 0 ? "background-color: #90EE90;": "" %>" id="row_<%=doc_id %>"  data-id="<%=doc_id %>" data-done="<%= id_to_delete > 0 ? "Y": "N" %>">
+                        <tr style="<%= id_to_delete > 0 ? "background-color: #90EE90;": "" %>" id="row_<%=doc_id %>"
+                            data-id="<%=doc_id %>" data-done="<%= id_to_delete > 0 ? "Y": "N" %>">
                             <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["primary_key"]%>
                             </td>
@@ -2314,9 +2329,23 @@
                                 <%=TableData.Rows[data]["Name"]%>
                             </td>
                             <td class="tdTopLeft">
-                                <%-- <%=TableData.Rows[data]["Required"]%>--%>
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="Y" <%=TableData.Rows[data]["c_required"].ToString()=="Y"?"checked":""%> />Yes
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="N" <%=TableData.Rows[data]["c_required"].ToString()=="N"?"checked":""%>/>No
+                                
+
+
+                                    <input type="radio" class="rdo"
+    name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
+    data-id="<%=TableData.Rows[data]["primary_key"]%>"
+    value="Y"
+    <%= opt_man == "M" ? "checked='checked' disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "Y" ? "checked='checked'" : "") %> />Yes
+
+<input type="radio" class="rdo"
+    name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
+    data-id="<%=TableData.Rows[data]["primary_key"]%>"
+    value="N"
+    <%= opt_man == "M" ? "disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "N" ? "checked='checked'" : "") %> />No
+
+
+
                             </td>
                             <td class="tdTopLeft">
                                 <%--<%=TableData.Rows[data]["Obtained"]%>--%>
@@ -2355,21 +2384,12 @@
                                 </div>
                             </td>
                             <td class="tdTopLeft">
-                                <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker" style="width: 80px;" 
-                                      value="<%=expiry %>" 
-                                    
-                                    
-                                      <%= (expiry_req == "Y") ? "" : "disabled" %>
-                                    
-                                    
-                                    />
-
-                                    <% if (expiry_req == "Y")
-                                       { %>
-                                       <span style="color:Red;  font-weight:bold;  ">***</span>
-                                       
-                                    <%} %>
-
+                                <input id="txtExpiry_<%=doc_id %>" type="text" class="datepicker" style="width: 80px;"
+                                    value="<%=expiry %>" <%= (expiry_req == "Y") ? "" : "disabled" %> />
+                                <% if (expiry_req == "Y")
+                                   { %>
+                                <span style="color: Red; font-weight: bold;">***</span>
+                                <%} %>
                             </td>
                             <td class="tdTopLeft">
                                 <input id="txtRemarks_<%=doc_id %>" type="text" value="<%=remarks %>" />
@@ -2399,15 +2419,15 @@
                                         
                                          %> style="display: none;" <%} %> />
                                 <% 
-                                       /*
+                                   /*
                                     if (doc_Type == "GENERAL")
                             {
                             */
 
 
-                                       /*
-                                   }
-                                        */
+                                   /*
+                               }
+                                    */
                             
                                 %>
                             </td>
@@ -2429,11 +2449,10 @@
                         %>
                     </tbody>
                 </table>
-                <input type="button" class="BulkCheck" value="Check ALL" data-count="<%=TableData.Rows.Count %>" div-name="<%=DocType[i]%>"  id="btn_"<%=DocType %>  doc-table="<%=DocType[i] %>" />
-
-                <input type="button" class="BulkSave" value="Save ALL" data-count="<%=TableData.Rows.Count %>" div-name="<%=DocType[i]%>"  id="Button1"<%=DocType %>  doc-table="<%=DocType[i] %>" />
-
-
+                <input type="button" class="BulkCheck" value="Check ALL" data-count="<%=TableData.Rows.Count %>"
+                    div-name="<%=DocType[i]%>" id="btn_" <%=DocType %> doc-table="<%=DocType[i] %>" />
+                <input type="button" class="BulkSave" value="Save ALL" data-count="<%=TableData.Rows.Count %>"
+                    div-name="<%=DocType[i]%>" id="Button1" <%=DocType %> doc-table="<%=DocType[i] %>" />
                 <!--
                
                 <input id="Button1" type="button" value="button" class="ViewPDF" /><br />
@@ -2443,7 +2462,7 @@
             </div>
             <%
                     }
-                    
+
                 }
                 
             %>

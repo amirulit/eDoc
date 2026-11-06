@@ -399,6 +399,10 @@
 
                     obj.pre_addr = $("#txtPreAddrCom").val();
                     obj.per_addr = $("#txtPerAddrCom").val();
+
+                    obj.mother_company = $("#txtMotherCompany").val();
+
+
                 }
 
 
@@ -462,7 +466,7 @@
                                 //$("#btnAddiInfo").css({ "display": "block" });
                                 $("#btnAddiInfo").html("Add Partner Info")
                             }
-                            if (c_type == 'COMP') {
+                            if (c_type == 'PVT') {
                                 //$("#btnAddiInfo").css({ "display": "block" });
                                 $("#btnAddiInfo").html("Add Company Management Info")
                             }
@@ -717,6 +721,9 @@
                                 $("#txtLegalIDDocNameCom").val(data.d.legalDocumentName);
                                 $("#txtPreAddrCom").val(data.d.presentAddress);
                                 $("#txtPerAddrCom").val(data.d.ltCusPermanentAddress);
+                                $("#txtMotherCompany").val(data.d.motherCompany);
+
+
 
                             }
 
@@ -1048,6 +1055,10 @@
                         					<td>Permanenet Address</td>
                         					<td id="Td24"><input id="txtPerAddrCom" type="text"  class="form-control" /></td>
                       					</tr>
+                                         <tr>
+                        					<td>Mother Company</td>
+                        					<td id="Td22"><input id="txtMotherCompany" type="text"  class="form-control" /></td>
+                      					</tr>
                     				</tbody>
                   				</table>
                               
@@ -1286,9 +1297,9 @@
         </div>
     </div>
 
-    <!--Comp-->
+    <!--PVT-->
     
-                  <div class="modal fade" id="divCOMP" tabindex="-1" role="dialog" data-backdrop="static"   data-keyboard="false">
+      <div class="modal fade" id="divPVT" tabindex="-1" role="dialog" data-backdrop="static"   data-keyboard="false">
         <div class="modal-dialog modal-lg" style="width: 90%" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-green">
@@ -1432,6 +1443,170 @@ Is Group Customer ? <input id="Checkbox1" type="checkbox" />
                                         </td>
                                         <td>
                                             <input id="btnSaveConcernInfo" type="button" value="Save" class="btn btn-primary" />
+                                        </td>
+                                        
+                                    </tr>
+                                   
+                                </tbody>
+
+                            </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <!--PVT-->
+    
+      <div class="modal fade" id="divPUB" tabindex="-1" role="dialog" data-backdrop="static"   data-keyboard="false">
+        <div class="modal-dialog modal-lg" style="width: 90%" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-green">
+                    <h5 class="modal-title" id="H4">Company Management Info
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <%--<img id="Img2" class="img-circle" style="width: 120px; height: 120px;">--%>
+                        </div>
+                        <div class="col-sm-9"><b>Owner Info : </b>
+                             <table class="table">
+                                <thead>
+                                    <tr>
+                                          <td>
+                                            Customer ID
+                                        </td>
+                                     
+                                        <td>
+                                            Name
+                                        </td>
+                                         <td>
+                                            Role
+                                        </td>
+                                        <td>
+                                            Address
+                                        </td>
+                                        
+                                        <td> Phone
+                                        </td>
+                                    
+                                        <td>
+                                           Action
+                                        </td>
+                                       
+                                    </tr>
+                                   
+                                </thead>
+                                  <tbody>
+                                    <tr>
+                                        
+                                      <td>
+                                          <input id="Text1" type="text"  class="form-control" />
+     <input id="Button1" type="button" value="Get T24 Info"  class="btn btn-primary" /> </td>
+                                  
+                                       
+                                       
+                                        <td>
+                                          <input id="Text2" type="text"  class="form-control" />
+                                        </td>
+                                         <td><select id="Select3"  class="form-control">
+
+<option>Chairman</option>
+<option>Managing Director</option>
+<option>Director</option>
+<option>Accountant</option>
+<option>Secretary</option>
+
+</select> 
+                                        </td>
+                                        <td>
+                                           <input id="Text3" type="text"  class="form-control" />
+                                        </td>
+                                         
+                                        <td> <input id="Text4" type="text"  class="form-control" />
+                                        </td>
+                                    
+                                        <td>
+
+                                            <input id="Button2" type="button" value="Save" class="btn btn-primary" />
+                                        </td>
+                                        
+                                    </tr>
+                                   
+                                </tbody>
+
+                            </table>
+                            <hr />
+
+Is Group Customer ? <input id="Checkbox2" type="checkbox" />
+<a href="#exampleModal" data-toggle="modal"   data-id="1">
+        Test Modal </a>
+        <br />
+        <div id="div2" style="display:none;">
+        <b>Sister Concern Info : </b>
+        <br />
+
+         <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            T24 Customer ID (Corporate)
+                                        </td>
+                                     
+                                        <td>
+                                            Concern Name
+                                        </td>
+                                         <td>
+                                            Address
+                                        </td>
+                                       
+                                        
+                                        <td> Phone
+                                        </td>
+                                    
+                                        <td>
+                                           Action
+                                        </td>
+                                        
+                                    </tr>
+                                   
+                                </thead>
+                                  <tbody>
+                                    <tr>
+                                        
+                                     
+                                        <td>
+
+                                        <div class="input-group mb-3">
+                                            <input id="Text5" type="text"  class="form-control" />
+                                            <div class="input-group-append">
+                                                <input id="Button3" type="button" value="Get T24 Info"  class="btn btn-primary" />  
+                                            </div>
+                                         </div>
+
+
+                                          
+                                    </td>
+                                        <td>
+                                            <input id="Text6" type="text"  class="form-control" />
+                                        </td>
+                                        <td>
+                                           <input id="Text7" type="text"  class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input id="Text8" type="text"  class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input id="Button4" type="button" value="Save" class="btn btn-primary" />
                                         </td>
                                         
                                     </tr>

@@ -200,7 +200,6 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         String customerTypes,
         String loanTypes,
         String securityTypes)
-
     {
         // Example:
         // rowIds         = "101,102,105"
@@ -371,6 +370,7 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
 
         //return "Data received successfully.";
+
     }
 
 

@@ -684,10 +684,14 @@
 
                             <button type="button" id="btnSaveAll" class="btn btn-success">Save All</button>
 
-
+                            <!--
                     		<button type="button" class="btn btn-primary" id="btnSave">Save</button>
 
                             <button type="button" class="btn btn-primary" id="btnSave2">Save</button>
+
+
+                            -->
+
 
                             <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Upload</button>
 
