@@ -2330,9 +2330,13 @@
                             <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["primary_key"]%>
                             </td>
-                            <td class="tdTopLeft">
+                            
+
+                            <td class="tdTopLeft" style="<%= opt_man == "M" ? "color:red; font-weight:bold;" : "" %>">
                                 <%=TableData.Rows[data]["Name"]%>
                             </td>
+
+
                             <td class="tdTopLeft">
                                 
 
