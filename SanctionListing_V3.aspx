@@ -24,11 +24,53 @@
 
 
     <script src="sweet_alert.js" type="text/javascript"></script>
+
+
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
+
+
     <script type="text/javascript">
+
+
         $(document).ready(function () {
 
 
+
+
+
+
+             
+
+        });
+
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+            $('#<%=select4.ClientID%>,#<%=select5.ClientID%>').on('change', function () {
+                $('#hfSelectedSecurity').val($(this).val());
+            });
+
+            $("#<%=select4.ClientID%>,#<%=select5.ClientID%>").select2({
+                placeholder: "<--Select-->",
+                allowClear: true,
+                width: "100%"
+            });
+
+
+
+
+            /*
+            $("#btnSave").on("click", function () {
+            getSelectedSanctions();
+
+            });
+            */
 
 
             $('.bulk').change(function () {
@@ -106,6 +148,14 @@
 
                 alert(ids);
 
+
+                $('#tblSummary').hide();
+
+
+                //$('#ContentPlaceHolder1_DropDownList1').show();
+
+                openSanctionModal_V2(ids);
+
                 //return;
 
                 //openSanctionModal_V2_Multiple(ids);
@@ -114,167 +164,12 @@
 
 
 
-
-            function openSanctionModal_V2_Multiple(ids) {
-
-
-
-
-                $('#sanctionModal_Multiple').modal('show');
-                $('#sanctionLoading_Multiple').show();
-                $('#sanctionTableBody_Multiple').empty();
-
-
-
-
-
-                $.ajax({
-
-                    type: "POST",
-                    url: "SanctionListing_V3.aspx/GetSanctionDetails_Multiple_Advice",
-                    data: '{ids:' + JSON.stringify(ids) + '}',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-
-
-
-                    success: function (response) {
-
-                        var data = response.d || [];
-
-                        var html = '';
-
-
-                        //var $tbody = $("#sanctionTableBody");
-
-                        //$tbody.empty();
-
-
-
-                        $.each(data, function (i, item) {
-
-
-
-                            html += '<tr data-id="' + item.id + '" data-custype="' + item.cus_type + '" data-loantype="' + item.short_form + '">';
-
-                            html += '<td><input type="checkbox" class="row-checkbox" value="' + item.id + '"></td>';
-
-                            html += '<td>' + (item.id == null ? '' : item.id) + '</td>';
-
-                            html += '<td>' + (item.customer_id == null ? '' : item.customer_id) + '</td>';
-                            html += '<td>' + (item.customer_name == null ? '' : item.customer_name) + '</td>';
-                            html += '<td>' + (item.loan_nature == null ? '' : item.loan_nature) + '</td>';
-                            //html += '<td>' + (item.loan_nature_edoc == null ? '' : item.loan_nature_edoc) + '</td>';
-                            html += '<td>' + (item.currency == null ? '' : item.currency) + '</td>';
-                            html += '<td>' + (item.amount == null ? '' : item.amount) + '</td>';
-                            html += '<td>' + (item.validity == null ? '' : item.validity) + '</td>';
-
-                            html += '</tr>';
-
-
-
-                            //console.log(html);
-
-                            /*
-                            var $row = $("<tr></tr>");
-
-
-                            $row.attr("data-id", item.id);
-                            $row.attr("data-custype", item.cus_type);
-                            $row.attr("data-loantype", item.short_form);
-
-
-                            var $checkbox = $("<input>", { type: "checkbox", "class": "chkRow" });
-
-                            var $checkCell = $("<td></td>").append($checkbox);
-
-                            $row.append($checkCell);
-
-                            $row.append($("<td></td>").text(item.id));
-                            $row.append($("<td></td>").text(item.customer_id));
-                            $row.append($("<td></td>").text(item.customer_name));
-                            $row.append($("<td></td>").text(item.loan_nature));
-                            $row.append($("<td></td>").text(item.currency));
-                            $row.append($("<td></td>").text(item.amount));
-                            $row.append($("<td></td>").text(item.validity));
-
-                            $tbody.append($row);
-
-                            console.log($row);
-
-                            */
-
-
-
-
-                        });
-
-                        console.log(html);
-
-                        $('#sanctionTableBody_Multiple').empty().append(html);
-
-                        $('#chkSelectAll').prop('checked', false);
-
-                        //updateSelectedCount();
-
-
-
-
-                    },
-
-
-                    error: function (xhr) {
-                        alert('Error loading sanction records.');
-                        console.error(xhr.responseText);
-                    },
-
-                    complete: function () {
-                        $('#sanctionLoading').hide();
-                    }
-
-
-                });
-            }
-
-        });
-
-    </script>
-
-
-
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-
-
-            $('#<%=select4.ClientID%>,#<%=select5.ClientID%>').on('change', function () {
-                $('#hfSelectedSecurity').val($(this).val());
-            });
-
-            $("#<%=select4.ClientID%>,#<%=select5.ClientID%>").select2({
-                placeholder: "<--Select-->",
-                allowClear: true,
-                width: "100%"
-            });
-
-
-
-
-            /*
-            $("#btnSave").on("click", function () {
-            getSelectedSanctions();
-
-            });
-            */
-
-
-
             $("body").on("click", ".view", function () {
 
 
-                var id = $(this).data("id");
+                var ids = $(this).data("id");
 
-                alert(id);
+                alert(ids);
 
                 /*
                 var row = $(this).closest('tr');
@@ -297,24 +192,26 @@
                 // Get target table TDs by position
                 var targetTd = $('#tblSummary tr td');
 
-                targetTd.eq(0).text(sourceTd.eq(0).text().trim()); // ID
-                targetTd.eq(1).text(sourceTd.eq(1).text().trim()); // EDOC Ref NO#
-                targetTd.eq(2).text(sourceTd.eq(2).text().trim()); // Branch
-                targetTd.eq(3).text(sourceTd.eq(4).text().trim()); // Date
-                targetTd.eq(4).text(sourceTd.eq(5).text().trim()); // Segment
-                targetTd.eq(5).text(sourceTd.eq(6).text().trim()); // Authority
+                targetTd.eq(0).text(sourceTd.eq(1).text().trim()); // ID
+                targetTd.eq(1).text(sourceTd.eq(2).text().trim()); // EDOC Ref NO#
+                targetTd.eq(2).text(sourceTd.eq(3).text().trim()); // Branch
+                targetTd.eq(3).text(sourceTd.eq(5).text().trim()); // Date
+                targetTd.eq(4).text(sourceTd.eq(6).text().trim()); // Segment
+                targetTd.eq(5).text(sourceTd.eq(7).text().trim()); // Authority
                 targetTd.eq(6).text(sourceTd.eq(3).text().trim()); // Authority
 
                 //jQuery('#sanctionModal').modal('show');
 
-                openSanctionModal_V2(id);
+                $('#tblSummary').show();
+
+                openSanctionModal_V2(ids);
 
 
             });
 
 
 
-            function openSanctionModal_V2(id) {
+            function openSanctionModal_V2(ids) {
 
 
 
@@ -330,8 +227,13 @@
                 $.ajax({
 
                     type: "POST",
-                    url: "SanctionListing_V3.aspx/GetSanctionDetails",
-                    data: '{id: ' + id + '}',
+                    //url: "SanctionListing_V3.aspx/GetSanctionDetails",
+                    //data: '{id: ' + id + '}',
+
+                    url: "SanctionListing_V3.aspx/GetSanctionDetails_Multiple_Advice",
+                    data: '{ids:' + JSON.stringify(ids) + '}',
+
+
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
 
@@ -367,6 +269,9 @@
                             html += '<td>' + (item.currency == null ? '' : item.currency) + '</td>';
                             html += '<td>' + (item.amount == null ? '' : item.amount) + '</td>';
                             html += '<td>' + (item.validity == null ? '' : item.validity) + '</td>';
+                            html += '<td>' + (item.edoc_id == null ? '' : item.edoc_id) + '</td>';
+
+                            
 
                             html += '</tr>';
 
@@ -595,6 +500,9 @@
 
 
             $("#btnSave").on("click", function () {
+
+
+
 
                 var selectedIds = [];
 
@@ -1004,17 +912,21 @@
 
     <div class="modal" id="sanctionModal" tabindex="-1" role="dialog" aria-labelledby="sanctionModalLabel">
 
-    <div class="modal-dialog  modal-lg " role="document" >
+    <div class="modal-dialog  modal-lg" role="document" >
 
         <div class="modal-content">
 
             <div class="modal-header bg-primary">
+
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="sanctionModalLabel">Select Facility
                 </h4>
+
             </div>
 
             <div class="modal-body">
+
+
                 <p id="sanctionLoading" style="display:none;">
                     Loading records...
                 </p>
@@ -1022,15 +934,14 @@
                 <div class="row">
                 <div class="col-md-4">
 
-                <table id="tblSummary" class="table  table-responsive " >
-                <tr>
-                <th>ID</th><td></td> </tr>
-                <tr> <th>EDOC Ref NO#</th><td></td> </tr>
-                <tr> <th>Branch</th><td></td> </tr>
-                <tr> <th>Date</th><td></td> </tr>
-                <tr> <th>Segment</th><td></td> </tr>
-                <tr> <th>Authority</th><td></td> </tr>
-                  <tr> <th>Sanction Ref NO#</th><td></td> </tr>
+                <table id="tblSummary" class="table table-responsive" >
+                <tr><th>ID</th><td></td></tr>
+                <tr><th>EDOC Ref NO#</th><td></td> </tr>
+                <tr><th>Branch</th><td></td> </tr>
+                <tr><th>Date</th><td></td> </tr>
+                <tr><th>Segment</th><td></td> </tr>
+                <tr><th>Authority</th><td></td> </tr>
+                <tr><th>Sanction Ref NO#</th><td></td> </tr>
                 
                
                 
@@ -1039,23 +950,21 @@
                  </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped"
-                           id="tblSanction">
+                    <table class="table table-bordered table-striped" id="tblSanction">
                         <thead>
                             <tr>
-                                <th>
-                                    <input type="checkbox"
-                                           id="chkSelectAll" />
-                                </th>
+
+                                <th><input type="checkbox" id="chkSelectAll" /></th>
                                 <th>ID</th>
-                               
                                 <th>Customer ID</th>
                                 <th>Customer Name</th>
                                 <th>Loan Nature</th>
-                              
                                 <th>Currency</th>
                                 <th>Amount</th>
                                 <th>Validity</th>
+                                <th>EDOC ID#</th>
+
+
                             </tr>
                         </thead>
                         <tbody id="sanctionTableBody"></tbody>
