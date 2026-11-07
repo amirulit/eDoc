@@ -73,23 +73,17 @@
             */
 
 
-            $('.bulk').change(function () {
+            $(document).on('change', '.bulk', function () {
 
                 if ($('.bulk:checked').length > 0) {
-
                     $('#Button2').show();
-
-                    //$('#ContentPlaceHolder1_DropDownList1').show();
-
-
                 } else {
-
                     $('#Button2').hide();
-
-                    //$('#ContentPlaceHolder1_DropDownList1').hide();
                 }
 
             });
+
+
 
 
 
@@ -271,7 +265,7 @@
                             html += '<td>' + (item.validity == null ? '' : item.validity) + '</td>';
                             html += '<td>' + (item.edoc_id == null ? '' : item.edoc_id) + '</td>';
 
-                            
+
 
                             html += '</tr>';
 
@@ -461,10 +455,12 @@
             }
 
 
-            // Selected count
+            //Selected count
+
+
             function updateSelectedCount() {
 
-                $('#selectedCount').text($('.row-checkbox:checked').length + ' selected');
+                $('#selectedCount').text($('.row-checkbox:checked').length + ' facilit(ies) selected');
 
                 updateColor();
 
@@ -482,9 +478,8 @@
 
                 $("#sanctionTableBody .row-checkbox:checked").each(function () {
 
+
                     var $row = $(this).closest("tr");
-
-
 
                     var amt = $row.find('td').eq(6).text().trim();
 
@@ -536,6 +531,10 @@
 
 
 
+                var sanctionIds = [];
+
+
+
 
 
 
@@ -576,10 +575,16 @@
 
                     var cus_id = $row.find('td').eq(2).text().trim();
 
+                    var sanction_id = $row.find('td').eq(8).text().trim();
 
+
+
+                    sanctionIds
 
                     // All selected row IDs
                     addUnique(rowIds, $row.attr("data-id"));
+
+                    addUnique(sanctionIds, sanction_id);
 
                     // Unique attribute values only
                     addUnique(customerIds, cus_id);
@@ -603,7 +608,7 @@
 
 
 
-                    id: id,
+                    sanctionIds: sanctionIds.join(","),
                     edocRefNo: edocRefNo,
                     branch: branch,
                     date: date,
@@ -622,6 +627,8 @@
                     customerTypes: customerTypes.join(","),
                     loanTypes: loanTypes.join(","),
                     securityTypes: v_sec
+
+
                 };
 
 
@@ -651,6 +658,8 @@
                     }
                     */
                     success: function (msg) {
+
+
                         var status = msg.d[0];
                         var message = msg.d[1];
                         var dd_id = msg.d[2];

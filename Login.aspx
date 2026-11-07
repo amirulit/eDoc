@@ -196,7 +196,7 @@
                 <asp:Button ID="btnRM" runat="server" Text="RM" OnClick="btnRM_Click" CssClass="btn btn-default" />
                 <asp:Button ID="btnCD" runat="server" Text="CD" CssClass="btn btn-default" OnClick="btnCD_Click" />
                 <asp:Button ID="btnCI" runat="server" Text="CI" CssClass="btn btn-default" OnClick="btnCI_Click" />
-                <asp:Button ID="btnMOP" runat="server" Text="MOP" CssClass="btn btn-default" OnClick="btnMOP_Click" />
+                <asp:Button ID="btnMOP" runat="server" Text="MOP" CssClass="btn btn-default" OnClick="btnMOP_Click"  Visible="false" />
                 <asp:Button ID="btnHOB" runat="server" Text="HOB" CssClass="btn btn-default" OnClick="btnHOB_Click" />
                 <asp:Button ID="btnAdmin" runat="server" Text="Admin" CssClass="btn btn-default"
                     OnClick="btnAdmin_Click" />

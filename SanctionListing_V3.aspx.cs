@@ -272,12 +272,13 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
     [WebMethod]
     public static Object[] Drawdown_Save_V2(
 
-         Int32 id,
-  String edocRefNo,
-  String branch,
-  String date,
-  String segment,
-  String authority,
+
+        String sanctionIds,
+        String edocRefNo,
+        String branch,
+        String date,
+        String segment,
+        String authority,
         String sanctionRefNo,
 
 
@@ -288,6 +289,8 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         String customerTypes,
         String loanTypes,
         String securityTypes)
+
+
     {
         // Example:
         // rowIds         = "101,102,105"
@@ -380,12 +383,12 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
                         //new SqlParameter("@cus_ids",Obj.cus_ids.ToString().Split(',')[0]), 
 
-                        new SqlParameter("@sanction_id",id), 
+                        new SqlParameter("@sanction_ids",sanctionIds), 
                         new SqlParameter("@sanction_refno",sanctionRefNo), 
                         new SqlParameter("@edoc_refno",edocRefNo), 
 
 
-                          new SqlParameter("@row_ids",rowIds), 
+                        new SqlParameter("@row_ids",rowIds), 
                         new SqlParameter("@cus_ids",customerIds), 
                         new SqlParameter("@cus_types",customerTypes), 
                         new SqlParameter("@loan_types",loanTypes), 

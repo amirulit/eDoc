@@ -327,7 +327,7 @@
 
            <li>
           <a href="ProfileListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Customer Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>List of Customers in EDOC</span>
           </a>
         </li>
 
@@ -354,7 +354,7 @@
 
            <li>
           <a href="ProfileListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Customer Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i> <span>List of Customers in EDOC</span>
           </a>
         </li>
         

@@ -61,6 +61,9 @@
                         		<th>Cus ID</th>
                             	<th>Cus Name</th>
                             	<th>Cus Type</th>
+                                <th>Total Sanction</th>
+                                <th>Pending Drawdown</th>
+                                <th>Taken Drawdown</th>
                             	<th>Action</th>
                                 </tr>
                         	</thead>
@@ -84,6 +87,9 @@
                         <td><%=TableData.Rows[data]["cus_code"]%></td>
                         <td><%=TableData.Rows[data]["cus_name"]%></td>
                         <td><%=TableData.Rows[data]["cus_type"]%></td>
+                        <td><%=TableData.Rows[data]["total_sanction"]%></td>
+                        <td><%=TableData.Rows[data]["pending_drawdown"]%></td>
+                        <td><%=TableData.Rows[data]["already_taken_drawdown"]%></td>
                         	
                         <td>        
 
@@ -93,11 +99,17 @@
 
 
                                     <%  if (Role == 3)
-                                        { %>
+                                            
+                                        { 
+                                            %>
 
-                                    <a href="SanctionUpload.aspx?CusID=<%=TableData.Rows[data]["cus_code"]%>"  class="btn btn-success btn-xs sanction" cus-type="<%=TableData.Rows[data]["cus_type"]%>"   cus-id="<%=TableData.Rows[data]["cus_code"]%>">New Sanction</a>                                    
+                                    <a href="SanctionUpload_V4.aspx?CusID=<%=TableData.Rows[data]["cus_code"]%>"  class="btn btn-success btn-xs sanction" cus-type="<%=TableData.Rows[data]["cus_type"]%>"   cus-id="<%=TableData.Rows[data]["cus_code"]%>">New Sanction</a>                                    
 
-                                    <%} %>
+                                    <%
+                                        }
+                                        
+                                        
+                                         %>
 
   
                         </td>                                
