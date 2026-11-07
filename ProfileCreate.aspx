@@ -721,8 +721,17 @@
                                 $("#txtLegalIDDocNameCom").val(data.d.legalDocumentName);
                                 $("#txtPreAddrCom").val(data.d.presentAddress);
                                 $("#txtPerAddrCom").val(data.d.ltCusPermanentAddress);
+
+
+
                                 $("#txtMotherCompany").val(data.d.motherCompany);
 
+                                if (data.d.motherCompany == "" || data.d.motherCompany == null) {
+
+                                    $("#spanMotherCompany").text("***No Mother Company in T24***");
+                                } else {
+                                    $("#spanMotherCompany").text("");
+                                }
 
 
                             }
@@ -1057,7 +1066,12 @@
                       					</tr>
                                          <tr>
                         					<td>Mother Company</td>
-                        					<td id="Td22"><input id="txtMotherCompany" type="text"  class="form-control" /></td>
+                        					<td id="Td22"><input id="txtMotherCompany" type="text"  class="form-control" />
+                                            
+                                            
+                                            <span id="spanMotherCompany" style=" color:Red;   font-weight:bold;"></span>
+                                            
+                                            </td>
                       					</tr>
                     				</tbody>
                   				</table>

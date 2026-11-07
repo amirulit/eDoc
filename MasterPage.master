@@ -331,6 +331,13 @@
           </a>
         </li>
 
+
+          <li>
+          <a href="CompanyListing.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Company Listing</span>
+          </a>
+        </li>
+
            <li>
           <a href="SanctionListing_V3.aspx">
             <i class="fa fa-arrow-circle-o-right"></i> <span>Checklist Initiate</span>
@@ -358,8 +365,14 @@
           </a>
         </li>
         
+         <li>
+          <a href="CompanyListing.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Company Listing</span>
+          </a>
+        </li>
+
         <li>
-          <a href="SanctionUpload.aspx">
+          <a href="SanctionUpload_V4.aspx">
             <i class="fa fa-arrow-circle-o-right"></i> <span>Sanction Upload</span>
           </a>
         </li>
@@ -367,7 +380,7 @@
 
          <li>
           <a href="SanctionListing_V2.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Sanction Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Sanction Listing</span>
           </a>
         </li>
         <%} %>
