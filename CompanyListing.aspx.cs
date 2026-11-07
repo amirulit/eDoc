@@ -115,11 +115,11 @@ public partial class CompanyListing : System.Web.UI.Page
                         string motherCompanyName = "";
 
                         string getQuery = @"
-              select  cus_name from [t_CustomerInfo]  WHERE cus_code = @CusID";
+              select  cus_name from [t_CustomerInfo]  WHERE cus_code = @MotherCompany";
 
                         using (SqlCommand getCmd = new SqlCommand(getQuery, con))
                         {
-                            getCmd.Parameters.AddWithValue("@CusID", cusId.Trim());
+                            getCmd.Parameters.AddWithValue("@MotherCompany", cusId.Trim());
 
                             motherCompanyName = Convert.ToString(getCmd.ExecuteScalar());
                         }

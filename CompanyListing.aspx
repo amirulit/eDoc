@@ -72,6 +72,9 @@
 
                     var result = response.d;
 
+
+                    var row = button.closest("tr");
+
                     if (result.success) {
 
                         cell.html('<span class="mother-company-value">' +
@@ -83,7 +86,7 @@
                     );
 
 
-                        var row = button.closest("tr");
+                        //var row = button.closest("tr");
 
                         row.find(".mother-company-name").text(result.motherCompanyName);
 
@@ -143,6 +146,9 @@
 
                     var result = response.d;
 
+
+                    var row = button.closest("tr");
+
                     if (result.success) {
 
                         cell.html(
@@ -162,6 +168,12 @@
 
                         '</div>'
                     );
+
+
+                        //var row = button.closest("tr");
+
+                        row.find(".mother-company-name").text('');
+
 
                     }
                     else {
@@ -325,7 +337,9 @@
         }
     %>
 </td>
-                       <td class="mother-company-name"><%=TableData.Rows[data]["mother_company_name"]%></td>
+                     <td class="mother-company-name">
+    <%=TableData.Rows[data]["mother_company_name"]%>
+</td>
                        
                      
                         	
