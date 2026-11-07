@@ -2067,12 +2067,33 @@
         </table>
         <br />
 
-        <asp:GridView ID="GridView1" runat="server">
+        <asp:GridView ID="GridView0" runat="server">
         </asp:GridView>
 
         -->
         <br />
-        Customer Name :<span class="badge badge-success "><%=CustomerName %></span>
+      <%--  Customer Name :<span class="badge badge-success "><%=CustomerName %></span>--%>
+        <br />
+        <table  class="rounded  my-table  docTable">
+            <tr>
+                <td class="tdTopLeft">
+                    <asp:GridView ID="GridView1" runat="server"  >
+                    </asp:GridView>
+                </td>
+                <td class="tdTopLeft">
+                    <asp:GridView ID="GridView2" runat="server"  >
+                    </asp:GridView>
+                </td>
+                 <td class="tdTopLeft">
+                    <asp:GridView ID="GridView3" runat="server"  >
+                    </asp:GridView>
+                </td>
+                <td class="tdTopLeft">
+                    <asp:GridView ID="GridView4" runat="server"  >
+                    </asp:GridView>
+                </td>
+            </tr>
+        </table>
         <br />
         <!--
         <div class="container mt-5">
@@ -2330,31 +2351,14 @@
                             <td class="tdTopLeft">
                                 <%=TableData.Rows[data]["primary_key"]%>
                             </td>
-                            
-
-                            <td class="tdTopLeft" style="<%= opt_man == "M" ? "color:red; font-weight:bold;" : "" %>">
+                            <td class="tdTopLeft" style="<%= opt_man == "M" ? "color:red; font-weight:bold;": "" %>">
                                 <%=TableData.Rows[data]["Name"]%>
                             </td>
-
-
                             <td class="tdTopLeft">
-                                
-
-
-                                    <input type="radio" class="rdo"
-    name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
-    data-id="<%=TableData.Rows[data]["primary_key"]%>"
-    value="Y"
-    <%= opt_man == "M" ? "checked='checked' disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "Y" ? "checked='checked'" : "") %> />Yes
-
-<input type="radio" class="rdo"
-    name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
-    data-id="<%=TableData.Rows[data]["primary_key"]%>"
-    value="N"
-    <%= opt_man == "M" ? "disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "N" ? "checked='checked'" : "") %> />No
-
-
-
+                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
+                                    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="Y" <%= opt_man == "M" ? "checked='checked' disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "Y" ? "checked='checked'" : "") %> />Yes
+                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
+                                    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="N" <%= opt_man == "M" ? "disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "N" ? "checked='checked'" : "") %> />No
                             </td>
                             <td class="tdTopLeft">
                                 <%--<%=TableData.Rows[data]["Obtained"]%>--%>

@@ -77,15 +77,8 @@
 
                     if (result.success) {
 
-                        cell.html('<span class="mother-company-value">' +
-                        $('<div>').text(result.motherCompany).html() +
-                        '</span> ' +
-                        '<button type="button" class="btn btn-danger btn-xs delete-mother" cus-id="' +
-                        $('<div>').text(cusId).html() +
-                        '">Delete</button>'
-                    );
-
-
+                        cell.html('<span class="mother-company-value">' + $('<div>').text(result.motherCompany).html() + '</span> ' + '<button type="button" class="btn btn-danger btn-xs delete-mother" cus-id="' + $('<div>').text(cusId).html() + '">Delete</button>');
+                         
                         //var row = button.closest("tr");
 
                         row.find(".mother-company-name").text(result.motherCompanyName);
@@ -152,22 +145,19 @@
                     if (result.success) {
 
                         cell.html(
-                        '<button type="button" class="btn btn-primary btn-xs add-mother" cus-id="' +
-                        $('<div>').text(cusId).html() +
-                        '">Add</button>' +
+
+                        '<button type="button" class="btn btn-primary btn-xs add-mother" cus-id="' + $('<div>').text(cusId).html() + '">Add</button>' +
 
                         '<div class="mother-input-area" style="display:none; margin-top:5px;">' +
 
                         '<input type="text" class="form-control input-sm mother-company-input" placeholder="Enter Mother Company Cus ID" />' +
 
-                        '<button type="button" class="btn btn-success btn-xs save-mother" cus-id="' +
-                        $('<div>').text(cusId).html() +
-                        '" style="margin-top:5px;">Save</button>' +
+                        '<button type="button" class="btn btn-success btn-xs save-mother" cus-id="' + $('<div>').text(cusId).html() + '" style="margin-top:5px;">Save</button>' +
 
                         '<button type="button" class="btn btn-default btn-xs cancel-mother" style="margin-top:5px;">Cancel</button>' +
 
                         '</div>'
-                    );
+                   );
 
 
                         //var row = button.closest("tr");

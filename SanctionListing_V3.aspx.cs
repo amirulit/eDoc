@@ -498,7 +498,7 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         SqlCommand cmd = con.CreateCommand();
         cmd.CommandType = CommandType.StoredProcedure;
 
-        cmd.CommandText = "usp_Checklist_Generate";
+        cmd.CommandText = "usp_Checklist_Generate_V2";
         cmd.Connection = con;
 
 

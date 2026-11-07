@@ -119,7 +119,7 @@ public partial class CompanyListing : System.Web.UI.Page
 
                         using (SqlCommand getCmd = new SqlCommand(getQuery, con))
                         {
-                            getCmd.Parameters.AddWithValue("@MotherCompany", cusId.Trim());
+                            getCmd.Parameters.AddWithValue("@MotherCompany",motherCompany.Trim());
 
                             motherCompanyName = Convert.ToString(getCmd.ExecuteScalar());
                         }
