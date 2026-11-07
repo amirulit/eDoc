@@ -180,6 +180,94 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
 
 
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static List<SanctionDetail> GetSanctionDetails_Multiple_Advice(String ids)
+    {
+        var list = new List<SanctionDetail>();
+
+        String cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+
+
+        String query = @"
+
+
+        SELECT 
+                 s.id
+                ,[edoc_id]
+                ,[edoc_refno]
+                ,[sanction_reference]
+                ,s.customer_id
+                ,[customer_name]
+                ,l.loan_nature
+                ,s.loan_nature_edoc
+                ,[currency]
+                ,[amount]
+                ,convert(varchar(10),validity,23)validity
+                --,convert(date,validity)validity
+				,c.cus_type
+				,l.short_form
+        
+        FROM 
+            [dbo].[t_Sanction_Master_Details] s
+		join
+			[dbo].[t_CustomerInfo] c
+		on
+			s.customer_id=c.[cus_code]
+		join
+			[dbo].[t_LoanNature_V2] l
+		on
+			s.loan_nature=l.id
+        where
+			edoc_id in (" + ids + @")
+			
+        ORDER BY 
+            s.id asc;
+
+
+";
+
+
+
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(new SanctionDetail
+                        {
+                            id = Convert.ToInt32(dr["id"]),
+                            edoc_id = GetString(dr, "edoc_id"),
+                            edoc_refno = GetString(dr, "edoc_refno"),
+                            sanction_reference = GetString(dr, "sanction_reference"),
+                            customer_id = GetString(dr, "customer_id"),
+                            customer_name = GetString(dr, "customer_name"),
+                            loan_nature = GetString(dr, "loan_nature"),
+                            loan_nature_edoc = GetString(dr, "loan_nature_edoc"),
+                            currency = GetString(dr, "currency"),
+                            amount = GetString(dr, "amount"),
+                            validity = GetString(dr, "validity"),
+                            cus_type = GetString(dr, "cus_type"),
+                            short_form = GetString(dr, "short_form")
+                        });
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+
+
+
+
 
     [WebMethod]
     public static Object[] Drawdown_Save_V2(
@@ -682,6 +770,12 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
             select4.DataTextField = "short_name";
             select4.DataValueField = "id";
             select4.DataBind();
+
+
+            select5.DataSource= Ds.Tables[0];
+            select5.DataTextField = "short_name";
+            select5.DataValueField = "id";
+            select5.DataBind();
         }
         catch (Exception ex)
         {

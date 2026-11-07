@@ -18,11 +18,228 @@
             float: none;
             display: inline-block;
         }
+        
     </style>
+
 
 
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+
+            $('.bulk').change(function () {
+
+                if ($('.bulk:checked').length > 0) {
+
+                    $('#Button2').show();
+
+                    //$('#ContentPlaceHolder1_DropDownList1').show();
+
+
+                } else {
+
+                    $('#Button2').hide();
+
+                    //$('#ContentPlaceHolder1_DropDownList1').hide();
+                }
+
+            });
+
+
+
+
+            $('#Button2').on('click', function (e) {
+
+
+                var array = [];
+                var ids = '';
+                var cnt = 0;
+
+
+                //$("input:checkbox[name=bulk]:checked").each(function () {
+                //array.push($(this).val());
+                //val = $(this).val();
+                //alert(val);
+                //});
+
+
+                //$("input.bulk").each(function (index, element) {
+                //$("input:checkbox[class=bulk]:checked").each(function () {
+                $("input:checkbox[name=bulk]:checked").each(function () {
+                    //alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());
+                    //val = val + ',' + $(this).val()
+                    cnt = cnt + 1;
+                    //array.push("'" + $(this).val() + "'");
+
+                    array.push($(this).val());
+
+                });
+
+                //console.log(array)
+                //alert(val.substr(1));
+                //alert(val);
+
+                ids = array.toString()
+
+                //alert(val);
+
+                if (cnt == 0) {
+                    alert('Nothing Selected');
+                    return false;
+                }
+
+
+                //return false;
+                //else {
+                //for (var i = 0; i < array.length; i++) {
+                //var val = array[i];
+                //alert(val);
+                //}
+                //alert('total:' + cnt + '-Bulk Approval Function not Ready');
+
+
+                //var dst = $('#ContentPlaceHolder1_DropDownList1').val();
+
+                alert(ids);
+
+                //return;
+
+                //openSanctionModal_V2_Multiple(ids);
+
+            });
+
+
+
+
+            function openSanctionModal_V2_Multiple(ids) {
+
+
+
+
+                $('#sanctionModal_Multiple').modal('show');
+                $('#sanctionLoading_Multiple').show();
+                $('#sanctionTableBody_Multiple').empty();
+
+
+
+
+
+                $.ajax({
+
+                    type: "POST",
+                    url: "SanctionListing_V3.aspx/GetSanctionDetails_Multiple_Advice",
+                    data: '{ids:' + JSON.stringify(ids) + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+
+
+                    success: function (response) {
+
+                        var data = response.d || [];
+
+                        var html = '';
+
+
+                        //var $tbody = $("#sanctionTableBody");
+
+                        //$tbody.empty();
+
+
+
+                        $.each(data, function (i, item) {
+
+
+
+                            html += '<tr data-id="' + item.id + '" data-custype="' + item.cus_type + '" data-loantype="' + item.short_form + '">';
+
+                            html += '<td><input type="checkbox" class="row-checkbox" value="' + item.id + '"></td>';
+
+                            html += '<td>' + (item.id == null ? '' : item.id) + '</td>';
+
+                            html += '<td>' + (item.customer_id == null ? '' : item.customer_id) + '</td>';
+                            html += '<td>' + (item.customer_name == null ? '' : item.customer_name) + '</td>';
+                            html += '<td>' + (item.loan_nature == null ? '' : item.loan_nature) + '</td>';
+                            //html += '<td>' + (item.loan_nature_edoc == null ? '' : item.loan_nature_edoc) + '</td>';
+                            html += '<td>' + (item.currency == null ? '' : item.currency) + '</td>';
+                            html += '<td>' + (item.amount == null ? '' : item.amount) + '</td>';
+                            html += '<td>' + (item.validity == null ? '' : item.validity) + '</td>';
+
+                            html += '</tr>';
+
+
+
+                            //console.log(html);
+
+                            /*
+                            var $row = $("<tr></tr>");
+
+
+                            $row.attr("data-id", item.id);
+                            $row.attr("data-custype", item.cus_type);
+                            $row.attr("data-loantype", item.short_form);
+
+
+                            var $checkbox = $("<input>", { type: "checkbox", "class": "chkRow" });
+
+                            var $checkCell = $("<td></td>").append($checkbox);
+
+                            $row.append($checkCell);
+
+                            $row.append($("<td></td>").text(item.id));
+                            $row.append($("<td></td>").text(item.customer_id));
+                            $row.append($("<td></td>").text(item.customer_name));
+                            $row.append($("<td></td>").text(item.loan_nature));
+                            $row.append($("<td></td>").text(item.currency));
+                            $row.append($("<td></td>").text(item.amount));
+                            $row.append($("<td></td>").text(item.validity));
+
+                            $tbody.append($row);
+
+                            console.log($row);
+
+                            */
+
+
+
+
+                        });
+
+                        console.log(html);
+
+                        $('#sanctionTableBody_Multiple').empty().append(html);
+
+                        $('#chkSelectAll').prop('checked', false);
+
+                        //updateSelectedCount();
+
+
+
+
+                    },
+
+
+                    error: function (xhr) {
+                        alert('Error loading sanction records.');
+                        console.error(xhr.responseText);
+                    },
+
+                    complete: function () {
+                        $('#sanctionLoading').hide();
+                    }
+
+
+                });
+            }
+
+        });
+
+    </script>
+
 
 
     <script type="text/javascript">
@@ -30,11 +247,11 @@
         $(document).ready(function () {
 
 
-            $('#<%=select4.ClientID%>').on('change', function () {
+            $('#<%=select4.ClientID%>,#<%=select5.ClientID%>').on('change', function () {
                 $('#hfSelectedSecurity').val($(this).val());
             });
 
-            $("#<%=select4.ClientID%>").select2({
+            $("#<%=select4.ClientID%>,#<%=select5.ClientID%>").select2({
                 placeholder: "<--Select-->",
                 allowClear: true,
                 width: "100%"
@@ -882,7 +1099,102 @@
 
     </div>
     
+     <div class="modal" id="sanctionModal_Multiple" tabindex="-1" role="dialog" aria-labelledby="sanctionModalLabel">
 
+    <div class="modal-dialog  modal-lg " role="document" >
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="H1">Select Facility
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <p id="sanctionLoading_Multiple" style="display:none;">
+                    Loading records...
+                </p>
+
+                <div class="row">
+                <div class="col-md-4">
+
+                <table id="Table2" class="table  table-responsive " >
+                <tr>
+                <th>ID</th><td></td> </tr>
+                <tr> <th>EDOC Ref NO#</th><td></td> </tr>
+                <tr> <th>Branch</th><td></td> </tr>
+                <tr> <th>Date</th><td></td> </tr>
+                <tr> <th>Segment</th><td></td> </tr>
+                <tr> <th>Authority</th><td></td> </tr>
+                  <tr> <th>Sanction Ref NO#</th><td></td> </tr>
+                
+               
+                
+                </table>
+                </div>
+                 </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped"
+                           id="tblSanction_Multiple">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox"
+                                           id="Checkbox1" />
+                                </th>
+                                <th>ID</th>
+                               
+                                <th>Customer ID</th>
+                                <th>Customer Name</th>
+                                <th>Loan Nature</th>
+                              
+                                <th>Currency</th>
+                                <th>Amount</th>
+                                <th>Validity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sanctionTableBody_Multiple"></tbody>
+                    </table>
+                </div>
+
+                <strong id="Strong1">0 selected</strong>
+
+
+                <br />
+
+                <b>Amount: </b> <span id="Span1"></span>
+
+                <br />
+
+                <b>Securities : </b>
+
+
+                  <select id="select5"   runat="server"  multiple    class="form-control"></select>
+
+
+                  <input id="Hidden1" type="hidden" />    
+
+            </div>
+            <div class="modal-footer text-center" style=" justify-content: center;">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                <button type="button" class="btn btn-primary" id="Button1">Save</button>
+ 
+
+                <button type="button" class="btn btn-primary" id="Button3" style="display:none;" >Checkist Generate</button>
+
+
+                <button type="button" class="btn btn-primary" id="Button4" style="display:none;" >Upload</button>
+
+            </div>
+
+        </div>
+    </div> 
+
+    </div>
 
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
@@ -895,6 +1207,7 @@
                 		<table id="example1" class="table table-bordered table-striped">
                     		<thead>
                             <tr>
+                                <th></th>
                         		<th>ID</th>
                                 <th>EDOC Ref NO#</th>
                             	<th>Branch</th>
@@ -931,6 +1244,12 @@
 <tr id ="row_<%=id %>">
 
 
+ 
+
+                                                    <td><input id="chk_"<%=id %> name="bulk" type="checkbox" class="bulk" value="<%=id %>"/> </td>
+
+
+
                         <td><%=TableData.Rows[data]["edoc_id"]%></td>
                         <td><%=TableData.Rows[data]["edoc_refno"]%></td>
                         <td><%=TableData.Rows[data]["booking_branch"]%></td>
@@ -957,7 +1276,7 @@
   -->
 
 
-  <a href="#"  class="btn btn-info btn-xs view"  id="btnView_<%=id %>"  data-id="<%=TableData.Rows[data]["edoc_id"]%>">View</a>                                    
+  <a href="#"  class="btn btn-success  view"  id="btnView_<%=id %>"  data-id="<%=TableData.Rows[data]["edoc_id"]%>">View</a>                                    
 
   <!--
 <%  
@@ -992,6 +1311,13 @@
                         	</tbody>
                     	</table>	                
                		</div>
+                    <div class="box-footer">
+
+                   
+
+            <input id="Button2" type="button" value="View(Seleced)" class="btn btn-success" style=" display:none;" />
+           
+            </div>
               	</div>
             </div>
 		</div>
