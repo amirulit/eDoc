@@ -1,15 +1,11 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-
 <head runat="server">
     <title></title>
-
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
-
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        name="viewport" />
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <!-- Font Awesome -->
@@ -75,8 +71,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js">
     </script>
     <script type="text/javascript" src="plugins/daterangepicker/daterangepicker.js"></script>
-
-
     <script type="text/javascript">
 
 
@@ -96,8 +90,6 @@
 
     </script>
     <style type="text/css">
-        
-        
         #loginFrom .modal-dialog
         {
             position: fixed;
@@ -108,14 +100,8 @@
             width: 100%;
             max-width: 500px;
         }
-        
-        
     </style>
-
-
     <style type="text/css">
-        
-        
         html, body
         {
             height: 100%;
@@ -157,17 +143,13 @@
             box-sizing: border-box;
             margin-bottom: 0;
         }
-        
-        
-        
     </style>
 </head>
-
 <body onload="login()">
-
     <form id="form1" runat="server">
     <div class="welcome-banner">
-      <h1>Welcome to MBPLC Document Management System (DMS)</h1>
+        <h1>
+            Welcome to MBPLC Document Management System (DMS)</h1>
     </div>
     <div class="login-wrapper">
         <div class="panel panel-primary login-panel">
@@ -196,7 +178,8 @@
                 <asp:Button ID="btnRM" runat="server" Text="RM" OnClick="btnRM_Click" CssClass="btn btn-default" />
                 <asp:Button ID="btnCD" runat="server" Text="CD" CssClass="btn btn-default" OnClick="btnCD_Click" />
                 <asp:Button ID="btnCI" runat="server" Text="CI" CssClass="btn btn-default" OnClick="btnCI_Click" />
-                <asp:Button ID="btnMOP" runat="server" Text="MOP" CssClass="btn btn-default" OnClick="btnMOP_Click"  Visible="false" />
+                <asp:Button ID="btnMOP" runat="server" Text="MOP" CssClass="btn btn-default" OnClick="btnMOP_Click"
+                    Visible="false" />
                 <asp:Button ID="btnHOB" runat="server" Text="HOB" CssClass="btn btn-default" OnClick="btnHOB_Click" />
                 <asp:Button ID="btnAdmin" runat="server" Text="Admin" CssClass="btn btn-default"
                     OnClick="btnAdmin_Click" />
@@ -209,6 +192,5 @@
             </div>
         </div>
     </div>
-
     </form>
 </body>

@@ -307,19 +307,23 @@
             {
                             
 %>
+
+
 <tr>
+
+
                         <td><%=TableData.Rows[data]["id"]%></td>
                         <td><%=TableData.Rows[data]["dd_id"]%></td>
-                          <td><%=TableData.Rows[data]["cus_type"]%></td>
+                        <td><%=TableData.Rows[data]["cus_type"]%></td>
                         <td><%=TableData.Rows[data]["cus_id"]%></td>
                         <td><%=TableData.Rows[data]["cus_name_2"]%></td>
                           
-                          <td><%=TableData.Rows[data]["loan_natures"]%></td>
-                            <td><%=TableData.Rows[data]["securities"]%></td>
-                              <td><%=TableData.Rows[data]["loan_amount"]%></td>
-                                <td><%=TableData.Rows[data]["exp_date_2"]%></td>
+                        <td><%=TableData.Rows[data]["loan_natures"]%></td>
+                        <td><%=TableData.Rows[data]["securities"]%></td>
+                        <td><%=TableData.Rows[data]["loan_amount"]%></td>
+                        <td><%=TableData.Rows[data]["exp_date_2"]%></td>
 
-                                 <td><%=TableData.Rows[data]["status_desc"]%></td>
+                        <td><%=TableData.Rows[data]["status_desc"]%></td>
 
                   
                         	
@@ -335,16 +339,21 @@
   
 
                         <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
+
+                        
+                        <a href="SSCCreation.aspx?v=<%=TableData.Rows[data]["drawdown_id"]%>"  class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    
   
-                        <!--
+
+
+  
+  <!--
                         <a href="#"  class="btn btn-primary btn-xs reason" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
   
 
                         <a href="#"  class="btn btn-success btn-xs pdf" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Pdf Gen</a>                                    
   
 
-
-      <a href="SSCCreation.aspx?v=<%=TableData.Rows[data]["drawdown_id"]%>"  class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    
+                        <a href="SSCCreation.aspx?v=<%=TableData.Rows[data]["drawdown_id"]%>"  class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    
   
   -->
 

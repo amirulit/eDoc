@@ -18,17 +18,9 @@
             float: none;
             display: inline-block;
         }
-        
     </style>
-
-
-
     <script src="sweet_alert.js" type="text/javascript"></script>
-
-
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
-    
-
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -194,8 +186,6 @@
 
 
     </script>
-
-
     <script type="text/javascript">
 
 
@@ -206,14 +196,11 @@
 
 
 
-             
+
 
         });
 
     </script>
-
-
-
     <script type="text/javascript">
 
         $(document).ready(function () {

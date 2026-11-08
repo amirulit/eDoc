@@ -721,7 +721,7 @@ OTHER DOCUMENTS
 
         switch (pk)
         {
-            case 7:
+            case 9:
                 add("Approval Authority", "select", "APPROVAL");
                 add("Expiry", "date", "");
                 break;
