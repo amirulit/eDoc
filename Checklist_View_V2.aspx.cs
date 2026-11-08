@@ -60,6 +60,16 @@ Upload Not Required
     public DataTable TableData_Confirmation;
 
 
+
+
+    public DataTable TableData_SanctionAdvice;
+    public DataTable TableData_Customers;
+    public DataTable TableData_Facilities;
+    public DataTable TableData_Securities;
+
+
+
+
     protected string DocumentTableHtml { get; set; }
 
 
@@ -1029,7 +1039,25 @@ OTHER DOCUMENTS
             //GridView1.DataSource = Ds.Tables[18];
             //GridView1.DataBind();
 
-            CustomerName = Ds.Tables[18].Rows[0]["cus_name"].ToString();
+            //CustomerName = Ds.Tables[18].Rows[0]["cus_name"].ToString();
+
+
+
+            TableData_SanctionAdvice = Ds.Tables[18];
+            GridView1.DataSource = TableData_SanctionAdvice;
+            GridView1.DataBind();
+
+            TableData_Customers = Ds.Tables[19];
+            GridView2.DataSource = TableData_Customers;
+            GridView2.DataBind();
+
+            TableData_Facilities = Ds.Tables[20];
+            GridView3.DataSource = TableData_Facilities;
+            GridView3.DataBind();
+
+            TableData_Securities = Ds.Tables[21];
+            GridView4.DataSource = TableData_Securities;
+            GridView4.DataBind();
 
 
             //GridView1.DataSource = Ds.Tables[0];

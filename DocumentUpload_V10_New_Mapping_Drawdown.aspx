@@ -1985,6 +1985,15 @@
             opacity: 1;
         }
     </style>
+    <style type="text/css">
+        /* For Bootstrap 5 primary color */
+        .grid-header th
+        {
+            background-color: #0d6efd !important;
+            color: white !important;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -2072,42 +2081,54 @@
 
         -->
         <br />
-      <%--  Customer Name :<span class="badge badge-success "><%=CustomerName %></span>--%>
+        <%--  Customer Name :<span class="badge badge-success "><%=CustomerName %></span>--%>
         <br />
-        <table  class="rounded  my-table  docTable">
+        <!--
+        <table class="rounded  my-table  docTable">
             <tr>
                 <td class="tdTopLeft">
-                    <asp:GridView ID="GridView1" runat="server"  >
+                    <asp:GridView ID="GridView1" runat="server" CssClass="table">
+                        <HeaderStyle CssClass="grid-header" />
                     </asp:GridView>
                 </td>
                 <td class="tdTopLeft">
-                    <asp:GridView ID="GridView2" runat="server"  >
-                    </asp:GridView>
-                </td>
-                 <td class="tdTopLeft">
-                    <asp:GridView ID="GridView3" runat="server"  >
+                    <asp:GridView ID="GridView2" runat="server" CssClass="table">
+                        <HeaderStyle CssClass="grid-header" />
                     </asp:GridView>
                 </td>
                 <td class="tdTopLeft">
-                    <asp:GridView ID="GridView4" runat="server"  >
+                    <asp:GridView ID="GridView3" runat="server" CssClass="table">
+                        <HeaderStyle CssClass="grid-header" />
+                    </asp:GridView>
+                </td>
+                <td class="tdTopLeft">
+                    <asp:GridView ID="GridView4" runat="server" CssClass="table">
+                        <HeaderStyle CssClass="grid-header" />
                     </asp:GridView>
                 </td>
             </tr>
         </table>
+        -->
         <br />
-        <!--
         <div class="container mt-5">
             <div class="row g-4">
                 <div class="col-lg-3 col-md-6 col-12">
                     <div class="custom-card">
                         <div class="card-header">
-                            Basic Plan</div>
+                            Sanction Advices</div>
                         <div class="card-body">
                             <ul>
-                                <li>Dashboard</li>
-                                <li>User Profile</li>
-                                <li>Settings</li>
-                                <li>Support</li>
+                                <% 
+                                    if (TableData_SanctionAdvice.Rows.Count > 0)
+                                    {
+                                        for (var data = 0; data < TableData_SanctionAdvice.Rows.Count; data++)
+                                        {
+
+                                %>
+                                <li>
+                                    <%=TableData_SanctionAdvice.Rows[data]["sanction_advices"].ToString()%></li>
+                                <%}
+                                    } %>
                             </ul>
                         </div>
                     </div>
@@ -2115,13 +2136,20 @@
                 <div class="col-lg-3 col-md-6 col-12">
                     <div class="custom-card">
                         <div class="card-header">
-                            Standard Plan</div>
+                            Customers</div>
                         <div class="card-body">
                             <ul>
-                                <li>All Basic Features</li>
-                                <li>Reports</li>
-                                <li>Analytics</li>
-                                <li>Notifications</li>
+                                <% 
+                                    if (TableData_Customers.Rows.Count > 0)
+                                    {
+                                        for (var data = 0; data < TableData_Customers.Rows.Count; data++)
+                                        {
+
+                                %>
+                                <li>
+                                    <%=TableData_Customers.Rows[data]["cus_name"].ToString()%></li>
+                                <%}
+                                    } %>
                             </ul>
                         </div>
                     </div>
@@ -2129,13 +2157,20 @@
                 <div class="col-lg-3 col-md-6 col-12">
                     <div class="custom-card">
                         <div class="card-header">
-                            Premium Plan</div>
+                            Facilities</div>
                         <div class="card-body">
                             <ul>
-                                <li>All Standard Features</li>
-                                <li>Advanced Reports</li>
-                                <li>API Access</li>
-                                <li>Priority Support</li>
+                                <% 
+                                    if (TableData_Facilities.Rows.Count > 0)
+                                    {
+                                        for (var data = 0; data < TableData_Facilities.Rows.Count; data++)
+                                        {
+
+                                %>
+                                <li>
+                                    <%=TableData_Facilities.Rows[data]["facilities"].ToString()%></li>
+                                <%}
+                                    } %>
                             </ul>
                         </div>
                     </div>
@@ -2143,21 +2178,26 @@
                 <div class="col-lg-3 col-md-6 col-12">
                     <div class="custom-card">
                         <div class="card-header">
-                            Enterprise Plan</div>
+                            Securities</div>
                         <div class="card-body">
                             <ul>
-                                <li>All Premium Features</li>
-                                <li>Team Management</li>
-                                <li>Custom Solutions</li>
-                                <li>24/7 Support</li>
+                                <% 
+                                    if (TableData_Securities.Rows.Count > 0)
+                                    {
+                                        for (var data = 0; data < TableData_Securities.Rows.Count; data++)
+                                        {
+
+                                %>
+                                <li>
+                                    <%=TableData_Securities.Rows[data]["securities"].ToString()%></li>
+                                <%}
+                                    } %>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        -->
         <br />
         <br />
         <div id="accordion" style="width: auto;">

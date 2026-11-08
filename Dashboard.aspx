@@ -2,9 +2,6 @@
     CodeFile="Dashboard.aspx.cs" Inherits="Dashboard" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
-
-
     <link href="bootstrap4/boostrap.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
 
@@ -18,31 +15,32 @@
         });
 
     </script>
-
     <style type="text/css">
-    
-    .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.modal-header .close {
-    margin-top: 0;
-}
-
-
-.small-box {
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-
-.info-box {
-    border-radius: 10px;
-    overflow: hidden;
-}
-    
+        .modal-header
+        {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .modal-header .close
+        {
+            margin-top: 0;
+        }
+        
+        
+        .small-box
+        {
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        
+        .info-box
+        {
+            border-radius: 10px;
+            overflow: hidden;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -104,7 +102,39 @@
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-       
+       </div>
+
+
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Document Expiring</span>
+              <span class="info-box-number">90</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Completed SSC</span>
+              <span class="info-box-number">41</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+        </div>
+
+        
        
 
 <%--
@@ -233,8 +263,7 @@
       
    <%-- <a href="#teacherDetails" data-toggle="modal" onclick="teacherDetails(this);" data-id="1">Test Modal</a>--%>
 
-    <div class="modal" id="teacherDetails" tabindex="-1" role="dialog" data-backdrop="static"
-        data-keyboard="false">
+    <div class="modal" id="teacherDetails" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg" style="width: 90%" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-green">

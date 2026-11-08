@@ -108,7 +108,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         SqlCommand command = new SqlCommand();
         command.CommandType = CommandType.StoredProcedure;
-        command.CommandText = "usp_Drawdown_Listing_V2";
+        command.CommandText = "usp_Drawdown_Listing_V3";
         command.Connection = connection;
         //command.Parameters.Add(new SqlParameter("@branchcode", Session["BranchCode"]));
         //command.Parameters.Add(new SqlParameter("@status", Status));

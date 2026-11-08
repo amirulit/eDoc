@@ -481,6 +481,8 @@ $(document).ready(function () {
                     uploaded_files = 0;
                     //MailSend(file_no, 22);
 
+                    alert('Uploaded sucessfully');
+
                 }
             },
             xhr: function () {

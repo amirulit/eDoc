@@ -140,7 +140,7 @@
 
                 //var dst = $('#ContentPlaceHolder1_DropDownList1').val();
 
-                alert(ids);
+                //alert(ids);
 
 
                 $('#tblSummary').hide();
@@ -163,7 +163,7 @@
 
                 var ids = $(this).data("id");
 
-                alert(ids);
+                //alert(ids);
 
                 /*
                 var row = $(this).closest('tr');
@@ -1000,7 +1000,7 @@
             </div>
             <div class="modal-footer text-center" style=" justify-content: center;">
 
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                
 
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>
  
@@ -1009,6 +1009,9 @@
 
 
                 <button type="button" class="btn btn-primary" id="btnUpload" style="display:none;" >Upload</button>
+
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 
             </div>
 
@@ -1097,7 +1100,7 @@
             </div>
             <div class="modal-footer text-center" style=" justify-content: center;">
 
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                
 
                 <button type="button" class="btn btn-primary" id="Button1">Save</button>
  
@@ -1106,6 +1109,8 @@
 
 
                 <button type="button" class="btn btn-primary" id="Button4" style="display:none;" >Upload</button>
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 
             </div>
 
@@ -1194,7 +1199,7 @@
   -->
 
 
-  <a href="#"  class="btn btn-success  view"  id="btnView_<%=id %>"  data-id="<%=TableData.Rows[data]["edoc_id"]%>">View</a>                                    
+  <a href="#"  class="btn btn-success  view"  id="btnView_<%=id %>"  data-id="<%=TableData.Rows[data]["edoc_id"]%>">Initiate Checklist</a>                                    
 
   <!--
 <%  
@@ -1233,7 +1238,7 @@
 
                    
 
-            <input id="Button2" type="button" value="View(Seleced)" class="btn btn-success" style=" display:none;" />
+            <input id="Button2" type="button" value="Initiate Checklist(Seleced)" class="btn btn-success" style=" display:none;" />
            
             </div>
               	</div>
