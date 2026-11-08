@@ -338,8 +338,37 @@
           </a>
         </li>
 
+
+         <%
+            }
+             %>
+
+               <%  
+            if (Role == 1 )
+            {
+                 %>
+        
+
            <li>
           <a href="SanctionListing_V3.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i> <span>Initiate Checklist</span>
+          </a>
+        </li>
+
+
+        <%
+            }
+             %>
+
+
+              <%  
+            if (Role == 2 )
+            {
+                 %>
+        
+
+           <li>
+          <a href="SanctionListing_DM.aspx">
             <i class="fa fa-arrow-circle-o-right"></i> <span>Initiate Checklist</span>
           </a>
         </li>
