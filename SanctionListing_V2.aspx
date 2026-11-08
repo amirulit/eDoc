@@ -1,23 +1,74 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
-    CodeFile="SanctionListing_V2.aspx.cs" Inherits="SanctionListing_V2"
-    
-    
-    Debug="true"
-     %>
+    CodeFile="SanctionListing_V2.aspx.cs" Inherits="SanctionListing_V2" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <script src="FileUpload.js" type="text/javascript"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
 
+
+
+
+            $(document).on('click', '.delete', function (e) {
+
+                e.preventDefault();
+
+                var btn = $(this);
+                var id = btn.data('id');
+
+                if (!confirm("Are you sure you want to delete this record?")) {
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "SanctionUpload_V4.aspx/DeleteEDoc",
+                    data: JSON.stringify({ id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d === "success") {
+
+                            //alert("Record deleted successfully!");
+
+                            // Remove the corresponding table row
+                            btn.closest("tr").fadeOut(300, function () {
+                                $(this).remove();
+                            });
+
+                        }
+                        else if (response.d === "notfound") {
+                            alert("Record not found.");
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        alert("Error deleting record.");
+                    }
+                });
+
+            });
+
             $("body").on("click", ".upload", function () {
 
+
+                var edoc_id = $(this).data("edocid");
+
+                $("#lblID").text(edoc_id);
+
+                $('#modalUpdateform').modal('show');
+
+                /*
                 var cus_type = $(this).attr("cus-type");
                 var auto_id = $(this).attr("auto-id");
                 var e_doc_id = $(this).attr("edoc-id");
                 var drawdown_id = $(this).attr("drawdown-id");
 
-                //alert(cus_type + '-' + e_doc_id);
+          
 
                 url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
@@ -27,26 +78,280 @@
                 var top = parseInt((screen.availHeight / 2) - (height / 2));
                 var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
 
-                //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
-                //var NWin = window.open("Menu.aspx", windowFeatures);
-                //alert(windowFeatures);
-                //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-                //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
+             
                 newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
                 newwindow.focus();
 
+
+                */
+
+
             });
 
 
+            // Upload View click
+            $(document).on('click', '.docview', function (e) {
+
+                e.preventDefault();
+
+                var edocId = $(this).attr('data-edocid');
+
+                $('#documentModal').modal('show');
+
+                $('#documentListSection').show();
+                $('#pdfViewerSection').hide();
+
+                $('#pdfFrame').attr('src', '');
+
+                $('#documentList').html('<tr><td colspan="6" class="text-center">Loading...</td></tr>');
+
+                $.ajax({
+                    type: "POST",
+                    url: "SanctionListing_V2.aspx/GetUploadedDocuments",
+                    data: JSON.stringify({ edocId: edocId }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+                        var html = '';
+
+                        if (data.length === 0) {
+
+                            html = '<tr><td colspan="6" class="text-center">' + 'No documents found.</td></tr>';
+
+                        } else {
+
+                            $.each(data, function (i, item) {
+
+                                html += '<tr>';
+
+                                html += '<td>' + (i + 1) + '</td>';
+                                html += '<td>' + $('<div>').text(item.FileType || '').html() + '</td>';
+                                html += '<td>' + $('<div>').text(item.FileName || '').html() + '</td>';
+                                html += '<td>' + $('<div>').text(item.UploadBy || '').html() + '</td>';
+                                html += '<td>' + $('<div>').text(item.UploadTime || '').html() + '</td>';
+
+                                html += '<td>';
+
+                                if (item.FileName && item.FileName.toLowerCase().endsWith('.pdf')) {
+
+                                    html += '<button type="button" ' + 'class="btn btn-success btn-xs viewPDF" ' + 'data-url="' + $('<div>').text(item.FileUrl).html() + '">' + '<i class="fa fa-file-pdf-o"></i> View PDF' + '</button>';
+
+                                } else {
+
+                                    html += '<span class="text-muted">Not PDF</span>';
+
+                                }
+
+                                html += '</td></tr>';
+
+                            });
+
+                        }
+
+                        $('#documentList').html(html);
+
+                    },
+
+                    error: function (xhr) {
+
+                        console.log(xhr.responseText);
+
+                        $('#documentList').html('<tr><td colspan="6" class="text-danger text-center">' + 'Unable to load documents.</td></tr>');
+
+                    }
+                });
+
+            });
+
+
+            // View PDF inside modal
+            $(document).on('click', '.viewPDF', function () {
+
+                var fileUrl = $(this).attr('data-url');
+
+                $('#pdfFrame').attr('src', fileUrl);
+
+                $('#documentListSection').hide();
+                $('#pdfViewerSection').show();
+
+            });
+
+
+            // Back to document list
+            $(document).on('click', '#btnBackDocuments', function () {
+
+                $('#pdfFrame').attr('src', '');
+
+                $('#pdfViewerSection').hide();
+                $('#documentListSection').show();
+
+            });
+
+
+            // Clear PDF when modal closes
+            $(document).on('hidden.bs.modal', '#documentModal', function () {
+
+                $('#pdfFrame').attr('src', '');
+
+                $('#pdfViewerSection').hide();
+                $('#documentListSection').show();
+
+            });
         });
 
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content"> <!-- Start of table section -->
+
+
+
+    
+    
+    <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
+  		<div class="modal-dialog">
+    		<div class="container">
+            	<div class="row ">	
+           			<div class="col-md-6">
+                		<div class="panel">
+        					<div class="panel-heading bg-orange">                 
+        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          						<h4 class="modal-title custom_align" id="Heading">Document Upload</h4>
+                            </div>
+                            <div class="panel-body"> <!-- Start of modal body--> 
+
+
+
+
+                            ID # <span id="lblID" class="badge  badge-success"></span>
+                            <!--
+                                <div class="form-group" id="divSubjectUpdate">
+                                    <label for="">Subject</label>
+                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off"/>
+                                </div> 
+                                -->
+                                <%-- <div class="form-group" id="div2">
+                                 Please upload following documents :
+
+                                 <ul>
+                                 
+                                    <li>Checklist Scancopy</li>
+                                    <li>Accepted Scancopy</li>
+                                    <li>Board Resolution</li>
+                                    <li>Others</li>
+
+
+                                 </ul>
+                                 </div>--%>
+
+
+                                  <div class="form-group"  >
+                      			<label for="">Document Type</label>
+                      	     <select id="select8"        class="form-control">
+
+
+                   <option value="Sanction Document">Sanction Document</option>
+                   <option value="Others">Others</option>
+                  
+                   
+                  
+                   </select>
+
+                       
+             
+                    		</div>
+
+ 
+                                <div class="form-group" id="div1">
+                                     <input id="fileUploadID" type="file"  multiple />
+ 
+                                </div> 
+
+                                  <div id='r'>
+                        </div>
+
+
+
+                            </div><!--/.modal body-->
+                            <div class="panel-footer bg-gray-light">
+                                <input type="hidden" id="id" name="id" value="" />
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
+        	  				</div><!--/.panel-footer--> 
+            			</div><!--/.panel-->
+            		</div><!--/.col-md-6-->
+            	</div><!--/.row-->                                        
+        	</div><!-- /.modal-content -->  		 
+		</div><!-- /.modal-dialog -->            
+	</div><!--/.Modal-Update form -->   
+     <div class="modal" id="documentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Uploaded Documents</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Document List -->
+                <div id="documentListSection">
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>SL</th>
+                                <th>File Type</th>
+                                <th>File Name</th>
+                                <th>Upload By</th>
+                                <th>Upload Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="documentList"></tbody>
+                    </table>
+
+                </div>
+
+                <!-- PDF Viewer -->
+                <div id="pdfViewerSection" style="display:none;">
+
+                    <button type="button"
+                            class="btn btn-default btn-sm"
+                            id="btnBackDocuments">
+                        <i class="fa fa-arrow-left"></i> Back to Documents
+                    </button>
+
+                    <hr />
+
+                    <iframe id="pdfFrame"
+                            style="width:100%; height:550px; border:1px solid #ddd;"
+                            frameborder="0">
+                    </iframe>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
             	<div class="box">
@@ -100,21 +405,28 @@
   -->
 
 
-  <a href="#"  class="btn btn-info btn-xs view" cus-type="<%=TableData.Rows[data]["id"]%>"  drawdown-id="<%=TableData.Rows[data]["id"]%>">View</a>                                    
+  <a href="#"  class="btn btn-success btn-xs view" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View</a>                                    
+
+  <a href="#"  class="btn btn-danger btn-xs delete" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Delete</a>                                    
+   
+  <a href="#"  class="btn btn-info btn-xs upload" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Upload</a>                                    
+
+  <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Upload View</a>                                    
 
 
 <%  
-    if (Role == 1)
-    { 
+                if (Role == 1)
+                { 
         %>
                         <a href="DrawdownCreate_V3.aspx?id=<%=TableData.Rows[data]["id"]%>&ref=<%=TableData.Rows[data]["sanction_reference"]%>"  class="btn btn-success btn-xs" cus-type="<%=TableData.Rows[data]["id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["id"]%>" drawdown-id="<%=TableData.Rows[data]["id"]%>">Initiate Checklist</a>                                    
 
 
                         <%
-                            }
+                }
                             
                              %>
-                            <%if (Role == 2) { %>
+                            <%if (Role == 2)
+                              { %>
 
                             <a href="DrawdownCreate_V3_DM.aspx?id=<%=TableData.Rows[data]["id"]%>&ref=<%=TableData.Rows[data]["sanction_reference"]%>"  class="btn btn-success btn-xs" cus-type="<%=TableData.Rows[data]["id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["id"]%>" drawdown-id="<%=TableData.Rows[data]["id"]%>">Initiate Checklist</a>                                    
 
@@ -127,9 +439,9 @@
                         </td>                                
 </tr>
      <%
-                        }
+            }
 
-                    }
+        }
                                                    %>
                         	</tbody>
                     	</table>	                

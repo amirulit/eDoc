@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -46,14 +47,14 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
         if (!IsPostBack)
         {
-            LoadNextRefNo();
+            //LoadNextRefNo();
         }
 
     }
 
 
 
-
+    /*
     private void LoadNextRefNo()
     {
         string connectionString =ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
@@ -71,6 +72,55 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
             }
         }
     }
+    */
+
+    [System.Web.Services.WebMethod]
+    public static string DeleteEDoc(string id)
+    {
+        string connectionString = ConfigurationManager
+            .ConnectionStrings["dbConn"].ConnectionString;
+
+        string query = "DELETE FROM t_Sanction_Master WHERE id = @id";
+
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value =
+                    Convert.ToInt32(id);
+
+                con.Open();
+
+                int result = cmd.ExecuteNonQuery();
+
+                if (result > 0)
+                    return "success";
+
+                return "notfound";
+            }
+        }
+    }
+
+
+    [System.Web.Services.WebMethod]
+    public static string LoadNextRefNo()
+    {
+        string connectionString = ConfigurationManager
+            .ConnectionStrings["dbConn"].ConnectionString;
+
+        string query = "SELECT NEXT VALUE FOR EDOC_Seq AS EDOC_Seq;";
+
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+
+                return Convert.ToString(cmd.ExecuteScalar());
+            }
+        }
+    }
+
 
     public class DropdownData
     {

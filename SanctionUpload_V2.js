@@ -1,10 +1,47 @@
-﻿
+﻿console.log("External JS loaded successfully");
+
+$(document).on('click', '.view, .delete', function () {
+    console.log("Button clicked:", $(this).attr('class'));
+});
 
 
 $(document).ready(function () {
 
+    LoadNextRefNo();
     loadCustomerCodes();
     loadLoanNatures();
+
+
+    function LoadNextRefNo() {
+
+        $.ajax({
+            type: "POST",
+            url: "SanctionUpload_V4.aspx/LoadNextRefNo",
+            data: '{}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+                $('#ContentPlaceHolder1_txtEdocId').val(response.d);
+
+                //$('#' + edocTextBoxId).val(response.d);
+
+
+            },
+
+            error: function (xhr, status, error) {
+                console.log(error);
+                alert("Unable to generate eDoc reference number.");
+            }
+        });
+
+    }
+
+    $("#btnNew").on("click", function () {
+        clear();
+        LoadNextRefNo();
+
+    });
 
     function loadCustomerCodes() {
         $.ajax({
@@ -332,7 +369,10 @@ $(document).ready(function () {
 
                     $("#lblID").text($("#ContentPlaceHolder1_txtEdocId").val());
 
+                    LoadNextRefNo();
 
+
+                    clear();
 
                 } else {
                     $("#lblMessage").text(result ? result.Message : "Unable to save.");
@@ -355,6 +395,27 @@ $(document).ready(function () {
 
 
     });
+
+    function clear() {
+
+
+        $("#ContentPlaceHolder1_txtEdocId").val('');
+
+        $("#ContentPlaceHolder1_select3").val('');
+
+        $("#txtSanctionReference").val('');
+
+        $("#txtSanctionDate").val('');
+
+        $("#select2").val('');
+
+        $("#select1").val('');
+
+        $("#tblLoans tbody").empty();
+
+
+
+    }
 
     $('#fileUploadID').on("change", function () {
 
@@ -518,6 +579,8 @@ $(document).ready(function () {
 
 
     }
+
+
 
 
 });

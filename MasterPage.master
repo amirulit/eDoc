@@ -321,20 +321,20 @@
         
          <li>
           <a href="ProfileCreate.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Customer Profile Create</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Customer Profile Create</span>
           </a>
         </li>
 
            <li>
           <a href="ProfileListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>List of Customers in EDOC</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>List of Customers in EDOC</span>
           </a>
         </li>
 
 
           <li>
           <a href="CompanyListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Company Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Company Listing</span>
           </a>
         </li>
 
@@ -351,7 +351,7 @@
 
            <li>
           <a href="SanctionListing_V3.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Initiate Checklist</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Initiate Checklist</span>
           </a>
         </li>
 
@@ -369,7 +369,7 @@
 
            <li>
           <a href="SanctionListing_DM.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Initiate Checklist</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Initiate Checklist</span>
           </a>
         </li>
 
@@ -384,25 +384,25 @@
                  %>
         <li>
           <a href="ProfileCreate.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Customer Profile Create</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Customer Profile Create</span>
           </a>
         </li>
 
            <li>
           <a href="ProfileListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>List of Customers in EDOC</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>List of Customers in EDOC</span>
           </a>
         </li>
         
          <li>
           <a href="CompanyListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Company Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Company Listing</span>
           </a>
         </li>
 
         <li>
           <a href="SanctionUpload_V4.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Sanction Upload</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Sanction Upload</span>
           </a>
         </li>
 
@@ -423,7 +423,7 @@
 
          <li>
           <a href="DrawdownListing_V2.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Check List Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Check List Listing</span>
           </a>
         </li>
 
@@ -431,7 +431,7 @@
         <!--
         <li>
           <a href="DrawdownCreate_V2.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>New Check List</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>New Check List</span>
           </a>
         </li>
         -->
@@ -447,7 +447,7 @@
 
            <li>
           <a href="DrawdownListing_V2.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Check List Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Check List Listing</span>
           </a>
         </li>
 
@@ -462,11 +462,11 @@
               %>
          <li>
           <a href="UserListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>User Listing</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>User Listing</span>
           </a>
         </li> <li>
           <a href="DM_Assign.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Assign DM</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Assign DM</span>
           </a>
         </li>
        
@@ -478,7 +478,7 @@
 
        <li>
           <a href="Report.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i> <span>Report</span>
+            <i class="fa fa-arrow-circle-o-right"></i><span>Report</span>
           </a>
         </li>
 
@@ -486,7 +486,7 @@
 
         <li>
           <a href="Logout.aspx">
-            <i class="fa fa-sign-out "></i> <span>Logout</span>
+            <i class="fa fa-sign-out "></i><span>Logout</span>
           </a>
         </li>
 

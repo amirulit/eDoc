@@ -20,6 +20,13 @@
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
     <script src="SanctionUpload_V2.js" type="text/javascript"></script>
+
+
+   <script type="text/javascript">
+        var edocTextBoxId = '<%= txtEdocId.ClientID %>';
+</script>
+
+
     <script type="text/javascript">
 
 
@@ -683,6 +690,8 @@
                   			<input type="hidden" name="do" value="add_grade" />
 
                             <button type="button" id="btnSaveAll" class="btn btn-success">Save All</button>
+
+                             <button type="button" id="btnNew" class="btn btn-primary">New</button>
 
                             <!--
                     		<button type="button" class="btn btn-primary" id="btnSave">Save</button>

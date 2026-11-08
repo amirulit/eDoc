@@ -708,6 +708,21 @@ OTHER DOCUMENTS
     {
         List<FieldInfo> fields = new List<FieldInfo>();
 
+
+        /*Same function using a normal method
+         
+        void Add(string name, string type, string lookup)
+{
+    fields.Add(new FieldInfo
+    {
+        Name = name,
+        Type = type,
+        LookupType = lookup
+    });
+}
+          
+         
+        */
         Action<string, string, string> add =
             (name, type, lookup) =>
             {
