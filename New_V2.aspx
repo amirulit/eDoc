@@ -158,6 +158,8 @@
             $("#btnGetEmpInfo").click(function () {
 
                 //alert('fffff');
+                $("#branchcode").show();
+                $("#Select1").hide();
 
                 var EmpId = $("#empid").val();
 
@@ -223,6 +225,7 @@
                                 ];
 
                                 var sel = $("#ddlrole");
+
                                 sel.empty();
 
                                 $.each(items, function () {
@@ -232,23 +235,30 @@
 
                             }
                         } else {
-                            checkBranchCode();
-                        } 
+                            changePOP();
+                        }
                     }
                 });
             });
 
 
-            function checkBranchCode() {
+            function changePOP() {
 
                 var branchCode = $("#branchcode").val();
 
-                if (branchCode === "BD0010100") {
-                    $("#Select1").show();
-                } else {
-                    $("#Select1").hide();
-                    $("#ddlrole").html('<option value="">--Select--</option>');
-                }
+                //if (branchCode === "BD0010100") {
+                $("#branchcode").hide();
+                $("#Select1").empty();
+                $("#Select1").show();
+                $("#ddlrole").empty();
+                $("#ddlrole").html('<option value="">--Select--</option>');
+
+                //}
+                /* else {
+                $("#Select1").hide();
+                $("#branchcode").show();
+                $("#ddlrole").html('<option value="">--Select--</option>');
+                }*/
             }
 
             $("#Select1").on("change", function () {
@@ -258,15 +268,32 @@
                 $("#ddlrole").empty().append('<option value="">--Select--</option>');
 
                 if (selectedValue === "CAD") {
-                    $("#ddlrole").append('<option value="13">DM</option>');
-                    $("#ddlrole").append('<option value="12">Unit Head</option>');
+                    $("#ddlrole").append('<option value="21">DM</option>');
+                    $("#ddlrole").append('<option value="23">Unit Head</option>');
                 } else {
-                    $("#ddlrole").append('<option value="13">Dealing Officer</option>');
-                    $("#ddlrole").append('<option value="12">Supervisor</option>');
+                    $("#ddlrole").append('<option value="31">Dealing Officer</option>');
+                    $("#ddlrole").append('<option value="33">Supervisor</option>');
                 }
             });
 
             $("#btnCreateUser").click(function () {
+
+                var bc = $("#branchcode").val();
+                var bc_new = $("#Select1").val();
+
+
+                if (bc == "BD0010100" && bc_new == "") {
+                    alert('Please select POP');
+                    return false;
+                }
+
+                if (bc == "BD0010100") {
+                    bc = bc_new;
+                }
+
+
+                //bc = $("#Select1").val();
+
 
 
                 var domain = $("#domain").val()
@@ -281,10 +308,16 @@
                 //formData.append("file", f);
 
 
-                var formData = new FormData();
-
+                var formData = new FormData(); 
 
                 var role = $("#ddlrole").val();
+
+                if (role == "") {
+                    alert('Please select a role');
+                    return false;
+                }
+
+
                 //alert(role);
                 // Add form fields
                 //formData.append("empid", $("#empid").val());
@@ -295,7 +328,8 @@
                 formData.append("designation", $("#designation").val());
                 //formData.append("role", $("#ddlrole").val());
                 formData.append("role", role);
-                formData.append("branchcode", $("#branchcode").val());
+                //formData.append("branchcode", $("#branchcode").val());
+                formData.append("branchcode", bc);
                 formData.append("branchname", $("#branchname").val());
                 formData.append("phone", $("#phone").val());
                 formData.append("domain", domain);
@@ -309,6 +343,7 @@
                     alert("Please select a signature.");
                     return;
                 }
+
                 formData.append("SignatureFile", file);
                 formData.append("fileName", file.name);
 
@@ -528,10 +563,7 @@
                                                     Role</label>
                                                 <select id="ddlrole" class="form-control">
                                                     <option value=""><--Select--></option>
-                                                    <option value="13">HOB</option>
-                                                    <option value="12">MOP</option>
-                                                    <option value="11">Credit Incharge</option>
-                                                    <option value="10">Credit Officer</option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>

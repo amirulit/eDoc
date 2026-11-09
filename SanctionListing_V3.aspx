@@ -29,6 +29,8 @@
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
 
 
+    <script src="View.js" type="text/javascript"></script>
+
     <script type="text/javascript">
 
 
@@ -1119,6 +1121,72 @@
 
     </div>
 
+
+    
+     <div class="modal" id="documentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Uploaded Documents</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Document List -->
+                <div id="documentListSection">
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>SL</th>
+                                <th>File Type</th>
+                                <th>File Name</th>
+                                <th>Upload By</th>
+                                <th>Upload Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="documentList"></tbody>
+                    </table>
+
+                </div>
+
+                <!-- PDF Viewer -->
+                <div id="pdfViewerSection" style="display:none;">
+
+                    <button type="button"
+                            class="btn btn-default btn-sm"
+                            id="btnBackDocuments">
+                        <i class="fa fa-arrow-left"></i> Back to Documents
+                    </button>
+
+                    <hr />
+
+                    <iframe id="pdfFrame"
+                            style="width:100%; height:550px; border:1px solid #ddd;"
+                            frameborder="0">
+                    </iframe>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
             	<div class="box">
@@ -1201,7 +1269,13 @@
   -->
 
 
-  <a href="#"  class="btn btn-success  view"  id="btnView_<%=id %>"  data-id="<%=TableData.Rows[data]["edoc_id"]%>">Initiate Checklist</a>                                    
+  <a href="#"  class="btn btn-success btn-xs view"  id="btnView_<%=id %>"  data-id="<%=TableData.Rows[data]["edoc_id"]%>">Initiate Checklist</a>                                    
+
+
+  
+  <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Upload View</a>                                    
+
+
 
   <!--
 <%  
