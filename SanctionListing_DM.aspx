@@ -848,7 +848,7 @@
                             //$("#btnUpload").attr("securities", securities);
 
 
-                            $('#modalUpdateform').modal('show');
+                            //$('#modalUpdateform').modal('show');
 
                             //var dd_id = $(this).attr("dd-id");
 
@@ -883,7 +883,7 @@
 
                 var drawdown_id = $(this).attr("drawdown-id");
 
-                alert(drawdown_id);
+                //alert(drawdown_id);
 
                 $.ajax({
 
@@ -913,6 +913,11 @@
                             //if (message == "Data Saved") {
 
                             swal("Success!", message, "success");
+
+                            $("#btnDownload").attr("drawdown-id", dd_id);
+
+                            $("#btnDownload").css("display", "inline-block");
+
 
                             $("#btnUpload").css({ "display": "inline-block" });
 
@@ -1155,19 +1160,21 @@
             </div>
             <div class="modal-footer text-center" style=" justify-content: center;">
 
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               
 
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                <button type="button" class="btn btn-success" id="btnSave">Save</button>
  
 
                 <button type="button" class="btn btn-primary" id="btnGenerate" style="display:none;" >Checkist Generate</button>
 
-                <button type="button" class="btn btn-primary" id="btnDownload" style="display:inline-block;" >Checkist Download</button>
+                <button type="button" class="btn btn-primary" id="btnDownload" style="display:none;" >Checkist Download</button>
 
-               <button type="button" class="btn btn-primary" id="btnDocumentUpload" style="display:inline-block;" >Document Upload</button>
+                <button type="button" class="btn btn-primary" id="btnDocumentUpload" style="display:none;" >Document Upload</button>
                 
 
                 <button type="button" class="btn btn-primary" id="btnChecklistUpload" style="display:none;" >Checklist Upload</button>
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 
             </div>
 
@@ -1414,7 +1421,7 @@
                         <td><%=TableData.Rows[data]["sanction_date"]%></td>
 
                         <td><%=TableData.Rows[data]["sanction_segment"]%></td>
-                        <td><%=TableData.Rows[data]["sanction_approval_authority"]%></td>
+                        <td><%=TableData.Rows[data]["sanction_authority"]%></td>
                         <td><%=TableData.Rows[data]["cus_name"]%></td>
                         <td><%=TableData.Rows[data]["total_amount"]%></td>
                         <td><%=TableData.Rows[data]["status"]%></td>

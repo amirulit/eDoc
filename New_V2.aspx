@@ -208,9 +208,11 @@
 
                             var items = [
                                     { id: '', text: "<--Select->" },
-                                    { id: 15, text: "MOP" },
+                            { id: 1, text: "DM" },
+                                    //{ id: 15, text: "MOP" },
                                     { id: 10, text: "Credit Incharge" },
-                                    { id: 5, text: "Cerdit Officer" }
+                            //{ id: 5, text: "Cerdit Officer" }
+                                    {id: 5, text: "Relationship Manager (RM)" }
                                 ];
 
                             var sel = $("#ddlrole");

@@ -1767,9 +1767,9 @@ Is Group Customer ? <input id="Checkbox2" type="checkbox" />
             
 
 
-        <a href="#teacherDetails" data-toggle="modal" onclick="teacherDetails(this);" data-id="1">
+      <%--  <a href="#teacherDetails" data-toggle="modal" onclick="teacherDetails(this);" data-id="1">
 
-        Test Modal </a>
+        Test Modal </a>--%>
 
 
          </section>

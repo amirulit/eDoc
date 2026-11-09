@@ -567,12 +567,10 @@
                       	   <select id="select1"         class="form-control">
                            
                            <option value=""><--Select--></option>
-                           <option value="CRM">CRM</option>
+                           <option value="Management">Management</option>
                            
-                           <option value="CBD">CBD</option>
-                           <option value="Agri">Agri</option>
-
-                           <option value="SME">SME</option>
+                           <option value="EC">EC</option>
+                           <option value="Board">Board</option>
 
                             </select>
              

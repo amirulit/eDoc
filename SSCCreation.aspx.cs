@@ -16,6 +16,8 @@ namespace CAD.DataAccess
         protected void Page_Load(object sender, EventArgs e)
         {
             drawdown_id = Convert.ToInt32(Request.QueryString[0].ToString());
+
+            drawdown_id = 249;
         }
 
 

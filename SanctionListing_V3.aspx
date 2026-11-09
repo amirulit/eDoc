@@ -1164,12 +1164,14 @@
             {
                 id = Convert.ToInt32(TableData.Rows[data]["edoc_id"]);
 %>
+
+
 <tr id ="row_<%=id %>">
 
 
  
 
-                                                    <td><input id="chk_"<%=id %> name="bulk" type="checkbox" class="bulk" value="<%=id %>"/> </td>
+                        <td><input id="chk_"<%=id %> name="bulk" type="checkbox" class="bulk" value="<%=id %>"/></td>
 
 
 
@@ -1180,7 +1182,7 @@
                         <td><%=TableData.Rows[data]["sanction_date"]%></td>
 
                         <td><%=TableData.Rows[data]["sanction_segment"]%></td>
-                        <td><%=TableData.Rows[data]["sanction_approval_authority"]%></td>
+                        <td><%=TableData.Rows[data]["sanction_authority"]%></td>
                         <td><%=TableData.Rows[data]["cus_name"]%></td>
                         <td><%=TableData.Rows[data]["total_amount"]%></td>
                         <td><%=TableData.Rows[data]["status"]%></td>

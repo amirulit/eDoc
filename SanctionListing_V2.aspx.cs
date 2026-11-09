@@ -33,14 +33,13 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
     }
 
     [System.Web.Services.WebMethod]
-    public static List<DocumentInfo> GetUploadedDocuments(string edocId)
+    public static List<DocumentInfo> GetUploadedDocuments(String edocId)
     {
         List<DocumentInfo> documents = new List<DocumentInfo>();
 
-        string connectionString = ConfigurationManager
-            .ConnectionStrings["dbConn"].ConnectionString;
+        String connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
-        string query = @"
+        String query = @"
         SELECT
             id,
             edoc_id,
@@ -53,50 +52,52 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
         ORDER BY id DESC";
 
         using (SqlConnection con = new SqlConnection(connectionString))
-        using (SqlCommand cmd = new SqlCommand(query, con))
         {
-            // Adjust SqlDbType and length to match your edoc_id column.
-            cmd.Parameters.Add("@edoc_id", SqlDbType.NVarChar, 100)
-                          .Value = edocId;
-
-            con.Open();
-
-            using (SqlDataReader dr = cmd.ExecuteReader())
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
-                while (dr.Read())
+                // Adjust SqlDbType and length to match your edoc_id column.
+                cmd.Parameters.Add("@edoc_id", SqlDbType.NVarChar, 100).Value = edocId;
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    string fileName = Convert.ToString(dr["file_name"]);
-
-                    documents.Add(new DocumentInfo
+                    while (dr.Read())
                     {
-                        Id = Convert.ToInt32(dr["id"]),
-                        FileType = Convert.ToString(dr["file_type"]),
-                        FileName = fileName,
-                        UploadBy = Convert.ToString(dr["upload_by"]),
-                        UploadTime = Convert.ToDateTime(dr["upload_time"]).ToString("dd-MMM-yyyy hh:mm tt"),
+                        string fileName = Convert.ToString(dr["file_name"]);
+
+                        documents.Add(new DocumentInfo
+                        {
+                            Id = Convert.ToInt32(dr["id"]),
+                            FileType = Convert.ToString(dr["file_type"]),
+                            FileName = fileName,
+                            UploadBy = Convert.ToString(dr["upload_by"]),
+                            UploadTime = Convert.ToDateTime(dr["upload_time"]).ToString("dd-MMM-yyyy hh:mm tt"),
 
 
-                        /*
-                        FileUrl = "~/UploadedDocuments/" +
-                                  Uri.EscapeDataString(
-                                      System.IO.Path.GetFileName(fileName))
+                            /*
+                            FileUrl = "~/UploadedDocuments/" +
+                                      Uri.EscapeDataString(
+                                          System.IO.Path.GetFileName(fileName))
 
-                        */
-                        /*
-                        FileUrl = "~/UploadedDocuments/" +
-                                 Uri.EscapeDataString(
-                                     System.IO.Path.GetFileName(fileName))
-                        */
+                            */
+                            /*
+                            FileUrl = "~/UploadedDocuments/" +
+                                     Uri.EscapeDataString(
+                                         System.IO.Path.GetFileName(fileName))
+                            */
 
-                        FileUrl = "ViewDocument.ashx?id=" + Convert.ToInt32(dr["id"])
+                            FileUrl = "ViewDocument.ashx?id=" + Convert.ToInt32(dr["id"])
 
 
-                    });
+                        });
+                    }
                 }
             }
         }
 
         return documents;
+
     }
     public DataTable Listing()
     {
