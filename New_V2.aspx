@@ -100,19 +100,8 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-
-
-
-
-
-
-
-
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
-
-
     <script type="text/javascript">
 
         $(function () {
@@ -194,51 +183,88 @@
                         $("#name").val(response.d.EmployeeName);
                         $("#designation").val(response.d.EmpDesignation);
                         $("#role").val(response.d.EmpFunctionalDesignation);
-                        //$("#ddlRole").empty();
 
-                        var role = response.d.EmpFunctionalDesignation;
-                        if (role == 'HEAD OF BRANCH')
-                        //$("#ddlRole").val(20);
-                            $("#ddlrole").empty().append('<option value="20">HOB</option>');
-
-                        else if (role == 'UPOSHAKHA INCHARGE')
-                        //$("#ddlRole").val(15);
-                            $("#ddlrole").empty().append('<option value="15">MOP</option>');
-                        else {
-
-                            var items = [
-                                    { id: '', text: "<--Select->" },
-                            { id: 1, text: "DM" },
-                                    //{ id: 15, text: "MOP" },
-                                    { id: 10, text: "Credit Incharge" },
-                            //{ id: 5, text: "Cerdit Officer" }
-                                    {id: 5, text: "Relationship Manager (RM)" }
-                                ];
-
-                            var sel = $("#ddlrole");
-                            sel.empty();
-
-                            $.each(items, function () {
-                                sel.append($("<option>").val(this.id).text(this.text));
-                            });
-                        }
-
-                        $("#branchcode").val(response.d.POPCode);
                         $("#branchname").val(response.d.POP);
                         $("#phone").val(response.d.PhoneNumber);
                         $("#domain").val(response.d.DOMAINID);
 
 
+                        //$("#ddlRole").empty();
+
+                        var role = response.d.EmpFunctionalDesignation;
+
+                        var bc = response.d.POPCode;
+
+                        $("#branchcode").val(response.d.POPCode);
+
+                        if (bc != "BD0010100") {
+
+                            if (role == 'HEAD OF BRANCH') {
+                                //$("#ddlRole").val(20);
+                                $("#ddlrole").empty().append('<option value="20">HOB</option>');
+                            }
+                            else if (role == 'UPOSHAKHA INCHARGE' || role == 'Uposhakha Incharge') {
+                                //$("#ddlRole").val(15);
+                                $("#ddlrole").empty().append('<option value="15">UPOSHAKHA INCHARGE</option>');
+                            }
+                            else {
+
+                                var items = [
+
+                                    { id: '', text: "<--Select->" },
+
+                                    { id: 5, text: "Relationship Manager (RM)" },
+
+                                    { id: 10, text: "Credit Incharge" },
 
 
 
 
+                                ];
+
+                                var sel = $("#ddlrole");
+                                sel.empty();
+
+                                $.each(items, function () {
+                                    sel.append($("<option>").val(this.id).text(this.text));
+                                });
+
+
+                            }
+                        } else {
+                            checkBranchCode();
+                        } 
                     }
                 });
             });
 
 
+            function checkBranchCode() {
 
+                var branchCode = $("#branchcode").val();
+
+                if (branchCode === "BD0010100") {
+                    $("#Select1").show();
+                } else {
+                    $("#Select1").hide();
+                    $("#ddlrole").html('<option value="">--Select--</option>');
+                }
+            }
+
+            $("#Select1").on("change", function () {
+
+                var selectedValue = $(this).val();
+
+                $("#ddlrole").empty().append('<option value="">--Select--</option>');
+
+                if (selectedValue === "CAD") {
+                    $("#ddlrole").append('<option value="13">DM</option>');
+                    $("#ddlrole").append('<option value="12">Unit Head</option>');
+                } else {
+                    $("#ddlrole").append('<option value="13">Dealing Officer</option>');
+                    $("#ddlrole").append('<option value="12">Supervisor</option>');
+                }
+            });
 
             $("#btnCreateUser").click(function () {
 
@@ -296,7 +322,7 @@
                     url: 'WebService1.asmx/CreateUser',
                     type: 'POST',
                     data: formData,
-               
+
                     cache: false,
                     contentType: false,
                     processData: false,
@@ -313,7 +339,7 @@
                         */
 
 
-                       
+
                         if (Status.indexOf("1") !== -1) {
 
                             swal("Success!", Status, "success");
@@ -332,13 +358,13 @@
                         var result = Status.d;
 
                         if (result.status === 1) {
-                            swal("Success!", result.message, "success");
+                        swal("Success!", result.message, "success");
 
-                            $("#email1").val(domain);
-                            $("#modalSignup").modal("hide");
+                        $("#email1").val(domain);
+                        $("#modalSignup").modal("hide");
                         }
                         else {
-                            swal("Error!", result.message, "error");
+                        swal("Error!", result.message, "error");
                         }
                         */
 
@@ -472,21 +498,25 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>
-                                                    Role</label>
-                                                <select id="ddlrole" class="form-control">
-                                                    <option value=""><--Select--></option>
-                                                    <option value="13">HOB</option>
-                                                    <option value="12">MOP</option>
-                                                    <option value="11">Credit Incharge</option>
-                                                    <option value="10">Credit Officer</option>
-                                                </select>
+                                                    Branch/POP Code</label>
+                                                <input type="text" class="form-control" id="branchcode" placeholder="Branch Code" />
+
+                                               <select id="Select1" class="form-control" style="display:none;">
+    <option value=""><--Select--></option>
+    <option value="CAD">CAD</option>
+    <option value="Credit(SME)">Credit(SME)</option>
+    <option value="Credit(Corporate)">Credit(Corporate)</option>
+    <option value="Credit(Retail)">Credit(Retail)</option>
+    <option value="Credit(Agri)">Credit(Agri)</option>
+</select>
+
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>
-                                                    Branch Code</label>
-                                                <input type="text" class="form-control" id="branchcode" placeholder="Branch Code" />
+                                                    Branch/POP Name</label>
+                                                <input type="text" class="form-control" id="branchname" placeholder="Branch Name" />
                                             </div>
                                         </div>
                                     </div>
@@ -495,8 +525,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>
-                                                    Branch Name</label>
-                                                <input type="text" class="form-control" id="branchname" placeholder="Branch Name" />
+                                                    Role</label>
+                                                <select id="ddlrole" class="form-control">
+                                                    <option value=""><--Select--></option>
+                                                    <option value="13">HOB</option>
+                                                    <option value="12">MOP</option>
+                                                    <option value="11">Credit Incharge</option>
+                                                    <option value="10">Credit Officer</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -528,10 +564,9 @@
                                     </div>
                                 </div>
                                 <div class="box-footer text-center">
-                                    <button type="button"  id="btnCreateUser" class="btn btn-primary">
+                                    <button type="button" id="btnCreateUser" class="btn btn-primary">
                                         Create User
                                     </button>
-                                   
                                     <a href="Login.aspx" class="btn btn-success">Login</a>
                                 </div>
                             </div>
@@ -540,7 +575,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </form>
 </body>
 </html>

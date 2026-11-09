@@ -441,7 +441,7 @@
              }
              %>
 
-        <% if (Role == 5 || Role == 10 || Role == 15 || Role == 20)
+        <% if ( Role == 15)
            {
                %>
 
@@ -451,7 +451,18 @@
           </a>
         </li>
 
+        <% if (Role == 5 || Role == 10 || Role == 15 || Role == 20)
+           {
+               %>
 
+
+          <li>
+          <a href="UserListing.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>User Listing</span>
+          </a>
+        </li>
+
+        <%} %>
 
 
         <%
