@@ -287,7 +287,7 @@
         	</div><!-- /.modal-content -->  		 
 		</div><!-- /.modal-dialog -->            
 	</div><!--/.Modal-Update form -->   
-     <div class="modal" id="documentModal" tabindex="-1" role="dialog">
+  <div class="modal" id="documentModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
 
         <div class="modal-content">

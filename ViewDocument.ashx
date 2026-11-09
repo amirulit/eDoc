@@ -19,54 +19,51 @@ public class ViewDocument : IHttpHandler
             return;
         }
 
-        string connectionString =
+        String connectionString =
             ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
-        string fileName = "";
+        String fileName = "";
 
-        string query = @"
+        String query = @"
             SELECT file_name
             FROM dbo.t_Document_Upload_By_CD
             WHERE id = @id";
 
         using (SqlConnection con = new SqlConnection(connectionString))
-        using (SqlCommand cmd = new SqlCommand(query, con))
         {
-            cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
 
-            con.Open();
+                con.Open();
 
-            object result = cmd.ExecuteScalar();
+                object result = cmd.ExecuteScalar();
 
-            if (result == null || result == DBNull.Value)
+                if (result == null || result == DBNull.Value)
+                {
+                    context.Response.StatusCode = 404;
+                    return;
+                }
+
+                fileName = Path.GetFileName(Convert.ToString(result));
+            }
+
+            String physicalPath = Path.Combine(@"E:\eDoc_SanctionDoc", fileName);
+
+            if (!File.Exists(physicalPath))
             {
                 context.Response.StatusCode = 404;
                 return;
             }
 
-            fileName = Path.GetFileName(Convert.ToString(result));
+            context.Response.ContentType = "application/pdf";
+            context.Response.AddHeader("Content-Disposition", "inline; filename=\"" + fileName.Replace("\"", "") + "\"");
+
+            context.Response.TransmitFile(physicalPath);
+            context.Response.Flush();
+            context.ApplicationInstance.CompleteRequest();
         }
 
-        string physicalPath = Path.Combine(
-            @"E:\eDoc_SanctionDoc",
-            fileName
-        );
-
-        if (!File.Exists(physicalPath))
-        {
-            context.Response.StatusCode = 404;
-            return;
-        }
-
-        context.Response.ContentType = "application/pdf";
-        context.Response.AddHeader(
-            "Content-Disposition",
-            "inline; filename=\"" + fileName.Replace("\"", "") + "\""
-        );
-
-        context.Response.TransmitFile(physicalPath);
-        context.Response.Flush();
-        context.ApplicationInstance.CompleteRequest();
     }
 
     public bool IsReusable

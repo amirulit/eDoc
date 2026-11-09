@@ -2,6 +2,10 @@
     CodeFile="DrawdownListing_V2.aspx.cs" Inherits="DrawdownListing_V2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+    <script src="View.js" type="text/javascript"></script>
+
+
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -262,7 +266,70 @@
 		</div><!-- /.modal-dialog -->            
 	</div><!--/.Modal-Update form -->   
 
+    <div class="modal" id="documentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
 
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Uploaded Documents</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Document List -->
+                <div id="documentListSection">
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>SL</th>
+                                <th>File Type</th>
+                                <th>File Name</th>
+                                <th>Upload By</th>
+                                <th>Upload Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="documentList"></tbody>
+                    </table>
+
+                </div>
+
+                <!-- PDF Viewer -->
+                <div id="pdfViewerSection" style="display:none;">
+
+                    <button type="button"
+                            class="btn btn-default btn-sm"
+                            id="btnBackDocuments">
+                        <i class="fa fa-arrow-left"></i> Back to Documents
+                    </button>
+
+                    <hr />
+
+                    <iframe id="pdfFrame"
+                            style="width:100%; height:550px; border:1px solid #ddd;"
+                            frameborder="0">
+                    </iframe>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
@@ -339,6 +406,11 @@
   
 
                         <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
+
+                         
+                         
+                        <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview"  cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>"  sanction-id="<%=TableData.Rows[data]["sanction_ids"]%>"   >Upload View</a>                                    
+
 
 
                         <%  if (Role == 2 || Role == 20)

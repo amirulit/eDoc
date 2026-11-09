@@ -48,7 +48,8 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
             upload_by,
             upload_time
         FROM dbo.t_Document_Upload_By_CD
-        --WHERE edoc_id = @edoc_id
+        --WHERE edoc_id in (" + edocId + @")
+        --WHERE edoc_id in (@edoc_id )
         ORDER BY id DESC";
 
         using (SqlConnection con = new SqlConnection(connectionString))

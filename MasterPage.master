@@ -441,7 +441,7 @@
              }
              %>
 
-        <% if ( Role == 15)
+        <% if (Role == 15 || Role == 20)
            {
                %>
 
@@ -450,6 +450,8 @@
             <i class="fa fa-arrow-circle-o-right"></i><span>Check List Listing</span>
           </a>
         </li>
+        
+        <%} %>
 
         <% if (Role == 5 || Role == 10 || Role == 15 || Role == 20)
            {
@@ -461,8 +463,6 @@
             <i class="fa fa-arrow-circle-o-right"></i><span>User Listing</span>
           </a>
         </li>
-
-        <%} %>
 
 
         <%

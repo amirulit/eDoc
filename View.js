@@ -12,6 +12,7 @@
                 $('#documentModal').modal('show');
 
                 $('#documentListSection').show();
+
                 $('#pdfViewerSection').hide();
 
                 $('#pdfFrame').attr('src', '');
@@ -19,6 +20,7 @@
                 $('#documentList').html('<tr><td colspan="6" class="text-center">Loading...</td></tr>');
 
                 $.ajax({
+
                     type: "POST",
                     url: "SanctionListing_V2.aspx/GetUploadedDocuments",
                     data: JSON.stringify({ edocId: edocId }),
