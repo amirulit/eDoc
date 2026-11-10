@@ -258,23 +258,26 @@
             
             */
 
+
+            /*
             $(".ddlStatus").each(function () {
 
 
-                //alert('hhhh');
+               
 
-                var status = $(this).val();
+            var status = $(this).val();
 
-                var saveButton = $(this).closest("tr").find(".save");
+            var saveButton = $(this).closest("tr").find(".save");
 
-                if (status == "Obtained") {
-                    saveButton.val("Upload & Save");
-                }
-                else {
-                    saveButton.val("Save");
-                }
+            if (status == "Obtained") {
+            saveButton.val("Upload & Save");
+            }
+            else {
+            saveButton.val("Save");
+            }
 
             });
+            */
 
 
 
@@ -350,6 +353,8 @@
 
             $(".save").click(function () {
 
+                var $row = $(this).closest("tr");
+
                 var data_id = $(this).attr("data-id");
 
                 var div_name = $(this).attr("div-name");
@@ -362,10 +367,21 @@
                 //return;
                 //}
 
+
+                var required_rdo_val = $row.find('input[type="radio"]:checked').val();
+
+                if (required_rdo_val == null) {
+                    alert('No required option selected');
+                    return false;
+                }
+
+
+
+
                 var ddl = $("#ddl_" + data_id).val()
 
 
-                if (ddl == 'Not' || ddl == 'Part') {
+                if (ddl == 'Not' || ddl == 'Part' || required_rdo_val == 'N') {
 
                     //alert(ddl);
                     //return;
@@ -425,6 +441,11 @@
                 obj.required = required;
 
                 obj.status = ddl;
+
+
+
+
+
                 //obj.remarks = 1; // $("#txteDocID").val();
                 obj.doc_id = data_id; // $("#txtCustomerCode").val();
 
@@ -460,6 +481,15 @@
 
                 obj.expiry = expiry;
                 obj.remarks = remarks;
+
+
+                if (required == "N") {
+                    obj.status = "Not Obtained";
+                    obj.details = "";
+                    obj.deadline = "";
+                    obj.expiry = "";
+                    obj.remarks = "";
+                }
 
 
                 //alert(obj.toString());
@@ -1728,6 +1758,9 @@
                         $.each(rowsData, function (index, item) {
 
                             $('#row_' + item.PrimaryKey).attr('data-done', 'Y').css('background-color', '#90EE90');
+                            $('#btnDelete' + tableId + '_' + item.PrimaryKey).css('display', 'block');
+
+
 
                         });
 
@@ -1772,6 +1805,10 @@
                 $row.find('td').not(':eq(0), :eq(1), :eq(2), :eq(7)').toggleClass('disabled-cell', isNo).find('input, select, textarea, button').prop('disabled', isNo);
 
 
+                //$row.find('.save, .View').toggle(!isNo);
+
+                //$row.find('.Delete').toggle(isNo);
+
             }
 
             // Apply rules to all rows on page load
@@ -1791,6 +1828,25 @@
                 var $row = $(this).closest('tr');
 
                 applyRadioRules($row, $(this).val());
+
+                var rdo_val = $(this).val();
+
+
+                var data_id = $(this).attr("data-id");
+
+                var saveButton = $(this).closest("tr").find(".save");
+
+                if (rdo_val == "N") {
+
+                
+
+                    saveButton.val("Save");
+
+                }
+
+                else {
+                    saveButton.val("Upload & Save");
+                }
 
             });
 
@@ -2449,28 +2505,17 @@
                             </td>
                             <td class="tdTopLeft">
                                 <!-- style="<%= status == "Obtained" ? "display:none;" : "" %>"-->
-                                <input type="button" value="Save" id="btnSave_<%=doc_id%>" class="save" data-id="<%=doc_id%>"
-                                    div-name="<%=DocType[i]%>" data-expiry="<%=expiry_req%>" />
+
+                                <!-- <input id="btnSave_<%=doc_id%>" type="button" value="<%= TableData.Rows[data]["c_required"].ToString() == "Y" ? "Upload & Save" : "Save" %>" class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>" data-expiry="<%=expiry_req%>" /> -->
+
+                                <input id="btnSave_<%=doc_id%>" type="button" value="Save" class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>" data-expiry="<%=expiry_req%>" />
                                 <input id="btnView<%=DocType[i]%>_<%=doc_id %>" type="button" value="View" class="View"
                                     data-id="<%=doc_id%>" file-name="<%=file_name%>" <%  if (file_name!=""){ %> style="display: block;"
-                                    <%
-                            }
-                            else
-                            {
-                                        
-                                        
-                                         %> style="display: none;" <%} %> />
+                                    <%}else{%> style="display: none;" <%} %> />
                                 <input id="btnDelete<%=DocType[i]%>_<%=doc_id %>" type="button" value="Delete" class="Delete"
                                     data-id="<%=doc_id%>" cusid="<%=cus_id%>" data-deleteid="<%=id_to_delete%>" file-name="<%=file_name%>"
-                                    <%  if (id_to_delete > 0){
-                                     
-                                      %> style="display: block;" <%
-                            }
-                            else
-                            {
-                                        
-                                        
-                                         %> style="display: none;" <%} %> />
+                                    <%  if (id_to_delete > 0){         %> style="display: block;" <%}else{%> style="display: none;"
+                                    <%} %> />
                                 <% 
                                    /*
                                     if (doc_Type == "GENERAL")
@@ -2502,8 +2547,11 @@
                         %>
                     </tbody>
                 </table>
+                <!--
                 <input type="button" class="BulkCheck" value="Check ALL" data-count="<%=TableData.Rows.Count %>"
                     div-name="<%=DocType[i]%>" id="btn_" <%=DocType %> doc-table="<%=DocType[i] %>" />
+
+                    -->
                 <input type="button" class="BulkSave" value="Save ALL" data-count="<%=TableData.Rows.Count %>"
                     div-name="<%=DocType[i]%>" id="Button1" <%=DocType %> doc-table="<%=DocType[i] %>" />
                 <!--

@@ -248,7 +248,7 @@
 
                 //if (branchCode === "BD0010100") {
                 $("#branchcode").hide();
-                $("#Select1").empty();
+                //$("#Select1").empty();
                 $("#Select1").show();
                 $("#ddlrole").empty();
                 $("#ddlrole").html('<option value="">--Select--</option>');
