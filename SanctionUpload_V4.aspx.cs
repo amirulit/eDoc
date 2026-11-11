@@ -248,11 +248,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
         using (SqlConnection con = new SqlConnection(cs))
         {
-            using (SqlCommand cmd = new SqlCommand(
-                @"
-            SELECT LEFT(loan_nature, 70) AS name,
-                   id id
-            FROM t_LoanNature_V2", con))
+            using (SqlCommand cmd = new SqlCommand(    @"SELECT LEFT(loan_nature, 70) AS name, id id FROM t_LoanNature_V2", con))
             {
                 con.Open();
 
@@ -291,6 +287,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
         public string customer_id { get; set; }
         public string customer_name { get; set; }
         public string loan_nature { get; set; }
+        public string loan_nature_name { get; set; }
 
         public string currency { get; set; }
         public string amount { get; set; }
@@ -318,8 +315,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
         using (SqlConnection con = new SqlConnection(cs))
         {
-            using (SqlCommand cmd = new SqlCommand(
-                "dbo.usp_GetMasterDetail", con))
+            using (SqlCommand cmd = new SqlCommand("dbo.usp_GetMasterDetail", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -366,11 +362,13 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
                                 loan_nature = Convert.ToString(dr["loan_nature"]),
 
+                                loan_nature_name = Convert.ToString(dr["loan_nature_name"]),
+
                                 currency = Convert.ToString(dr["currency"]),
 
                                 amount = Convert.ToString(dr["amount"]),
 
-                                validity = Convert.ToString(dr["validity"]),
+                                validity = Convert.ToDateTime(dr["validity"]).ToString("yyyy-MM-dd")
 
 
                             });
@@ -534,6 +532,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
         public string LoanNature { get; set; }
+        public string Currency { get; set; }
         public decimal Amount { get; set; }
         public string Validity { get; set; }
     }
@@ -619,10 +618,7 @@ DECLARE @Year INT = YEAR(@FileCreatedDate);
 DECLARE @NextNumber INT;
 DECLARE @edoc_ref_no varchar(500);
 
-SELECT @NextNumber =
-    ISNULL(count(*), 0) + 1
-FROM t_Sanction_Master
-WHERE   YEAR(entry_time) = @Year;
+SELECT @NextNumber = ISNULL(count(*), 0) + 1 FROM t_Sanction_Master WHERE   YEAR(entry_time) = @Year;
 
 set @edoc_ref_no=CONCAT(@Year, '', FORMAT(@NextNumber, '00000')) 
 
@@ -725,7 +721,7 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
          ,'" + facility.CustomerName + @"'
          ,'" + facility.LoanNature + @"'
          ,'" + facility.LoanNature + @"'
-         ,'BDT'
+         ,'" + facility.Currency + @"'
          ,'" + facility.Amount + @"'
          ,'" + facility.Validity + @"'
          ,'" + Inputter + @"'

@@ -84,7 +84,7 @@
             //            $("#ContentPlaceHolder1_select3 option[value='']").length ||
             //    $("#ContentPlaceHolder1_select3").prepend('<option value=""></option>');
 
-            $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8").select2({
+            $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8,#ddlCurrency").select2({
                 placeholder: "<--Select-->",
                 allowClear: true,
                 width: "100%"
@@ -681,6 +681,7 @@
         
 
                <select id="ddlCurrency"  class="form-control">
+                 <option value="">-- Select Loan Nature --</option>
                <option value="BDT">BDT</option>
                <option value="USD">USD</option>
                <option value="CAD">CAD</option>

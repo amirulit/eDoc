@@ -17,7 +17,6 @@ function LoadNextRefNo() {
 
         success: function (response) {
             $('#ContentPlaceHolder1_txtEdocId').val(response.d);
-
             //$('#' + edocTextBoxId).val(response.d);
 
 
@@ -34,9 +33,9 @@ function LoadNextRefNo() {
 
 
 
-function loadMasterDetail(id) {
+function LoadExistingRecord(id) {
 
-    alert(id);
+    //alert(id);
 
     $.ajax({
 
@@ -57,41 +56,71 @@ function loadMasterDetail(id) {
             // Master
             if (data.Master) {
 
-                $("#hdnMasterId").val(data.Master.MasterId);
+                $("#ContentPlaceHolder1_txtEdocId").val(data.Master.edoc_id);
 
-                $("#txtCustomer").val(data.Master.CustomerName);
+                $("#ContentPlaceHolder1_select3").val(data.Master.booking_branch).trigger("change");
 
-                $("#ddlBranch").val(data.Master.BranchId);
+                $("#txtSanctionReference").val(data.Master.sanction_reference);
 
-                $("#txtDate").val(data.Master.ApplicationDate);
+                $("#txtSanctionDate").val(data.Master.sanction_date);
 
-                $("#ddlStatus").val(data.Master.Status);
+                $("#select2").val(data.Master.sanction_segment).trigger("change");
+
+                $("#select1").val(data.Master.sanction_approval_authority).trigger("change");
             }
 
             // Detail
+            /*
             var html = "";
+
+            $("#tblLoans tbody").empty();
 
             $.each(data.Details, function (i, item) {
 
-                html += "<tr>";
+                var tr = $("<tr>");
 
-                html += "<td>" + item.Id + "</td>";
+                $("<td>").text(i + 1).appendTo(tr);
+                $("<td>").text(item.customer_id).appendTo(tr);
+                $("<td>").text(item.customer_name).appendTo(tr);
+                $("<td>").text(item.loan_nature_name).appendTo(tr);
+                $("<td>").text(item.currency).appendTo(tr);
+                $("<td>").text(Number(item.amount).toLocaleString()).appendTo(tr);
+                $("<td>").text(item.validity).appendTo(tr);
 
-                html += "<td>" +
-                    $("<div>").text(item.ProductName).html() +
-                    "</td>";
+              
+                $("<td>").append(
+        $("<button>", {
+            type: "button",
+            class: "btn btn-danger btn-xs btnDelete",
+            text: "Remove"
+        })
+    ).appendTo(tr);
 
-                html += "<td>" + item.Amount + "</td>";
+                $("#tblLoans tbody").append(tr);
 
-                html += "<td><button type='button' " +
-                    "class='btnDelete' data-id='" +
-                    item.Id + "'>Delete</button></td>";
+            });
+            */
 
-                html += "</tr>";
+            // Clear previous records
+            loans = [];
+
+            $.each(data.Details, function (i, item) {
+
+                loans.push({
+                    CustomerCode: item.customer_id,
+                    CustomerName: item.customer_name,
+                    LoanNature: item.loan_nature,
+                    LoanNatureSelected: item.loan_nature_name,
+                    Currency: item.currency,
+                    CurrencySelected: item.currency,
+                    Amount: Number(item.amount),
+                    Validity: item.validity
+                });
 
             });
 
-            $("#tblDetails tbody").html(html);
+            renderTable();
+           
 
         },
 
@@ -105,6 +134,109 @@ function loadMasterDetail(id) {
 
     });
 }
+
+var loans = [];
+
+$(document).ready(function () {
+
+    console.log("SanctionUpload JS Ready");
+
+    // ADD BUTTON
+    //$("#btnAdd").on("click", function () {
+    $(document).on("click", "#btnAdd", function () {
+
+        console.log("Add button clicked");
+
+        var customerCode = $.trim($("#ddlCustomerCode").val());
+        var customerName = $("#ddlCustomerCode option:selected").text();
+
+        var loanNature = $("#ddlLoanNature").val();
+        var loanNatureText = $("#ddlLoanNature option:selected").text();
+
+        var currency = $("#ddlCurrency").val();
+        var currencyText = $("#ddlCurrency option:selected").text();
+
+        var amount = $("#txtAmount").val();
+        var validity = $("#txtValidity").val();
+
+        if (!customerCode || !loanNature || !amount || !validity || !currency) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (isNaN(amount) || Number(amount) <= 0) {
+            alert("Please enter a valid amount.");
+            return;
+        }
+
+        loans.push({
+            CustomerCode: customerCode,
+            CustomerName: customerName,
+            LoanNature: loanNature,
+            LoanNatureSelected: loanNatureText,
+            Currency: currency,
+            CurrencySelected: currencyText,
+            Amount: Number(amount),
+            Validity: validity
+        });
+
+        renderTable();
+
+        // Clear fields
+        $("#ddlCustomerCode").val("").trigger("change");
+        $("#ddlLoanNature").val("").trigger("change");
+        $("#ddlCurrency").val("").trigger("change");
+        $("#txtAmount").val("");
+        $("#txtValidity").val("");
+
+    });
+
+});
+
+
+// Render all rows safely
+function renderTable() {
+
+    var tbody = $("#tblLoans tbody");
+    tbody.empty();
+
+    $.each(loans, function (index, loan) {
+
+        var tr = $("<tr>");
+
+        $("<td>").text(index + 1).appendTo(tr);
+        $("<td>").text(loan.CustomerCode).appendTo(tr);
+        $("<td>").text(loan.CustomerName).appendTo(tr);
+
+        //$("<td>").text(loan.LoanNature).appendTo(tr);
+        //$("<td>").text(loan.LoanNatureSelected).appendTo(tr);
+
+        $("<td>").append($("<input>", { type: "hidden", name: "LoanNature", value: loan.LoanNature })).append(document.createTextNode(loan.LoanNatureSelected)).appendTo(tr);
+
+        $("<td>").text(loan.Currency).appendTo(tr);
+        $("<td>").text(loan.Amount.toFixed(2)).appendTo(tr);
+        $("<td>").text(loan.Validity).appendTo(tr);
+
+        var removeButton = $("<button>", {
+            type: "button",
+            class: "btn btn-danger btn-sm",
+            text: "Remove"
+        });
+
+        removeButton.on("click", function () {
+            loans.splice(index, 1);
+            renderTable();
+        });
+
+        $("<td>").append(removeButton).appendTo(tr);
+        tbody.append(tr);
+
+
+    });
+}
+
+
+
 
 $(document).ready(function () {
 
@@ -121,7 +253,7 @@ $(document).ready(function () {
 
     });
 
-   
+
 
 
 
@@ -181,128 +313,6 @@ $(document).ready(function () {
     // Load existing record
 
 
-
-
-
-    var loans = [];
-
-    // Add a loan row
-    $("#btnAdd").on("click", function () {
-
-
-
-        var edoc_id = $("#ContentPlaceHolder1_txtEdocId").val();
-
-        var branch = $("#ContentPlaceHolder1_select3").val();
-
-        var sanc_ref = $("#txtSanctionReference").val();
-
-        var sanc_date = $("#txtSanctionDate").val();
-
-        var segment = $("#select2").val();
-
-        var appr_auth = $("#select1").val();
-
-
-
-        if (edoc_id == "" || branch == "" || sanc_ref == "" || sanc_date == "" || segment == "" || appr_auth == "") {
-            alert('Sorry !!! input missing.');
-            return;
-
-        }
-
-        var customerCode = $.trim($("#ddlCustomerCode").val());
-        var customerName = $("#ddlCustomerCode option:selected").text();
-        var loanNature = $("#ddlLoanNature").val();
-        var loanNatureSelected = $("#ddlLoanNature option:selected").text();
-        var currency = $("#ddlCurrency").val();
-        var amount = $("#txtAmount").val();
-        var validity = $("#txtValidity").val();
-
-
-        //alert(customerCode + '-' + loanNature + '-' + amount + '-' + validity);
-
-        if (!customerCode || !loanNature || !amount || !validity) {
-            alert("Please fill in all fields.");
-            return;
-        }
-
-        if (!Number.isFinite(Number(amount)) || Number(amount) <= 0) {
-            alert("Please enter a valid amount greater than zero.");
-            return;
-        }
-
-        loans.push({
-            CustomerCode: customerCode,
-            CustomerName: customerName,
-            LoanNature: loanNature,
-            LoanNatureSelected: loanNatureSelected,
-            Currency: currency,
-            Amount: Number(amount),
-            Validity: validity
-        });
-
-        renderTable();
-
-        // Clear fields after adding
-        $("#ddlCustomerCode").val("").trigger("change");
-        $("#ddlLoanNature").val("").trigger("change");
-        $("#txtAmount").val("");
-        $("#txtValidity").val("");
-        $("#txtCustomerCode").focus();
-
-
-
-    });
-
-
-    // Render all rows safely
-    function renderTable() {
-
-        var tbody = $("#tblLoans tbody");
-        tbody.empty();
-
-        $.each(loans, function (index, loan) {
-
-            var tr = $("<tr>");
-
-            $("<td>").text(index + 1).appendTo(tr);
-            $("<td>").text(loan.CustomerCode).appendTo(tr);
-            $("<td>").text(loan.CustomerName).appendTo(tr);
-
-            //$("<td>").text(loan.LoanNature).appendTo(tr);
-            //$("<td>").text(loan.LoanNatureSelected).appendTo(tr);
-
-            $("<td>")
-    .append(
-        $("<input>", {
-            type: "hidden",
-            name: "LoanNature",
-            value: loan.LoanNature
-        })
-    )
-    .append(document.createTextNode(loan.LoanNatureSelected))
-    .appendTo(tr);
-
-            $("<td>").text(loan.Currency).appendTo(tr);
-            $("<td>").text(loan.Amount.toFixed(2)).appendTo(tr);
-            $("<td>").text(loan.Validity).appendTo(tr);
-
-            var removeButton = $("<button>", {
-                type: "button",
-                class: "btn btn-danger btn-sm",
-                text: "Remove"
-            });
-
-            removeButton.on("click", function () {
-                loans.splice(index, 1);
-                renderTable();
-            });
-
-            $("<td>").append(removeButton).appendTo(tr);
-            tbody.append(tr);
-        });
-    }
 
 
 
@@ -426,8 +436,10 @@ $(document).ready(function () {
             var loanNature = $row.find("td:eq(3) input[type='hidden']").val();
             //var loanNatureText = $row.find("td:eq(3)").text().trim();
 
-            var amountText = $row.find("td:eq(4)").text().trim();
-            var validity = $row.find("td:eq(5)").text().trim();
+            var currency = $row.find("td:eq(4)").text().trim();
+
+            var amountText = $row.find("td:eq(5)").text().trim();
+            var validity = $row.find("td:eq(6)").text().trim();
 
             // Convert the amount string back to a float (removes commas if formatting added them)
             var amount = parseFloat(amountText.replace(/,/g, "")) || 0;
@@ -442,6 +454,7 @@ $(document).ready(function () {
                 CustomerCode: customerCode,
                 CustomerName: customerName,
                 LoanNature: loanNature,
+                Currency: currency,
                 Amount: amount,
                 Validity: validity
             });
@@ -465,6 +478,7 @@ $(document).ready(function () {
 
         var button = $(this);
         button.prop("disabled", true);
+
         $("#lblMessage").text("Saving...");
 
 
@@ -488,6 +502,11 @@ $(document).ready(function () {
                     $("#lblMessage").text(result.Message);
 
                     swal("Success!", result.Message, "success");
+
+
+                    $("#ContentPlaceHolder1_select3").val("").trigger("change");
+                    $("#select2").val("").trigger("change");
+                    $("#select1").val("").trigger("change");
 
 
                     //$('#modalUpdateform').modal('show');
