@@ -2,6 +2,28 @@
     CodeFile="SanctionListing_V2.aspx.cs" Inherits="SanctionListing_V2" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+
+    <style type="text/css">
+    
+    @media (min-width: 768px) {
+    .modal-extra-lg {
+        width: 95%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .modal-extra-lg {
+        width: 90%;
+        max-width: 1600px;
+    }
+}
+
+
+    </style>
+
+
+
     <script src="FileUpload.js" type="text/javascript"></script>
     <script type="text/javascript">
 
@@ -201,6 +223,239 @@
                 $('#documentListSection').show();
 
             });
+
+            $("body").on("click", ".view", function () {
+
+
+                var edoc_id = $(this).data("edocid");
+
+                $("#lblID").text(edoc_id);
+
+
+
+
+                //$('#sanctionModal').modal('show');
+
+
+                ViewSanctionDetails(edoc_id);
+
+                /*
+                var cus_type = $(this).attr("cus-type");
+                var auto_id = $(this).attr("auto-id");
+                var e_doc_id = $(this).attr("edoc-id");
+                var drawdown_id = $(this).attr("drawdown-id");
+
+          
+
+                url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
+
+                var width = screen.availWidth - 100;
+                var height = screen.availHeight - 100;
+                var left = parseInt((screen.availWidth / 2) - (width / 2));
+                var top = parseInt((screen.availHeight / 2) - (height / 2));
+                var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
+
+             
+                newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow.focus();
+
+
+                */
+
+
+            });
+
+
+            function ViewSanctionDetails(id) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "SanctionUpload_V4.aspx/GetMasterDetail",
+                    data: JSON.stringify({ id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+
+                        // =========================
+                        // MASTER INFORMATION
+                        // =========================
+
+                        if (data.Master) {
+
+                            $("#mEdocId").text(data.Master.edoc_id);
+
+                            $("#mBookingBranch").text(data.Master.booking_branch);
+
+                            $("#mSanctionReference").text(data.Master.sanction_reference);
+
+                            $("#mSanctionDate").text(data.Master.sanction_date);
+
+                            $("#mSanctionSegment").text(data.Master.sanction_segment);
+
+                            $("#mApprovalAuthority").text(
+                    data.Master.sanction_approval_authority
+                );
+
+                        }
+
+                        // =========================
+                        // DETAIL INFORMATION
+                        // =========================
+
+                        $("#tbodySanctionDetails").empty();
+
+                        $.each(data.Details, function (i, item) {
+
+                            var tr = $("<tr>");
+
+                            $("<td>").text(i + 1).appendTo(tr);
+
+                            $("<td>").text(item.customer_id).appendTo(tr);
+
+                            $("<td>").text(item.customer_name).appendTo(tr);
+
+                            $("<td>").text(item.loan_nature_name).appendTo(tr);
+
+                            $("<td>").text(item.currency).appendTo(tr);
+
+                            $("<td>").text(
+                    Number(item.amount).toLocaleString()
+                ).appendTo(tr);
+
+                            $("<td>").text(item.validity).appendTo(tr);
+
+                            // Delete button
+                            $("<td>").append(
+                    $("<button>", {
+                        type: "button",
+                        class: "btn btn-danger btn-xs btnDeleteDetail",
+                        text: "Delete"
+                    }).attr("data-id", item.id)
+                ).appendTo(tr);
+
+                            $("#tbodySanctionDetails").append(tr);
+
+                        });
+
+                        // Show modal
+                        $("#sanctionModal").modal("show");
+
+                    },
+
+                    error: function (xhr) {
+
+                        console.log(xhr.responseText);
+
+                        alert("Unable to load sanction details.");
+
+                    }
+                });
+            }
+
+
+            $(document).on("click", ".btnDeleteDetail", function () {
+
+                var detailId = $(this).attr("data-id");
+
+                if (!confirm("Are you sure you want to delete this detail?")) {
+                    return;
+                }
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: "SanctionListing_V2.aspx/DeleteDetail",
+
+                    data: JSON.stringify({ id: parseInt(detailId) }),
+
+                    contentType: "application/json; charset=utf-8",
+
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d === "success") {
+
+                            //alert("Detail deleted successfully.");
+
+                            // Remove deleted row
+                            $(".btnDeleteDetail[data-id='" + detailId + "']").closest("tr").remove();
+
+                            // Recalculate SL
+                            $("#tbodySanctionDetails tr").each(function (i) {
+                                $(this).find("td:first").text(i + 1);
+                            });
+
+                        }
+                        else {
+                            alert(response.d);
+                        }
+
+                    },
+
+                    error: function (xhr) {
+
+                        console.log(xhr.responseText);
+
+                        alert("Unable to delete detail.");
+
+                    }
+
+                });
+
+            });
+
+            $("body").on("click", ".edit", function () {
+
+
+                var edoc_id = $(this).data("edocid");
+
+                //alert(edoc_id);
+
+                url = "SanctionUpload_V4.aspx?id=" + edoc_id;
+
+                var width = screen.availWidth - 100;
+                var height = screen.availHeight - 100;
+                var left = parseInt((screen.availWidth / 2) - (width / 2));
+                var top = parseInt((screen.availHeight / 2) - (height / 2));
+                var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
+
+
+                newwindow = window.open(url, '_self', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow.focus();
+
+                //$("#lblID").text(edoc_id);
+
+                //$('#modalUpdateform').modal('show');
+
+                /*
+                var cus_type = $(this).attr("cus-type");
+                var auto_id = $(this).attr("auto-id");
+                var e_doc_id = $(this).attr("edoc-id");
+                var drawdown_id = $(this).attr("drawdown-id");
+
+          
+
+                url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
+
+              
+             
+                newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow.focus();
+
+
+                */
+
+
+            });
+
         });
 
     </script>
@@ -277,10 +532,29 @@
 
 
                             </div><!--/.modal body-->
-                            <div class="panel-footer bg-gray-light">
+                         
+
+                          <div class="panel-footer bg-gray-light">
+
                                 <input type="hidden" id="id" name="id" value="" />
-                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
-        	  				</div><!--/.panel-footer--> 
+
+                                <div class="row">
+        <div class="col-md-6">
+            <button type="button" id="btnSubmit" class="btn btn-info" style="width: 100%;">
+                <span class="glyphicon glyphicon-upload"></span> Upload
+            </button>
+        </div>
+
+        <div class="col-md-6">
+            <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100%;">
+                <span class="glyphicon glyphicon-remove"></span> Close
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
             			</div><!--/.panel-->
             		</div><!--/.col-md-6-->
             	</div><!--/.row-->                                        
@@ -352,6 +626,102 @@
     </div>
 </div>
 
+
+
+ <div class="modal" id="sanctionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-extra-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Sanction Details</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Master Information -->
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Master Information</h3>
+                    </div>
+
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>eDoc ID</label>
+                                <p id="mEdocId"></p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label>Booking Branch</label>
+                                <p id="mBookingBranch"></p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label>Sanction Reference</label>
+                                <p id="mSanctionReference"></p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label>Sanction Date</label>
+                                <p id="mSanctionDate"></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Sanction Segment</label>
+                                <p id="mSanctionSegment"></p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Approval Authority</label>
+                                <p id="mApprovalAuthority"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail Information -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Loan / Facility Details</h3>
+                    </div>
+
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered table-striped" id="tblSanctionDetails">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Customer Code</th>
+                                    <th>Customer Name</th>
+                                    <th>Loan Nature</th>
+                                    <th>Currency</th>
+                                    <th>Amount</th>
+                                    <th>Validity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tbodySanctionDetails"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span> Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
             	<div class="box">
@@ -409,9 +779,11 @@
 
   <a href="#"  class="btn btn-danger btn-xs delete" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Delete</a>                                    
    
+  <a href="#"  class="btn btn-success btn-xs edit" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Edit</a>                                    
+
   <a href="#"  class="btn btn-info btn-xs upload" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Upload</a>                                    
 
-  <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Upload View</a>                                    
+  <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View Upload</a>                                    
 
 
 <%  

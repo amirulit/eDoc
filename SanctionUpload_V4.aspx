@@ -13,6 +13,23 @@
             padding: 5px;
         }
     </style>
+    
+    <style type="text/css">
+    
+    .blink-message {
+    animation: blinker 1s linear infinite;
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+    
+    </style>
+
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
     
@@ -40,6 +57,12 @@
 
                // Existing record
                LoadExistingRecord(id);
+
+
+               //"***For any change to take effect, you have to Save All***";
+               var msg = "***For any change to take effect, you have to Save All***";
+
+               $("#spnMessage").text(msg).addClass("blink-message");
 
            }
            else {
@@ -474,9 +497,10 @@
                             </div> 
 
                             <div class="panel-footer bg-gray-light">
-    <input type="hidden" id="id" name="id" value="" />
 
-    <div class="row">
+                                <input type="hidden" id="id" name="id" value="" />
+
+                                <div class="row">
         <div class="col-md-6">
             <button type="button" id="btnSubmit" class="btn btn-info" style="width: 100%;">
                 <span class="glyphicon glyphicon-upload"></span> Upload
@@ -507,7 +531,7 @@
             	<!-- general form elements -->
               	<div class="box box-primary">
                 	<div class="box-header with-border">
-                  		<h3 class="box-title">New</h3>
+                  		<h3 class="box-title">New</h3><span id="spnMessage"></span>
                 	</div><!-- /.box-header -->
                 	<!--  //MSK-00097 form start -->
                             
@@ -758,6 +782,9 @@
 
 
                             <button type="button" class="btn btn-primary" id="btnUpload" style="  display:none;" >Upload</button>
+
+
+                            
 
                   		</div>
                 	 

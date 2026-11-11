@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Web.Services;
 
 public partial class SanctionListing_V2 : System.Web.UI.Page
 {
@@ -31,6 +32,29 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
         public string UploadTime { get; set; }
         public string FileUrl { get; set; }
     }
+
+
+    [WebMethod]
+    public static string DeleteDetail(int id)
+    {
+        string cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "DELETE FROM t_Sanction_Master_Details WHERE id = @id", con))
+            {
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                con.Open();
+
+                int affected = cmd.ExecuteNonQuery();
+
+                return affected > 0 ? "success" : "Record not found";
+            }
+        }
+    }
+
 
     [System.Web.Services.WebMethod]
     public static List<DocumentInfo> GetUploadedDocuments(String edocId)
