@@ -54,7 +54,46 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
             }
         }
     }
+    [WebMethod]
+    public static string UpdateMaster(
+        int edoc_id,
+        string booking_branch,
+        string sanction_reference,
+        string sanction_date,
+        string sanction_segment,
+        string sanction_approval_authority)
+    {
+        string cs = ConfigurationManager
+            .ConnectionStrings["dbConn"].ConnectionString;
 
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "dbo.usp_UpdateSanctionMaster", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@edoc_id", SqlDbType.Int).Value = edoc_id;
+
+                cmd.Parameters.Add("@booking_branch", SqlDbType.VarChar, 50).Value = booking_branch;
+
+                cmd.Parameters.Add("@sanction_reference", SqlDbType.VarChar, 100).Value = sanction_reference;
+
+                cmd.Parameters.Add("@sanction_date", SqlDbType.Date).Value =
+                    Convert.ToDateTime(sanction_date);
+
+                cmd.Parameters.Add("@sanction_segment", SqlDbType.VarChar, 50).Value = sanction_segment;
+
+                cmd.Parameters.Add("@sanction_approval_authority", SqlDbType.VarChar, 100).Value = sanction_approval_authority;
+
+                con.Open();
+
+                int result = cmd.ExecuteNonQuery();
+
+                return result > 0 ? "success" : "Unable to update Master";
+            }
+        }
+    }
 
     [System.Web.Services.WebMethod]
     public static List<DocumentInfo> GetUploadedDocuments(String edocId)

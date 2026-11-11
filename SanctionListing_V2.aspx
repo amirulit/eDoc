@@ -280,6 +280,12 @@
 
                         var data = response.d;
 
+
+                        //masterData = data.Master;
+                        //renderMaster(masterData);
+
+
+
                         // =========================
                         // MASTER INFORMATION
                         // =========================
@@ -296,9 +302,7 @@
 
                             $("#mSanctionSegment").text(data.Master.sanction_segment);
 
-                            $("#mApprovalAuthority").text(
-                    data.Master.sanction_approval_authority
-                );
+                            $("#mApprovalAuthority").text(data.Master.sanction_approval_authority);
 
                         }
 
@@ -322,9 +326,7 @@
 
                             $("<td>").text(item.currency).appendTo(tr);
 
-                            $("<td>").text(
-                    Number(item.amount).toLocaleString()
-                ).appendTo(tr);
+                            $("<td>").text(Number(item.amount).toLocaleString()).appendTo(tr);
 
                             $("<td>").text(item.validity).appendTo(tr);
 
