@@ -45,6 +45,146 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 
     }
 
+
+    public class SanctionDetailUpdate
+    {
+        public int id { get; set; }
+        public string loan_nature_name { get; set; }
+        public string currency { get; set; }
+        public decimal amount { get; set; }
+        public string validity { get; set; }
+    }
+
+
+
+    [WebMethod]
+    public static string SaveSanctionDetails_V2(
+        string customer,
+        string loanNature,
+        string currency,
+        string amount,
+        string validity)
+    {
+
+        String Output = "";
+        try
+        {
+            string constr = ConfigurationManager
+                .ConnectionStrings["dbConn"]
+                .ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                string query = @"
+                INSERT INTO t_Sanction_Master_Details
+                (customer_id, loan_nature, Currency, Amount, Validity)
+                VALUES
+                (@Customer, @LoanNature, @Currency, @Amount, @Validity)";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Customer", customer);
+                    cmd.Parameters.AddWithValue("@LoanNature", loanNature);
+                    cmd.Parameters.AddWithValue("@Currency", currency);
+                    cmd.Parameters.AddWithValue("@Amount", Convert.ToDecimal(amount));
+                    cmd.Parameters.AddWithValue("@Validity", validity);
+
+                    con.Open();
+                    //cmd.ExecuteNonQuery();
+
+                    //return Convert.ToInt32(cmd.ExecuteScalar());
+
+                    //return cmd.ExecuteScalar().ToString();
+
+                    Output = cmd.ExecuteScalar().ToString();
+                }
+            }
+
+            return Output;
+        }
+        catch (Exception ex)
+        {
+            return "Error: " + ex.Message;
+        }
+    }
+
+    
+     
+    [WebMethod]
+public static int SaveSanctionDetails(
+    string customer,
+    string loanNature,
+    string currency,
+    string amount,
+    string validity)
+{
+    string constr = ConfigurationManager
+        .ConnectionStrings["dbconn"].ConnectionString;
+
+    using (SqlConnection con = new SqlConnection(constr))
+    {
+        using (SqlCommand cmd = new SqlCommand("SP_SaveSanctionDetails", con))
+        {
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Customer", customer);
+            cmd.Parameters.AddWithValue("@LoanNature", loanNature);
+            cmd.Parameters.AddWithValue("@Currency", currency);
+            cmd.Parameters.AddWithValue("@Amount", Convert.ToDecimal(amount));
+            cmd.Parameters.AddWithValue("@Validity", validity);
+
+            con.Open();
+
+            return Convert.ToInt32(cmd.ExecuteScalar());
+        }
+    }
+} 
+     
+    
+
+    [System.Web.Services.WebMethod]
+    public static string UpdateSanctionDetail(SanctionDetailUpdate obj)
+    {
+        try
+        {
+            if (obj == null || obj.id <= 0)
+                return "Invalid record";
+
+            // Update your database here using parameterized SQL
+            using (SqlConnection con = new SqlConnection(
+                ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString))
+            {
+                string sql = @"
+                UPDATE YourSanctionTable
+                SET
+                    loan_nature_name = @loan_nature_name,
+                    currency = @currency,
+                    amount = @amount,
+                    validity = @validity
+                WHERE id = @id";
+
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@loan_nature_name", obj.loan_nature_name);
+                    cmd.Parameters.AddWithValue("@currency", obj.currency);
+                    cmd.Parameters.AddWithValue("@amount", obj.amount);
+                    cmd.Parameters.AddWithValue("@validity", obj.validity);
+                    cmd.Parameters.AddWithValue("@id", obj.id);
+
+                    con.Open();
+
+                    int result = cmd.ExecuteNonQuery();
+
+                    return result > 0 ? "success" : "Record not found";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log exception
+            return "Error updating record";
+        }
+    }
     public class DocumentInfo
     {
         public int Id { get; set; }

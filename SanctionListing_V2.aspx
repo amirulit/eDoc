@@ -24,7 +24,123 @@
     </style>
     <script src="FileUpload.js" type="text/javascript"></script>
 
+     <script type="text/javascript">
 
+
+         $(document).ready(function () {
+
+             $("#Button1").click(function () {
+
+                 var customer = $("#ContentPlaceHolder1_Select4").val();
+                 var loanNature = $("#ContentPlaceHolder1_Select5").val();
+                 var currency = $("#Select6").val();
+                 var amount = $("#Text1").val();
+                 var validity = $("#Text2").val();
+
+                 // Validation
+                 if (customer == "" || loanNature == "" ||
+            amount == "" || validity == "") {
+
+                     alert("Please fill all fields.");
+                     return;
+                 }
+
+                 $.ajax({
+                     type: "POST",
+                     url: "SanctionListing_V2.aspx/SaveSanctionDetails",
+                     data: JSON.stringify({
+                         customer: customer,
+                         loanNature: loanNature,
+                         currency: currency,
+                         amount: amount,
+                         validity: validity
+                     }),
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+
+                     success: function (response) {
+
+                         if (response.d == "Success") {
+                             alert("Data saved successfully!");
+
+                             // Clear fields
+                             /*
+                             $("#Select4").val("");
+                             $("#Select5").val("");
+                             $("#Select6").val("BDT");
+                             $("#Text1").val("");
+                             $("#Text2").val("");
+
+                             */
+
+                             var row = '<tr id="row_' + id + '">' +
+    '<td>' + ($("#tblSanctionDetails tbody tr").length + 1) + '</td>' +
+    '<td>' + $("#Select4 option:selected").text() + '</td>' +
+    '<td>' + $("#Select5 option:selected").text() + '</td>' +
+    '<td>' + $("#Select6").val() + '</td>' +
+    '<td>' + $("#Text1").val() + '</td>' +
+    '<td>' + $("#Text2").val() + '</td>' +
+    '<td>' +
+        '<button type="button" class="btn btn-danger" onclick="DeleteSanction(' + id + ')">' +
+            'Delete' +
+        '</button>' +
+    '</td>' +
+'</tr>';
+
+                             $("#tblSanctionDetails tbody").append(row);
+
+
+
+
+                         }
+                         else {
+                             alert(response.d);
+                         }
+                     },
+
+                     error: function (xhr, status, error) {
+                         alert("Error saving data: " + error);
+                     }
+                 });
+
+             });
+
+
+
+             function DeleteSanction(id) {
+
+                 if (!confirm("Are you sure you want to delete this record?"))
+                     return;
+
+                 $.ajax({
+                     type: "POST",
+                     url: "SanctionUpload_V4.aspx/DeleteSanction",
+                     data: JSON.stringify({ id: id }),
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+
+                     success: function (response) {
+
+                         if (response.d == "Success") {
+
+                             $("#row_" + id).remove();
+
+                             alert("Deleted successfully!");
+                         }
+                         else {
+                             alert("Record not found!");
+                         }
+                     },
+
+                     error: function () {
+                         alert("Delete failed!");
+                     }
+                 });
+             }
+         });
+
+
+     </script>
       <script type="text/javascript">
 
 
@@ -425,30 +541,61 @@
 
                         $.each(data.Details, function (i, item) {
 
-                            var tr = $("<tr>");
+                            var tr = $("<tr>").attr("data-id", item.id);
 
                             $("<td>").text(i + 1).appendTo(tr);
 
-                            $("<td>").text(item.customer_id + '-' + item.customer_name).appendTo(tr);
+                            $("<td>").addClass("customer").text(item.customer_id + '-' + item.customer_name).appendTo(tr);
 
-                            //$("<td>").text(item.customer_name).appendTo(tr);
+                            $("<td>").addClass("loan_nature_name")
+            .text(item.loan_nature_name).appendTo(tr);
 
-                            $("<td>").text(item.loan_nature_name).appendTo(tr);
+                            $("<td>").addClass("currency")
+            .text(item.currency).appendTo(tr);
 
-                            $("<td>").text(item.currency).appendTo(tr);
+                            $("<td>").addClass("amount")
+            .text(Number(item.amount).toLocaleString()).appendTo(tr);
 
-                            $("<td>").text(Number(item.amount).toLocaleString()).appendTo(tr);
+                            $("<td>").addClass("validity")
+            .text(item.validity).appendTo(tr);
 
-                            $("<td>").text(item.validity).appendTo(tr);
+                            // Action buttons
+                            var actionTd = $("<td>");
 
-                            // Delete button
-                            $("<td>").append(
-                    $("<button>", {
-                        type: "button",
-                        class: "btn btn-danger btn-xs btnDeleteDetail",
-                        text: "Delete"
-                    }).attr("data-id", item.id)
-                ).appendTo(tr);
+                            $("<button>", {
+                                type: "button",
+                                class: "btn btn-primary btn-xs btnEdit",
+                                text: "Edit"
+                            }).appendTo(actionTd);
+
+                            $("<button>", {
+                                type: "button",
+                                class: "btn btn-success btn-xs btnSave",
+                                text: "Save"
+                            }).hide().appendTo(actionTd);
+
+                            $("<button>", {
+                                type: "button",
+                                class: "btn btn-warning btn-xs btnCancel",
+                                text: "Cancel"
+                            }).hide().appendTo(actionTd);
+
+                            $("<button>", {
+                                type: "button",
+                                class: "btn btn-danger btn-xs btnDeleteDetail",
+                                text: "Delete"
+                            }).attr("data-id", item.id).appendTo(actionTd);
+
+                            actionTd.appendTo(tr);
+
+                            // Store original values
+                            tr.data("original", {
+                                customer: item.customer_id + '-' + item.customer_name,
+                                loan_nature_name: item.loan_nature_name,
+                                currency: item.currency,
+                                amount: item.amount,
+                                validity: item.validity
+                            });
 
                             $("#tbodySanctionDetails").append(tr);
 
@@ -468,6 +615,129 @@
                     }
                 });
             }
+
+
+            $(document).on("click", ".btnEdit", function () {
+
+                var tr = $(this).closest("tr");
+
+                var original = tr.data("original");
+
+
+
+
+                tr.find(".customer").html(
+        $("<input>", {
+            type: "text",
+            class: "form-control txtCustomer"
+        }).val(original.customer)
+    );
+
+
+
+                tr.find(".loan_nature_name").html(
+        $("<input>", {
+            type: "text",
+            class: "form-control txtLoanNature"
+        }).val(original.loan_nature_name)
+    );
+
+                tr.find(".currency").html(
+        $("<input>", {
+            type: "text",
+            class: "form-control txtCurrency"
+        }).val(original.currency)
+    );
+
+                tr.find(".amount").html(
+        $("<input>", {
+            type: "text",
+            class: "form-control txtAmount"
+        }).val(original.amount)
+    );
+
+                tr.find(".validity").html(
+        $("<input>", {
+            type: "text",
+            class: "form-control txtValidity"
+        }).val(original.validity)
+    );
+
+                tr.find(".btnEdit, .btnDeleteDetail").hide();
+                tr.find(".btnSave, .btnCancel").show();
+
+            });
+
+
+            $(document).on("click", ".btnCancel", function () {
+
+                var tr = $(this).closest("tr");
+                var original = tr.data("original");
+
+                tr.find(".customer").text(original.customer);
+                tr.find(".loan_nature_name").text(original.loan_nature_name);
+                tr.find(".currency").text(original.currency);
+                tr.find(".amount").text(Number(original.amount).toLocaleString());
+                tr.find(".validity").text(original.validity);
+
+                tr.find(".btnSave, .btnCancel").hide();
+                tr.find(".btnEdit, .btnDeleteDetail").show();
+
+            });
+
+            $(document).on("click", ".btnSave", function () {
+
+                var tr = $(this).closest("tr");
+
+                var obj = {
+                    id: tr.attr("data-id"),
+                    loan_nature_name: tr.find(".txtLoanNature").val(),
+                    currency: tr.find(".txtCurrency").val(),
+                    amount: tr.find(".txtAmount").val(),
+                    validity: tr.find(".txtValidity").val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "YourPage.aspx/UpdateSanctionDetail",
+                    data: JSON.stringify({ obj: obj }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d === "success") {
+
+                            tr.find(".loan_nature_name").text(obj.loan_nature_name);
+                            tr.find(".currency").text(obj.currency);
+                            tr.find(".amount").text(Number(obj.amount).toLocaleString());
+                            tr.find(".validity").text(obj.validity);
+
+                            // Update original values
+                            tr.data("original", {
+                                loan_nature_name: obj.loan_nature_name,
+                                currency: obj.currency,
+                                amount: obj.amount,
+                                validity: obj.validity
+                            });
+
+                            tr.find(".btnSave, .btnCancel").hide();
+                            tr.find(".btnEdit, .btnDeleteDetail").show();
+
+                            alert("Updated successfully!");
+
+                        } else {
+                            alert(response.d);
+                        }
+                    },
+
+                    error: function (xhr) {
+                        alert("Error updating record: " + xhr.responseText);
+                    }
+                });
+
+            });
+
 
 
             $(document).on("click", ".btnDeleteDetail", function () {
