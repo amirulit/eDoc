@@ -15,10 +15,45 @@
     </style>
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
+    
+
     <script src="SanctionUpload_V2.js" type="text/javascript"></script>
+
     <script type="text/javascript">
         var edocTextBoxId = '<%= txtEdocId.ClientID %>';
     </script>
+
+
+
+   <script type="text/javascript">
+
+
+
+       $(document).ready(function () {
+
+           // Get query string ID
+           var params = new URLSearchParams(window.location.search);
+
+           var id = params.get("id");
+
+           if (id) {
+
+               // Existing record
+               LoadExistingRecord(id);
+
+           }
+           else {
+
+               // New record
+               LoadNextRefNo();
+
+           }
+
+       });
+    
+    </script>
+
+
     <script type="text/javascript">
 
 
@@ -340,9 +375,9 @@
 
                 //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
-                newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+                //newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
-                newwindow.focus();
+                //newwindow.focus();
 
 
             });
@@ -436,11 +471,28 @@
 
 
 
-                            </div><!--/.modal body-->
+                            </div> 
+
                             <div class="panel-footer bg-gray-light">
-                                <input type="hidden" id="id" name="id" value="" />
-                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
-        	  				</div><!--/.panel-footer--> 
+    <input type="hidden" id="id" name="id" value="" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" id="btnSubmit" class="btn btn-info" style="width: 100%;">
+                <span class="glyphicon glyphicon-upload"></span> Upload
+            </button>
+        </div>
+
+        <div class="col-md-6">
+            <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100%;">
+                <span class="glyphicon glyphicon-remove"></span> Close
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
             			</div><!--/.panel-->
             		</div><!--/.col-md-6-->
             	</div><!--/.row-->                                        
@@ -489,7 +541,7 @@
                         
                         
                         
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                         
                         
                          
@@ -509,7 +561,7 @@
 
 
 
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group" >
                       			        <label for="">Sanction Reference</label>
                       			        <input type="text" class="form-control" id="txtSanctionReference" placeholder="Enter Santion Reference" name="name" autocomplete="off"/>
@@ -523,23 +575,23 @@
                    <div class="row">
                    
 
-                   <div class="col-md-6"> <div class="form-group"  >
+                   <div class="col-md-3"> <div class="form-group"  >
                       			<label for="">Santion Date</label>
                       			<input type="text" class="form-control" id="txtSanctionDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
                     		</div></div>
                    
-                      <div class="col-md-6">    
+                      <div class="col-md-3">    
                              <div class="form-group"  >
                       			<label for="">Sanction Authorty</label>
                       	   <select id="select2"         class="form-control">
                            
                            <option value=""><--Select--></option>
-                           <option value="CRM">CRM</option>
+                           <option value="Corporate">Corporate</option>
                            
-                           <option value="CBD">CBD</option>
-                           <option value="Agri">Agri</option>
+                           <option value="CMSME">CMSME</option>
+                           <option value="Retail">Retail</option>
 
-                           <option value="SME">SME</option>
+                           <option value="Agriculture">Agriculture</option>
 
                             </select>
              
@@ -551,7 +603,7 @@
  <div class="row">
                    
 
-                   <div class="col-md-6">
+                   <div class="col-md-3">
                    
                    
                      <div class="form-group"  >
@@ -572,7 +624,7 @@
                    
                    </div>
                    
-                      <div class="col-md-6"></div>
+                      <div class="col-md-3"></div>
                    
                    </div>
 
@@ -609,7 +661,7 @@
 
     
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <label>Customer Code</label>
         <select id="ddlCustomerCode" class="form-control">
             <option value="">-- Select Customer --</option>
@@ -624,11 +676,11 @@
     </div>
 
 
-     <div class="col-md-2">
+     <div class="col-md-1">
         <label>Currency</label>
         
 
-               <select id="ddlCurrency">
+               <select id="ddlCurrency"  class="form-control">
                <option value="BDT">BDT</option>
                <option value="USD">USD</option>
                <option value="CAD">CAD</option>
@@ -636,9 +688,9 @@
                </select>
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
         <label>Amount</label>
-        <input type="number" id="txtAmount"
+        <input type="text" id="txtAmount"
                class="form-control" min="0.01" step="0.01" />
     </div>
 
@@ -647,13 +699,11 @@
         <input type="text" id="txtValidity" class="form-control" />
     </div>
 
-    <div class="col-md-2">
-        <label>&nbsp;</label>
-        <button type="button" id="btnAdd"
-                class="btn btn-primary form-control">
-            + Add
-        </button>
-    </div>
+   <div class="col-md-1" style="padding-top: 25px;">
+    <button type="button" id="btnAdd" class="btn btn-primary form-control">
+        + Add
+    </button>
+</div>
 </div>
 <hr />
 
@@ -664,6 +714,7 @@
             <th>Customer Code</th>
             <th>Customer Name</th>
             <th>Loan Nature</th>
+            <th>Currency</th>
             <th>Amount</th>
             <th>Validity</th>
             <th>Action</th>

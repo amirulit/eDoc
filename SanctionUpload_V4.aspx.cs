@@ -77,8 +77,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
     [System.Web.Services.WebMethod]
     public static string DeleteEDoc(string id)
     {
-        string connectionString = ConfigurationManager
-            .ConnectionStrings["dbConn"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
         string query = "DELETE FROM t_Sanction_Master WHERE id = @id";
 
@@ -105,8 +104,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
     [System.Web.Services.WebMethod]
     public static string LoadNextRefNo()
     {
-        string connectionString = ConfigurationManager
-            .ConnectionStrings["dbConn"].ConnectionString;
+        String connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
         string query = "SELECT NEXT VALUE FOR EDOC_Seq AS EDOC_Seq;";
 
@@ -276,6 +274,116 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
     }
 
 
+    public class MasterModel
+    {
+        public int edoc_id { get; set; }
+        public string booking_branch { get; set; }
+        public string sanction_reference { get; set; }
+
+        public string sanction_date { get; set; }
+        public string sanction_segment { get; set; }
+        public string sanction_approval_authority { get; set; }
+    }
+
+    public class DetailModel
+    {
+        public int id { get; set; }
+        public string customer_id { get; set; }
+        public string customer_name { get; set; }
+        public string loan_nature { get; set; }
+
+        public string currency { get; set; }
+        public string amount { get; set; }
+        public string validity { get; set; }
+    }
+
+    public class MasterDetailResponse
+    {
+        public MasterModel Master { get; set; }
+        public List<DetailModel> Details { get; set; }
+    }
+
+
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static MasterDetailResponse GetMasterDetail(int id)
+    {
+        MasterDetailResponse result = new MasterDetailResponse();
+
+        result.Details = new List<DetailModel>();
+
+        String cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "dbo.usp_GetMasterDetail", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@edoc_id", SqlDbType.Int).Value = id;
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    // First result set: Master
+                    if (dr.Read())
+                    {
+                        result.Master = new MasterModel
+                        {
+
+                            edoc_id = Convert.ToInt32(dr["edoc_id"]),
+
+                            booking_branch = dr["booking_branch"].ToString(),
+
+                            sanction_reference = Convert.ToString(dr["sanction_reference"]),
+
+                            sanction_date = Convert.ToDateTime(dr["sanction_date"]).ToString("yyyy-MM-dd"),
+
+                            sanction_segment = Convert.ToString(dr["sanction_segment"]),
+
+                            sanction_approval_authority = Convert.ToString(dr["sanction_approval_authority"])
+
+
+                        };
+                    }
+
+                    // Second result set: Details
+                    if (dr.NextResult())
+                    {
+                        while (dr.Read())
+                        {
+                            result.Details.Add(new DetailModel
+                            {
+                                id = Convert.ToInt32(dr["id"]),
+
+                                customer_id = Convert.ToString(dr["customer_id"]),
+
+                                customer_name = Convert.ToString(dr["customer_name"]),
+
+                                loan_nature = Convert.ToString(dr["loan_nature"]),
+
+                                currency = Convert.ToString(dr["currency"]),
+
+                                amount = Convert.ToString(dr["amount"]),
+
+                                validity = Convert.ToString(dr["validity"]),
+
+
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+
+    }
+
 
 
     public class Obj
@@ -289,7 +397,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
         public String booking_branch;
         public String sanction_doc;
-       
+
     }
 
 
@@ -362,7 +470,7 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
         return result;
     }
 
-  
+
 
     public class LoanNature
     {
@@ -567,7 +675,7 @@ INSERT INTO [dbo].[t_Sanction_Master]
 )";
 
 
-          Sql = Sql + @"  --SELECT CAST(SCOPE_IDENTITY() AS INT);
+        Sql = Sql + @"  --SELECT CAST(SCOPE_IDENTITY() AS INT);
 
 select @edoc_ref_no edoc_ref_no
 
@@ -663,7 +771,7 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
 
                 edoc_ref_no = Convert.ToString(cmd.ExecuteScalar());
 
-                
+
 
                 //object result = cmd.ExecuteScalar();
 
@@ -742,8 +850,8 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
             if (facility == null ||
                 String.IsNullOrWhiteSpace(facility.CustomerCode) ||
                 String.IsNullOrWhiteSpace(facility.LoanNature) ||
-                facility.Amount < 0 
-                
+                facility.Amount < 0
+
                 /*||
                 facility.Validity == default(DateTime)*/
                 )
@@ -918,7 +1026,7 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
             return new SaveResult
             {
                 Success = false,
-                Message =  "Unable to save sanction details. Please try again."
+                Message = "Unable to save sanction details. Please try again."
             };
         }
     }
@@ -927,7 +1035,7 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
 
     protected void LoadBranch()
     {
-        
+
 
         //String cus_type = Request.QueryString[0].ToString();
         //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
@@ -971,7 +1079,7 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
 
 
 
-         
+
         String ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
 
         Object[] details = null;

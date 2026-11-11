@@ -5,44 +5,125 @@ $(document).on('click', '.view, .delete', function () {
 });
 
 
+
+function LoadNextRefNo() {
+
+    $.ajax({
+        type: "POST",
+        url: "SanctionUpload_V4.aspx/LoadNextRefNo",
+        data: '{}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (response) {
+            $('#ContentPlaceHolder1_txtEdocId').val(response.d);
+
+            //$('#' + edocTextBoxId).val(response.d);
+
+
+        },
+
+        error: function (xhr, status, error) {
+            console.log(error);
+            alert("Unable to generate eDoc reference number.");
+        }
+    });
+
+}
+
+
+
+
+function loadMasterDetail(id) {
+
+    alert(id);
+
+    $.ajax({
+
+        type: "POST",
+
+        url: "SanctionUpload_V4.aspx/GetMasterDetail",
+
+        data: JSON.stringify({ id: id }),
+
+        contentType: "application/json; charset=utf-8",
+
+        dataType: "json",
+
+        success: function (response) {
+
+            var data = response.d;
+
+            // Master
+            if (data.Master) {
+
+                $("#hdnMasterId").val(data.Master.MasterId);
+
+                $("#txtCustomer").val(data.Master.CustomerName);
+
+                $("#ddlBranch").val(data.Master.BranchId);
+
+                $("#txtDate").val(data.Master.ApplicationDate);
+
+                $("#ddlStatus").val(data.Master.Status);
+            }
+
+            // Detail
+            var html = "";
+
+            $.each(data.Details, function (i, item) {
+
+                html += "<tr>";
+
+                html += "<td>" + item.Id + "</td>";
+
+                html += "<td>" +
+                    $("<div>").text(item.ProductName).html() +
+                    "</td>";
+
+                html += "<td>" + item.Amount + "</td>";
+
+                html += "<td><button type='button' " +
+                    "class='btnDelete' data-id='" +
+                    item.Id + "'>Delete</button></td>";
+
+                html += "</tr>";
+
+            });
+
+            $("#tblDetails tbody").html(html);
+
+        },
+
+        error: function (xhr) {
+
+            console.log(xhr.responseText);
+
+            alert("Error loading records");
+
+        }
+
+    });
+}
+
 $(document).ready(function () {
 
 
-    LoadNextRefNo();
+    //LoadNextRefNo();
     loadCustomerCodes();
     loadLoanNatures();
 
 
-    function LoadNextRefNo() {
-
-        $.ajax({
-            type: "POST",
-            url: "SanctionUpload_V4.aspx/LoadNextRefNo",
-            data: '{}',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-
-            success: function (response) {
-                $('#ContentPlaceHolder1_txtEdocId').val(response.d);
-
-                //$('#' + edocTextBoxId).val(response.d);
-
-
-            },
-
-            error: function (xhr, status, error) {
-                console.log(error);
-                alert("Unable to generate eDoc reference number.");
-            }
-        });
-
-    }
 
     $("#btnNew").on("click", function () {
         clear();
         LoadNextRefNo();
 
     });
+
+   
+
+
 
     function loadCustomerCodes() {
         $.ajax({
@@ -97,6 +178,11 @@ $(document).ready(function () {
     // Continue with your existing Add, Remove and Save All code here.
 
 
+    // Load existing record
+
+
+
+
 
     var loans = [];
 
@@ -105,6 +191,25 @@ $(document).ready(function () {
 
 
 
+        var edoc_id = $("#ContentPlaceHolder1_txtEdocId").val();
+
+        var branch = $("#ContentPlaceHolder1_select3").val();
+
+        var sanc_ref = $("#txtSanctionReference").val();
+
+        var sanc_date = $("#txtSanctionDate").val();
+
+        var segment = $("#select2").val();
+
+        var appr_auth = $("#select1").val();
+
+
+
+        if (edoc_id == "" || branch == "" || sanc_ref == "" || sanc_date == "" || segment == "" || appr_auth == "") {
+            alert('Sorry !!! input missing.');
+            return;
+
+        }
 
         var customerCode = $.trim($("#ddlCustomerCode").val());
         var customerName = $("#ddlCustomerCode option:selected").text();
@@ -115,7 +220,7 @@ $(document).ready(function () {
         var validity = $("#txtValidity").val();
 
 
-        alert(customerCode + '-' + loanNature + '-' + amount + '-' + validity);
+        //alert(customerCode + '-' + loanNature + '-' + amount + '-' + validity);
 
         if (!customerCode || !loanNature || !amount || !validity) {
             alert("Please fill in all fields.");
@@ -164,18 +269,20 @@ $(document).ready(function () {
             $("<td>").text(index + 1).appendTo(tr);
             $("<td>").text(loan.CustomerCode).appendTo(tr);
             $("<td>").text(loan.CustomerName).appendTo(tr);
+
             //$("<td>").text(loan.LoanNature).appendTo(tr);
             //$("<td>").text(loan.LoanNatureSelected).appendTo(tr);
-            $("<td>").append(
-    $("<input>", {
-        type: "hidden",
-        name: "LoanNature",
-        value: loan.LoanNature
-    })
-).appendTo(tr);
 
-            $("<td>").text(loan.LoanNatureSelected).appendTo(tr);
-
+            $("<td>")
+    .append(
+        $("<input>", {
+            type: "hidden",
+            name: "LoanNature",
+            value: loan.LoanNature
+        })
+    )
+    .append(document.createTextNode(loan.LoanNatureSelected))
+    .appendTo(tr);
 
             $("<td>").text(loan.Currency).appendTo(tr);
             $("<td>").text(loan.Amount.toFixed(2)).appendTo(tr);
@@ -315,7 +422,9 @@ $(document).ready(function () {
             var customerCode = $row.find("td:eq(1)").text().trim();
             var customerName = $row.find("td:eq(2)").text().trim();
 
-            var loanNature = $row.find("td:eq(3)").text().trim();
+            //var loanNature = $row.find("td:eq(3)").text().trim();
+            var loanNature = $row.find("td:eq(3) input[type='hidden']").val();
+            //var loanNatureText = $row.find("td:eq(3)").text().trim();
 
             var amountText = $row.find("td:eq(4)").text().trim();
             var validity = $row.find("td:eq(5)").text().trim();
@@ -381,7 +490,10 @@ $(document).ready(function () {
                     swal("Success!", result.Message, "success");
 
 
-                    $('#modalUpdateform').modal('show');
+                    //$('#modalUpdateform').modal('show');
+
+
+                    $("#btnUpload").css({ "display": "inline-block" });
 
                     //var dd_id = $(this).attr("dd-id");
 
@@ -411,6 +523,12 @@ $(document).ready(function () {
 
 
 
+
+    });
+
+
+    $("#btnUpload").click(function () {
+        $('#modalUpdateform').modal('show');
 
     });
 
