@@ -12,8 +12,9 @@
         {
             padding: 5px;
         }
+        
+        
     </style>
-    
     <style type="text/css">
     
     .blink-message {
@@ -25,58 +26,68 @@
 @keyframes blinker {
     50% {
         opacity: 0;
-    }
+}
 }
     
     </style>
-
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
-    
-
     <script src="SanctionUpload_V2.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var btn = document.getElementById("btnNew");
+
+            if (btn) {
+                btn.addEventListener("click", function () {
+                    window.location.reload();
+                });
+            }
+        });
+
+
+    </script>
+
 
     <script type="text/javascript">
         var edocTextBoxId = '<%= txtEdocId.ClientID %>';
     </script>
+    <script type="text/javascript">
 
 
 
-   <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Get query string ID
+            var params = new URLSearchParams(window.location.search);
+
+            var id = params.get("id");
+
+            if (id) {
+
+                // Existing record
+                LoadExistingRecord(id);
 
 
+                //"***For any change to take effect, you have to Save All***";
+                var msg = "***For any change to take effect, you have to Save All***";
 
-       $(document).ready(function () {
+                $("#spnMessage").text(msg).addClass("blink-message");
 
-           // Get query string ID
-           var params = new URLSearchParams(window.location.search);
+            }
+            else {
 
-           var id = params.get("id");
+                // New record
+                LoadNextRefNo();
 
-           if (id) {
+            }
 
-               // Existing record
-               LoadExistingRecord(id);
-
-
-               //"***For any change to take effect, you have to Save All***";
-               var msg = "***For any change to take effect, you have to Save All***";
-
-               $("#spnMessage").text(msg).addClass("blink-message");
-
-           }
-           else {
-
-               // New record
-               LoadNextRefNo();
-
-           }
-
-       });
+        });
     
     </script>
-
-
     <script type="text/javascript">
 
 

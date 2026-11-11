@@ -2,29 +2,29 @@
     CodeFile="SanctionListing_V2.aspx.cs" Inherits="SanctionListing_V2" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
-
     <style type="text/css">
-    
-    @media (min-width: 768px) {
-    .modal-extra-lg {
-        width: 95%;
-    }
-}
-
-@media (min-width: 1200px) {
-    .modal-extra-lg {
-        width: 90%;
-        max-width: 1600px;
-    }
-}
-
-
+        @media (min-width: 768px)
+        {
+            .modal-extra-lg
+            {
+                width: 95%;
+            }
+        }
+        
+        @media (min-width: 1200px)
+        {
+            .modal-extra-lg
+            {
+                width: 90%;
+                max-width: 1600px;
+            }
+        }
     </style>
-
-
-
     <script src="FileUpload.js" type="text/javascript"></script>
+
+
+     
+
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -463,6 +463,8 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
+
     <section class="content"> <!-- Start of table section -->
 
 
@@ -485,6 +487,9 @@
 
 
                             ID # <span id="lblID" class="badge  badge-success"></span>
+
+
+
                             <!--
                                 <div class="form-group" id="divSubjectUpdate">
                                     <label for="">Subject</label>
@@ -644,47 +649,82 @@
             <div class="modal-body">
 
                 <!-- Master Information -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Master Information</h3>
-                    </div>
+                 <div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Master Information</h3>
 
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label>eDoc ID</label>
-                                <p id="mEdocId"></p>
-                            </div>
+        <div class="box-tools pull-right" id="masterAction">
+            <button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">
+                <i class="fa fa-edit"></i> Edit
+            </button>
+        </div>
+    </div>
 
-                            <div class="col-md-3">
-                                <label>Booking Branch</label>
-                                <p id="mBookingBranch"></p>
-                            </div>
+    <div class="box-body">
 
-                            <div class="col-md-3">
-                                <label>Sanction Reference</label>
-                                <p id="mSanctionReference"></p>
-                            </div>
+        <div class="row">
 
-                            <div class="col-md-3">
-                                <label>Sanction Date</label>
-                                <p id="mSanctionDate"></p>
-                            </div>
-                        </div>
+            <div class="col-md-3">
+                <label>eDoc ID</label>
+                <p id="mEdocId"></p>
+            </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Sanction Segment</label>
-                                <p id="mSanctionSegment"></p>
-                            </div>
+            <div class="col-md-3">
+                <label>Booking Branch</label>
+                <p id="mBookingBranch"></p>
+<select id="select3" runat="server" class="form-control">
+<option></option>
 
-                            <div class="col-md-6">
-                                <label>Approval Authority</label>
-                                <p id="mApprovalAuthority"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+</select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Sanction Reference</label>
+                <p id="mSanctionReference"></p>
+                <input type="text" class="form-control" id="txtSanctionReference" placeholder="Enter Santion Reference" name="name" autocomplete="off"/>
+            </div>
+
+            <div class="col-md-3">
+                <label>Sanction Date</label>
+                <p id="mSanctionDate"></p><input type="text" class="form-control" id="txtSanctionDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <label>Sanction Segment</label>
+                <p id="mSanctionSegment"></p> <select id="select2"         class="form-control">
+                           
+                           <option value=""><--Select--></option>
+                           <option value="Corporate">Corporate</option>
+                           
+                           <option value="CMSME">CMSME</option>
+                           <option value="Retail">Retail</option>
+
+                           <option value="Agriculture">Agriculture</option>
+
+                            </select>
+            </div>
+
+            <div class="col-md-6">
+                <label>Approval Authority</label>
+                <p id="mApprovalAuthority"></p>  <select id="select1"         class="form-control">
+                           
+                           <option value=""><--Select--></option>
+                           <option value="Management">Management</option>
+                           
+                           <option value="EC">EC</option>
+                           <option value="Board">Board</option>
+
+                            </select>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 
                 <!-- Detail Information -->
                 <div class="box box-primary">

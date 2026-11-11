@@ -247,11 +247,11 @@ $(document).ready(function () {
 
 
 
-    $("#btnNew").on("click", function () {
-        clear();
-        LoadNextRefNo();
+    //$("#btnNew").on("click", function () {
+        //clear();
+        //LoadNextRefNo();
 
-    });
+    //});
 
 
 

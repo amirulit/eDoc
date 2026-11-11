@@ -21,6 +21,15 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 
 
         Role = Convert.ToInt32(Session["Role"].ToString());
+
+        BLL b = new BLL();
+
+        select3.DataSource = b.LoadBranch();
+        select3.DataTextField = "name";
+        select3.DataValueField = "code";
+        select3.DataBind();
+
+
     }
 
     public class DocumentInfo
