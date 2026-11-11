@@ -964,6 +964,24 @@
         });
 
     </script>
+
+    <style type="text/css">
+    
+    @media (min-width: 768px) {
+    .modal-extra-lg {
+        width: 95%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .modal-extra-lg {
+        width: 90%;
+        max-width: 1600px;
+    }
+}
+
+
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content">
@@ -977,7 +995,7 @@
 
     <div class="modal" id="sanctionModal" tabindex="-1" role="dialog" aria-labelledby="sanctionModalLabel">
 
-    <div class="modal-dialog  modal-lg" role="document" >
+    <div class="modal-dialog     modal-lg  modal-extra-lg" role="document" >
 
         <div class="modal-content">
 
@@ -1053,7 +1071,7 @@
                   <asp:CheckBoxList
     ID="chkList"
     runat="server"
-    RepeatDirection="Horizontal" RepeatColumns="6"
+    RepeatDirection="Horizontal" RepeatColumns="8"
     RepeatLayout="Flow"
     CssClass="chkSecurities">
 

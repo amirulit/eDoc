@@ -224,7 +224,9 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         where
 			edoc_id in (" + ids + @")
 			
-        ORDER BY 
+        ORDER BY
+
+
             s.id asc;
 
 

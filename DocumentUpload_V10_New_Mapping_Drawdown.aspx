@@ -2738,7 +2738,7 @@
             </div>
             <div class="panel-body">
                 <br />
-                <table class="table table-condensed my-table  docTable rounded">
+                <table class="table table-condensed my-table    rounded">
                     <thead>
                         <tr>
                             <th>
@@ -2761,6 +2761,7 @@
                     <tbody>
                         <%
                             for (var data = 0; data < TableData_Confirmation.Rows.Count; data++)
+                                
                             {
                             
                         %>
@@ -2784,7 +2785,11 @@
                                 <input id="btnSaveConfirm" type="button" value="Save" class="confirm" data-id="<%=TableData_Confirmation.Rows[data]["id"]%>" />
                             </td>
                         </tr>
-                        <%} %>
+                        <%
+                            }
+                            
+                            
+                             %>
                     </tbody>
                 </table>
             </div>

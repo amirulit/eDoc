@@ -2,8 +2,6 @@
     CodeFile="SanctionUpload_V4.aspx.cs" Inherits="SanctionUpload_V4" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
-
     <style type="text/css">
         .select2-container--default .select2-selection--multiple .select2-selection__choice
         {
@@ -15,18 +13,12 @@
             padding: 5px;
         }
     </style>
-
-
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
     <script src="SanctionUpload_V2.js" type="text/javascript"></script>
-
-
-   <script type="text/javascript">
+    <script type="text/javascript">
         var edocTextBoxId = '<%= txtEdocId.ClientID %>';
-</script>
-
-
+    </script>
     <script type="text/javascript">
 
 
@@ -54,8 +46,8 @@
 
 
 
-//            $("#ContentPlaceHolder1_select3 option[value='']").length ||
-//    $("#ContentPlaceHolder1_select3").prepend('<option value=""></option>');
+            //            $("#ContentPlaceHolder1_select3 option[value='']").length ||
+            //    $("#ContentPlaceHolder1_select3").prepend('<option value=""></option>');
 
             $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8").select2({
                 placeholder: "<--Select-->",
@@ -629,6 +621,19 @@
         <select id="ddlLoanNature" class="form-control">
             <option value="">-- Select Loan Nature --</option>
         </select>
+    </div>
+
+
+     <div class="col-md-2">
+        <label>Currency</label>
+        
+
+               <select id="ddlCurrency">
+               <option value="BDT">BDT</option>
+               <option value="USD">USD</option>
+               <option value="CAD">CAD</option>
+               
+               </select>
     </div>
 
     <div class="col-md-2">

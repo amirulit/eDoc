@@ -7,6 +7,7 @@ $(document).on('click', '.view, .delete', function () {
 
 $(document).ready(function () {
 
+
     LoadNextRefNo();
     loadCustomerCodes();
     loadLoanNatures();
@@ -108,11 +109,13 @@ $(document).ready(function () {
         var customerCode = $.trim($("#ddlCustomerCode").val());
         var customerName = $("#ddlCustomerCode option:selected").text();
         var loanNature = $("#ddlLoanNature").val();
+        var loanNatureSelected = $("#ddlLoanNature option:selected").text();
+        var currency = $("#ddlCurrency").val();
         var amount = $("#txtAmount").val();
         var validity = $("#txtValidity").val();
 
 
-        //alert(customerCode + '-' + loanNature + '-' + amount + '-' + validity);
+        alert(customerCode + '-' + loanNature + '-' + amount + '-' + validity);
 
         if (!customerCode || !loanNature || !amount || !validity) {
             alert("Please fill in all fields.");
@@ -128,6 +131,8 @@ $(document).ready(function () {
             CustomerCode: customerCode,
             CustomerName: customerName,
             LoanNature: loanNature,
+            LoanNatureSelected: loanNatureSelected,
+            Currency: currency,
             Amount: Number(amount),
             Validity: validity
         });
@@ -135,8 +140,8 @@ $(document).ready(function () {
         renderTable();
 
         // Clear fields after adding
-        $("#ddlCustomerCode").val("");
-        $("#ddlLoanNature").val("");
+        $("#ddlCustomerCode").val("").trigger("change");
+        $("#ddlLoanNature").val("").trigger("change");
         $("#txtAmount").val("");
         $("#txtValidity").val("");
         $("#txtCustomerCode").focus();
@@ -159,8 +164,20 @@ $(document).ready(function () {
             $("<td>").text(index + 1).appendTo(tr);
             $("<td>").text(loan.CustomerCode).appendTo(tr);
             $("<td>").text(loan.CustomerName).appendTo(tr);
+            //$("<td>").text(loan.LoanNature).appendTo(tr);
+            //$("<td>").text(loan.LoanNatureSelected).appendTo(tr);
+            $("<td>").append(
+    $("<input>", {
+        type: "hidden",
+        name: "LoanNature",
+        value: loan.LoanNature
+    })
+).appendTo(tr);
 
-            $("<td>").text(loan.LoanNature).appendTo(tr);
+            $("<td>").text(loan.LoanNatureSelected).appendTo(tr);
+
+
+            $("<td>").text(loan.Currency).appendTo(tr);
             $("<td>").text(loan.Amount.toFixed(2)).appendTo(tr);
             $("<td>").text(loan.Validity).appendTo(tr);
 
@@ -299,6 +316,7 @@ $(document).ready(function () {
             var customerName = $row.find("td:eq(2)").text().trim();
 
             var loanNature = $row.find("td:eq(3)").text().trim();
+
             var amountText = $row.find("td:eq(4)").text().trim();
             var validity = $row.find("td:eq(5)").text().trim();
 
