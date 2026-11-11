@@ -30,6 +30,19 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
         select3.DataBind();
 
 
+        Select4.DataSource = b.LoadCusList();
+        Select4.DataTextField = "cid";
+        Select4.DataValueField = "cus_code";
+        Select4.DataBind();
+
+
+        Select5.DataSource = b.LoadLoanNatures();
+        Select5.DataTextField = "name";
+        Select5.DataValueField = "id";
+        Select5.DataBind();
+
+
+
     }
 
     public class DocumentInfo

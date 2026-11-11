@@ -2,6 +2,8 @@
     CodeFile="SanctionListing_V2.aspx.cs" Inherits="SanctionListing_V2" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+ 
     <style type="text/css">
         @media (min-width: 768px)
         {
@@ -23,7 +25,100 @@
     <script src="FileUpload.js" type="text/javascript"></script>
 
 
-     
+      <script type="text/javascript">
+
+
+          $(document).ready(function () {
+
+
+              $(document).on("click", "#btnEditMaster", function () {
+
+
+
+                  $('.display').hide();
+                  $('.edit2').show();
+
+                  // Change buttons
+                  $("#masterAction").html(
+    '<button type="button" class="btn btn-success btn-xs" id="btnSaveMaster">' +
+        '<i class="fa fa-save"></i> Save' +
+    '</button>' +
+
+    '<button type="button" class="btn btn-default btn-xs" id="btnCancelMaster">' +
+        'Cancel' +
+    '</button>'
+);
+
+              });
+
+
+
+              $(document).on("click", "#btnCancelMaster", function () {
+
+                  $('.display').show();
+                  $('.edit2').hide();
+
+                  $("#masterAction").html(
+        '<button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">' +
+            '<i class="fa fa-edit"></i> Edit' +
+        '</button>'
+    );
+
+              });
+
+
+              $(document).on("click", "#btnSaveMaster", function () {
+
+
+              });
+
+              $("#txtSanctionDate,#txtValidity").datepicker
+            ({
+                //appendText: "(dd/mm/yy)",
+                //dateFormat: "dd/mm/yy",
+
+                appendText: "(yy-mm-dd)",
+                dateFormat: "yy-mm-dd",
+
+                altField: "#datepicker-4",
+                altFormat: "DD, d MM, yy",
+                showOn: "both",
+                buttonImageOnly: true,
+                buttonImage: "calender.gif",
+                buttonText: "Calendar",
+                changeMonth: true,
+                changeYear: true
+
+            });
+
+
+
+              //            $("#ContentPlaceHolder1_select3 option[value='']").length ||
+              //    $("#ContentPlaceHolder1_select3").prepend('<option value=""></option>');
+
+              //              $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8,#ddlCurrency").select2({
+              //                  placeholder: "<--Select-->",
+              //                  allowClear: true,
+              //                  width: "100%"
+              //              });
+
+
+
+              //              $('#select1>').on('change', function () {
+              //                  $('#hfSelected').val($(this).val());
+              //              });
+
+              //              $('#<%=select3.ClientID%>').on('change', function () {
+              //                  $('#hfSelectedLoanNature').val($(this).val());
+              //              });
+
+
+
+
+
+          });
+
+    </script>
 
     <script type="text/javascript">
 
@@ -269,6 +364,8 @@
 
             function ViewSanctionDetails(id) {
 
+                $('.edit2').hide();
+
                 $.ajax({
                     type: "POST",
                     url: "SanctionUpload_V4.aspx/GetMasterDetail",
@@ -295,14 +392,28 @@
                             $("#mEdocId").text(data.Master.edoc_id);
 
                             $("#mBookingBranch").text(data.Master.booking_branch);
+                            $("#ContentPlaceHolder1_select3").val(data.Master.booking_branch).trigger("change");
+
+
+                           
+
+                            
+
+                           
+
+                           
 
                             $("#mSanctionReference").text(data.Master.sanction_reference);
+                            $("#txtSanctionReference").val(data.Master.sanction_reference);
 
                             $("#mSanctionDate").text(data.Master.sanction_date);
+                            $("#txtSanctionDate").val(data.Master.sanction_date);
 
                             $("#mSanctionSegment").text(data.Master.sanction_segment);
+                            $("#select2").val(data.Master.sanction_segment).trigger("change");
 
                             $("#mApprovalAuthority").text(data.Master.sanction_approval_authority);
+                            $("#select1").val(data.Master.sanction_approval_authority).trigger("change");
 
                         }
 
@@ -318,9 +429,9 @@
 
                             $("<td>").text(i + 1).appendTo(tr);
 
-                            $("<td>").text(item.customer_id).appendTo(tr);
+                            $("<td>").text(item.customer_id + '-' + item.customer_name).appendTo(tr);
 
-                            $("<td>").text(item.customer_name).appendTo(tr);
+                            //$("<td>").text(item.customer_name).appendTo(tr);
 
                             $("<td>").text(item.loan_nature_name).appendTo(tr);
 
@@ -664,6 +775,8 @@
 
         <div class="row">
 
+
+
             <div class="col-md-3">
                 <label>eDoc ID</label>
                 <p id="mEdocId"></p>
@@ -671,8 +784,8 @@
 
             <div class="col-md-3">
                 <label>Booking Branch</label>
-                <p id="mBookingBranch"></p>
-<select id="select3" runat="server" class="form-control">
+                <p id="mBookingBranch" class="display"></p>
+<select id="select3" runat="server" class="form-control edit2">
 <option></option>
 
 </select>
@@ -680,13 +793,13 @@
 
             <div class="col-md-3">
                 <label>Sanction Reference</label>
-                <p id="mSanctionReference"></p>
-                <input type="text" class="form-control" id="txtSanctionReference" placeholder="Enter Santion Reference" name="name" autocomplete="off"/>
+                <p id="mSanctionReference" class="display"></p>
+                <input type="text" class="form-control edit2" id="txtSanctionReference" placeholder="Enter Santion Reference" name="name" autocomplete="off"/>
             </div>
 
             <div class="col-md-3">
                 <label>Sanction Date</label>
-                <p id="mSanctionDate"></p><input type="text" class="form-control" id="txtSanctionDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
+                <p id="mSanctionDate" class="display"></p><input type="text" class="form-control edit2" id="txtSanctionDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
             </div>
 
         </div>
@@ -695,7 +808,7 @@
 
             <div class="col-md-6">
                 <label>Sanction Segment</label>
-                <p id="mSanctionSegment"></p> <select id="select2"         class="form-control">
+                <p id="mSanctionSegment" class="display"></p> <select id="select2"         class="form-control edit2">
                            
                            <option value=""><--Select--></option>
                            <option value="Corporate">Corporate</option>
@@ -710,7 +823,7 @@
 
             <div class="col-md-6">
                 <label>Approval Authority</label>
-                <p id="mApprovalAuthority"></p>  <select id="select1"         class="form-control">
+                <p id="mApprovalAuthority" class="display"></p>  <select id="select1"         class="form-control edit2">
                            
                            <option value=""><--Select--></option>
                            <option value="Management">Management</option>
@@ -737,13 +850,32 @@
                             <thead>
                                 <tr>
                                     <th>SL</th>
-                                    <th>Customer Code</th>
-                                    <th>Customer Name</th>
+                                    <th>Customer</th>
                                     <th>Loan Nature</th>
                                     <th>Currency</th>
                                     <th>Amount</th>
                                     <th>Validity</th>
                                     <th>Action</th>
+                                </tr>
+                                <tr>
+                                    <td> </td>
+                                    <td><select id="Select4" class="form-control" runat="server">
+<option></option>
+
+</select></td>
+                                    <td><select id="Select5"  class="form-control" runat="server">
+<option></option>
+
+</select></td>
+                                    <td><select id="Select6"  class="form-control">
+ <option value="BDT">BDT</option>
+               <option value="USD">USD</option>
+               <option value="CAD">CAD</option>
+
+</select></td>
+                                    <td><input id="Text1" type="text"  class="form-control"/></td>
+                                    <td><input id="Text2" type="text"  class="form-control"/></td>
+                                    <td><input id="Button1" type="button" class="btn btn-success" value="Save" /></td>
                                 </tr>
                             </thead>
 

@@ -716,7 +716,7 @@
         
 
                <select id="ddlCurrency"  class="form-control">
-                 <option value="">-- Select Loan Nature --</option>
+                 <option value="">-- Select Currency --</option>
                <option value="BDT">BDT</option>
                <option value="USD">USD</option>
                <option value="CAD">CAD</option>
