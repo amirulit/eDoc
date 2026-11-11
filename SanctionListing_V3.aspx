@@ -19,18 +19,20 @@
             display: inline-block;
         }
         
+        
+        .chkSecurity input[type="checkbox"]
+        {
+            margin-right: 5px;
+        }
+        .chkSecurity label
+        {
+            color: blue;
+            margin-right: 15px;
+        }
     </style>
-
-
-
     <script src="sweet_alert.js" type="text/javascript"></script>
-
-
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
-
-
     <script src="View.js" type="text/javascript"></script>
-
     <script type="text/javascript">
 
 
@@ -41,14 +43,11 @@
 
 
 
-             
+
 
         });
 
     </script>
-
-
-
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -211,6 +210,7 @@
 
 
 
+                //alert('single modal');
 
                 $('#sanctionModal').modal('show');
                 $('#sanctionLoading').show();
@@ -496,6 +496,46 @@
             }
 
 
+            function Get_Checked_Securities() {
+
+                /*
+                var ids = [];
+
+                $(".chkSecurity:checked").each(function () {
+                ids.push($(this).val());
+                });
+
+                return ids.join(",");
+                */
+
+
+
+                var checkedValues = $('#<%= chkList.ClientID %> input[type="checkbox"]:checked').map(function () {
+                    return this.value;
+                }).get();
+
+                return checkedValues.join(',');
+
+            }
+
+            function Set_Checked_Securities() {
+
+                //var dbValues = $('#ContentPlaceHolder1_hdnSecurity%>').val();
+
+                var dbValues = "Assignment,CHQ,CG,Land,PG";
+
+                var selectedValues = dbValues.split(',');
+
+                $('#<%= chkList.ClientID %> input[type="checkbox"]').each(function () {
+
+                    if (selectedValues.includes($(this).val())) {
+                        $(this).prop('checked', true);
+                    }
+
+                });
+
+            }
+
             $("#btnSave").on("click", function () {
 
 
@@ -517,7 +557,13 @@
 
                 var v_sec = $('#hfSelectedSecurity').val();
 
-                if (v_sec == "") {
+                console.log(v_sec);
+
+                var v_chk_sec = Get_Checked_Securities();
+
+                console.log(v_chk_sec);
+
+                if (v_chk_sec == "") {
                     alert('Please select at least one security.');
                     return;
                 }
@@ -565,9 +611,11 @@
 
 
                 function addUnique(arr, value) {
+
                     if (value && $.inArray(value, arr) === -1) {
                         arr.push(value);
                     }
+
                 }
 
                 $("#sanctionTableBody .row-checkbox:checked").each(function () {
@@ -581,7 +629,7 @@
 
 
 
-                    sanctionIds
+
 
                     // All selected row IDs
                     addUnique(rowIds, $row.attr("data-id"));
@@ -628,7 +676,9 @@
                     customerIds: customerIds.join(","),
                     customerTypes: customerTypes.join(","),
                     loanTypes: loanTypes.join(","),
-                    securityTypes: v_sec
+                    //securityTypes: v_sec
+
+                    securityTypes: v_chk_sec
 
 
                 };
@@ -866,7 +916,11 @@
 
                 var v = $('#hfSelectedSecurity').val();
 
+
+
                 console.log(v);
+
+
 
                 // Example: [1, 3, 5]
                 // Send these IDs to another WebMethod if required.
@@ -995,6 +1049,16 @@
 
 
                   <select id="select4"   runat="server"  multiple    class="form-control"></select>
+
+                  <asp:CheckBoxList
+    ID="chkList"
+    runat="server"
+    RepeatDirection="Horizontal" RepeatColumns="6"
+    RepeatLayout="Flow"
+    CssClass="chkSecurities">
+
+
+</asp:CheckBoxList>
 
 
                   <input id="hfSelectedSecurity" type="hidden" />    
@@ -1245,7 +1309,8 @@
 
                         <td><%=TableData.Rows[data]["edoc_id"]%></td>
                         <td><%=TableData.Rows[data]["edoc_refno"]%></td>
-                        <td><%=TableData.Rows[data]["booking_branch"]%></td>
+                        <td><%=TableData.Rows[data]["booking_branch"]%>
+                        </td>
                         <td><%=TableData.Rows[data]["sanction_reference"]%></td>
                         <td><%=TableData.Rows[data]["sanction_date"]%></td>
 

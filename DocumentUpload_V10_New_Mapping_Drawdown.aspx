@@ -2504,6 +2504,7 @@
                                 <input id="txtRemarks_<%=doc_id %>" type="text" value="<%=remarks %>" />
                             </td>
                             <td class="tdTopLeft">
+
                                 <!-- style="<%= status == "Obtained" ? "display:none;" : "" %>"-->
 
                                 <!-- <input id="btnSave_<%=doc_id%>" type="button" value="<%= TableData.Rows[data]["c_required"].ToString() == "Y" ? "Upload & Save" : "Save" %>" class="save" data-id="<%=doc_id%>" div-name="<%=DocType[i]%>" data-expiry="<%=expiry_req%>" /> -->

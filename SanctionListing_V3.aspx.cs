@@ -25,6 +25,8 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
 
         LoadSecurity();
+
+        BindCheckBoxList();
     }
 
 
@@ -775,6 +777,10 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
             select4.DataBind();
 
 
+
+
+
+
             select5.DataSource= Ds.Tables[0];
             select5.DataTextField = "short_name";
             select5.DataValueField = "id";
@@ -785,6 +791,39 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
             Response.Write(ex.Message);
         }
     }
+
+
+
+    private void BindCheckBoxList()
+    {
+        String cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            string sql = @"select coll_type,col_type_short  from [dbo].[t_CollType] order by 1 asc ";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(sql, con))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                chkList.DataSource = dt;
+                chkList.DataTextField = "coll_type";
+                chkList.DataValueField = "col_type_short";
+                chkList.DataBind();
+            }
+        }
+
+
+        foreach (ListItem item in chkList.Items)
+        {
+            item.Attributes.Add("class", "chkSecurity");
+        }
+
+
+    }
+
+
 
 
     [WebMethod]
