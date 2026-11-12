@@ -338,6 +338,7 @@
                     <a href="New_Reg.aspx" class="btn btn-primary footer-link"><i class="fa fa-user-plus">
                     </i>New User? </a><a href="Login_V3.aspx" class="btn btn-success footer-link"><i
                         class="fa fa-sign-in"></i>Login </a>
+                    <asp:Button ID="Button1" runat="server" Text="Button" onclick="Button1_Click" />
                 </div>
             </div>
         </div>

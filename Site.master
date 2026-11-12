@@ -141,6 +141,61 @@
 
     </style>
 
+   <style type="text/css">
+    
+    /* Edit Modal */
+#editDocumentModal .modal-content {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 10px 35px rgba(0,0,0,.2);
+    overflow: hidden;
+}
+
+#editDocumentModal .modal-header {
+    padding: 18px 20px;
+    border-bottom: none;
+}
+
+#editDocumentModal .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#editDocumentModal .modal-body {
+    padding: 25px;
+    background: #fff;
+}
+
+#editDocumentModal label {
+    color: #34495e;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+#editDocumentModal .form-control {
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #d4deea;
+    box-shadow: none;
+}
+
+#editDocumentModal textarea.form-control {
+    height: auto;
+}
+
+#editDocumentModal .form-control:focus {
+    border-color: #1686c9;
+    box-shadow: 0 0 5px rgba(22,134,201,.2);
+}
+
+#editDocumentModal .modal-footer {
+    background: #f7faff;
+    border-top: 1px solid #e6edf5;
+    padding: 15px 25px;
+}
+    
+    </style>
+
     <asp:ContentPlaceHolder ID="head"
         runat="server">
     </asp:ContentPlaceHolder>
@@ -311,7 +366,7 @@
                 <li class="header">MAIN NAVIGATION</li>
 
                 <li>
-                    <a href="Dashboard.aspx">
+                    <a href="Dashboard_New.aspx">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>

@@ -192,4 +192,8 @@ public partial class Login_20261112 : System.Web.UI.Page
 
         Response.Redirect("Dashboard.aspx");
     }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("Dashboard_New.aspx");
+    }
 }
