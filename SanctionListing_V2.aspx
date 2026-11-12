@@ -188,7 +188,7 @@
 
               });
 
-              $("#txtSanctionDate,#txtValidity").datepicker
+              $("#txtSanctionDate,#txtValidity,.txtValidity").datepicker
             ({
                 //appendText: "(dd/mm/yy)",
                 //dateFormat: "dd/mm/yy",
@@ -1069,7 +1069,7 @@
 
             <div class="col-md-3">
                 <label>Sanction Date</label>
-                <p id="mSanctionDate" class="display"></p><input type="text" class="form-control edit2" id="txtSanctionDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
+                <p id="mSanctionDate" class="display"></p><input type="text" class="form-control edit2 txtValidity" id="txtSanctionDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
             </div>
 
         </div>

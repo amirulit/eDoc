@@ -1,0 +1,48 @@
+DATE #2026-11-08
+Thanks all for joining in todays' zoom discussion for eDoc development.
+
+IT has shown following developments which were discussed in last meeting : 
+
+1. Group customers
+2. Multiple facilities in a single sanction advice
+3. Checklist generation for facilities (partial, full, even combined from another sanction advice)
+4. Detail information capture for some document (wherever applicable)
+
+
+A discussion for LLI and other issues is reuqired.
+
+We request CAD team to provide feedback on following role on current development: 
+
+1. CD (Credit Division)
+2. RM (Relationship Manager)
+3. DM (Documentation Manager)
+
+Thanks.
+
+DATE #2026-11-08
+Thanks all for joining the meeting held in IT division at 2026-11-10 for eDoc development.
+
+Both CAD and IT team had inhand explored the present development and discussed about issues, modification, and new features.
+
+IT team has already been working on CAD latest requirments and observations. 
+We are really focusing on completing till date requrements of CAD and start the comprehensive UAT on the developemnt to start the live process
+
+A couple of mapping files required from CAD team to complete the development :
+
+1. User Mapping files
+2. Branch mapping files
+3. Update master document mapping files with default value (wherever applicable)
+4. Dropdown parameter file for detail information capture
+5. Final Checklist format(PDF)
+
+As both team working hard to complete the project, we sincerely hope that the development will be complete in time. 
+
+
+Thanks.
+
+
+
+
+
+
+
