@@ -172,6 +172,12 @@
                 $('.display').hide();
                 $('.edit2').show();
 
+                $('.ui-datepicker-trigger').show();
+                $('.ui-datepicker-append').show();
+
+
+
+
                 // Change buttons
                 $("#masterAction").html(
     '<button type="button" class="btn btn-success btn-xs" id="btnSaveMaster">' +
@@ -191,6 +197,8 @@
 
                 $('.display').show();
                 $('.edit2').hide();
+                $('.ui-datepicker-trigger').hide();
+                $('.ui-datepicker-append').hide();
 
                 $("#masterAction").html(
         '<button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">' +
@@ -263,7 +271,12 @@
 
 
             $('#sanctionModal').on('shown.bs.modal', function () {
+
                 $('#ui-datepicker-div').appendTo('#sanctionModal');
+                $('.ui-datepicker-trigger').hide();
+                $('.ui-datepicker-append').hide();
+
+
             });
 
 
@@ -1144,130 +1157,170 @@
 
             <div class="modal-body">
 
-                <!-- Master Information -->
-                 <div class="box box-info">
-    <div class="box-header with-border">
-        <h3 class="box-title">Master Information</h3>
+               
+<div class="row">
 
-        <div class="box-tools pull-right" id="masterAction">
-            <button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">
-                <i class="fa fa-edit"></i> Edit
-            </button>
+    <!-- Master Information - Left Side -->
+    <div class="col-md-3">
+
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Master Information</h3>
+
+                <div class="box-tools pull-right" id="masterAction">
+                    <button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">
+                        <i class="fa fa-edit"></i> Edit
+                    </button>
+                </div>
+            </div>
+
+            <div class="box-body">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <label>eDoc ID</label>
+                        <p id="mEdocId"></p>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Booking Branch</label>
+                        <p id="mBookingBranch" class="display"></p>
+                        <select id="select3" runat="server" class="form-control edit2">
+                            <option></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Sanction Reference</label>
+                        <p id="mSanctionReference" class="display"></p>
+                        <input type="text" class="form-control edit2"
+                               id="txtSanctionReference"
+                               placeholder="Enter Santion Reference"
+                               name="name" autocomplete="off"/>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Sanction Date</label>
+                        <p id="mSanctionDate" class="display"></p>
+                        <input type="text" class="form-control edit2 date"
+                               id="txtSanctionDate"
+                               placeholder="Enter Santion Date"
+                               name="admission_fee" autocomplete="off"/>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <label>Sanction Segment</label>
+                        <p id="mSanctionSegment" class="display"></p>
+
+                        <select id="select2" class="form-control edit2">
+                            <option value=""><--Select--></option>
+                            <option value="Corporate">Corporate</option>
+                            <option value="CMSME">CMSME</option>
+                            <option value="Retail">Retail</option>
+                            <option value="Agriculture">Agriculture</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Approval Authority</label>
+                        <p id="mApprovalAuthority" class="display"></p>
+
+                        <select id="select1" class="form-control edit2">
+                            <option value=""><--Select--></option>
+                            <option value="Management">Management</option>
+                            <option value="EC">EC</option>
+                            <option value="Board">Board</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
+
     </div>
 
-    <div class="box-body">
 
-        <div class="row">
+    <!-- Loan / Facility Details - Right Side -->
+    <div class="col-md-9">
 
+        <div class="box box-primary">
 
-
-            <div class="col-md-3">
-                <label>eDoc ID</label>
-                <p id="mEdocId"></p>
+            <div class="box-header with-border">
+                <h3 class="box-title">Loan / Facility Details</h3>
             </div>
 
-            <div class="col-md-3">
-                <label>Booking Branch</label>
-                <p id="mBookingBranch" class="display"></p>
-<select id="select3" runat="server" class="form-control edit2">
-<option></option>
+            <div class="box-body table-responsive">
 
-</select>
+                <table class="table table-bordered table-striped"
+                       id="tblSanctionDetails">
+
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Customer</th>
+                            <th>Loan Nature</th>
+                            <th>Currency</th>
+                            <th>Amount</th>
+                            <th>Validity</th>
+                            <th>Action</th>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+
+                            <td>
+                                <select id="Select4" class="form-control" runat="server">
+                                    <option></option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <select id="Select5" class="form-control" runat="server">
+                                    <option></option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <select id="Select6" class="form-control">
+                                    <option value="BDT">BDT</option>
+                                    <option value="USD">USD</option>
+                                    <option value="CAD">CAD</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <input id="Text1" type="text" class="form-control"/>
+                            </td>
+
+                            <td>
+                                <input id="Text2" type="text" class="form-control date"/>
+                            </td>
+
+                            <td>
+                                <input id="Button1" type="button"
+                                       class="btn btn-success" value="Save"/>
+                            </td>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tbodySanctionDetails"></tbody>
+
+                </table>
+
             </div>
-
-            <div class="col-md-3">
-                <label>Sanction Reference</label>
-                <p id="mSanctionReference" class="display"></p>
-                <input type="text" class="form-control edit2" id="txtSanctionReference" placeholder="Enter Santion Reference" name="name" autocomplete="off"/>
-            </div>
-
-            <div class="col-md-3">
-                <label>Sanction Date</label>
-                <p id="mSanctionDate" class="display"></p><input type="text" class="form-control edit2 date" id="txtSanctionDate" placeholder="Enter Santion Date" name="admission_fee" autocomplete="off"/>
-            </div>
-
-        </div>
-
-        <div class="row">
-
-            <div class="col-md-6">
-                <label>Sanction Segment</label>
-                <p id="mSanctionSegment" class="display"></p> <select id="select2"         class="form-control edit2">
-                           
-                           <option value=""><--Select--></option>
-                           <option value="Corporate">Corporate</option>
-                           
-                           <option value="CMSME">CMSME</option>
-                           <option value="Retail">Retail</option>
-
-                           <option value="Agriculture">Agriculture</option>
-
-                            </select>
-            </div>
-
-            <div class="col-md-6">
-                <label>Approval Authority</label>
-                <p id="mApprovalAuthority" class="display"></p>  <select id="select1"         class="form-control edit2">
-                           
-                           <option value=""><--Select--></option>
-                           <option value="Management">Management</option>
-                           
-                           <option value="EC">EC</option>
-                           <option value="Board">Board</option>
-
-                            </select>
-            </div>
-
         </div>
 
     </div>
+
 </div>
 
-                <!-- Detail Information -->
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Loan / Facility Details</h3>
-                    </div>
-
-                    <div class="box-body table-responsive">
-                        <table class="table table-bordered table-striped" id="tblSanctionDetails">
-                            <thead>
-                                <tr>
-                                    <th>SL</th>
-                                    <th>Customer</th>
-                                    <th>Loan Nature</th>
-                                    <th>Currency</th>
-                                    <th>Amount</th>
-                                    <th>Validity</th>
-                                    <th>Action</th>
-                                </tr>
-                                <tr>
-                                    <td> </td>
-                                    <td><select id="Select4" class="form-control" runat="server">
-<option></option>
-
-</select></td>
-                                    <td><select id="Select5"  class="form-control" runat="server">
-<option></option>
-
-</select></td>
-                                    <td><select id="Select6"  class="form-control">
- <option value="BDT">BDT</option>
-               <option value="USD">USD</option>
-               <option value="CAD">CAD</option>
-
-</select></td>
-                                    <td><input id="Text1" type="text"  class="form-control"/></td>
-                                    <td><input id="Text2" type="text"  class="form-control date"/></td>
-                                    <td><input id="Button1" type="button" class="btn btn-success" value="Save" /></td>
-                                </tr>
-                            </thead>
-
-                            <tbody id="tbodySanctionDetails"></tbody>
-                        </table>
-                    </div>
-                </div>
 
             </div>
 

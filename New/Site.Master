@@ -1,0 +1,462 @@
+﻿
+<%@ Master Language="C#" AutoEventWireup="true"
+    CodeFile="Site.Master.cs" Inherits="SiteMaster" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>MBPLC DMS</title>
+
+    <link rel="stylesheet"
+          href="bootstrap/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet"
+          href="dist/css/AdminLTE.min.css" />
+
+    <link rel="stylesheet"
+          href="dist/css/skins/_all-skins.min.css" />
+
+    <link rel="stylesheet"
+          href="plugins/datatables/dataTables.bootstrap.css" />
+
+    <style type="text/css">
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .skin-blue .main-header .logo {
+            background-color: #092c55;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .skin-blue .main-header .navbar {
+            background-color: #1265a8;
+        }
+
+        .skin-blue .main-sidebar {
+            background-color: #173b60;
+        }
+
+        .skin-blue .sidebar-menu > li.header {
+            color: #a9c4dc;
+            background: #112e4b;
+        }
+
+        .skin-blue .sidebar-menu > li > a {
+            color: #e4edf7;
+            padding: 13px 10px;
+        }
+
+        .skin-blue .sidebar-menu > li.active > a,
+        .skin-blue .sidebar-menu > li:hover > a {
+            color: #fff;
+            background: #1265a8;
+            border-left-color: #36b9e9;
+        }
+
+        .content-wrapper {
+            background: #f0f5fa;
+        }
+
+        .content-header h1 {
+            color: #123c67;
+            font-weight: 600;
+        }
+
+        .box {
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        }
+
+        .box.box-primary {
+            border-top-color: #1686c9;
+        }
+
+        .form-control {
+            border-radius: 4px;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background-color: #1686c9;
+            border-color: #1686c9;
+        }
+
+        .content-wrapper .table th {
+            background: #edf4fa;
+            color: #234767;
+        }
+
+        .main-footer {
+            background: #fff;
+            color: #718096;
+        }
+        
+        
+        /* DataTable styling */
+
+.dataTables_wrapper {
+    padding-top: 10px;
+}
+
+.dataTables_filter input {
+    border: 1px solid #d4deea;
+    border-radius: 5px;
+    padding: 6px 10px;
+    margin-left: 5px;
+}
+
+.dataTables_length select {
+    border: 1px solid #d4deea;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#tblDocuments thead th {
+    background: #eaf2fb;
+    color: #123c67;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+#tblDocuments tbody td {
+    vertical-align: middle;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #1686c9 !important;
+    color: #fff !important;
+    border: 1px solid #1686c9 !important;
+    border-radius: 4px;
+}
+
+    </style>
+
+    <asp:ContentPlaceHolder ID="head"
+        runat="server">
+    </asp:ContentPlaceHolder>
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+<form id="form1" runat="server">
+
+<div class="wrapper">
+
+    <!-- HEADER -->
+    <header class="main-header">
+
+        <a href="Dashboard.aspx" class="logo">
+
+            <span class="logo-mini">
+                <b>D</b>MS
+            </span>
+
+            <span class="logo-lg">
+                <i class="fa fa-folder-open"></i>
+                <b>MBPLC</b> DMS
+            </span>
+
+        </a>
+
+        <nav class="navbar navbar-static-top">
+
+            <a href="#" class="sidebar-toggle"
+               data-toggle="offcanvas"
+               role="button">
+
+                <span class="sr-only">Toggle navigation</span>
+
+            </a>
+
+            <div class="navbar-custom-menu">
+
+                <ul class="nav navbar-nav">
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-bell"></i>
+                        </a>
+                    </li>
+
+                    <li class="dropdown user user-menu">
+
+                        <a href="#" class="dropdown-toggle"
+                           data-toggle="dropdown">
+
+                            <img src="dist/img/user2-160x160.jpg"
+                                 class="user-image"
+                                 alt="User" />
+
+                            <span class="hidden-xs">
+                                Administrator
+                            </span>
+
+                        </a>
+
+                        <ul class="dropdown-menu">
+
+                            <li class="user-header"
+                                style="background:#1265a8;">
+
+                                <img src="dist/img/user2-160x160.jpg"
+                                     class="img-circle"
+                                     alt="User" />
+
+                                <p>
+                                    MBPLC DMS
+                                    <small>System User</small>
+                                </p>
+
+                            </li>
+
+                            <li class="user-footer">
+
+                                <div class="pull-left">
+                                    <a href="UserManagement.aspx"
+                                       class="btn btn-default btn-flat">
+                                        Profile
+                                    </a>
+                                </div>
+
+                                <div class="pull-right">
+                                    <a href="Login.aspx"
+                                       class="btn btn-default btn-flat">
+                                        Sign out
+                                    </a>
+                                </div>
+
+                            </li>
+
+                        </ul>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="main-sidebar">
+
+        <section class="sidebar">
+
+            <div class="user-panel">
+
+                <div class="pull-left image">
+
+                    <img src="dist/img/user2-160x160.jpg"
+                         class="img-circle"
+                         alt="User" />
+
+                </div>
+
+                <div class="pull-left info">
+
+                    <p>Administrator</p>
+
+                    <a href="#">
+                        <i class="fa fa-circle text-success"></i>
+                        Online
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+            <form class="sidebar-form">
+
+                <div class="input-group">
+
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Search..." />
+
+                    <span class="input-group-btn">
+
+                        <button type="button"
+                                class="btn btn-flat">
+
+                            <i class="fa fa-search"></i>
+
+                        </button>
+
+                    </span>
+
+                </div>
+
+            </form>
+
+
+            <!-- MENU -->
+            <ul class="sidebar-menu">
+
+                <li class="header">MAIN NAVIGATION</li>
+
+                <li>
+                    <a href="Dashboard.aspx">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="header">DOCUMENT MANAGEMENT</li>
+
+                <li>
+                    <a href="DocumentEntry.aspx">
+                        <i class="fa fa-plus-circle"></i>
+                        <span>New Document</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="DocumentList.aspx">
+                        <i class="fa fa-list-alt"></i>
+                        <span>Document List</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="DocumentList.aspx?status=Pending">
+                        <i class="fa fa-clock-o"></i>
+                        <span>Pending Documents</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="DocumentList.aspx?status=Approved">
+                        <i class="fa fa-check-circle"></i>
+                        <span>Approved Documents</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="DocumentList.aspx?status=Rejected">
+                        <i class="fa fa-times-circle"></i>
+                        <span>Rejected Documents</span>
+                    </a>
+                </li>
+
+                <li class="header">ADMINISTRATION</li>
+
+                <li>
+                    <a href="UserManagement.aspx">
+                        <i class="fa fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="Reports.aspx">
+                        <i class="fa fa-bar-chart"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </section>
+
+    </aside>
+
+
+    <!-- PAGE CONTENT -->
+    <div class="content-wrapper">
+
+        <section class="content-header">
+
+            <h1>
+                <asp:ContentPlaceHolder ID="PageTitle"
+                    runat="server">
+                </asp:ContentPlaceHolder>
+            </h1>
+
+            <ol class="breadcrumb">
+
+                <li>
+                    <a href="Dashboard.aspx">
+                        <i class="fa fa-dashboard"></i>
+                        Home
+                    </a>
+                </li>
+
+                <li class="active">
+                    MBPLC DMS
+                </li>
+
+            </ol>
+
+        </section>
+
+
+        <section class="content">
+
+            <asp:ContentPlaceHolder ID="MainContent"
+                runat="server">
+            </asp:ContentPlaceHolder>
+
+        </section>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0
+        </div>
+
+        <strong>
+            MBPLC Document Management System
+        </strong>
+
+        <span> | All rights reserved.</span>
+
+    </footer>
+
+</div>
+
+<!-- JS FILES -->
+<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<script src="dist/js/app.min.js"></script>
+
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+<asp:ContentPlaceHolder ID="Scripts"
+    runat="server">
+</asp:ContentPlaceHolder>
+
+</form>
+
+</body>
+</html>

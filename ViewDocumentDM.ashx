@@ -1,4 +1,4 @@
-﻿<%@ WebHandler Language="C#" Class="ViewDocument" %>
+﻿<%@ WebHandler Language="C#" Class="ViewDocumentDM" %>
 
 using System;
 using System.Data;

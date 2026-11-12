@@ -415,7 +415,7 @@
         <%} %>
 
          <%  
-             if (Role == 1 || Role == 2)
+             if (Role == 1 || Role == 2 || Role == 5)
              {
                  %>
         
