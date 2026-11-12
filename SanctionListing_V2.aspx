@@ -2,31 +2,9 @@
     CodeFile="SanctionListing_V2.aspx.cs" Inherits="SanctionListing_V2" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="StyleSheet.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
-        @media (min-width: 768px)
-        {
-            .modal-extra-lg
-            {
-                width: 95%;
-            }
-        }
-        
-        @media (min-width: 1200px)
-        {
-            .modal-extra-lg
-            {
-                width: 90%;
-                max-width: 1600px;
-            }
-        }
-        
-        
-        /* Forces the jQuery UI datepicker to appear above Bootstrap modals */
-        #ui-datepicker-div {
-    z-index: 999999 !important;
-}
-        
-        
+          
     </style>
     <script src="FileUpload.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -710,7 +688,7 @@
 
 
 
- 
+
 
                 /*
                 var cus_type = $(this).attr("cus-type");
@@ -878,6 +856,8 @@
 
                 var detailId = $(this).attr("data-id");
 
+                alert('det id :' + detailId);
+
                 if (!confirm("Are you sure you want to delete this detail?")) {
                     return;
                 }
@@ -896,7 +876,7 @@
 
                     success: function (response) {
 
-                        if (response.d === "success") {
+                        if (response.d === "Success") {
 
                             //alert("Detail deleted successfully.");
 
@@ -978,6 +958,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
+
+
     <section class="content"> <!-- Start of table section -->
 
 

@@ -1,0 +1,87 @@
+﻿body {
+}
+ @media (min-width: 768px)
+        {
+            .modal-extra-lg
+            {
+                width: 95%;
+            }
+        }
+        
+        @media (min-width: 1200px)
+        {
+            .modal-extra-lg
+            {
+                width: 90%;
+                max-width: 1600px;
+            }
+        }
+        
+        
+        /* Forces the jQuery UI datepicker to appear above Bootstrap modals */
+        #ui-datepicker-div {
+    z-index: 999999 !important;
+}
+        /* Month and Year dropdown */
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
+    width: 48%;
+    height: 32px;
+    padding: 4px 8px;
+    margin: 2px 1%;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333 !important;
+    background-color: #fff !important;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Datepicker header */
+.ui-datepicker .ui-datepicker-title {
+    color: #333 !important;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Dropdown options */
+.ui-datepicker select option {
+    color: #333 !important;
+    background: #fff !important;
+    font-size: 14px;
+}
+
+/* Datepicker popup */
+#ui-datepicker-div {
+    z-index: 999999 !important;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+     
+     
+      .select2-container--default .select2-selection--multiple .select2-selection__choice
+        {
+            color: blue !important;
+        }
+        
+        #tblLoan th, td
+        {
+            padding: 5px;
+        }
+        
+        
+        
+    .blink-message {
+    animation: blinker 1s linear infinite;
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+}
+}
