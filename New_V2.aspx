@@ -36,6 +36,18 @@
     <%--<link rel="icon" href="uploads/logo3.png">--%>
     <link href="plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="js/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- jQuery 2.1.4 -->
     <%--<script type="text/javascript" src="plugins/jQuery/jQuery-2.1.4.min.js">
     </script>--%>
