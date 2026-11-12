@@ -285,7 +285,7 @@
                                 </div>
 
                                 <div class="pull-right">
-                                    <a href="Login.aspx"
+                                    <a href="Login_20261112.aspx"
                                        class="btn btn-default btn-flat">
                                         Sign out
                                     </a>
@@ -335,7 +335,7 @@
             </div>
 
 
-            <!-- SEARCH -->
+         <%-- 
             <form class="sidebar-form">
 
                 <div class="input-group">
@@ -357,7 +357,7 @@
 
                 </div>
 
-            </form>
+            </form>--%>
 
 
             <!-- MENU -->
