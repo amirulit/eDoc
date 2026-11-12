@@ -113,15 +113,15 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 
     [WebMethod]
     public static Object SaveSanctionDetails(
-        string edoc_id,
-        string edoc_refno,
-        string sanc_refno,
-        string customer,
+        String edoc_id,
+        String edoc_refno,
+        String sanc_refno,
+        String customer,
         String customerName,
-        string loanNature,
-        string currency,
-        string amount,
-        string validity)
+        String loanNature,
+        String currency,
+        String amount,
+        String validity)
     {
 
 
@@ -235,12 +235,12 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 
                 int affected = cmd.ExecuteNonQuery();
 
-                return affected > 0 ? "success" : "Record not found";
+                return affected > 0 ? "Success" : "Record not found";
             }
         }
     }
     [WebMethod]
-    public static string UpdateMaster(
+    public static Object UpdateMaster(
         int edoc_id,
         string booking_branch,
         string sanction_reference,
@@ -248,35 +248,43 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
         string sanction_segment,
         string sanction_approval_authority)
     {
-        string cs = ConfigurationManager
-            .ConnectionStrings["dbConn"].ConnectionString;
 
-        using (SqlConnection con = new SqlConnection(cs))
+        try
         {
-            using (SqlCommand cmd = new SqlCommand(
-                "dbo.usp_UpdateSanctionMaster", con))
+            string cs = ConfigurationManager
+                .ConnectionStrings["dbConn"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(cs))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                using (SqlCommand cmd = new SqlCommand(
+                    "dbo.usp_UpdateSanctionMaster", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add("@edoc_id", SqlDbType.Int).Value = edoc_id;
+                    cmd.Parameters.Add("@edoc_id", SqlDbType.Int).Value = edoc_id;
 
-                cmd.Parameters.Add("@booking_branch", SqlDbType.VarChar, 50).Value = booking_branch;
+                    cmd.Parameters.Add("@booking_branch", SqlDbType.VarChar, 50).Value = booking_branch;
 
-                cmd.Parameters.Add("@sanction_reference", SqlDbType.VarChar, 100).Value = sanction_reference;
+                    cmd.Parameters.Add("@sanction_reference", SqlDbType.VarChar, 100).Value = sanction_reference;
 
-                cmd.Parameters.Add("@sanction_date", SqlDbType.Date).Value =
-                    Convert.ToDateTime(sanction_date);
+                    cmd.Parameters.Add("@sanction_date", SqlDbType.Date).Value = Convert.ToDateTime(sanction_date);
 
-                cmd.Parameters.Add("@sanction_segment", SqlDbType.VarChar, 50).Value = sanction_segment;
+                    cmd.Parameters.Add("@sanction_segment", SqlDbType.VarChar, 50).Value = sanction_segment;
 
-                cmd.Parameters.Add("@sanction_approval_authority", SqlDbType.VarChar, 100).Value = sanction_approval_authority;
+                    cmd.Parameters.Add("@sanction_approval_authority", SqlDbType.VarChar, 100).Value = sanction_approval_authority;
 
-                con.Open();
+                    con.Open();
 
-                int result = cmd.ExecuteNonQuery();
+                    int result = cmd.ExecuteNonQuery();
 
-                return result > 0 ? "success" : "Unable to update Master";
+                    //return result > 0 ? "success" : "Unable to update Master";
+                }
             }
+            return new { message = "Success", id = 1 };
+        }
+        catch (Exception ex)
+        {
+            return new { message = ex.Message, id = 0 };
         }
     }
 
