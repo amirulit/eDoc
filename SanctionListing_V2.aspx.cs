@@ -58,7 +58,8 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 
 
     [WebMethod]
-    public static string SaveSanctionDetails_V2(
+    public static Object SaveSanctionDetails_V2(
+        
         string customer,
         string loanNature,
         string currency,
@@ -100,45 +101,67 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
                 }
             }
 
-            return Output;
+            return new { message = "Success", id = Output };
         }
         catch (Exception ex)
         {
-            return "Error: " + ex.Message;
+            return new { message = ex.Message, id = 0 };
         }
     }
 
-    
-     
+
+
     [WebMethod]
-public static int SaveSanctionDetails(
-    string customer,
-    string loanNature,
-    string currency,
-    string amount,
-    string validity)
-{
-    string constr = ConfigurationManager
-        .ConnectionStrings["dbconn"].ConnectionString;
-
-    using (SqlConnection con = new SqlConnection(constr))
+    public static Object SaveSanctionDetails(
+        string edoc_id,
+        string edoc_refno,
+        string sanc_refno,
+        string customer,
+        String customerName,
+        string loanNature,
+        string currency,
+        string amount,
+        string validity)
     {
-        using (SqlCommand cmd = new SqlCommand("SP_SaveSanctionDetails", con))
+
+
+        Int32 id;
+        try
         {
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            String constr = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
 
-            cmd.Parameters.AddWithValue("@Customer", customer);
-            cmd.Parameters.AddWithValue("@LoanNature", loanNature);
-            cmd.Parameters.AddWithValue("@Currency", currency);
-            cmd.Parameters.AddWithValue("@Amount", Convert.ToDecimal(amount));
-            cmd.Parameters.AddWithValue("@Validity", validity);
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand("SP_SaveSanctionDetails", con))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            con.Open();
+                    cmd.Parameters.AddWithValue("@edoc_id", edoc_id);
+                    cmd.Parameters.AddWithValue("@edoc_refno", edoc_refno);
+                    cmd.Parameters.AddWithValue("@sanc_refno", sanc_refno);
+                    cmd.Parameters.AddWithValue("@Customer", customer);
+                    cmd.Parameters.AddWithValue("@CustomerName", customerName);
+                    cmd.Parameters.AddWithValue("@LoanNature", loanNature);
+                    cmd.Parameters.AddWithValue("@Currency", currency);
+                    cmd.Parameters.AddWithValue("@Amount", Convert.ToDecimal(amount));
+                    cmd.Parameters.AddWithValue("@Validity", validity);
 
-            return Convert.ToInt32(cmd.ExecuteScalar());
+                    con.Open();
+
+                    //return Convert.ToInt32(cmd.ExecuteScalar());
+
+                    id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                }
+
+            }
+            return new { message = "Success", id = id };
+        }
+        catch (Exception ex)
+        {
+            return new { message = ex.Message, id = 0 };
         }
     }
-} 
      
     
 

@@ -2,8 +2,6 @@
     CodeFile="SanctionListing_V2.aspx.cs" Inherits="SanctionListing_V2" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
- 
     <style type="text/css">
         @media (min-width: 768px)
         {
@@ -23,60 +21,84 @@
         }
     </style>
     <script src="FileUpload.js" type="text/javascript"></script>
+    <script type="text/javascript">
 
-     <script type="text/javascript">
+
+        var edoc_id;
+
+        var edoc_refno;
 
 
-         $(document).ready(function () {
+        var sanc_refno;
 
-             $("#Button1").click(function () {
 
-                 var customer = $("#ContentPlaceHolder1_Select4").val();
-                 var loanNature = $("#ContentPlaceHolder1_Select5").val();
-                 var currency = $("#Select6").val();
-                 var amount = $("#Text1").val();
-                 var validity = $("#Text2").val();
+        $(document).ready(function () {
 
-                 // Validation
-                 if (customer == "" || loanNature == "" ||
-            amount == "" || validity == "") {
+            $("#Button1").click(function () {
 
-                     alert("Please fill all fields.");
-                     return;
-                 }
+                var customer = $("#ContentPlaceHolder1_Select4").val();
 
-                 $.ajax({
-                     type: "POST",
-                     url: "SanctionListing_V2.aspx/SaveSanctionDetails",
-                     data: JSON.stringify({
-                         customer: customer,
-                         loanNature: loanNature,
-                         currency: currency,
-                         amount: amount,
-                         validity: validity
-                     }),
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
+                var customerName = $("#ContentPlaceHolder1_Select4 option:selected").text();
 
-                     success: function (response) {
+                //alert(customerName);
 
-                         if (response.d == "Success") {
-                             alert("Data saved successfully!");
+                customerName = customerName.split('-');
 
-                             // Clear fields
-                             /*
-                             $("#Select4").val("");
-                             $("#Select5").val("");
-                             $("#Select6").val("BDT");
-                             $("#Text1").val("");
-                             $("#Text2").val("");
+                customerName = customerName[0].trim();
 
-                             */
 
-                             var row = '<tr id="row_' + id + '">' +
+                var loanNature = $("#ContentPlaceHolder1_Select5").val();
+                var currency = $("#Select6").val();
+                var amount = $("#Text1").val();
+                var validity = $("#Text2").val();
+
+                // Validation
+                if (customer == "" || loanNature == "" || amount == "" || validity == "") {
+
+                    alert("Please fill all fields.");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "SanctionListing_V2.aspx/SaveSanctionDetails",
+                    data: JSON.stringify({
+                        edoc_id: edoc_id,
+                        edoc_refno: edoc_refno,
+                        sanc_refno:sanc_refno,
+                        customer: customer,
+                        customerName: customerName,
+                        loanNature: loanNature,
+                        currency: currency,
+                        amount: amount,
+                        validity: validity
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var id = response.d.id;
+
+                        if (response.d.message == "Success") {
+                            alert("Data saved successfully : " + id);
+
+
+
+                            // Clear fields
+                            /*
+                            $("#Select4").val("");
+                            $("#Select5").val("");
+                            $("#Select6").val("BDT");
+                            $("#Text1").val("");
+                            $("#Text2").val("");
+
+                            */
+
+                            var row = '<tr id="row_' + id + '">' +
     '<td>' + ($("#tblSanctionDetails tbody tr").length + 1) + '</td>' +
-    '<td>' + $("#Select4 option:selected").text() + '</td>' +
-    '<td>' + $("#Select5 option:selected").text() + '</td>' +
+    '<td>' + $("#ContentPlaceHolder1_Select4 option:selected").text() + '</td>' +
+    '<td>' + $("#ContentPlaceHolder1_Select5 option:selected").text() + '</td>' +
     '<td>' + $("#Select6").val() + '</td>' +
     '<td>' + $("#Text1").val() + '</td>' +
     '<td>' + $("#Text2").val() + '</td>' +
@@ -87,75 +109,78 @@
     '</td>' +
 '</tr>';
 
-                             $("#tblSanctionDetails tbody").append(row);
+                            console.log(row);
+
+                            $("#tbodySanctionDetails tbody").append(row);
 
 
 
 
-                         }
-                         else {
-                             alert(response.d);
-                         }
-                     },
 
-                     error: function (xhr, status, error) {
-                         alert("Error saving data: " + error);
-                     }
-                 });
+                        }
+                        else {
+                            alert(response.d);
+                        }
+                    },
 
-             });
+                    error: function (xhr, status, error) {
+                        alert("Error saving data: " + error);
+                    }
+                });
 
-
-
-             function DeleteSanction(id) {
-
-                 if (!confirm("Are you sure you want to delete this record?"))
-                     return;
-
-                 $.ajax({
-                     type: "POST",
-                     url: "SanctionUpload_V4.aspx/DeleteSanction",
-                     data: JSON.stringify({ id: id }),
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
-
-                     success: function (response) {
-
-                         if (response.d == "Success") {
-
-                             $("#row_" + id).remove();
-
-                             alert("Deleted successfully!");
-                         }
-                         else {
-                             alert("Record not found!");
-                         }
-                     },
-
-                     error: function () {
-                         alert("Delete failed!");
-                     }
-                 });
-             }
-         });
-
-
-     </script>
-      <script type="text/javascript">
-
-
-          $(document).ready(function () {
-
-
-              $(document).on("click", "#btnEditMaster", function () {
+            });
 
 
 
-                  $('.display').hide();
-                  $('.edit2').show();
+            function DeleteSanction(id) {
 
-                  // Change buttons
-                  $("#masterAction").html(
+                if (!confirm("Are you sure you want to delete this record?"))
+                    return;
+
+                $.ajax({
+                    type: "POST",
+                    url: "SanctionUpload_V4.aspx/DeleteSanction",
+                    data: JSON.stringify({ id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d == "Success") {
+
+                            $("#row_" + id).remove();
+
+                            alert("Deleted successfully!");
+                        }
+                        else {
+                            alert("Record not found!");
+                        }
+                    },
+
+                    error: function () {
+                        alert("Delete failed!");
+                    }
+                });
+            }
+        });
+
+
+    </script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+
+            $(document).on("click", "#btnEditMaster", function () {
+
+
+
+                $('.display').hide();
+                $('.edit2').show();
+
+                // Change buttons
+                $("#masterAction").html(
     '<button type="button" class="btn btn-success btn-xs" id="btnSaveMaster">' +
         '<i class="fa fa-save"></i> Save' +
     '</button>' +
@@ -165,30 +190,30 @@
     '</button>'
 );
 
-              });
+            });
 
 
 
-              $(document).on("click", "#btnCancelMaster", function () {
+            $(document).on("click", "#btnCancelMaster", function () {
 
-                  $('.display').show();
-                  $('.edit2').hide();
+                $('.display').show();
+                $('.edit2').hide();
 
-                  $("#masterAction").html(
+                $("#masterAction").html(
         '<button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">' +
             '<i class="fa fa-edit"></i> Edit' +
         '</button>'
     );
 
-              });
+            });
 
 
-              $(document).on("click", "#btnSaveMaster", function () {
+            $(document).on("click", "#btnSaveMaster", function () {
 
 
-              });
+            });
 
-              $("#txtSanctionDate,#txtValidity,.txtValidity").datepicker
+            $("#txtSanctionDate,#txtValidity,.txtValidity").datepicker
             ({
                 //appendText: "(dd/mm/yy)",
                 //dateFormat: "dd/mm/yy",
@@ -209,33 +234,32 @@
 
 
 
-              //            $("#ContentPlaceHolder1_select3 option[value='']").length ||
-              //    $("#ContentPlaceHolder1_select3").prepend('<option value=""></option>');
+            //            $("#ContentPlaceHolder1_select3 option[value='']").length ||
+            //    $("#ContentPlaceHolder1_select3").prepend('<option value=""></option>');
 
-              //              $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8,#ddlCurrency").select2({
-              //                  placeholder: "<--Select-->",
-              //                  allowClear: true,
-              //                  width: "100%"
-              //              });
-
-
-
-              //              $('#select1>').on('change', function () {
-              //                  $('#hfSelected').val($(this).val());
-              //              });
-
-              //              $('#<%=select3.ClientID%>').on('change', function () {
-              //                  $('#hfSelectedLoanNature').val($(this).val());
-              //              });
+            //              $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8,#ddlCurrency").select2({
+            //                  placeholder: "<--Select-->",
+            //                  allowClear: true,
+            //                  width: "100%"
+            //              });
 
 
 
+            //              $('#select1>').on('change', function () {
+            //                  $('#hfSelected').val($(this).val());
+            //              });
+
+            //              $('#<%=select3.ClientID%>').on('change', function () {
+            //                  $('#hfSelectedLoanNature').val($(this).val());
+            //              });
 
 
-          });
+
+
+
+        });
 
     </script>
-
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -438,7 +462,13 @@
             $("body").on("click", ".view", function () {
 
 
-                var edoc_id = $(this).data("edocid");
+                edoc_id = $(this).data("edocid");
+
+                edoc_refno = $(this).data("edocrefno");
+
+                sanc_refno = $(this).data("sancrefno");
+
+                
 
                 $("#lblID").text(edoc_id);
 
@@ -510,14 +540,6 @@
                             $("#mBookingBranch").text(data.Master.booking_branch);
                             $("#ContentPlaceHolder1_select3").val(data.Master.booking_branch).trigger("change");
 
-
-                           
-
-                            
-
-                           
-
-                           
 
                             $("#mSanctionReference").text(data.Master.sanction_reference);
                             $("#txtSanctionReference").val(data.Master.sanction_reference);
@@ -602,7 +624,45 @@
                         });
 
                         // Show modal
+
+
+
+
+
+
+
                         $("#sanctionModal").modal("show");
+
+
+
+
+
+
+                        $('#sanctionModal').on('shown.bs.modal', function () {
+
+                            $("#txtSanctionDate,#txtValidity,.txtValidity").datepicker
+            ({
+                //appendText: "(dd/mm/yy)",
+                //dateFormat: "dd/mm/yy",
+
+                appendText: "(yy-mm-dd)",
+                dateFormat: "yy-mm-dd",
+
+                altField: "#datepicker-4",
+                altFormat: "DD, d MM, yy",
+                showOn: "both",
+                buttonImageOnly: true,
+                buttonImage: "calender.gif",
+                buttonText: "Calendar",
+                changeMonth: true,
+                changeYear: true
+
+            });
+
+                        });
+
+
+
 
                     },
 
@@ -844,8 +904,6 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-
-
     <section class="content"> <!-- Start of table section -->
 
 
@@ -1219,7 +1277,7 @@
   -->
 
 
-  <a href="#"  class="btn btn-success btn-xs view" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View</a>                                    
+  <a href="#"  class="btn btn-success btn-xs view"  data-sancrefno="<%=TableData.Rows[data]["sanction_reference"]%>" data-edocrefno="<%=TableData.Rows[data]["edoc_refno"]%>" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View</a>                                    
 
   <a href="#"  class="btn btn-danger btn-xs delete" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Delete</a>                                    
    
