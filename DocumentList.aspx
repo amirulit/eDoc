@@ -14,7 +14,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent"
     runat="server">
   
-<!-- EDIT DOCUMENT MODAL -->
+    <!-- EDIT DOCUMENT MODAL -->
 <div class="modal" id="editDocumentModal"
      tabindex="-1" role="dialog">
 

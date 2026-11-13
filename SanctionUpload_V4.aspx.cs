@@ -711,7 +711,11 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
            ,[amount_org]
            ,[validity_org]
            ,[entry_by_org]
-           ,[entry_time_org])
+           ,[entry_time_org]
+
+           ,[entry_sequence]
+
+            )
      VALUES
            (" + request.EdocId + @"
 
@@ -733,6 +737,9 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
          ,'" + facility.Validity + @"'
          ,'" + Inputter + @"'
          ,getdate()
+
+
+         ,NEXT VALUE FOR seq_Detail
 
 
 )

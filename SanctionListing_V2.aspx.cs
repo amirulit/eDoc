@@ -145,6 +145,7 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@Currency", currency);
                     cmd.Parameters.AddWithValue("@Amount", Convert.ToDecimal(amount));
                     cmd.Parameters.AddWithValue("@Validity", validity);
+                    cmd.Parameters.AddWithValue("@entry_by", "Test");
 
                     con.Open();
 

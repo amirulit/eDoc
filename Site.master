@@ -509,6 +509,192 @@
 
 <asp:ContentPlaceHolder ID="Scripts"
     runat="server">
+
+    <script>
+
+
+        var detailTable;
+
+        $(document).ready(function () {
+
+            // Initialize DataTable
+
+            detailTable = $('#tblDetails').DataTable({
+                pageLength: 10,
+                searching: true,
+                ordering: true,
+                autoWidth: false,
+
+                columns: [
+            { data: null },
+            { data: 'DetailType' },
+            { data: 'Description' },
+            { data: 'ReferenceNo' },
+            { data: 'Remarks' },
+            {
+                data: 'DetailID',
+                orderable: false,
+                searchable: false,
+                render: function (id) {
+                    return '<button type="button" ' +
+                        'class="btn btn-primary btn-xs btnEditDetail" ' +
+                        'data-id="' + id + '">' +
+                        '<i class="fa fa-edit"></i></button>';
+                }
+            }
+        ],
+
+                columnDefs: [{
+                    targets: 0,
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                }]
+            });
+
+
+            // Master selection
+
+            $(document).on('click', '.master-item', function () {
+
+                $('.master-item').removeClass('active');
+
+                $(this).addClass('active');
+
+                var masterId = $(this).data('id');
+
+                $('#hfSelectedMasterId').val(masterId);
+
+                $('#lblSelectedMaster').text(
+            $(this).find('strong').text() + ' - ' +
+            $(this).find('small').first().text()
+        );
+
+                $('#btnAddDetail').prop('disabled', false);
+
+                loadDetails(masterId);
+
+            });
+
+
+            // Select first master automatically
+
+            var firstMaster = $('.master-item').first();
+
+            if (firstMaster.length) {
+                firstMaster.trigger('click');
+            }
+
+
+            // Search master list
+
+            $('#txtMasterSearch').on('keyup', function () {
+
+                var value = $(this).val().toLowerCase();
+
+                $('.master-item').each(function () {
+
+                    $(this).toggle(
+                $(this).text().toLowerCase().indexOf(value) > -1
+            );
+
+                });
+
+            });
+
+
+            // Add detail
+
+            $('#btnAddDetail').click(function () {
+
+                $('#editDetailId').val('');
+                $('#editMasterId').val($('#hfSelectedMasterId').val());
+
+                $('#ddlDetailType').val('');
+                $('#txtDescription').val('');
+                $('#txtReference').val('');
+                $('#txtRemarks').val('');
+
+                $('#detailModal').modal('show');
+
+            });
+
+
+            // Save detail
+            // Connect this to your SaveDetail WebMethod.
+
+            $('#btnSaveDetail').click(function () {
+
+                var data = {
+                    masterId: parseInt($('#editMasterId').val()),
+                    detailId: parseInt($('#editDetailId').val() || 0),
+                    detailType: $('#ddlDetailType').val(),
+                    description: $('#txtDescription').val(),
+                    referenceNo: $('#txtReference').val(),
+                    remarks: $('#txtRemarks').val()
+                };
+
+                if (!data.detailType || !data.description) {
+                    alert('Please enter required fields.');
+                    return;
+                }
+
+                // Call your database save endpoint here.
+                // On successful save:
+                // $('#detailModal').modal('hide');
+                // loadDetails(data.masterId);
+
+                alert('Connect this button to your database save method.');
+
+            });
+
+        });
+
+
+        // Load master-related details from database
+
+        function loadDetails(masterId) {
+
+            detailTable.clear().draw();
+
+            $.ajax({
+
+                type: "POST",
+
+                url: "MasterDetail.aspx/GetDetails",
+
+                data: JSON.stringify({
+                    masterId: masterId
+                }),
+
+                contentType: "application/json; charset=utf-8",
+
+                dataType: "json",
+
+                success: function (response) {
+
+                    detailTable.clear();
+
+                    detailTable.rows.add(response.d);
+
+                    detailTable.draw();
+
+                },
+
+                error: function (xhr) {
+
+                    console.log(xhr.responseText);
+
+                    alert('Unable to load detail records.');
+
+                }
+
+            });
+
+        }
+
+    
+    </script>
 </asp:ContentPlaceHolder>
 
 </form>

@@ -1,0 +1,1711 @@
+
+CREATE TABLE DMS_Master
+(
+    MasterID INT IDENTITY(1,1) PRIMARY KEY,
+    DocumentNo VARCHAR(50),
+    ReferenceNo VARCHAR(50),
+    Subject VARCHAR(250),
+    DocumentDate DATE,
+    Department VARCHAR(150),
+    CreatedBy VARCHAR(100),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    Status VARCHAR(50),
+    Remarks VARCHAR(500)
+);
+
+
+CREATE TABLE DMS_Detail
+(
+    DetailID INT IDENTITY(1,1) PRIMARY KEY,
+    MasterID INT NOT NULL,
+    DetailType VARCHAR(100),
+    Description VARCHAR(500),
+    ReferenceNo VARCHAR(100),
+    Remarks VARCHAR(500),
+
+    CONSTRAINT FK_DMS_Detail_Master
+    FOREIGN KEY (MasterID)
+    REFERENCES DMS_Master(MasterID)
+);
+
+
+-- SAMPLE MASTER RECORDS
+
+INSERT INTO DMS_Master
+(
+    DocumentNo, ReferenceNo, Subject,
+    DocumentDate, Department, CreatedBy,
+    Status, Remarks
+)
+VALUES
+(
+    'DMS-001', 'REF-1001', 'Loan Proposal',
+    '2026-11-01', 'Credit SME', 'Administrator',
+    'Approved', 'Loan proposal document'
+),
+(
+    'DMS-002', 'REF-1002', 'Office Memorandum',
+    '2026-11-02', 'Administration', 'Administrator',
+    'Pending', 'Office memo for approval'
+),
+(
+    'DMS-003', 'REF-1003', 'Credit Proposal',
+    '2026-11-03', 'Credit Corporate', 'Administrator',
+    'Pending', 'Corporate credit proposal'
+);
+
+
+-- SAMPLE DETAILS
+
+INSERT INTO DMS_Detail
+(
+    MasterID, DetailType, Description,
+    ReferenceNo, Remarks
+)
+VALUES
+(1, 'Application', 'Loan application form', 'APP-001', 'Received'),
+(1, 'Supporting Document', 'Customer documents', 'SUP-001', 'Verified'),
+(1, 'Approval', 'Approval memorandum', 'APR-001', 'Approved'),
+(2, 'Office Memo', 'Internal office memo', 'MEM-001', 'Under review'),
+(3, 'Credit Report', 'Credit assessment report', 'CR-001', 'Pending review');
+
+
+
+
+<connectionStrings>
+    <add name="DMSConnection"
+         connectionString="Data Source=YOUR_SERVER;
+         Initial Catalog=YOUR_DATABASE;
+         Integrated Security=True"
+         providerName="System.Data.SqlClient"/>
+</connectionStrings>
+
+
+
+<%@ Page Language="C#" AutoEventWireup="true"
+    CodeFile="MasterDetail.aspx.cs"
+    Inherits="MasterDetail" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Master Detail Management</title>
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet"
+        href="bootstrap/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet"
+        href="plugins/datatables/dataTables.bootstrap.css" />
+
+    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+
+    <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+<style>
+
+    body {
+        background: #f1f4f9;
+        font-family: Arial, sans-serif;
+    }
+
+    .main-container {
+        padding: 25px;
+    }
+
+    .page-heading {
+        color: #173b61;
+        font-weight: 600;
+        margin: 0 0 20px;
+    }
+
+    .box-custom {
+        background: #fff;
+        border: 1px solid #e1e7ef;
+        border-top: 3px solid #1686c9;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,.04);
+    }
+
+    .box-header-custom {
+        padding: 15px;
+        border-bottom: 1px solid #e8edf3;
+        color: #173b61;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .box-body-custom {
+        padding: 18px;
+    }
+
+    #tblMaster thead th,
+    #tblDetails thead th {
+        background: #eaf2fb;
+        color: #173b61;
+        white-space: nowrap;
+    }
+
+    #tblMaster tbody tr {
+        cursor: pointer;
+    }
+
+    #tblMaster tbody tr:hover {
+        background: #edf6ff;
+    }
+
+    .modal-header-custom {
+        background: #1265a8;
+        color: white;
+    }
+
+    .modal-header-custom .close {
+        color: white;
+        opacity: 1;
+    }
+
+    .master-info-box {
+        background: #fff;
+        border: 1px solid #e0e7ef;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+
+    .master-info-title {
+        padding: 13px;
+        background: #eaf3fc;
+        color: #123c67;
+        font-weight: 600;
+        border-bottom: 1px solid #dce7f1;
+    }
+
+    .master-info-body {
+        padding: 15px;
+    }
+
+    .info-item {
+        margin-bottom: 13px;
+        padding-bottom: 9px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .info-label {
+        display: block;
+        color: #8a96a5;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: #263d55;
+        font-size: 13px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .detail-box {
+        background: white;
+        border: 1px solid #e0e7ef;
+        border-radius: 5px;
+        min-height: 450px;
+    }
+
+    .detail-header {
+        padding: 15px;
+        border-bottom: 1px solid #e5eaf0;
+    }
+
+    .detail-header h4 {
+        color: #123c67;
+        font-weight: 600;
+        margin: 0 0 5px;
+    }
+
+    .status-approved {
+        background: #dff3e5;
+        color: #237b42;
+    }
+
+    .status-pending {
+        background: #fff0cf;
+        color: #956400;
+    }
+
+    .status-rejected {
+        background: #fbe2e2;
+        color: #b72c2c;
+    }
+
+    .modal-dialog-large {
+        width: 95%;
+        max-width: 1450px;
+    }
+
+    .required {
+        color: red;
+    }
+
+    .detail-modal {
+        z-index: 1060;
+    }
+
+    body.modal-open .detail-modal {
+        overflow-y: auto;
+    }
+
+    @media(max-width:767px) {
+        .main-container {
+            padding: 10px;
+        }
+
+        .modal-dialog-large {
+            width: 96%;
+            margin: 10px auto;
+        }
+
+        .master-info-box {
+            margin-bottom: 15px;
+        }
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<form id="form1" runat="server">
+
+<asp:ScriptManager ID="ScriptManager1"
+    runat="server"
+    EnablePageMethods="true" />
+
+<div class="main-container">
+
+    <h3 class="page-heading">
+        <i class="fa fa-folder-open"></i>
+        Document Management System
+    </h3>
+
+
+    <!-- MASTER LIST -->
+
+    <div class="box-custom">
+
+        <div class="box-header-custom">
+
+            <i class="fa fa-list"></i>
+            Master Document Listing
+
+        </div>
+
+        <div class="box-body-custom table-responsive">
+
+            <table id="tblMaster"
+                class="table table-bordered table-striped table-hover">
+
+                <thead>
+                    <tr>
+                        <th>Document No</th>
+                        <th>Reference No</th>
+                        <th>Subject</th>
+                        <th>Department</th>
+                        <th>Document Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- MASTER + DETAIL VIEW MODAL -->
+
+<div class="modal fade" id="masterDetailModal"
+    tabindex="-1" role="dialog">
+
+    <div class="modal-dialog modal-dialog-large"
+        role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header modal-header-custom">
+
+                <button type="button"
+                    class="close"
+                    data-dismiss="modal">
+                    &times;
+                </button>
+
+                <h4 class="modal-title">
+                    <i class="fa fa-folder-open"></i>
+                    Master & Detail Information
+                </h4>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <!-- LEFT MASTER INFORMATION -->
+
+                    <div class="col-md-3">
+
+                        <div class="master-info-box">
+
+                            <div class="master-info-title">
+                                <i class="fa fa-info-circle"></i>
+                                Basic Information
+                            </div>
+
+                            <div class="master-info-body">
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Document No
+                                    </span>
+                                    <span id="vDocumentNo"
+                                        class="info-value">-</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Reference No
+                                    </span>
+                                    <span id="vReference"
+                                        class="info-value">-</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Subject
+                                    </span>
+                                    <span id="vSubject"
+                                        class="info-value">-</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Document Date
+                                    </span>
+                                    <span id="vDocumentDate"
+                                        class="info-value">-</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Department
+                                    </span>
+                                    <span id="vDepartment"
+                                        class="info-value">-</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Created By
+                                    </span>
+                                    <span id="vCreatedBy"
+                                        class="info-value">-</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Created Date
+                                    </span>
+                                    <span id="vCreatedDate"
+                                        class="info-value">-</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Status
+                                    </span>
+                                    <span id="vStatus"
+                                        class="label label-info">-</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        Remarks
+                                    </span>
+                                    <span id="vRemarks"
+                                        class="info-value">-</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <button type="button"
+                            id="btnEditMaster"
+                            class="btn btn-primary btn-block">
+
+                            <i class="fa fa-edit"></i>
+                            Edit Master
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- RIGHT DETAIL INFORMATION -->
+
+                    <div class="col-md-9">
+
+                        <div class="detail-box">
+
+                            <div class="detail-header">
+
+                                <div class="row">
+
+                                    <div class="col-sm-8">
+
+                                        <h4>
+                                            <i class="fa fa-list-alt"></i>
+                                            Detail Records
+                                        </h4>
+
+                                        <small id="lblDetailDocument"
+                                            class="text-muted">
+                                            Select a document
+                                        </small>
+
+                                    </div>
+
+                                    <div class="col-sm-4 text-right">
+
+                                        <button type="button"
+                                            id="btnAddDetail"
+                                            class="btn btn-success btn-sm">
+
+                                            <i class="fa fa-plus"></i>
+                                            Add Detail
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="box-body-custom table-responsive">
+
+                                <table id="tblDetails"
+                                    class="table table-bordered table-striped table-hover">
+
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Detail Type</th>
+                                            <th>Description</th>
+                                            <th>Reference No</th>
+                                            <th>Remarks</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody></tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal">
+
+                    <i class="fa fa-times"></i>
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ADD / EDIT DETAIL MODAL -->
+
+<div class="modal fade detail-modal"
+    id="detailEditModal"
+    tabindex="-1"
+    role="dialog">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header modal-header-custom">
+
+                <button type="button"
+                    class="close"
+                    data-dismiss="modal">
+                    &times;
+                </button>
+
+                <h4 class="modal-title"
+                    id="detailModalTitle">
+
+                    <i class="fa fa-plus"></i>
+                    Add Detail
+
+                </h4>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <input type="hidden"
+                    id="hdnDetailID" />
+
+                <input type="hidden"
+                    id="hdnMasterID" />
+
+
+                <div class="form-group">
+
+                    <label>
+                        Detail Type
+                        <span class="required">*</span>
+                    </label>
+
+                    <select id="ddlDetailType"
+                        class="form-control">
+
+                        <option value="">-- Select Type --</option>
+                        <option value="Application">Application</option>
+                        <option value="Supporting Document">
+                            Supporting Document
+                        </option>
+                        <option value="Correspondence">
+                            Correspondence
+                        </option>
+                        <option value="Approval">Approval</option>
+                        <option value="Agreement">Agreement</option>
+                        <option value="Other">Other</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Description
+                        <span class="required">*</span>
+                    </label>
+
+                    <textarea id="txtDescription"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Enter description"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Reference No</label>
+
+                    <input type="text"
+                        id="txtReferenceNo"
+                        class="form-control"
+                        placeholder="Enter reference number" />
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Remarks</label>
+
+                    <textarea id="txtDetailRemarks"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Enter remarks"></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button type="button"
+                    id="btnSaveDetail"
+                    class="btn btn-primary">
+
+                    <i class="fa fa-save"></i>
+                    Save Detail
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</form>
+</body>
+</html>
+
+
+
+var masterTable;
+var detailTable;
+var selectedMaster = null;
+var detailRequest = null;
+
+
+// INITIALIZE PAGE
+
+$(document).ready(function () {
+
+
+    // MASTER DATATABLE
+
+    masterTable = $('#tblMaster').DataTable({
+
+        pageLength: 10,
+        ordering: true,
+        searching: true,
+        autoWidth: false,
+
+        columns: [
+
+            { data: 'DocumentNo' },
+            { data: 'ReferenceNo' },
+            { data: 'Subject' },
+            { data: 'Department' },
+            { data: 'DocumentDate' },
+
+            {
+                data: 'Status',
+                render: function (data) {
+
+                    var status = (data || '').toLowerCase();
+                    var cls = 'label-info';
+
+                    if (status === 'approved')
+                        cls = 'label-success';
+
+                    else if (status === 'pending')
+                        cls = 'label-warning';
+
+                    else if (status === 'rejected')
+                        cls = 'label-danger';
+
+                    return '<span class="label ' + cls + '">' +
+                        escapeHtml(data) + '</span>';
+                }
+            },
+
+            {
+                data: 'MasterID',
+                orderable: false,
+                searchable: false,
+
+                render: function (id) {
+
+                    return '<button type="button" ' +
+                        'class="btn btn-info btn-xs btnViewMaster" ' +
+                        'data-id="' + id + '">' +
+                        '<i class="fa fa-eye"></i> View' +
+                        '</button>';
+                }
+            }
+
+        ]
+
+    });
+
+
+    // DETAIL DATATABLE
+
+    detailTable = $('#tblDetails').DataTable({
+
+        pageLength: 10,
+        searching: true,
+        ordering: true,
+        autoWidth: false,
+
+        columns: [
+
+            { data: null },
+
+            { data: 'DetailType' },
+
+            { data: 'Description' },
+
+            { data: 'ReferenceNo' },
+
+            { data: 'Remarks' },
+
+            {
+                data: 'DetailID',
+                orderable: false,
+                searchable: false,
+
+                render: function (id) {
+
+                    return '<button type="button" ' +
+                        'class="btn btn-primary btn-xs btnEditDetail" ' +
+                        'data-id="' + id + '">' +
+                        '<i class="fa fa-edit"></i> Edit' +
+                        '</button>';
+                }
+            }
+
+        ],
+
+        columnDefs: [{
+            targets: 0,
+            render: function (data, type, row, meta) {
+                return meta.row +
+                    meta.settings._iDisplayStart + 1;
+            }
+        }]
+
+    });
+
+
+    // LOAD MASTER RECORDS
+
+    loadMasters();
+
+
+    // VIEW MASTER BUTTON
+
+    $('#tblMaster tbody').on('click',
+        '.btnViewMaster', function (e) {
+
+        e.stopPropagation();
+
+        var row = masterTable.row(
+            $(this).closest('tr')
+        ).data();
+
+        if (!row) return;
+
+        selectedMaster = row;
+
+        showMasterInfo(row);
+
+        // Clear old detail records
+
+        detailTable.clear().draw();
+
+        // Open master detail modal
+
+        $('#masterDetailModal').modal('show');
+
+        // Load selected master's details
+
+        loadDetails(row.MasterID);
+
+    });
+
+
+    // ADD DETAIL BUTTON
+
+    $('#btnAddDetail').click(function () {
+
+        if (!selectedMaster) return;
+
+        clearDetailForm();
+
+        $('#hdnMasterID').val(selectedMaster.MasterID);
+
+        $('#detailModalTitle').html(
+            '<i class="fa fa-plus"></i> Add Detail'
+        );
+
+        $('#detailEditModal').modal('show');
+
+    });
+
+
+    // EDIT DETAIL BUTTON
+
+    $('#tblDetails tbody').on('click',
+        '.btnEditDetail', function () {
+
+        var row = detailTable.row(
+            $(this).closest('tr')
+        ).data();
+
+        if (!row) return;
+
+        clearDetailForm();
+
+        $('#hdnDetailID').val(row.DetailID);
+
+        $('#hdnMasterID').val(selectedMaster.MasterID);
+
+        $('#ddlDetailType').val(row.DetailType);
+
+        $('#txtDescription').val(row.Description);
+
+        $('#txtReferenceNo').val(row.ReferenceNo);
+
+        $('#txtDetailRemarks').val(row.Remarks);
+
+        $('#detailModalTitle').html(
+            '<i class="fa fa-edit"></i> Edit Detail'
+        );
+
+        $('#detailEditModal').modal('show');
+
+    });
+
+
+    // SAVE DETAIL BUTTON
+
+    $('#btnSaveDetail').click(function () {
+
+        var detailId = parseInt(
+            $('#hdnDetailID').val() || 0
+        );
+
+        var masterId = parseInt(
+            $('#hdnMasterID').val() || 0
+        );
+
+        var detailType = $('#ddlDetailType').val();
+
+        var description = $.trim(
+            $('#txtDescription').val()
+        );
+
+        if (!masterId || !detailType || !description) {
+
+            alert('Please fill all required fields.');
+
+            return;
+        }
+
+
+        var data = {
+
+            detailId: detailId,
+
+            masterId: masterId,
+
+            detailType: detailType,
+
+            description: description,
+
+            referenceNo: $('#txtReferenceNo').val(),
+
+            remarks: $('#txtDetailRemarks').val()
+
+        };
+
+
+        $('#btnSaveDetail')
+            .prop('disabled', true)
+            .html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "MasterDetail.aspx/SaveDetail",
+
+            data: JSON.stringify(data),
+
+            contentType: "application/json; charset=utf-8",
+
+            dataType: "json",
+
+            success: function (response) {
+
+                $('#btnSaveDetail')
+                    .prop('disabled', false)
+                    .html('<i class="fa fa-save"></i> Save Detail');
+
+                if (response.d.Success) {
+
+                    $('#detailEditModal').modal('hide');
+
+                    loadDetails(masterId);
+
+                    alert(response.d.Message);
+
+                }
+                else {
+
+                    alert(response.d.Message);
+
+                }
+
+            },
+
+            error: function (xhr) {
+
+                $('#btnSaveDetail')
+                    .prop('disabled', false)
+                    .html('<i class="fa fa-save"></i> Save Detail');
+
+                console.log(xhr.responseText);
+
+                alert('Unable to save detail record.');
+
+            }
+
+        });
+
+    });
+
+
+    // EDIT MASTER BUTTON
+
+    $('#btnEditMaster').click(function () {
+
+        if (!selectedMaster) return;
+
+        // Connect your existing master edit modal here.
+
+        alert('Selected Master ID: ' +
+            selectedMaster.MasterID);
+
+    });
+
+
+    // STACKED MODAL BACKDROP
+
+    $('#detailEditModal').on('show.bs.modal', function () {
+
+        $(this).appendTo('body');
+
+    });
+
+    $('#detailEditModal').on('shown.bs.modal', function () {
+
+        $('.modal-backdrop').last().css('z-index', 1055);
+
+        $(this).css('z-index', 1060);
+
+    });
+
+});
+
+
+// LOAD MASTER RECORDS
+
+function loadMasters() {
+
+    $.ajax({
+
+        type: "POST",
+
+        url: "MasterDetail.aspx/GetMasters",
+
+        data: "{}",
+
+        contentType: "application/json; charset=utf-8",
+
+        dataType: "json",
+
+        success: function (response) {
+
+            masterTable.clear();
+
+            masterTable.rows.add(response.d);
+
+            masterTable.draw();
+
+        },
+
+        error: function (xhr) {
+
+            console.log(xhr.responseText);
+
+            alert('Unable to load master records.');
+
+        }
+
+    });
+
+}
+
+
+// SHOW MASTER INFORMATION
+
+function showMasterInfo(row) {
+
+    $('#vDocumentNo').text(row.DocumentNo || '-');
+
+    $('#vReference').text(row.ReferenceNo || '-');
+
+    $('#vSubject').text(row.Subject || '-');
+
+    $('#vDocumentDate').text(row.DocumentDate || '-');
+
+    $('#vDepartment').text(row.Department || '-');
+
+    $('#vCreatedBy').text(row.CreatedBy || '-');
+
+    $('#vCreatedDate').text(row.CreatedDate || '-');
+
+    $('#vRemarks').text(row.Remarks || '-');
+
+
+    var status = row.Status || '-';
+
+    var cls = 'label-info';
+
+    if (status.toLowerCase() === 'approved')
+        cls = 'label-success';
+
+    else if (status.toLowerCase() === 'pending')
+        cls = 'label-warning';
+
+    else if (status.toLowerCase() === 'rejected')
+        cls = 'label-danger';
+
+
+    $('#vStatus')
+        .removeClass('label-info label-success label-warning label-danger')
+        .addClass('label ' + cls)
+        .text(status);
+
+
+    $('#lblDetailDocument').text(
+        row.DocumentNo + ' - ' + row.Subject
+    );
+
+}
+
+
+// LOAD DETAIL RECORDS
+
+function loadDetails(masterId) {
+
+    if (detailRequest) {
+        detailRequest.abort();
+    }
+
+    detailTable.clear().draw();
+
+    detailRequest = $.ajax({
+
+        type: "POST",
+
+        url: "MasterDetail.aspx/GetDetails",
+
+        data: JSON.stringify({
+            masterId: masterId
+        }),
+
+        contentType: "application/json; charset=utf-8",
+
+        dataType: "json",
+
+        success: function (response) {
+
+            if (!selectedMaster ||
+                selectedMaster.MasterID != masterId) {
+                return;
+            }
+
+            detailTable.clear();
+
+            detailTable.rows.add(response.d);
+
+            detailTable.draw();
+
+        },
+
+        error: function (xhr, status) {
+
+            if (status !== 'abort') {
+
+                console.log(xhr.responseText);
+
+                alert('Unable to load detail records.');
+
+            }
+
+        },
+
+        complete: function () {
+            detailRequest = null;
+        }
+
+    });
+
+}
+
+
+// CLEAR DETAIL FORM
+
+function clearDetailForm() {
+
+    $('#hdnDetailID').val('');
+
+    $('#hdnMasterID').val('');
+
+    $('#ddlDetailType').val('');
+
+    $('#txtDescription').val('');
+
+    $('#txtReferenceNo').val('');
+
+    $('#txtDetailRemarks').val('');
+
+}
+
+
+// HTML ENCODING
+
+function escapeHtml(value) {
+
+    return $('<div/>')
+        .text(value == null ? '' : value)
+        .html();
+
+}
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Web.Services;
+using System.Web.Script.Services;
+
+public partial class MasterDetail : System.Web.UI.Page
+{
+    private static readonly string conStr =
+        ConfigurationManager.ConnectionStrings[
+            "DMSConnection"
+        ].ConnectionString;
+
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        // Add your login/session authorization check here.
+    }
+
+
+    // =====================================
+    // MASTER MODEL
+    // =====================================
+
+    public class MasterModel
+    {
+        public int MasterID { get; set; }
+
+        public string DocumentNo { get; set; }
+
+        public string ReferenceNo { get; set; }
+
+        public string Subject { get; set; }
+
+        public string DocumentDate { get; set; }
+
+        public string Department { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string CreatedDate { get; set; }
+
+        public string Status { get; set; }
+
+        public string Remarks { get; set; }
+    }
+
+
+    // =====================================
+    // DETAIL MODEL
+    // =====================================
+
+    public class DetailModel
+    {
+        public int DetailID { get; set; }
+
+        public string DetailType { get; set; }
+
+        public string Description { get; set; }
+
+        public string ReferenceNo { get; set; }
+
+        public string Remarks { get; set; }
+    }
+
+
+    // =====================================
+    // SAVE RESPONSE MODEL
+    // =====================================
+
+    public class SaveResult
+    {
+        public bool Success { get; set; }
+
+        public string Message { get; set; }
+
+        public int ID { get; set; }
+    }
+
+
+    // =====================================
+    // GET ALL MASTER RECORDS
+    // =====================================
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static List<MasterModel> GetMasters()
+    {
+        List<MasterModel> list = new List<MasterModel>();
+
+        using (SqlConnection con = new SqlConnection(conStr))
+        {
+            string sql = @"
+                SELECT
+                    MasterID,
+                    DocumentNo,
+                    ReferenceNo,
+                    Subject,
+                    DocumentDate,
+                    Department,
+                    CreatedBy,
+                    CreatedDate,
+                    Status,
+                    Remarks
+                FROM DMS_Master
+                ORDER BY MasterID DESC";
+
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            {
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        MasterModel obj = new MasterModel();
+
+                        obj.MasterID = Convert.ToInt32(
+                            dr["MasterID"]);
+
+                        obj.DocumentNo = GetString(
+                            dr["DocumentNo"]);
+
+                        obj.ReferenceNo = GetString(
+                            dr["ReferenceNo"]);
+
+                        obj.Subject = GetString(
+                            dr["Subject"]);
+
+                        obj.DocumentDate =
+                            dr["DocumentDate"] == DBNull.Value
+                            ? ""
+                            : Convert.ToDateTime(
+                                dr["DocumentDate"]
+                              ).ToString("dd-MMM-yyyy");
+
+                        obj.Department = GetString(
+                            dr["Department"]);
+
+                        obj.CreatedBy = GetString(
+                            dr["CreatedBy"]);
+
+                        obj.CreatedDate =
+                            dr["CreatedDate"] == DBNull.Value
+                            ? ""
+                            : Convert.ToDateTime(
+                                dr["CreatedDate"]
+                              ).ToString("dd-MMM-yyyy HH:mm");
+
+                        obj.Status = GetString(
+                            dr["Status"]);
+
+                        obj.Remarks = GetString(
+                            dr["Remarks"]);
+
+                        list.Add(obj);
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+
+    // =====================================
+    // GET DETAILS BY MASTER ID
+    // =====================================
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static List<DetailModel> GetDetails(int masterId)
+    {
+        List<DetailModel> list = new List<DetailModel>();
+
+        using (SqlConnection con = new SqlConnection(conStr))
+        {
+            string sql = @"
+                SELECT
+                    DetailID,
+                    DetailType,
+                    Description,
+                    ReferenceNo,
+                    Remarks
+                FROM DMS_Detail
+                WHERE MasterID = @MasterID
+                ORDER BY DetailID DESC";
+
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            {
+                cmd.Parameters.Add(
+                    "@MasterID",
+                    SqlDbType.Int
+                ).Value = masterId;
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        DetailModel obj = new DetailModel();
+
+                        obj.DetailID = Convert.ToInt32(
+                            dr["DetailID"]);
+
+                        obj.DetailType = GetString(
+                            dr["DetailType"]);
+
+                        obj.Description = GetString(
+                            dr["Description"]);
+
+                        obj.ReferenceNo = GetString(
+                            dr["ReferenceNo"]);
+
+                        obj.Remarks = GetString(
+                            dr["Remarks"]);
+
+                        list.Add(obj);
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+
+    // =====================================
+    // SAVE DETAIL - INSERT / UPDATE
+    // =====================================
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static SaveResult SaveDetail(
+        int detailId,
+        int masterId,
+        string detailType,
+        string description,
+        string referenceNo,
+        string remarks)
+    {
+        SaveResult result = new SaveResult();
+
+        try
+        {
+            if (masterId <= 0)
+            {
+                result.Success = false;
+                result.Message = "Invalid master record.";
+                return result;
+            }
+
+            if (string.IsNullOrWhiteSpace(detailType) ||
+                string.IsNullOrWhiteSpace(description))
+            {
+                result.Success = false;
+                result.Message = "Required fields are missing.";
+                return result;
+            }
+
+
+            using (SqlConnection con = new SqlConnection(conStr))
+            {
+                con.Open();
+
+                // Verify parent exists
+
+                string checkSql = @"
+                    SELECT COUNT(1)
+                    FROM DMS_Master
+                    WHERE MasterID = @MasterID";
+
+                using (SqlCommand checkCmd =
+                    new SqlCommand(checkSql, con))
+                {
+                    checkCmd.Parameters.Add(
+                        "@MasterID",
+                        SqlDbType.Int
+                    ).Value = masterId;
+
+                    if (Convert.ToInt32(
+                        checkCmd.ExecuteScalar()) == 0)
+                    {
+                        result.Success = false;
+                        result.Message = "Master record not found.";
+                        return result;
+                    }
+                }
+
+
+                if (detailId == 0)
+                {
+                    // INSERT
+
+                    string insertSql = @"
+                        INSERT INTO DMS_Detail
+                        (
+                            MasterID,
+                            DetailType,
+                            Description,
+                            ReferenceNo,
+                            Remarks
+                        )
+                        VALUES
+                        (
+                            @MasterID,
+                            @DetailType,
+                            @Description,
+                            @ReferenceNo,
+                            @Remarks
+                        );
+
+                        SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+
+                    using (SqlCommand cmd =
+                        new SqlCommand(insertSql, con))
+                    {
+                        AddDetailParameters(
+                            cmd,
+                            masterId,
+                            detailType,
+                            description,
+                            referenceNo,
+                            remarks
+                        );
+
+                        result.ID = Convert.ToInt32(
+                            cmd.ExecuteScalar());
+                    }
+
+                    result.Success = true;
+                    result.Message = "Detail saved successfully.";
+                }
+                else
+                {
+                    // UPDATE
+
+                    string updateSql = @"
+                        UPDATE DMS_Detail
+                        SET
+                            DetailType = @DetailType,
+                            Description = @Description,
+                            ReferenceNo = @ReferenceNo,
+                            Remarks = @Remarks
+                        WHERE
+                            DetailID = @DetailID
+                            AND MasterID = @MasterID";
+
+
+                    using (SqlCommand cmd =
+                        new SqlCommand(updateSql, con))
+                    {
+                        AddDetailParameters(
+                            cmd,
+                            masterId,
+                            detailType,
+                            description,
+                            referenceNo,
+                            remarks
+                        );
+
+                        cmd.Parameters.Add(
+                            "@DetailID",
+                            SqlDbType.Int
+                        ).Value = detailId;
+
+                        int affected = cmd.ExecuteNonQuery();
+
+                        if (affected > 0)
+                        {
+                            result.Success = true;
+                            result.Message =
+                                "Detail updated successfully.";
+
+                            result.ID = detailId;
+                        }
+                        else
+                        {
+                            result.Success = false;
+                            result.Message =
+                                "Detail record not found.";
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log ex securely on the server.
+
+            result.Success = false;
+            result.Message =
+                "Unable to save detail record. Please try again.";
+        }
+
+        return result;
+    }
+
+
+    // =====================================
+    // DETAIL SQL PARAMETERS
+    // =====================================
+
+    private static void AddDetailParameters(
+        SqlCommand cmd,
+        int masterId,
+        string detailType,
+        string description,
+        string referenceNo,
+        string remarks)
+    {
+        cmd.Parameters.Add(
+            "@MasterID",
+            SqlDbType.Int
+        ).Value = masterId;
+
+        cmd.Parameters.Add(
+            "@DetailType",
+            SqlDbType.VarChar,
+            100
+        ).Value = detailType.Trim();
+
+        cmd.Parameters.Add(
+            "@Description",
+            SqlDbType.VarChar,
+            500
+        ).Value = description.Trim();
+
+        cmd.Parameters.Add(
+            "@ReferenceNo",
+            SqlDbType.VarChar,
+            100
+        ).Value = string.IsNullOrWhiteSpace(referenceNo)
+            ? (object)DBNull.Value
+            : referenceNo.Trim();
+
+        cmd.Parameters.Add(
+            "@Remarks",
+            SqlDbType.VarChar,
+            500
+        ).Value = string.IsNullOrWhiteSpace(remarks)
+            ? (object)DBNull.Value
+            : remarks.Trim();
+    }
+
+
+    // =====================================
+    // NULL SAFE STRING
+    // =====================================
+
+    private static string GetString(object value)
+    {
+        return value == DBNull.Value
+            ? ""
+            : Convert.ToString(value);
+    }
+
+}
+
+
+
+
+
+
+
+// Adjust DataTable columns after opening modal
+
+$('#masterDetailModal').on('shown.bs.modal', function () {
+
+    detailTable.columns.adjust().draw(false);
+
+});
+
+
+// Keep parent modal active when child modal closes
+
+$('#detailEditModal').on('hidden.bs.modal', function () {
+
+    if ($('#masterDetailModal').hasClass('in')) {
+        $('body').addClass('modal-open');
+    }
+
+});
