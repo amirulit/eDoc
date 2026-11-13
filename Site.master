@@ -1,215 +1,185 @@
-﻿
-<%@ Master Language="C#" AutoEventWireup="true"
-    CodeFile="Site.Master.cs" Inherits="SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.Master.cs" Inherits="SiteMaster" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MBPLC DMS</title>
-
-    <link rel="stylesheet"
-          href="bootstrap/css/bootstrap.min.css" />
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
-
-    <link rel="stylesheet"
-          href="dist/css/AdminLTE.min.css" />
-
-    <link rel="stylesheet"
-          href="dist/css/skins/_all-skins.min.css" />
-
-    <link rel="stylesheet"
-          href="plugins/datatables/dataTables.bootstrap.css" />
-
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css" />
+    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" />
     <style type="text/css">
-
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+        body
+        {
+            font-family: 'Segoe UI' , Arial, sans-serif;
         }
-
-        .skin-blue .main-header .logo {
+        .skin-blue .main-header .logo
+        {
             background-color: #092c55;
             color: #fff;
             font-weight: bold;
         }
-
-        .skin-blue .main-header .navbar {
+        .skin-blue .main-header .navbar
+        {
             background-color: #1265a8;
         }
-
-        .skin-blue .main-sidebar {
+        .skin-blue .main-sidebar
+        {
             background-color: #173b60;
         }
-
-        .skin-blue .sidebar-menu > li.header {
+        .skin-blue .sidebar-menu > li.header
+        {
             color: #a9c4dc;
             background: #112e4b;
         }
-
-        .skin-blue .sidebar-menu > li > a {
+        .skin-blue .sidebar-menu > li > a
+        {
             color: #e4edf7;
             padding: 13px 10px;
         }
-
-        .skin-blue .sidebar-menu > li.active > a,
-        .skin-blue .sidebar-menu > li:hover > a {
+        .skin-blue .sidebar-menu > li.active > a, .skin-blue .sidebar-menu > li:hover > a
+        {
             color: #fff;
             background: #1265a8;
             border-left-color: #36b9e9;
         }
-
-        .content-wrapper {
+        .content-wrapper
+        {
             background: #f0f5fa;
         }
-
-        .content-header h1 {
+        .content-header h1
+        {
             color: #123c67;
             font-weight: 600;
         }
-
-        .box {
+        .box
+        {
             border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0,0,0,.05);
         }
-
-        .box.box-primary {
+        .box.box-primary
+        {
             border-top-color: #1686c9;
         }
-
-        .form-control {
+        .form-control
+        {
             border-radius: 4px;
             box-shadow: none;
         }
-
-        .btn-primary {
+        .btn-primary
+        {
             background-color: #1686c9;
             border-color: #1686c9;
         }
-
-        .content-wrapper .table th {
+        .content-wrapper .table th
+        {
             background: #edf4fa;
             color: #234767;
         }
-
-        .main-footer {
+        .main-footer
+        {
             background: #fff;
             color: #718096;
         }
-        
-        
-        /* DataTable styling */
-
-.dataTables_wrapper {
-    padding-top: 10px;
-}
-
-.dataTables_filter input {
-    border: 1px solid #d4deea;
-    border-radius: 5px;
-    padding: 6px 10px;
-    margin-left: 5px;
-}
-
-.dataTables_length select {
-    border: 1px solid #d4deea;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-#tblDocuments thead th {
-    background: #eaf2fb;
-    color: #123c67;
-    font-weight: 600;
-    vertical-align: middle;
-}
-
-#tblDocuments tbody td {
-    vertical-align: middle;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: #1686c9 !important;
-    color: #fff !important;
-    border: 1px solid #1686c9 !important;
-    border-radius: 4px;
-}
-
+        /* DataTable styling */.dataTables_wrapper
+        {
+            padding-top: 10px;
+        }
+        .dataTables_filter input
+        {
+            border: 1px solid #d4deea;
+            border-radius: 5px;
+            padding: 6px 10px;
+            margin-left: 5px;
+        }
+        .dataTables_length select
+        {
+            border: 1px solid #d4deea;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        #tblDocuments thead th
+        {
+            background: #eaf2fb;
+            color: #123c67;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+        #tblDocuments tbody td
+        {
+            vertical-align: middle;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current
+        {
+            background: #1686c9 !important;
+            color: #fff !important;
+            border: 1px solid #1686c9 !important;
+            border-radius: 4px;
+        }
     </style>
-
-   <style type="text/css">
-    
-    /* Edit Modal */
-#editDocumentModal .modal-content {
-    border-radius: 8px;
-    border: none;
-    box-shadow: 0 10px 35px rgba(0,0,0,.2);
-    overflow: hidden;
-}
-
-#editDocumentModal .modal-header {
-    padding: 18px 20px;
-    border-bottom: none;
-}
-
-#editDocumentModal .modal-title {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-#editDocumentModal .modal-body {
-    padding: 25px;
-    background: #fff;
-}
-
-#editDocumentModal label {
-    color: #34495e;
-    font-weight: 600;
-    margin-bottom: 7px;
-}
-
-#editDocumentModal .form-control {
-    height: 40px;
-    border-radius: 5px;
-    border: 1px solid #d4deea;
-    box-shadow: none;
-}
-
-#editDocumentModal textarea.form-control {
-    height: auto;
-}
-
-#editDocumentModal .form-control:focus {
-    border-color: #1686c9;
-    box-shadow: 0 0 5px rgba(22,134,201,.2);
-}
-
-#editDocumentModal .modal-footer {
-    background: #f7faff;
-    border-top: 1px solid #e6edf5;
-    padding: 15px 25px;
-}
-    
+    <style type="text/css">
+        /* Edit Modal */#editDocumentModal .modal-content
+        {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 10px 35px rgba(0,0,0,.2);
+            overflow: hidden;
+        }
+        #editDocumentModal .modal-header
+        {
+            padding: 18px 20px;
+            border-bottom: none;
+        }
+        #editDocumentModal .modal-title
+        {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        #editDocumentModal .modal-body
+        {
+            padding: 25px;
+            background: #fff;
+        }
+        #editDocumentModal label
+        {
+            color: #34495e;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+        #editDocumentModal .form-control
+        {
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid #d4deea;
+            box-shadow: none;
+        }
+        #editDocumentModal textarea.form-control
+        {
+            height: auto;
+        }
+        #editDocumentModal .form-control:focus
+        {
+            border-color: #1686c9;
+            box-shadow: 0 0 5px rgba(22,134,201,.2);
+        }
+        #editDocumentModal .modal-footer
+        {
+            background: #f7faff;
+            border-top: 1px solid #e6edf5;
+            padding: 15px 25px;
+        }
     </style>
-
-    <asp:ContentPlaceHolder ID="head"
-        runat="server">
+    <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
-
 </head>
-
 <body class="hold-transition skin-blue sidebar-mini">
-
-<form id="form1" runat="server">
-
-<div class="wrapper">
-
-    <!-- HEADER -->
-    <header class="main-header">
+    <form id="form1" runat="server">
+    <div class="wrapper">
+        <!-- HEADER -->
+        <header class="main-header">
 
         <a href="Dashboard.aspx" class="logo">
 
@@ -304,10 +274,8 @@
         </nav>
 
     </header>
-
-
-    <!-- LEFT SIDEBAR -->
-    <aside class="main-sidebar">
+        <!-- LEFT SIDEBAR -->
+        <aside class="main-sidebar">
 
         <section class="sidebar">
 
@@ -437,12 +405,9 @@
         </section>
 
     </aside>
-
-
-    <!-- PAGE CONTENT -->
-    <div class="content-wrapper">
-
-        <section class="content-header">
+        <!-- PAGE CONTENT -->
+        <div class="content-wrapper">
+            <section class="content-header">
 
             <h1>
                 <asp:ContentPlaceHolder ID="PageTitle"
@@ -466,21 +431,16 @@
             </ol>
 
         </section>
-
-
-        <section class="content">
+            <section class="content">
 
             <asp:ContentPlaceHolder ID="MainContent"
                 runat="server">
             </asp:ContentPlaceHolder>
 
         </section>
-
-    </div>
-
-
-    <!-- FOOTER -->
-    <footer class="main-footer">
+        </div>
+        <!-- FOOTER -->
+        <footer class="main-footer">
 
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0
@@ -493,39 +453,30 @@
         <span> | All rights reserved.</span>
 
     </footer>
-
-</div>
-
-<!-- JS FILES -->
-<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
-
-<script src="bootstrap/js/bootstrap.min.js"></script>
-
-<script src="dist/js/app.min.js"></script>
-
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-
-<asp:ContentPlaceHolder ID="Scripts"
-    runat="server">
-
-    <script>
+    </div>
+    <!-- JS FILES -->
+    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="dist/js/app.min.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <asp:ContentPlaceHolder ID="Scripts" runat="server">
+        <script>
 
 
-        var detailTable;
+            var detailTable;
 
-        $(document).ready(function () {
+            $(document).ready(function () {
 
-            // Initialize DataTable
+                // Initialize DataTable
 
-            detailTable = $('#tblDetails').DataTable({
-                pageLength: 10,
-                searching: true,
-                ordering: true,
-                autoWidth: false,
+                detailTable = $('#tblDetails').DataTable({
+                    pageLength: 10,
+                    searching: true,
+                    ordering: true,
+                    autoWidth: false,
 
-                columns: [
+                    columns: [
             { data: null },
             { data: 'DetailType' },
             { data: 'Description' },
@@ -544,160 +495,158 @@
             }
         ],
 
-                columnDefs: [{
-                    targets: 0,
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                }]
-            });
+                    columnDefs: [{
+                        targets: 0,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    }]
+                });
 
 
-            // Master selection
+                // Master selection
 
-            $(document).on('click', '.master-item', function () {
+                $(document).on('click', '.master-item', function () {
 
-                $('.master-item').removeClass('active');
+                    $('.master-item').removeClass('active');
 
-                $(this).addClass('active');
+                    $(this).addClass('active');
 
-                var masterId = $(this).data('id');
+                    var masterId = $(this).data('id');
 
-                $('#hfSelectedMasterId').val(masterId);
+                    $('#hfSelectedMasterId').val(masterId);
 
-                $('#lblSelectedMaster').text(
+                    $('#lblSelectedMaster').text(
             $(this).find('strong').text() + ' - ' +
             $(this).find('small').first().text()
         );
 
-                $('#btnAddDetail').prop('disabled', false);
+                    $('#btnAddDetail').prop('disabled', false);
 
-                loadDetails(masterId);
+                    loadDetails(masterId);
 
-            });
-
-
-            // Select first master automatically
-
-            var firstMaster = $('.master-item').first();
-
-            if (firstMaster.length) {
-                firstMaster.trigger('click');
-            }
+                });
 
 
-            // Search master list
+                // Select first master automatically
 
-            $('#txtMasterSearch').on('keyup', function () {
+                var firstMaster = $('.master-item').first();
 
-                var value = $(this).val().toLowerCase();
+                if (firstMaster.length) {
+                    firstMaster.trigger('click');
+                }
 
-                $('.master-item').each(function () {
 
-                    $(this).toggle(
+                // Search master list
+
+                $('#txtMasterSearch').on('keyup', function () {
+
+                    var value = $(this).val().toLowerCase();
+
+                    $('.master-item').each(function () {
+
+                        $(this).toggle(
                 $(this).text().toLowerCase().indexOf(value) > -1
             );
+
+                    });
+
+                });
+
+
+                // Add detail
+
+                $('#btnAddDetail').click(function () {
+
+                    $('#editDetailId').val('');
+                    $('#editMasterId').val($('#hfSelectedMasterId').val());
+
+                    $('#ddlDetailType').val('');
+                    $('#txtDescription').val('');
+                    $('#txtReference').val('');
+                    $('#txtRemarks').val('');
+
+                    $('#detailModal').modal('show');
+
+                });
+
+
+                // Save detail
+                // Connect this to your SaveDetail WebMethod.
+
+                $('#btnSaveDetail').click(function () {
+
+                    var data = {
+                        masterId: parseInt($('#editMasterId').val()),
+                        detailId: parseInt($('#editDetailId').val() || 0),
+                        detailType: $('#ddlDetailType').val(),
+                        description: $('#txtDescription').val(),
+                        referenceNo: $('#txtReference').val(),
+                        remarks: $('#txtRemarks').val()
+                    };
+
+                    if (!data.detailType || !data.description) {
+                        alert('Please enter required fields.');
+                        return;
+                    }
+
+                    // Call your database save endpoint here.
+                    // On successful save:
+                    // $('#detailModal').modal('hide');
+                    // loadDetails(data.masterId);
+
+                    alert('Connect this button to your database save method.');
 
                 });
 
             });
 
 
-            // Add detail
+            // Load master-related details from database
 
-            $('#btnAddDetail').click(function () {
+            function loadDetails(masterId) {
 
-                $('#editDetailId').val('');
-                $('#editMasterId').val($('#hfSelectedMasterId').val());
+                detailTable.clear().draw();
 
-                $('#ddlDetailType').val('');
-                $('#txtDescription').val('');
-                $('#txtReference').val('');
-                $('#txtRemarks').val('');
+                $.ajax({
 
-                $('#detailModal').modal('show');
+                    type: "POST",
 
-            });
+                    url: "MasterDetail.aspx/GetDetails",
 
+                    data: JSON.stringify({
+                        masterId: masterId
+                    }),
 
-            // Save detail
-            // Connect this to your SaveDetail WebMethod.
+                    contentType: "application/json; charset=utf-8",
 
-            $('#btnSaveDetail').click(function () {
+                    dataType: "json",
 
-                var data = {
-                    masterId: parseInt($('#editMasterId').val()),
-                    detailId: parseInt($('#editDetailId').val() || 0),
-                    detailType: $('#ddlDetailType').val(),
-                    description: $('#txtDescription').val(),
-                    referenceNo: $('#txtReference').val(),
-                    remarks: $('#txtRemarks').val()
-                };
+                    success: function (response) {
 
-                if (!data.detailType || !data.description) {
-                    alert('Please enter required fields.');
-                    return;
-                }
+                        detailTable.clear();
 
-                // Call your database save endpoint here.
-                // On successful save:
-                // $('#detailModal').modal('hide');
-                // loadDetails(data.masterId);
+                        detailTable.rows.add(response.d);
 
-                alert('Connect this button to your database save method.');
+                        detailTable.draw();
 
-            });
+                    },
 
-        });
+                    error: function (xhr) {
 
+                        console.log(xhr.responseText);
 
-        // Load master-related details from database
+                        alert('Unable to load detail records.');
 
-        function loadDetails(masterId) {
+                    }
 
-            detailTable.clear().draw();
+                });
 
-            $.ajax({
-
-                type: "POST",
-
-                url: "MasterDetail.aspx/GetDetails",
-
-                data: JSON.stringify({
-                    masterId: masterId
-                }),
-
-                contentType: "application/json; charset=utf-8",
-
-                dataType: "json",
-
-                success: function (response) {
-
-                    detailTable.clear();
-
-                    detailTable.rows.add(response.d);
-
-                    detailTable.draw();
-
-                },
-
-                error: function (xhr) {
-
-                    console.log(xhr.responseText);
-
-                    alert('Unable to load detail records.');
-
-                }
-
-            });
-
-        }
+            }
 
     
     </script>
-</asp:ContentPlaceHolder>
-
-</form>
-
+    </asp:ContentPlaceHolder>
+    </form>
 </body>
 </html>

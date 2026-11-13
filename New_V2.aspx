@@ -367,6 +367,10 @@
 
             });
 
+
+
+
+
             $("#btnCreateUser").click(function () {
 
                 var bc = $("#branchcode").val();

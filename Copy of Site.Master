@@ -1,0 +1,804 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Copy of Site.Master.cs"
+    Inherits="SiteMaster" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MBPLC DMS</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css" />
+    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" />
+    <style type="text/css">
+        body
+        {
+            font-family: 'Segoe UI' , Arial, sans-serif;
+        }
+        .skin-blue .main-header .logo
+        {
+            background-color: #092c55;
+            color: #fff;
+            font-weight: bold;
+        }
+        .skin-blue .main-header .navbar
+        {
+            background-color: #1265a8;
+        }
+        .skin-blue .main-sidebar
+        {
+            background-color: #173b60;
+        }
+        .skin-blue .sidebar-menu > li.header
+        {
+            color: #a9c4dc;
+            background: #112e4b;
+        }
+        .skin-blue .sidebar-menu > li > a
+        {
+            color: #e4edf7;
+            padding: 13px 10px;
+        }
+        .skin-blue .sidebar-menu > li.active > a, .skin-blue .sidebar-menu > li:hover > a
+        {
+            color: #fff;
+            background: #1265a8;
+            border-left-color: #36b9e9;
+        }
+        .content-wrapper
+        {
+            background: #f0f5fa;
+        }
+        .content-header h1
+        {
+            color: #123c67;
+            font-weight: 600;
+        }
+        .box
+        {
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        }
+        .box.box-primary
+        {
+            border-top-color: #1686c9;
+        }
+        .form-control
+        {
+            border-radius: 4px;
+            box-shadow: none;
+        }
+        .btn-primary
+        {
+            background-color: #1686c9;
+            border-color: #1686c9;
+        }
+        .content-wrapper .table th
+        {
+            background: #edf4fa;
+            color: #234767;
+        }
+        .main-footer
+        {
+            background: #fff;
+            color: #718096;
+        }
+        /* DataTable styling */.dataTables_wrapper
+        {
+            padding-top: 10px;
+        }
+        .dataTables_filter input
+        {
+            border: 1px solid #d4deea;
+            border-radius: 5px;
+            padding: 6px 10px;
+            margin-left: 5px;
+        }
+        .dataTables_length select
+        {
+            border: 1px solid #d4deea;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        #tblDocuments thead th
+        {
+            background: #eaf2fb;
+            color: #123c67;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+        #tblDocuments tbody td
+        {
+            vertical-align: middle;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current
+        {
+            background: #1686c9 !important;
+            color: #fff !important;
+            border: 1px solid #1686c9 !important;
+            border-radius: 4px;
+        }
+    </style>
+    <style type="text/css">
+        /* Edit Modal */#editDocumentModal .modal-content
+        {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 10px 35px rgba(0,0,0,.2);
+            overflow: hidden;
+        }
+        #editDocumentModal .modal-header
+        {
+            padding: 18px 20px;
+            border-bottom: none;
+        }
+        #editDocumentModal .modal-title
+        {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        #editDocumentModal .modal-body
+        {
+            padding: 25px;
+            background: #fff;
+        }
+        #editDocumentModal label
+        {
+            color: #34495e;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+        #editDocumentModal .form-control
+        {
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid #d4deea;
+            box-shadow: none;
+        }
+        #editDocumentModal textarea.form-control
+        {
+            height: auto;
+        }
+        #editDocumentModal .form-control:focus
+        {
+            border-color: #1686c9;
+            box-shadow: 0 0 5px rgba(22,134,201,.2);
+        }
+        #editDocumentModal .modal-footer
+        {
+            background: #f7faff;
+            border-top: 1px solid #e6edf5;
+            padding: 15px 25px;
+        }
+        /* Compact Sidebar */.skin-blue .main-sidebar
+        {
+            background: #173b60;
+        }
+        .skin-blue .sidebar-menu > li > a
+        {
+            padding: 9px 10px;
+            font-size: 13px;
+        }
+        .skin-blue .sidebar-menu > li > a > i:first-child
+        {
+            width: 22px;
+            font-size: 15px;
+        }
+        /* Main menu headers */.skin-blue .sidebar-menu > li.header
+        {
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .7px;
+        }
+        /* Nested menu */.skin-blue .sidebar-menu .treeview-menu
+        {
+            background: #102f4d;
+            padding-left: 0;
+        }
+        .skin-blue .sidebar-menu .treeview-menu > li > a
+        {
+            padding: 7px 8px 7px 35px;
+            font-size: 12px;
+            color: #c5d6e7;
+        }
+        /* Nested icons */.skin-blue .sidebar-menu .treeview-menu > li > a > i
+        {
+            width: 18px;
+            font-size: 12px;
+        }
+        /* Hover and active */.skin-blue .sidebar-menu .treeview-menu > li.active > a, .skin-blue .sidebar-menu .treeview-menu > li > a:hover
+        {
+            color: #fff;
+            background: #1265a8;
+        }
+        /* Active parent */.skin-blue .sidebar-menu > li.active > a
+        {
+            background: #1265a8;
+            color: #fff;
+            border-left-color: #36b9e9;
+        }
+        /* Parent arrow */.sidebar-menu .treeview > a > .pull-right
+        {
+            transition: transform .2s ease;
+        }
+        .sidebar-menu .treeview.active > a > .pull-right
+        {
+            transform: rotate(-90deg);
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <form id="form1" runat="server">
+    <div class="wrapper">
+        <!-- HEADER -->
+        <header class="main-header">
+
+        <a href="Dashboard.aspx" class="logo">
+
+            <span class="logo-mini">
+                <b>D</b>MS
+            </span>
+
+            <span class="logo-lg">
+                <i class="fa fa-folder-open"></i>
+                <b>MBPLC</b> DMS
+            </span>
+
+        </a>
+
+        <nav class="navbar navbar-static-top">
+
+            <a href="#" class="sidebar-toggle"
+               data-toggle="offcanvas"
+               role="button">
+
+                <span class="sr-only">Toggle navigation</span>
+
+            </a>
+
+            <div class="navbar-custom-menu">
+
+                <ul class="nav navbar-nav">
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-bell"></i>
+                        </a>
+                    </li>
+
+                    <li class="dropdown user user-menu">
+
+                        <a href="#" class="dropdown-toggle"
+                           data-toggle="dropdown">
+
+                            <img src="dist/img/user2-160x160.jpg"
+                                 class="user-image"
+                                 alt="User" />
+
+                            <span class="hidden-xs">
+                                Administrator
+                            </span>
+
+                        </a>
+
+                        <ul class="dropdown-menu">
+
+                            <li class="user-header"
+                                style="background:#1265a8;">
+
+                                <img src="dist/img/user2-160x160.jpg"
+                                     class="img-circle"
+                                     alt="User" />
+
+                                <p>
+                                    MBPLC DMS
+                                    <small>System User</small>
+                                </p>
+
+                            </li>
+
+                            <li class="user-footer">
+
+                                <div class="pull-left">
+                                    <a href="UserManagement.aspx"
+                                       class="btn btn-default btn-flat">
+                                        Profile
+                                    </a>
+                                </div>
+
+                                <div class="pull-right">
+                                    <a href="Login_20261112.aspx"
+                                       class="btn btn-default btn-flat">
+                                        Sign out
+                                    </a>
+                                </div>
+
+                            </li>
+
+                        </ul>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
+
+    </header>
+        <!-- LEFT SIDEBAR -->
+        <aside class="main-sidebar">
+
+        <section class="sidebar">
+
+            <div class="user-panel">
+
+                <div class="pull-left image">
+
+                    <img src="dist/img/user2-160x160.jpg"
+                         class="img-circle"
+                         alt="User" />
+
+                </div>
+
+                <div class="pull-left info">
+
+                    <p>Administrator</p>
+
+                    <a href="#">
+                        <i class="fa fa-circle text-success"></i>
+                        Online
+                    </a>
+
+                </div>
+
+            </div>
+
+
+         <%-- 
+            <form class="sidebar-form">
+
+                <div class="input-group">
+
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Search..." />
+
+                    <span class="input-group-btn">
+
+                        <button type="button"
+                                class="btn btn-flat">
+
+                            <i class="fa fa-search"></i>
+
+                        </button>
+
+                    </span>
+
+                </div>
+
+            </form>--%>
+
+
+            <!-- MENU -->
+         
+<ul class="sidebar-menu">
+
+    <li class="header">MAIN NAVIGATION</li>
+
+    <!-- Dashboard -->
+    <li id="menuDashboard">
+        <a href="Dashboard_New.aspx">
+            <i class="fa fa-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <!-- DOCUMENT MANAGEMENT -->
+    <li class="treeview" id="menuDocuments">
+
+        <a href="#">
+            <i class="fa fa-folder-open"></i>
+            <span>Document Management</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="treeview-menu">
+
+            <li>
+                <a href="DocumentEntry.aspx">
+                    <i class="fa fa-plus-circle"></i>
+                    New Document
+                </a>
+            </li>
+
+            <li>
+                <a href="DocumentList.aspx">
+                    <i class="fa fa-list-alt"></i>
+                    All Documents
+                </a>
+            </li>
+
+            <li>
+                <a href="DocumentList.aspx?status=Pending">
+                    <i class="fa fa-clock-o"></i>
+                    Pending Documents
+                </a>
+            </li>
+
+            <li>
+                <a href="DocumentList.aspx?status=Approved">
+                    <i class="fa fa-check-circle"></i>
+                    Approved Documents
+                </a>
+            </li>
+
+            <li>
+                <a href="DocumentList.aspx?status=Rejected">
+                    <i class="fa fa-times-circle"></i>
+                    Rejected Documents
+                </a>
+            </li>
+
+        </ul>
+
+    </li>
+
+
+    <!-- ADMINISTRATION -->
+    <li class="treeview" id="menuAdministration">
+
+        <a href="#">
+            <i class="fa fa-cogs"></i>
+            <span>Administration</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="treeview-menu">
+
+            <li>
+                <a href="UserManagement.aspx">
+                    <i class="fa fa-users"></i>
+                    User Management
+                </a>
+            </li>
+
+            <li>
+                <a href="Reports.aspx">
+                    <i class="fa fa-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+
+            <li>
+                <a href="Settings.aspx">
+                    <i class="fa fa-cog"></i>
+                    Settings
+                </a>
+            </li>
+
+        </ul>
+
+    </li>
+
+</ul>
+
+
+        </section>
+
+    </aside>
+        <!-- PAGE CONTENT -->
+        <div class="content-wrapper">
+            <section class="content-header">
+
+            <h1>
+                <asp:ContentPlaceHolder ID="PageTitle"
+                    runat="server">
+                </asp:ContentPlaceHolder>
+            </h1>
+
+            <ol class="breadcrumb">
+
+                <li>
+                    <a href="Dashboard.aspx">
+                        <i class="fa fa-dashboard"></i>
+                        Home
+                    </a>
+                </li>
+
+                <li class="active">
+                    MBPLC DMS
+                </li>
+
+            </ol>
+
+        </section>
+            <section class="content">
+
+            <asp:ContentPlaceHolder ID="MainContent"
+                runat="server">
+            </asp:ContentPlaceHolder>
+
+        </section>
+        </div>
+        <!-- FOOTER -->
+        <footer class="main-footer">
+
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0
+        </div>
+
+        <strong>
+            MBPLC Document Management System
+        </strong>
+
+        <span> | All rights reserved.</span>
+
+    </footer>
+    </div>
+    <!-- JS FILES -->
+    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="dist/js/app.min.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <asp:ContentPlaceHolder ID="Scripts" runat="server">
+        <script>
+
+
+            var detailTable;
+
+            $(document).ready(function () {
+
+                // Initialize DataTable
+
+                detailTable = $('#tblDetails').DataTable({
+                    pageLength: 10,
+                    searching: true,
+                    ordering: true,
+                    autoWidth: false,
+
+                    columns: [
+            { data: null },
+            { data: 'DetailType' },
+            { data: 'Description' },
+            { data: 'ReferenceNo' },
+            { data: 'Remarks' },
+            {
+                data: 'DetailID',
+                orderable: false,
+                searchable: false,
+                render: function (id) {
+                    return '<button type="button" ' +
+                        'class="btn btn-primary btn-xs btnEditDetail" ' +
+                        'data-id="' + id + '">' +
+                        '<i class="fa fa-edit"></i></button>';
+                }
+            }
+        ],
+
+                    columnDefs: [{
+                        targets: 0,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    }]
+                });
+
+
+                // Master selection
+
+                $(document).on('click', '.master-item', function () {
+
+                    $('.master-item').removeClass('active');
+
+                    $(this).addClass('active');
+
+                    var masterId = $(this).data('id');
+
+                    $('#hfSelectedMasterId').val(masterId);
+
+                    $('#lblSelectedMaster').text(
+            $(this).find('strong').text() + ' - ' +
+            $(this).find('small').first().text()
+        );
+
+                    $('#btnAddDetail').prop('disabled', false);
+
+                    loadDetails(masterId);
+
+                });
+
+
+                // Select first master automatically
+
+                var firstMaster = $('.master-item').first();
+
+                if (firstMaster.length) {
+                    firstMaster.trigger('click');
+                }
+
+
+                // Search master list
+
+                $('#txtMasterSearch').on('keyup', function () {
+
+                    var value = $(this).val().toLowerCase();
+
+                    $('.master-item').each(function () {
+
+                        $(this).toggle(
+                $(this).text().toLowerCase().indexOf(value) > -1
+            );
+
+                    });
+
+                });
+
+
+                // Add detail
+
+                $('#btnAddDetail').click(function () {
+
+                    $('#editDetailId').val('');
+                    $('#editMasterId').val($('#hfSelectedMasterId').val());
+
+                    $('#ddlDetailType').val('');
+                    $('#txtDescription').val('');
+                    $('#txtReference').val('');
+                    $('#txtRemarks').val('');
+
+                    $('#detailModal').modal('show');
+
+                });
+
+
+                // Save detail
+                // Connect this to your SaveDetail WebMethod.
+
+                $('#btnSaveDetail').click(function () {
+
+                    var data = {
+                        masterId: parseInt($('#editMasterId').val()),
+                        detailId: parseInt($('#editDetailId').val() || 0),
+                        detailType: $('#ddlDetailType').val(),
+                        description: $('#txtDescription').val(),
+                        referenceNo: $('#txtReference').val(),
+                        remarks: $('#txtRemarks').val()
+                    };
+
+                    if (!data.detailType || !data.description) {
+                        alert('Please enter required fields.');
+                        return;
+                    }
+
+                    // Call your database save endpoint here.
+                    // On successful save:
+                    // $('#detailModal').modal('hide');
+                    // loadDetails(data.masterId);
+
+                    alert('Connect this button to your database save method.');
+
+                });
+
+            });
+
+
+            // Load master-related details from database
+
+            function loadDetails(masterId) {
+
+                detailTable.clear().draw();
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: "MasterDetail.aspx/GetDetails",
+
+                    data: JSON.stringify({
+                        masterId: masterId
+                    }),
+
+                    contentType: "application/json; charset=utf-8",
+
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        detailTable.clear();
+
+                        detailTable.rows.add(response.d);
+
+                        detailTable.draw();
+
+                    },
+
+                    error: function (xhr) {
+
+                        console.log(xhr.responseText);
+
+                        alert('Unable to load detail records.');
+
+                    }
+
+                });
+
+            }
+
+
+            $(document).ready(function () {
+
+                // Get current page name
+                var currentPage = window.location.pathname
+        .split('/')
+        .pop()
+        .toLowerCase();
+
+                // Get current query string
+                var currentQuery = window.location.search.toLowerCase();
+
+                // First collapse all parent menus
+                $('.sidebar-menu li.treeview')
+        .removeClass('active menu-open');
+
+                $('.sidebar-menu li.treeview > .treeview-menu')
+        .hide();
+
+                // Remove previous active items
+                $('.sidebar-menu li').removeClass('active');
+
+                // Find matching sidebar link
+                $('.sidebar-menu a').each(function () {
+
+                    var href = $(this).attr('href');
+
+                    if (!href || href === '#') {
+                        return;
+                    }
+
+                    var link = document.createElement('a');
+                    link.href = href;
+
+                    var linkPage = link.pathname
+            .split('/')
+            .pop()
+            .toLowerCase();
+
+                    var linkQuery = link.search.toLowerCase();
+
+                    // Match page and query parameters
+                    if (linkPage === currentPage &&
+            linkQuery === currentQuery) {
+
+                        var currentLi = $(this).parent('li');
+
+                        // Highlight submenu
+                        currentLi.addClass('active');
+
+                        // Expand only its parent
+                        var parentTree = currentLi.closest('li.treeview');
+
+                        if (parentTree.length) {
+
+                            parentTree.addClass('active menu-open');
+
+                            parentTree.children('.treeview-menu').show();
+
+                        }
+                    }
+
+                });
+
+            });
+
+    </script>
+    </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>
