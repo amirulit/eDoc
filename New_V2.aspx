@@ -279,13 +279,92 @@
 
                 $("#ddlrole").empty().append('<option value="">--Select--</option>');
 
-                if (selectedValue === "CAD") {
-                    $("#ddlrole").append('<option value="21">DM</option>');
-                    $("#ddlrole").append('<option value="23">Unit Head</option>');
-                } else {
+                if (selectedValue == "Credit Division") {
+
+
+                    $("#ddlrole").append('<option value="21">RM-CBD</option>');
+                    $("#ddlrole").append('<option value="23">Unit Head-CBD</option>');
+
+                    $("#ddlrole").append('<option value="25">RM-Retail</option>');
+                    $("#ddlrole").append('<option value="27">Unit Head-Retail</option>');
+
+                    $("#ddlrole").append('<option value="29">RM-CMSME</option>');
+                    $("#ddlrole").append('<option value="31">Unit Head-CMSME</option>');
+
+                    $("#ddlrole").append('<option value="33">RM-Agri</option>');
+                    $("#ddlrole").append('<option value="35">Unit Head-Agri</option>');
+
+
+
+                }
+
+
+
+                else if (selectedValue == "SAMD") {
+                    $("#ddlrole").append('<option value="37">DM-SAMD</option>');
+                    $("#ddlrole").append('<option value="39">Unit Head-SAMD</option>');
+                }
+
+
+                else if (selectedValue == "OBU") {
+
+
+                    $("#ddlrole").append('<option value="41">RM-OBU</option>');
+                    $("#ddlrole").append('<option value="43">Unit Head-OBU</option>');
+
+
+
+
+                }
+
+
+                else if (selectedValue == "CAD") {
+
+
+                    $("#ddlrole").append('<option value="51">DM-Corporate</option>');
+                    $("#ddlrole").append('<option value="53">Unit Head-Corporate</option>');
+
+
+                    $("#ddlrole").append('<option value="55">DM-CMSME & Agri</option>');
+                    $("#ddlrole").append('<option value="57">Unit Head-CMSME & Agri</option>');
+
+
+                    $("#ddlrole").append('<option value="59">DM-Retail</option>');
+                    $("#ddlrole").append('<option value="61">Unit Head-Retail</option>');
+
+
+                    $("#ddlrole").append('<option value="63">LM-Limit Unit</option>');
+                    $("#ddlrole").append('<option value="65">Unit Head-Limit Unit</option>');
+
+
+
+
+
+                }
+
+                else if (selectedValue == "ICCD") {
+
+
+                    $("#ddlrole").append('<option value="67">DO-ICCD</option>');
+                    $("#ddlrole").append('<option value="69">Unit Head-ICCD</option>');
+
+
+
+
+
+                }
+
+
+
+
+
+                else {
                     $("#ddlrole").append('<option value="31">Dealing Officer</option>');
                     $("#ddlrole").append('<option value="33">Supervisor</option>');
                 }
+
+
+
             });
 
             $("#btnCreateUser").click(function () {
@@ -320,7 +399,7 @@
                 //formData.append("file", f);
 
 
-                var formData = new FormData(); 
+                var formData = new FormData();
 
                 var role = $("#ddlrole").val();
 
@@ -551,10 +630,10 @@
                                                <select id="Select1" class="form-control" style="display:none;">
     <option value=""><--Select--></option>
     <option value="CAD">CAD</option>
-    <option value="Credit(SME)">Credit(SME)</option>
-    <option value="Credit(Corporate)">Credit(Corporate)</option>
-    <option value="Credit(Retail)">Credit(Retail)</option>
-    <option value="Credit(Agri)">Credit(Agri)</option>
+    <option value="Credit Division">Credit Division</option>
+    <option value="SAMD">SAMD</option>
+    <option value="OBU">OBU</option>
+    <option value="ICCD">ICCD</option>
 </select>
 
                                             </div>
