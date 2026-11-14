@@ -13,6 +13,27 @@
 
             cell.find(".mother-input-area").show();
 
+            /*
+            var inputArea = $(this).siblings('.mother-input-area');
+            var container = inputArea.find('.select-container');
+            if (container.children().length == 0) {
+
+                var dropdown = $('#childSelectTemplate select').clone();
+
+                container.append(dropdown);
+            }
+            inputArea.show();
+            */
+
+          
+            var dropdown = cell.find(".child-company-input");
+            if (dropdown.length > 0 && dropdown.children().length <= 1) {
+                var options = $('#<%= Select1.ClientID %>').html();
+                dropdown.html(options);
+            }
+          
+
+
         });
 
 
@@ -436,6 +457,11 @@ $(document).on('click', '.cancel-mother', function () {
                         
                         <br />
                         AAAA
+
+<select id="Select1"  runat="server"  class="form-control"  style="display:none;">
+<option></option>
+
+</select>
                         <asp:Literal ID="ltrMotherChildCompany" runat="server"  Mode="PassThrough"></asp:Literal>                
                		 </div>
               	</div>

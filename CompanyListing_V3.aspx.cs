@@ -24,7 +24,44 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
     {
         TableData = Listing();
         Role = Convert.ToInt32(Session["Role"].ToString());
+
+
+        LoadCusList();
     }
+
+
+
+    protected void LoadCusList()
+    {
+        //String cus_type = Request.QueryString[0].ToString();
+        //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
+        //String c_type = Request.QueryString[2].ToString().Split('-')[0];
+
+
+        SqlConnection con = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
+        SqlCommand cmd = con.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+
+        cmd.CommandText = "select cus_name,cus_code, cus_name+'-'+cus_code cid from t_CustomerInfo";
+        cmd.Connection = con;
+
+        SqlDataAdapter da = new SqlDataAdapter(cmd);
+        DataSet Ds = new DataSet();
+        try
+        {
+            da.Fill(Ds);
+            Select1.DataSource = Ds.Tables[0];
+            Select1.DataTextField = "cid";
+            Select1.DataValueField = "cus_code";
+            Select1.DataBind();
+        }
+        catch (Exception ex)
+        {
+            Response.Write(ex.Message);
+        }
+    }
+
+
 
     [WebMethod(EnableSession = true)]
     public static object SaveMotherCompany(string cusId, string motherCompany)
@@ -230,7 +267,28 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
         }
     }
 
+    public StringBuilder Build_Customer_Dropdown(DataTable dt)
+    {
 
+        StringBuilder selectOptions = new StringBuilder();
+
+        selectOptions.Append("<select class='form-control input-sm child-company-input'>");
+        selectOptions.Append("<option value=''>-- Select Child Company --</option>");
+
+        foreach (DataRow row in dt.Rows)
+        {
+            selectOptions.Append("<option value='");
+            selectOptions.Append(HttpUtility.HtmlAttributeEncode(Convert.ToString(row["cus_code"])));
+            selectOptions.Append("'>");
+            selectOptions.Append(HttpUtility.HtmlEncode(Convert.ToString(row["cid"])));
+            selectOptions.Append("</option>");
+        }
+
+        selectOptions.Append("</select>");
+
+        return selectOptions;
+
+    }
     public DataTable Listing()
     {
         string ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
@@ -261,7 +319,14 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
             TableData_MotherCompany = ds.Tables[0];
             TableData_ChildCompanyDetails = ds.Tables[1];
 
+            StringBuilder cus_selectOptions = Build_Customer_Dropdown(ds.Tables[2]);
+
+
             StringBuilder sb = new StringBuilder();
+
+            sb.Append("<div id='childSelectTemplate' style='display:none;'>");
+            sb.Append(cus_selectOptions.ToString());
+            sb.Append("</div>");
 
             sb.Append("<table id='example3' class='table table-bordered table-striped'>");
 
@@ -296,10 +361,7 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
                 // Child Company Details
                 sb.Append("<td>");
 
-                DataRow[] details = TableData_ChildCompanyDetails.Select(
-                    "mother_com_cus_code = '" +
-                    motherCode.Replace("'", "''") + "'"
-                );
+                DataRow[] details = TableData_ChildCompanyDetails.Select("mother_com_cus_code = '" + motherCode.Replace("'", "''") + "'");
 
                 if (details.Length > 0)
                 {
@@ -359,8 +421,18 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
                 sb.Append("<div class='mother-input-area' style='display:none; margin-top:5px;'>");
 
                 sb.Append("<input type='text' ");
-                sb.Append("class='form-control input-sm mother-company-input' ");
+                sb.Append("class='form-control input-sm child-company-input' ");
                 sb.Append("placeholder='Enter Child Company Cus ID' />");
+
+                sb.Append("<div class='select-container'></div>");
+
+                // Select dropdown
+                sb.Append("<select class='form-control input-sm child-company-input'>");
+                sb.Append("<option value=''>-- Select Child Company --</option>");
+                //sb.Append(selectOptions.ToString());
+                sb.Append("</select>");
+
+
 
                 sb.Append("<button type='button' ");
                 sb.Append("class='btn btn-success btn-xs save-mother' ");
@@ -381,6 +453,11 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
 
             sb.Append("</tbody>");
             sb.Append("</table>");
+
+
+            sb.Append("<div id='childSelectTemplate' style='display:none;'>");
+            sb.Append(cus_selectOptions.ToString());
+            sb.Append("</div>");
 
             // Assign generated HTML to Literal
             ltrMotherChildCompany.Text = sb.ToString();
