@@ -229,7 +229,174 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
             };
         }
     }
+
+
     public DataTable Listing()
+    {
+        string ConStr = @"Data Source=.;Initial Catalog=db_CAD;Integrated Security=False;User ID=sa;Password=Mbl@1234;Connection Timeout=0";
+
+        DataSet ds = new DataSet();
+
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(ConStr))
+            {
+                using (SqlCommand command = new SqlCommand("usp_CompanyListing", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter(command))
+                    {
+                        sda.Fill(ds);
+                    }
+                }
+            }
+
+            // Check DataSet tables
+            if (ds.Tables.Count < 2)
+            {
+                throw new Exception("Stored procedure must return two tables: Mother Company and Child Company.");
+            }
+
+            TableData_MotherCompany = ds.Tables[0];
+            TableData_ChildCompanyDetails = ds.Tables[1];
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("<table id='example3' class='table table-bordered table-striped'>");
+
+            sb.Append("<thead>");
+            sb.Append("<tr>");
+            sb.Append("<th>Mother Company Cus Code</th>");
+            sb.Append("<th>Mother Company Cus Name</th>");
+            sb.Append("<th>Child Company Details</th>");
+            sb.Append("<th>Action</th>");
+            sb.Append("</tr>");
+            sb.Append("</thead>");
+
+            sb.Append("<tbody>");
+
+            foreach (DataRow master in TableData_MotherCompany.Rows)
+            {
+                string motherCode = Convert.ToString(master["cus_code"]).Trim();
+                string motherName = Convert.ToString(master["name"]);
+
+                sb.Append("<tr>");
+
+                // Mother Company Code
+                sb.Append("<td>");
+                sb.Append(HttpUtility.HtmlEncode(motherCode));
+                sb.Append("</td>");
+
+                // Mother Company Name
+                sb.Append("<td>");
+                sb.Append(HttpUtility.HtmlEncode(motherName));
+                sb.Append("</td>");
+
+                // Child Company Details
+                sb.Append("<td>");
+
+                DataRow[] details = TableData_ChildCompanyDetails.Select(
+                    "mother_com_cus_code = '" +
+                    motherCode.Replace("'", "''") + "'"
+                );
+
+                if (details.Length > 0)
+                {
+                    sb.Append("<table class='table table-bordered table-striped'>");
+                    sb.Append("<tbody>");
+
+                    foreach (DataRow detail in details)
+                    {
+                        string childCode = Convert.ToString(detail["child_com_cus_code"]);
+                        string childName = Convert.ToString(detail["child_com_cus_name"]);
+
+                        sb.Append("<tr>");
+
+                        sb.Append("<td>");
+                        sb.Append(HttpUtility.HtmlEncode(childCode));
+                        sb.Append("</td>");
+
+                        sb.Append("<td>");
+                        sb.Append(HttpUtility.HtmlEncode(childName));
+                        sb.Append("</td>");
+
+                        sb.Append("<td>");
+
+                        sb.Append("<button type='button' class='btn btn-danger btn-xs' ");
+                        sb.Append("onclick=\"deleteChildCompany('");
+                        sb.Append(HttpUtility.JavaScriptStringEncode(motherCode));
+                        sb.Append("','");
+                        sb.Append(HttpUtility.JavaScriptStringEncode(childCode));
+                        sb.Append("')\">Delete</button>");
+
+                        sb.Append("</td>");
+
+                        sb.Append("</tr>");
+                    }
+
+                    sb.Append("</tbody>");
+                    sb.Append("</table>");
+                }
+                else
+                {
+                    //sb.Append("<span class='text-muted'>No Child Company Found</span>");
+
+                    sb.Append("<span class='text-muted'></span>");
+                }
+
+                //sb.Append("</td>");
+
+                // Action
+                //sb.Append("<td>");
+
+                sb.Append("<button type='button' ");
+                sb.Append("class='btn btn-primary btn-xs add-mother' ");
+                sb.Append("cus-id='");
+                sb.Append(HttpUtility.HtmlAttributeEncode(motherCode));
+                sb.Append("'>Add</button>");
+
+                sb.Append("<div class='mother-input-area' style='display:none; margin-top:5px;'>");
+
+                sb.Append("<input type='text' ");
+                sb.Append("class='form-control input-sm mother-company-input' ");
+                sb.Append("placeholder='Enter Child Company Cus ID' />");
+
+                sb.Append("<button type='button' ");
+                sb.Append("class='btn btn-success btn-xs save-mother' ");
+                sb.Append("cus-id='");
+                sb.Append(HttpUtility.HtmlAttributeEncode(motherCode));
+                sb.Append("' style='margin-top:5px;'>Save</button>");
+
+                sb.Append("<button type='button' ");
+                sb.Append("class='btn btn-default btn-xs cancel-mother' ");
+                sb.Append("style='margin-top:5px;'>Cancel</button>");
+
+                sb.Append("</div>");
+
+                sb.Append("</td>");
+
+                sb.Append("</tr>");
+            }
+
+            sb.Append("</tbody>");
+            sb.Append("</table>");
+
+            // Assign generated HTML to Literal
+            ltrMotherChildCompany.Text = sb.ToString();
+
+            return TableData_MotherCompany;
+        }
+        catch (Exception ex)
+        {
+            // Do not hide errors during debugging
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+            throw;
+        }
+    }
+
+    public DataTable Listing_OLD()
     {
 
 
@@ -345,8 +512,7 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
                 }
 
                 sb.Append("</td>");
-
-                // Separate Action Column
+ 
                 sb.Append("<td>");
 
                 sb.Append("<button type='button' ");
@@ -373,7 +539,10 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
 
                 sb.Append("</td>");
 
+
+
                 sb.Append("</tr>");
+
             }
 
             sb.Append("</tbody></table>");
@@ -390,6 +559,8 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
             //ErrorMSG = ex.Message;
         }
         return ds.Tables[0];
+
+        //return null;
 
     }
 }

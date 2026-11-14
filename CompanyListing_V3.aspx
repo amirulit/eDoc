@@ -246,47 +246,59 @@
         
         $(document).on('click', '.add-mother', function () {
 
-    var td = $(this).closest('td');
+        var td = $(this).closest('td');
 
-    td.find('.mother-input-area').show();
-    td.find('.mother-company-input').focus();
+        td.find('.mother-input-area').show();
+        td.find('.mother-company-input').focus();
 
-    $(this).hide();
-});
-
-
-$(document).on('click', '.cancel-mother', function () {
-
-    var td = $(this).closest('td');
-
-    td.find('.mother-input-area').hide();
-    td.find('.mother-company-input').val('');
-
-    td.find('.add-mother').show();
-});
+        $(this).hide();
+        });
 
 
-$(document).on('click', '.save-mother', function () {
+        $(document).on('click', '.cancel-mother', function () {
 
-    var motherCode = $(this).attr('cus-id');
+        var td = $(this).closest('td');
 
-    var td = $(this).closest('td');
+        td.find('.mother-input-area').hide();
+        td.find('.mother-company-input').val('');
 
-    var childCode = td.find('.mother-company-input').val().trim();
+        td.find('.add-mother').show();
+        });
 
-    if (childCode == '') {
+
+        $(document).on('click', '.save-mother', function () {
+
+        var motherCode = $(this).attr('cus-id');
+
+        var td = $(this).closest('td');
+
+        var childCode = td.find('.mother-company-input').val().trim();
+
+        if (childCode == '') {
         alert('Please enter Child Company Cus ID');
         return;
-    }
+        }
 
-    alert('Mother Code: ' + motherCode +
-          '\nChild Code: ' + childCode);
+        alert('Mother Code: ' + motherCode +
+        '\nChild Code: ' + childCode);
 
-    // Call your AJAX save method here.
-});
+        // Call your AJAX save method here.
+        });
         
         */
 
+
+        /*
+        
+        $(document).on('click', '.add-mother', function () {
+    $(this).siblings('.mother-input-area').show();
+});
+
+$(document).on('click', '.cancel-mother', function () {
+    $(this).closest('.mother-input-area').hide();
+});
+        
+        */
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -424,7 +436,11 @@ $(document).on('click', '.save-mother', function () {
                         
                         <br />
                         AAAA
-                        <asp:Literal ID="ltrMotherChildCompany" runat="server"></asp:Literal>                
+                        <asp:Literal ID="ltrMotherChildCompany" runat="server"  Mode="PassThrough"></asp:Literal>                
                		 </div>
               	</div>
+
+                </div>
+                </div>
+                </section>
 </asp:Content>
