@@ -196,6 +196,140 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
     }
 
 
+
+
+    [WebMethod(EnableSession = true)]
+    public static object SaveChildCompany( string motherCompany,string childCompany)
+    {
+        try
+        {
+            // Check user authentication
+            if (HttpContext.Current.Session["DomainID"] == null)
+            {
+                return new
+                {
+                    success = false,
+                    message = "Session expired. Please login again."
+                };
+            }
+
+            if (string.IsNullOrWhiteSpace(childCompany) ||
+                string.IsNullOrWhiteSpace(motherCompany))
+            {
+                return new
+                {
+                    success = false,
+                    message = "Invalid Customer ID."
+                };
+            }
+
+            if (childCompany.Trim() == motherCompany.Trim())
+            {
+                return new
+                {
+                    success = false,
+                    message = "Customer cannot be its own Mother Company."
+                };
+            }
+
+            string conStr = ConfigurationManager
+                .ConnectionStrings["dbConn"]
+                .ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(conStr))
+            {
+                con.Open();
+
+                // Verify Mother Company exists
+                String checkQuery = @"
+                SELECT COUNT(*)
+                FROM t_CustomerInfo
+                WHERE cus_code = @MotherCompany";
+
+                using (SqlCommand cmd = new SqlCommand(checkQuery, con))
+                {
+                    cmd.Parameters.AddWithValue("@MotherCompany", motherCompany.Trim());
+
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    if (count == 0)
+                    {
+                        return new
+                        {
+                            success = false,
+                            message = "Mother Company Customer ID does not exist."
+                        };
+                    }
+                }
+
+                // Update Mother Company
+                String query = @"
+                UPDATE t_Comp
+                SET mother_company = @MotherCompany
+                WHERE cus_code = @CusID";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@MotherCompany", motherCompany.Trim());
+                    cmd.Parameters.AddWithValue("@CusID", childCompany.Trim());
+
+                    int rows = cmd.ExecuteNonQuery();
+
+                    //if (rows > 0)
+                    //{
+                    //    return new
+                    //    {
+                    //        success = true,
+                    //        motherCompany = motherCompany.Trim(),
+                    //        message = "Mother Company saved successfully."
+                    //    };
+                    //}
+
+
+                    if (rows > 0)
+                    {
+                        // Get Mother Company Name
+                        string motherCompanyName = "";
+
+                        string getQuery = @"
+              select  cus_name from [t_CustomerInfo]  WHERE cus_code = @MotherCompany";
+
+                        using (SqlCommand getCmd = new SqlCommand(getQuery, con))
+                        {
+                            getCmd.Parameters.AddWithValue("@MotherCompany", motherCompany.Trim());
+
+                            motherCompanyName = Convert.ToString(getCmd.ExecuteScalar());
+                        }
+
+                        return new
+                        {
+                            success = true,
+                            motherCompany = motherCompany.Trim(),
+                            motherCompanyName = motherCompanyName,
+                            message = "Mother Company saved successfully."
+                        };
+
+                    }
+                }
+            }
+
+            return new
+            {
+                success = false,
+                message = "Customer not found."
+            };
+        }
+        catch (Exception ex)
+        {
+            // Log exception in production
+            return new
+            {
+                success = false,
+                message = "Unable to save Mother Company : " + ex.Message
+            };
+        }
+    }
+
     [WebMethod(EnableSession = true)]
     public static object DeleteMotherCompany(string cusId)
     {
@@ -319,13 +453,13 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
             TableData_MotherCompany = ds.Tables[0];
             TableData_ChildCompanyDetails = ds.Tables[1];
 
-            StringBuilder cus_selectOptions = Build_Customer_Dropdown(ds.Tables[2]);
+            StringBuilder cus_selectChildOptions = Build_Customer_Dropdown(ds.Tables[2]);
 
 
             StringBuilder sb = new StringBuilder();
 
             sb.Append("<div id='childSelectTemplate' style='display:none;'>");
-            sb.Append(cus_selectOptions.ToString());
+            sb.Append(cus_selectChildOptions.ToString());
             sb.Append("</div>");
 
             sb.Append("<table id='example3' class='table table-bordered table-striped'>");
@@ -413,7 +547,7 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
                 //sb.Append("<td>");
 
                 sb.Append("<button type='button' ");
-                sb.Append("class='btn btn-primary btn-xs add-mother' ");
+                sb.Append("class='btn btn-primary btn-xs add-child' ");
                 sb.Append("cus-id='");
                 sb.Append(HttpUtility.HtmlAttributeEncode(motherCode));
                 sb.Append("'>Add</button>");
@@ -424,7 +558,7 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
                 sb.Append("class='form-control input-sm child-company-input' ");
                 sb.Append("placeholder='Enter Child Company Cus ID' />");
 
-                sb.Append("<div class='select-container'></div>");
+                //sb.Append("<div class='select-container'></div>");
 
                 // Select dropdown
                 sb.Append("<select class='form-control input-sm child-company-input'>");
@@ -435,13 +569,13 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
 
 
                 sb.Append("<button type='button' ");
-                sb.Append("class='btn btn-success btn-xs save-mother' ");
+                sb.Append("class='btn btn-success btn-xs save-child' ");
                 sb.Append("cus-id='");
                 sb.Append(HttpUtility.HtmlAttributeEncode(motherCode));
                 sb.Append("' style='margin-top:5px;'>Save</button>");
 
                 sb.Append("<button type='button' ");
-                sb.Append("class='btn btn-default btn-xs cancel-mother' ");
+                sb.Append("class='btn btn-default btn-xs cancel-child' ");
                 sb.Append("style='margin-top:5px;'>Cancel</button>");
 
                 sb.Append("</div>");
@@ -455,9 +589,9 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
             sb.Append("</table>");
 
 
-            sb.Append("<div id='childSelectTemplate' style='display:none;'>");
-            sb.Append(cus_selectOptions.ToString());
-            sb.Append("</div>");
+            //sb.Append("<div id='childSelectTemplate' style='display:none;'>");
+            //sb.Append(cus_selectChildOptions.ToString());
+            //sb.Append("</div>");
 
             // Assign generated HTML to Literal
             ltrMotherChildCompany.Text = sb.ToString();
