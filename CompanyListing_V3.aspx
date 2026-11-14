@@ -78,7 +78,7 @@
                     if (result.success) {
 
                         cell.html('<span class="mother-company-value">' + $('<div>').text(result.motherCompany).html() + '</span> ' + '<button type="button" class="btn btn-danger btn-xs delete-mother" cus-id="' + $('<div>').text(cusId).html() + '">Delete</button>');
-                         
+
                         //var row = button.closest("tr");
 
                         row.find(".mother-company-name").text(result.motherCompanyName);
@@ -186,7 +186,7 @@
 
         });
 
-</script>
+    </script>
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -227,6 +227,65 @@
 
 
         });
+
+
+
+        function deleteChildCompany(motherCode, childCode) {
+
+            if (confirm("Are you sure you want to delete this child company?")) {
+
+                window.location.href =
+            "DeleteChildCompany.aspx?motherCode=" +
+            encodeURIComponent(motherCode) +
+            "&childCode=" +
+            encodeURIComponent(childCode);
+            }
+        }
+
+        /*
+        
+        $(document).on('click', '.add-mother', function () {
+
+    var td = $(this).closest('td');
+
+    td.find('.mother-input-area').show();
+    td.find('.mother-company-input').focus();
+
+    $(this).hide();
+});
+
+
+$(document).on('click', '.cancel-mother', function () {
+
+    var td = $(this).closest('td');
+
+    td.find('.mother-input-area').hide();
+    td.find('.mother-company-input').val('');
+
+    td.find('.add-mother').show();
+});
+
+
+$(document).on('click', '.save-mother', function () {
+
+    var motherCode = $(this).attr('cus-id');
+
+    var td = $(this).closest('td');
+
+    var childCode = td.find('.mother-company-input').val().trim();
+
+    if (childCode == '') {
+        alert('Please enter Child Company Cus ID');
+        return;
+    }
+
+    alert('Mother Code: ' + motherCode +
+          '\nChild Code: ' + childCode);
+
+    // Call your AJAX save method here.
+});
+        
+        */
 
     </script>
 </asp:Content>
@@ -324,7 +383,7 @@
         </button>
 
     <%
-        }
+                }
     %>
 </td>
                      <td class="mother-company-name">
@@ -361,9 +420,11 @@
         }
                                                    %>
                         	</tbody>
-                    	</table>	                
-               		</div>
+                    	</table>	
+                        
+                        <br />
+                        AAAA
+                        <asp:Literal ID="ltrMotherChildCompany" runat="server"></asp:Literal>                
+               		 </div>
               	</div>
-            </div>
-		</div>
 </asp:Content>
