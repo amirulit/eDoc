@@ -305,4 +305,42 @@ public partial class Login : System.Web.UI.Page
 
         Response.Redirect("Dashboard.aspx");
     }
+    protected void btnCAD_DM_CBD_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "DM-CBD";
+
+        Session["Name"] = "DM-CBD";
+
+        Session["Role"] = 57;
+        Response.Redirect("Dashboard.aspx");
+ 
+    }
+    protected void btnCAD_UH_CBD_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnCAD_DM_SME_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnCAD_UH_SME_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnCAD_DM_Retail_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnCAD_UH_Retail_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnCAD_DM_Agri_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnCAD_UH_Agri_Click(object sender, EventArgs e)
+    {
+
+    }
 }

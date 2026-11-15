@@ -648,7 +648,7 @@ if (@Role in (11,21,23,25,27,29,31,33,35))
     set @UploadDivision='CD'
 else if (@Role in (37,39,41,43,45,47,49,51))
     set @UploadDivision='SAMD'
-else if ()
+else
     set @UploadDivision='Others'
 
 

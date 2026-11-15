@@ -214,9 +214,32 @@
                 <asp:Button ID="btnHOB" runat="server" Text="HOB" CssClass="btn btn-default" OnClick="btnHOB_Click" />
                 <hr />
                 CAD:
-                <asp:Button ID="btnDM" runat="server" Text="DM" CssClass="btn btn-default" OnClick="btnDM_Click" />
-                <asp:Button ID="btnUnitHead" runat="server" Text="Unit Head" CssClass="btn btn-default"
-                    OnClick="btnUnitHead_Click" />
+
+                <asp:Button ID="btnCAD_DM_CBD" runat="server" Text="CAD DM CBD" 
+                    onclick="btnCAD_DM_CBD_Click" />
+                <asp:Button ID="btnCAD_UH_CBD" runat="server" Text="CAD Unit Head CBD" 
+                    onclick="btnCAD_UH_CBD_Click" />
+
+                <hr />
+
+                <asp:Button ID="btnCAD_DM_SME" runat="server" Text="CAD DM SME" 
+                    onclick="btnCAD_DM_SME_Click" />
+                <asp:Button ID="btnCAD_UH_SME" runat="server" Text="CAD Unit Head SME" 
+                    onclick="btnCAD_UH_SME_Click" />
+
+                <hr />
+                <asp:Button ID="btnCAD_DM_Retail" runat="server" Text="CAD DM Retail" 
+                    onclick="btnCAD_DM_Retail_Click" />
+                <asp:Button ID="btnCAD_UH_Retail" runat="server" Text="CAD Unit Head Retail" 
+                    onclick="btnCAD_UH_Retail_Click" />
+                <hr />
+                <asp:Button ID="btnCAD_DM_Agri" runat="server" Text="CAD DM Agri" 
+                    onclick="btnCAD_DM_Agri_Click" />
+                <asp:Button ID="btnCAD_UH_Agri" runat="server" Text="CAD Unit Head Agri" 
+                    onclick="btnCAD_UH_Agri_Click" />
+                <hr />
+
+              
                 <hr />
                 Admin:
                 <asp:Button ID="btnAdmin" runat="server" Text="Admin" CssClass="btn btn-default"
