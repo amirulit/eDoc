@@ -308,21 +308,21 @@
                 else if (selectedValue == "SAMD") {
 
 
-                    $("#ddlrole").append('<option value="37">RM-CBD</option>');
-                    $("#ddlrole").append('<option value="39">Unit Head-CBD</option>');
+                    $("#ddlrole").append('<option value="37">RM-CBD(SAMD)</option>');
+                    $("#ddlrole").append('<option value="39">Unit Head-CBD(SAMD)</option>');
 
 
 
-                    $("#ddlrole").append('<option value="41">RM-CMSME</option>');
-                    $("#ddlrole").append('<option value="43">Unit Head-CMSME</option>');
+                    $("#ddlrole").append('<option value="41">RM-CMSME(SAMD)</option>');
+                    $("#ddlrole").append('<option value="43">Unit Head-CMSME(SAMD)</option>');
 
 
-                    $("#ddlrole").append('<option value="45">RM-Retail</option>');
-                    $("#ddlrole").append('<option value="47">Unit Head-Retail</option>');
+                    $("#ddlrole").append('<option value="45">RM-Retail(SAMD)</option>');
+                    $("#ddlrole").append('<option value="47">Unit Head-Retail(SAMD)</option>');
 
 
-                    $("#ddlrole").append('<option value="49">RM-Agri</option>');
-                    $("#ddlrole").append('<option value="51">Unit Head-Agri</option>');
+                    $("#ddlrole").append('<option value="49">RM-Agri(SAMD)</option>');
+                    $("#ddlrole").append('<option value="51">Unit Head-Agri(SAMD)</option>');
 
 
                 }

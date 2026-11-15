@@ -314,10 +314,10 @@
           </a>
         </li>
 
-        <%  
+      <%--  <%  
             if (Role == 1 || Role == 2)
             {
-                 %>
+                 %>--%>
         
          <li>
           <a href="ProfileCreate.aspx">
@@ -338,10 +338,10 @@
           </a>
         </li>
 
-
+<%--
          <%
             }
-             %>
+             %>--%>
 
                <%  
             if (Role == 1 )
@@ -379,26 +379,30 @@
              %>
 
               <%  
-                  if (Role == 3)
-                  {
-                 %>
-        <li>
-          <a href="ProfileCreate.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i><span>Customer Profile Create</span>
-          </a>
-        </li>
+                  if (Role == 21||Role == 23||Role == 25||Role == 27||Role == 29||Role == 31||Role == 33||Role == 35
 
-           <li>
-          <a href="ProfileListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i><span>List of Customers in EDOC</span>
-          </a>
-        </li>
+
+                      || Role == 37 || Role == 39 || Role == 41 || Role == 43 || Role == 45 || Role == 47 || Role == 49 || Role == 51
+                      
+                      )
+                      
+                      
+
+
+
+
+
+
+
+                      
+                      
+                  {
+                      
+
+                      
+                      
+                 %>
         
-         <li>
-          <a href="CompanyListing.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i><span>Company Listing</span>
-          </a>
-        </li>
 
         <li>
           <a href="SanctionUpload_V4.aspx">

@@ -176,8 +176,36 @@
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-info" OnClick="btnSubmit_Click"
                     Visible="false" />
                 Credit Division:
-                <asp:Button ID="btnCD" runat="server" Text="CD" CssClass="btn btn-default" OnClick="btnCD_Click" />
+                <asp:Button ID="btnCD_CBD" runat="server" Text="CD (CBD)" 
+                    CssClass="btn btn-default" onclick="btnCD_CBD_Click"  />
+
+                    <asp:Button ID="btnCD_SME" runat="server" Text="CD (SME)" 
+                    CssClass="btn btn-default" onclick="btnCD_SME_Click"   />
+
+                    <asp:Button ID="btnCD_Retail" runat="server" Text="CD (Retail)" 
+                    CssClass="btn btn-default" onclick="btnCD_Retail_Click"   />
+
+                    <asp:Button ID="btnCD_Agri" runat="server" Text="CD (Agri)" 
+                    CssClass="btn btn-default" onclick="btnCD_Agri_Click"   />
                 <hr />
+
+
+                  SAMD:
+                <asp:Button ID="btnCD_CBD_SAMD" runat="server" Text="SAMD (CBD)" 
+                    CssClass="btn btn-default" onclick="btnCD_CBD_SAMD_Click"   />
+
+                    <asp:Button ID="btnCD_SME_SAMD" runat="server" Text="SAMD (SME)" 
+                    CssClass="btn btn-default" onclick="btnCD_SME_SAMD_Click"   />
+
+                    <asp:Button ID="btnCD_Retail_SAMD" runat="server" Text="SAMD (Retail)" 
+                    CssClass="btn btn-default" onclick="btnCD_Retail_SAMD_Click"  />
+
+                    <asp:Button ID="btnCD_Agri_SAMD" runat="server" Text="SAMD (Agri)" 
+                    CssClass="btn btn-default" onclick="btnCD_Agri_SAMD_Click"    />
+                <hr />
+
+
+
                 Branch:
                 <asp:Button ID="btnRM" runat="server" Text="RM" OnClick="btnRM_Click" CssClass="btn btn-default" />
                 <asp:Button ID="btnCI" runat="server" Text="CI" CssClass="btn btn-default" OnClick="btnCI_Click" />
