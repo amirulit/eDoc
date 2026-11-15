@@ -252,7 +252,7 @@
 
 
 
-                            html += '<tr data-id="' + item.id + '" data-custype="' + item.cus_type + '" data-loantype="' + item.short_form + '">';
+                            html += '<tr data-id="' + item.id + '" data-custype="' + item.cus_type + '" data-loantype="' + item.short_form + '"   data-sanctionsegment="' + item.sanction_segment + '">';
 
                             html += '<td><input type="checkbox" class="row-checkbox" value="' + item.id + '"></td>';
 
@@ -266,6 +266,7 @@
                             html += '<td>' + (item.amount == null ? '' : item.amount) + '</td>';
                             html += '<td>' + (item.validity == null ? '' : item.validity) + '</td>';
                             html += '<td>' + (item.edoc_id == null ? '' : item.edoc_id) + '</td>';
+                            html += '<td>' + (item.sanction_segment == null ? '' : item.sanction_segment) + '</td>';
 
 
 
@@ -273,7 +274,7 @@
 
 
 
-                            //console.log(html);
+                            console.log(html);
 
                             /*
                             var $row = $("<tr></tr>");
@@ -583,7 +584,7 @@
 
 
 
-
+                var sanctionSegments = [];
 
 
 
@@ -627,6 +628,7 @@
 
                     var sanction_id = $row.find('td').eq(8).text().trim();
 
+                    var sanction_segment = $row.find('td').eq(9).text().trim();
 
 
 
@@ -642,6 +644,8 @@
                     addUnique(loanTypes, $row.attr("data-loantype"));
                     addUnique(securityTypes, $row.attr("data-securitytype"));
 
+                    addUnique(sanctionSegments, $row.attr("data-sanctionsegment"));
+
 
                     var amt = $row.find('td').eq(6).text().trim();
 
@@ -654,6 +658,14 @@
 
                 });
 
+                if (sanctionSegments.length > 1) {
+
+                    alert('Sanction segment can not be mixed: ' + sanctionSegments.join(","));
+
+                    return false;
+
+                }
+
                 var requestData = {
 
 
@@ -662,7 +674,7 @@
                     edocRefNo: edocRefNo,
                     branch: branch,
                     date: date,
-                    segment: segment,
+                    segment: sanctionSegments.join(","),
                     authority: authority,
                     sanctionRefNo: sanctionRefNo,
 
@@ -1046,6 +1058,7 @@
                                 <th>Amount</th>
                                 <th>Validity</th>
                                 <th>EDOC ID#</th>
+                                <th>Segment</th>
 
 
                             </tr>

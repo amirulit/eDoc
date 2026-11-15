@@ -94,6 +94,8 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
         public string cus_type { get; set; }
         public string short_form { get; set; }
+        public string sanction_segment { get; set; }
+        
     }
 
     [WebMethod]
@@ -210,6 +212,7 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
                 --,convert(date,validity)validity
 				,c.cus_type
 				,l.short_form
+	            ,(select top 1 sanction_segment from t_Sanction_Master m  where  s.edoc_id=m.edoc_id)sanction_segment
         
         FROM 
             [dbo].[t_Sanction_Master_Details] s
@@ -258,7 +261,10 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
                             amount = GetString(dr, "amount"),
                             validity = GetString(dr, "validity"),
                             cus_type = GetString(dr, "cus_type"),
-                            short_form = GetString(dr, "short_form")
+                            short_form = GetString(dr, "short_form"),
+                            sanction_segment = GetString(dr, "sanction_segment")
+
+                            
                         });
                     }
                 }
@@ -399,7 +405,7 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
                         new SqlParameter("@sec_types",securityTypes), 
 
                         new SqlParameter("@loan_amount",amount), 
-                        //new SqlParameter("@expiry_date",exp_date), 
+                        new SqlParameter("@sanction_segment",segment), 
                         
                         //new SqlParameter("@cus_name",Obj.cus_name), 
                         //new SqlParameter("@sanc_authority",Obj.sanc_auth), 
@@ -412,9 +418,11 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
                         //new SqlParameter("@create_by","Test")
                         //new SqlParameter("@tin",Obj.tin),
                         //new SqlParameter("@pre_addr",Obj.pre_addr),
+                        
+                        new SqlParameter("@drawdown_create_source",(Role==5?"Branch(RM)":"CAD(DM)")),
 
+                        new SqlParameter("@input_by_role",Role)
 
-                        new SqlParameter("@input_by_role",(Role==1?"RM":"DM"))
 
                     };
 

@@ -626,9 +626,12 @@ DECLARE @NextRole varchar(500);
 
 DECLARE @UploadDivision varchar(500);
 
+DECLARE @SanctionSegment varchar(500);
+
+DECLARE @CAD_DM_Employee_ID varchar(500);
 
 
-
+set @SanctionSegment='" + request.Segment + @"'
 
 SELECT @NextNumber = ISNULL(count(*), 0) + 1 FROM t_Sanction_Master WHERE YEAR(entry_time) = @Year;
 
@@ -637,6 +640,8 @@ set @edoc_ref_no=CONCAT(@Year, '', FORMAT(@NextNumber, '00000'))
 set @Role=" + Role + @"   
 
 select @NextRole=CAD_RM_Role from  t_FileForwarding_Mapping where Update_Role=" + Role + @"
+
+select @CAD_DM_Employee_ID=emp_id from _CAD_Officials_BrachMapping where branch_code='" + request.Branch + @"'
 
 
 if (@Role in (11,21,23,25,27,29,31,33,35))
@@ -673,6 +678,8 @@ INSERT INTO [dbo].[t_Sanction_Master]
            ,[upload_role]
            ,[cad_dm_role]
 
+           
+
 
 )
      VALUES
@@ -701,8 +708,23 @@ INSERT INTO [dbo].[t_Sanction_Master]
            ,@NextRole
 
 
+            
 
-)";
+
+
+)
+
+
+
+
+
+
+
+";
+
+
+
+        Sql = Sql + @"  update t_Sanction_Master set  cad_dm_employee_id=@CAD_DM_Employee_ID where edoc_id=" + request.EdocId + @" where  sanction_segment='SME'";
 
 
         Sql = Sql + @"  --SELECT CAST(SCOPE_IDENTITY() AS INT);
@@ -715,6 +737,7 @@ select @edoc_ref_no edoc_ref_no
 
 
         foreach (FacilityDetail facility
+
 in request.Facilities)
         {
 
