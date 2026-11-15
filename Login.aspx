@@ -175,17 +175,24 @@
                 <input type="hidden" name="do" value="user_login" />
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-info" OnClick="btnSubmit_Click"
                     Visible="false" />
-                <asp:Button ID="btnRM" runat="server" Text="RM" OnClick="btnRM_Click" CssClass="btn btn-default" />
+                Credit Division:
                 <asp:Button ID="btnCD" runat="server" Text="CD" CssClass="btn btn-default" OnClick="btnCD_Click" />
+                <hr />
+                Branch:
+                <asp:Button ID="btnRM" runat="server" Text="RM" OnClick="btnRM_Click" CssClass="btn btn-default" />
                 <asp:Button ID="btnCI" runat="server" Text="CI" CssClass="btn btn-default" OnClick="btnCI_Click" />
                 <asp:Button ID="btnMOP" runat="server" Text="MOP" CssClass="btn btn-default" OnClick="btnMOP_Click"
                     Visible="false" />
                 <asp:Button ID="btnHOB" runat="server" Text="HOB" CssClass="btn btn-default" OnClick="btnHOB_Click" />
-                <asp:Button ID="btnAdmin" runat="server" Text="Admin" CssClass="btn btn-default"
-                    OnClick="btnAdmin_Click" />
+                <hr />
+                CAD:
                 <asp:Button ID="btnDM" runat="server" Text="DM" CssClass="btn btn-default" OnClick="btnDM_Click" />
                 <asp:Button ID="btnUnitHead" runat="server" Text="Unit Head" CssClass="btn btn-default"
                     OnClick="btnUnitHead_Click" />
+                <hr />
+                Admin:
+                <asp:Button ID="btnAdmin" runat="server" Text="Admin" CssClass="btn btn-default"
+                    OnClick="btnAdmin_Click" />
                 <hr />
                 <a href="New_V2.aspx" class="btn  btn-primary">New?</a> <a href="Login_V3.aspx" class="btn btn-success">
                     Login</a>

@@ -763,7 +763,7 @@
 
                             <button type="button" id="btnSaveAll" class="btn btn-success">Save All</button>
 
-                             <button type="button" id="btnNew" class="btn btn-primary">New</button>
+                             <button type="button" id="btnNew" class="btn btn-primary" style="  display:none;">New</button>
 
                             <!--
                     		<button type="button" class="btn btn-primary" id="btnSave">Save</button>
