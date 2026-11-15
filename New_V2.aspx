@@ -273,6 +273,8 @@
                 }*/
             }
 
+
+
             $("#Select1").on("change", function () {
 
                 var selectedValue = $(this).val();
@@ -284,12 +286,15 @@
 
                     $("#ddlrole").append('<option value="21">RM-CBD</option>');
                     $("#ddlrole").append('<option value="23">Unit Head-CBD</option>');
+                   
 
-                    $("#ddlrole").append('<option value="25">RM-Retail</option>');
-                    $("#ddlrole").append('<option value="27">Unit Head-Retail</option>');
+                    $("#ddlrole").append('<option value="25">RM-CMSME</option>');
+                    $("#ddlrole").append('<option value="27">Unit Head-CMSME</option>');
 
-                    $("#ddlrole").append('<option value="29">RM-CMSME</option>');
-                    $("#ddlrole").append('<option value="31">Unit Head-CMSME</option>');
+
+                    $("#ddlrole").append('<option value="29">RM-Retail</option>');
+                    $("#ddlrole").append('<option value="31">Unit Head-Retail</option>');
+
 
                     $("#ddlrole").append('<option value="33">RM-Agri</option>');
                     $("#ddlrole").append('<option value="35">Unit Head-Agri</option>');
@@ -301,16 +306,33 @@
 
 
                 else if (selectedValue == "SAMD") {
-                    $("#ddlrole").append('<option value="37">DM-SAMD</option>');
-                    $("#ddlrole").append('<option value="39">Unit Head-SAMD</option>');
+
+
+                    $("#ddlrole").append('<option value="37">RM-CBD</option>');
+                    $("#ddlrole").append('<option value="39">Unit Head-CBD</option>');
+
+
+
+                    $("#ddlrole").append('<option value="41">RM-CMSME</option>');
+                    $("#ddlrole").append('<option value="43">Unit Head-CMSME</option>');
+
+
+                    $("#ddlrole").append('<option value="45">RM-Retail</option>');
+                    $("#ddlrole").append('<option value="47">Unit Head-Retail</option>');
+
+
+                    $("#ddlrole").append('<option value="49">RM-Agri</option>');
+                    $("#ddlrole").append('<option value="51">Unit Head-Agri</option>');
+
+
                 }
 
 
                 else if (selectedValue == "OBU") {
 
 
-                    $("#ddlrole").append('<option value="41">RM-OBU</option>');
-                    $("#ddlrole").append('<option value="43">Unit Head-OBU</option>');
+                    $("#ddlrole").append('<option value="53">RM-OBU</option>');
+                    $("#ddlrole").append('<option value="55">Unit Head-OBU</option>');
 
 
 
@@ -321,20 +343,20 @@
                 else if (selectedValue == "CAD") {
 
 
-                    $("#ddlrole").append('<option value="51">DM-Corporate</option>');
-                    $("#ddlrole").append('<option value="53">Unit Head-Corporate</option>');
+                    $("#ddlrole").append('<option value="57">DM-Corporate</option>');
+                    $("#ddlrole").append('<option value="59">Unit Head-Corporate</option>');
 
 
-                    $("#ddlrole").append('<option value="55">DM-CMSME & Agri</option>');
-                    $("#ddlrole").append('<option value="57">Unit Head-CMSME & Agri</option>');
+                    $("#ddlrole").append('<option value="61">DM-CMSME & Agri</option>');
+                    $("#ddlrole").append('<option value="63">Unit Head-CMSME & Agri</option>');
 
 
-                    $("#ddlrole").append('<option value="59">DM-Retail</option>');
-                    $("#ddlrole").append('<option value="61">Unit Head-Retail</option>');
+                    $("#ddlrole").append('<option value="65">DM-Retail</option>');
+                    $("#ddlrole").append('<option value="67">Unit Head-Retail</option>');
 
 
-                    $("#ddlrole").append('<option value="63">LM-Limit Unit</option>');
-                    $("#ddlrole").append('<option value="65">Unit Head-Limit Unit</option>');
+                    $("#ddlrole").append('<option value="69">LM-Limit Unit</option>');
+                    $("#ddlrole").append('<option value="71">Unit Head-Limit Unit</option>');
 
 
 
@@ -359,6 +381,8 @@
 
 
                 else {
+
+
                     $("#ddlrole").append('<option value="31">Dealing Officer</option>');
                     $("#ddlrole").append('<option value="33">Supervisor</option>');
                 }

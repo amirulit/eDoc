@@ -547,6 +547,8 @@ $(document).on('click', '.cancel-mother', function () {
                 	</div><!-- /.box-header -->
                 	<div class="box-body table-responsive"  >
                      
+
+                     <!--
                 		<table id="example1" class="table table-bordered table-striped">
                     		<thead>
                             <tr>
@@ -669,9 +671,14 @@ $(document).on('click', '.cancel-mother', function () {
                                                    %>
                         	</tbody>
                     	</table>	
+
+
                         
                         <br />
                         AAAA
+                        -->
+
+
 
 <select id="Select1"  runat="server"  class="form-control"  style="display:none;">
 <option></option>

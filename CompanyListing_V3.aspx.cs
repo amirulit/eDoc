@@ -462,13 +462,13 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
             sb.Append(cus_selectChildOptions.ToString());
             sb.Append("</div>");
 
-            sb.Append("<table id='example3' class='table table-bordered table-striped'>");
+            sb.Append("<table id='example3' class='table table-bordered '>");
 
             sb.Append("<thead>");
             sb.Append("<tr>");
-            sb.Append("<th>Mother Company Cus Code</th>");
-            sb.Append("<th>Mother Company Cus Name</th>");
-            sb.Append("<th>Child Company Details</th>");
+            sb.Append("<th>Group Code</th>");
+            sb.Append("<th>Group Name</th>");
+            sb.Append("<th>Sister Concern Details</th>");
             sb.Append("<th>Action</th>");
             sb.Append("</tr>");
             sb.Append("</thead>");
@@ -580,6 +580,9 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
 
                 sb.Append("</div>");
 
+                sb.Append("</td>");
+
+                sb.Append("<td>");
                 sb.Append("</td>");
 
                 sb.Append("</tr>");
