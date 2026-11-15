@@ -38,18 +38,19 @@ public partial class Login : System.Web.UI.Page
 
     protected void btnRM_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "RM";
+        
 
-        Session["Name"] = "Relationship Manager";
 
-        Session["Role"] = 1;
+         
 
-        Session["UserType"] = "CADMaker";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        Session["DomainID"] = "RM-Branch";
+
+        Session["Name"] = "RM-Branch";
+
+        Session["Role"] = 5;
+
+
 
 
 
