@@ -565,6 +565,8 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
 
         String Inputter = HttpContext.Current.Session["DomainID"].ToString();
 
+        Int32 Role = Convert.ToInt32(HttpContext.Current.Session["Role"].ToString());
+
         if (request == null ||
             String.IsNullOrWhiteSpace(request.Branch) ||
             String.IsNullOrWhiteSpace(request.SanctionReference) ||
@@ -618,10 +620,31 @@ DECLARE @Year INT = YEAR(@FileCreatedDate);
 DECLARE @NextNumber INT;
 DECLARE @edoc_ref_no varchar(500);
 
-SELECT @NextNumber = ISNULL(count(*), 0) + 1 FROM t_Sanction_Master WHERE   YEAR(entry_time) = @Year;
+DECLARE @Role varchar(500);
+
+DECLARE @NextRole varchar(500);
+
+DECLARE @UploadDivision varchar(500);
+
+
+
+
+
+SELECT @NextNumber = ISNULL(count(*), 0) + 1 FROM t_Sanction_Master WHERE YEAR(entry_time) = @Year;
 
 set @edoc_ref_no=CONCAT(@Year, '', FORMAT(@NextNumber, '00000')) 
 
+set @Role=" + Role + @"   
+
+select @NextRole=CAD_RM_Role from  t_FileForwarding_Mapping where Update_Role=" + Role + @"
+
+
+if (@Role in (11,21,23,25,27,29,31,33,35))
+    set @UploadDivision='CD'
+else if (@Role in (37,39,41,43,45,47,49,51))
+    set @UploadDivision='SAMD'
+else if ()
+    set @UploadDivision='Others'
 
 
 INSERT INTO [dbo].[t_Sanction_Master]
@@ -644,7 +667,14 @@ INSERT INTO [dbo].[t_Sanction_Master]
            ,[sanction_segment_org]
            ,[sanction_Approval_authority_org]
            ,[entry_by_org]
-           ,[entry_time_org])
+           ,[entry_time_org]
+
+           ,[upload_division]
+           ,[upload_role]
+           ,[cad_dm_role]
+
+
+)
      VALUES
            (" + request.EdocId + @"
            ,@edoc_ref_no
@@ -657,7 +687,7 @@ INSERT INTO [dbo].[t_Sanction_Master]
            ,null
            ,null
            ,1
-           ,1
+           ,null
            ,'" + Inputter + @"'
            ,getdate()
            ,'" + request.SanctionReference + @"'
@@ -666,6 +696,10 @@ INSERT INTO [dbo].[t_Sanction_Master]
            ,'" + request.ApprovalAuthority + @"'
            ,'" + Inputter + @"'
            ,getdate()
+           ,@UploadDivision
+           ,@Role
+           ,@NextRole
+
 
 
 )";
@@ -744,6 +778,11 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
 
 )
  
+
+ 
+
+
+
 ";
 
         }
