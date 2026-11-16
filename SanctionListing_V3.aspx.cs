@@ -19,13 +19,17 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        TableData = Listing(); 
+        if (Session["Role"] == null)
+        {
+            Response.Redirect("Login.aspx");
+            return;
+        }
 
-        Role = Convert.ToInt32(Session["Role"].ToString());
+        Role = Convert.ToInt32(Session["Role"]);
 
+        TableData = Listing();
 
         LoadSecurity();
-
         BindCheckBoxList();
     }
 
@@ -60,6 +64,12 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         //SqlCommand cmd = new SqlCommand(Sql, connection);
 
 
+        //Response.Write("Role:" + Role);
+
+
+        //Role = Convert.ToInt32(Session["Role"].ToString());
+
+
         if (Role == 5)
         {
             String bc = Session["BranchCode"].ToString();
@@ -89,6 +99,7 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         catch (Exception ex)
         {
             //ErrorMSG = ex.Message;
+            throw;
         }
         return ds.Tables[0];
 
