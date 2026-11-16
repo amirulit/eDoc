@@ -38,11 +38,8 @@ public partial class Login : System.Web.UI.Page
 
     protected void btnRM_Click(object sender, EventArgs e)
     {
+
         
-
-
-         
-
 
         Session["DomainID"] = "RM-Branch";
 
@@ -51,7 +48,7 @@ public partial class Login : System.Web.UI.Page
         Session["Role"] = 5;
 
 
-        Session["BranchCode"] = "BD0010101";
+        Session["BranchCode"] = "BD0010103";
 
 
         Response.Redirect("Dashboard.aspx");
@@ -320,10 +317,29 @@ public partial class Login : System.Web.UI.Page
     protected void btnCAD_UH_CBD_Click(object sender, EventArgs e)
     {
 
+        Session["DomainID"] = "UH-CBD";
+
+        Session["Name"] = "UH-CBD";
+
+        Session["Role"] = 59;
+
+        Response.Redirect("Dashboard.aspx");
+
+
     }
     protected void btnCAD_DM_SME_Click(object sender, EventArgs e)
     {
+        Session["DomainID"] = "DM-SME";
 
+        Session["Name"] = "DM-SME";
+
+        Session["Role"] = 61;
+
+
+        Session["BranchCode"] = "SME-CAD";
+
+
+        Response.Redirect("Dashboard.aspx");
     }
     protected void btnCAD_UH_SME_Click(object sender, EventArgs e)
     {

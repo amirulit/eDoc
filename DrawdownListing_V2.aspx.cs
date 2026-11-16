@@ -16,9 +16,14 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        TableData = Listing();
 
         Role = Convert.ToInt32(Session["Role"].ToString());
+
+
+
+        TableData = Listing();
+
+       
     }
 
 
@@ -112,7 +117,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         SqlCommand command = new SqlCommand();
         command.CommandType = CommandType.StoredProcedure;
-        command.CommandText = "usp_Drawdown_Listing_V3";
+        //command.CommandText = "usp_Drawdown_Listing_V3";
         command.Connection = connection;
         //command.Parameters.Add(new SqlParameter("@branchcode", Session["BranchCode"]));
         //command.Parameters.Add(new SqlParameter("@status", Status));
@@ -120,6 +125,24 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         //command.Parameters.Add(new SqlParameter("@ValueDate", ValueDate));
         //SqlCommand cmd = new SqlCommand("select * from t_FundRequsition", connection);
         //SqlCommand cmd = new SqlCommand(Sql, connection);
+
+        String BranchCode = Session["BrancCode"].ToString();
+
+
+        //For Branch
+        if (Role == 5 || Role == 7 || Role == 9)
+        {
+            command.Parameters.Add(new SqlParameter("@BranchCode", BranchCode));
+            command.CommandText = "usp_Drawdown_Listing_For_Branch";
+
+        }
+        else
+        {
+
+            command.Parameters.Add(new SqlParameter("@Role", Role));
+            command.CommandText = "usp_Drawdown_Listing_For_CAD_UnitHead";
+
+        }
 
 
         SqlDataAdapter sda = new SqlDataAdapter(command);

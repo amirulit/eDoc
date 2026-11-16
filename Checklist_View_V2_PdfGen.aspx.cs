@@ -97,7 +97,7 @@ Upload Not Required
         LoadCheckList();
 
         //LoadCusList();
-        hfCusID.Value = Request.QueryString[1].ToString();
+        //hfCusID.Value = Request.QueryString[1].ToString();
         hfDrawdownID.Value = Request.QueryString[0].ToString();
 
 
@@ -237,7 +237,9 @@ font-family:Cambria
 
         // Table opening
 
-        String CustomerName = TableData_Customer.Rows[0]["cus_name"].ToString();
+        //String CustomerName = TableData_Customer.Rows[0]["cus_name"].ToString();
+
+        String CustomerName = "Test";
 
         sb.AppendLine("<table class='no-border'><thead><tr><th style='text-align :center;'>Mercantile Bank PLC</th></tr><thead><tr><th style='text-align :center;'>Main Branch</th></tr></thead></table></br></br></br>");
 

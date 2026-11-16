@@ -127,6 +127,8 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         public string cus_type { get; set; }
         public string short_form { get; set; }
         public string sanction_segment { get; set; }
+
+        public string booking_branch { get; set; }
         
     }
 
@@ -245,6 +247,7 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 				,c.cus_type
 				,l.short_form
 	            ,(select top 1 sanction_segment from t_Sanction_Master m  where  s.edoc_id=m.edoc_id)sanction_segment
+                ,(select top 1 booking_branch from t_Sanction_Master m  where  s.edoc_id=m.edoc_id)booking_branch
         
         FROM 
             [dbo].[t_Sanction_Master_Details] s
@@ -294,7 +297,10 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
                             validity = GetString(dr, "validity"),
                             cus_type = GetString(dr, "cus_type"),
                             short_form = GetString(dr, "short_form"),
-                            sanction_segment = GetString(dr, "sanction_segment")
+                            sanction_segment = GetString(dr, "sanction_segment"),
+
+                            booking_branch = GetString(dr, "booking_branch")
+                            
 
                             
                         });
@@ -331,8 +337,6 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         String customerTypes,
         String loanTypes,
         String securityTypes)
-
-
     {
         // Example:
         // rowIds         = "101,102,105"
@@ -437,6 +441,7 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
                         new SqlParameter("@sec_types",securityTypes), 
 
                         new SqlParameter("@loan_amount",amount), 
+
                         new SqlParameter("@sanction_segment",segment), 
                         
                         //new SqlParameter("@cus_name",Obj.cus_name), 
@@ -453,10 +458,21 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
                         
                         new SqlParameter("@drawdown_create_source",(Role==5?"Branch(RM)":"CAD(DM)")),
 
+                        new SqlParameter("@cad_operation_mode",(Role==5?"Decentralized":"Centralized")),
+
+                        new SqlParameter("@branch_code", HttpContext.Current.Session["BranchCode"].ToString()),
+
                         new SqlParameter("@input_by_role",Role)
 
 
+
+
+
+
+
+
                     };
+
 
 
             command.Parameters.AddRange(parameters);
@@ -506,8 +522,8 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
         //return "Data received successfully.";
 
-    }
 
+    }
 
 
     [WebMethod(EnableSession = true)]
