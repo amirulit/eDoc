@@ -1,5 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
-    CodeFile="DrawdownListing_V2.aspx.cs" Inherits="DrawdownListing_V2" %>
+    CodeFile="DrawdownListing_V2.aspx.cs" Inherits="DrawdownListing_V2"
+    
+     Debug="true"
+    
+     %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
@@ -381,8 +385,8 @@
 
                         <td><%=TableData.Rows[data]["id"]%></td>
                         <td><%=TableData.Rows[data]["dd_id"]%></td>
-                        <td><%=TableData.Rows[data]["cus_type"]%></td>
-                        <td><%=TableData.Rows[data]["cus_id"]%></td>
+                        <td><%=TableData.Rows[data]["cus_types"]%></td>
+                        <td><%=TableData.Rows[data]["cus_ids"]%></td>
                         <td><%=TableData.Rows[data]["cus_name_2"]%></td>
                           
                         <td><%=TableData.Rows[data]["loan_natures"]%></td>
@@ -408,13 +412,14 @@
                         <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
 
                          
-                         
                         <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview"  cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>"  sanction-id="<%=TableData.Rows[data]["sanction_ids"]%>"   >Upload View</a>                                    
 
 
-
                         <%  if (Role == 2 || Role == 20)
-                            { %>
+                                
+                            { 
+                                
+                                %>
                         
                         
                         <a href="SSCCreation.aspx?v=<%=TableData.Rows[data]["drawdown_id"]%>"  class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    

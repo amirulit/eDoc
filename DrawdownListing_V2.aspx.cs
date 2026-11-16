@@ -126,10 +126,10 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         //SqlCommand cmd = new SqlCommand("select * from t_FundRequsition", connection);
         //SqlCommand cmd = new SqlCommand(Sql, connection);
 
-        String BranchCode = Session["BrancCode"].ToString();
+        String BranchCode = Session["BranchCode"].ToString();
 
 
-        //For Branch
+        ////For Branch
         if (Role == 5 || Role == 7 || Role == 9)
         {
             command.Parameters.Add(new SqlParameter("@BranchCode", BranchCode));
@@ -140,7 +140,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         {
 
             command.Parameters.Add(new SqlParameter("@Role", Role));
-            command.CommandText = "usp_Drawdown_Listing_For_CAD_UnitHead";
+            command.CommandText = "usp_Drawdown_Listing_For_CAD";
 
         }
 

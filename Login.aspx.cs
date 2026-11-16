@@ -343,7 +343,17 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCAD_UH_SME_Click(object sender, EventArgs e)
     {
+        Session["DomainID"] = "UH-SME";
 
+        Session["Name"] = "UH-SME";
+
+        Session["Role"] = 63;
+
+
+        Session["BranchCode"] = "SME-CAD";
+
+
+        Response.Redirect("Dashboard.aspx");
     }
     protected void btnCAD_DM_Retail_Click(object sender, EventArgs e)
     {

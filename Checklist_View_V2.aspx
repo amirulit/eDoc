@@ -1546,17 +1546,28 @@
     <div style="text-align: center;  padding-top:10px;">
       <input type="button" value="Close" onclick="window.close();" class="btn   btn-danger" />
         <% 
-            if (Role == 2 || Role == 5 || Role == 8 || Role == 10 || Role == 15 || Role == 20)
+            if (Role == 5
+||  Role ==7
+|| Role == 9
+|| Role ==59
+|| Role ==63
+|| Role ==67
+|| Role == 71)
+                
+                
+                
             { 
                
         %>
         <input type="button" value="Forward" id="btnForward" class="btn btn-success" />
         <input type="button" value="Decline" id="btnDecline" class="btn btn-primary" />
         <%
-           }
+        }
         %>
+
         <%--<input type="button" value="Pdf"  id="btnPdf"   onclick="javascript:Pdf();"  class="btn btn-info"/>--%>
         <br />
+
     </div>
    
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
