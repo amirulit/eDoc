@@ -29,6 +29,11 @@
             color: blue;
             margin-right: 15px;
         }
+
+
+
+
+
     </style>
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
@@ -38,12 +43,175 @@
 
         $(document).ready(function () {
 
+            var uploaded_files = 0;
+
+            var total_files = 0;
+
+            $('#btnDocumentUpload').click(function () {
+
+                $('#modalUpdateform').modal('show'); // Replace #myModal with your modal's ID 
+
+                var drawdown_id = $(this).attr("drawdown-id");
+
+                $("#lblID").text(drawdown_id);
+
+                alert(drawdown_id);
+
+
+
+            });
+
+
+
+            $('#fileUploadID').on("change", function () {
+
+                //uploadFile();
+
+                var f_name = '';
+                var f_size = '';
+
+                document.getElementById('r').innerHTML = '';
+                var filelists = '';
+
+                var fileUploadID = document.getElementById("fileUploadID");
+                var aryFiles = fileUploadID.files;
+                total_files = aryFiles.length;
+                for (var i = 0; i < aryFiles.length; i++) {
+
+                    f_name = aryFiles[i].name;
+                    f_size = (aryFiles[i].size / (1024 * 1024)).toFixed(2);
+
+
+                    filelists = filelists + "<tr><td>" + (i + 1) + "</td><td>" + f_name + "</td><td>" + f_size + "</td><td><span id='file_" + i + "'>0%</span><span id='error_" + i + "'></span></td></tr>";
+                    //filelists = filelists + "<tr><td>" + (i + 1) + "</td><td>" + aryFiles[i].name + "</td><td>" + aryFiles[i].size + "</td><td><span id='file_" + i + "'>0%</span></td></tr>";
+                    //alert(aryFiles[i].name);
+                }
+                filelists = "<table class='table'><thead><tr><th>SL</th><th>File Name</th><th>Size</th><th>Upload Status(%)</th></tr></thead>" + filelists + "</table>";
+                document.getElementById('r').innerHTML = filelists;
+
+            });
+
+
+            $("#btnSubmit").click(function () {
+
+                var dd_id = $(this).attr("dd-id");
+
+                alert(dd_id);
+                upload_sanction_letter(dd_id);
+
+            });
+
+
+            function upload_sanction_letter(dd_id) {
+
+                var filelists = '';
+                var fileUploadID = document.getElementById("fileUploadID");
+                var aryFiles = fileUploadID.files;
+                for (var i = 0; i < aryFiles.length; i++) {
+
+                    /*
+                    var fileName = aryFiles[i].name.startsWith("1111_");
+                    if (!fileName)
+                    alert("Please upload file with name starting with 1111_");
+                    else
+                    alert("Done.");
+                    */
+
+                    //alert(aryFiles[i].name);
+                    upload(aryFiles[i], i, dd_id);
+                    //filelists = filelists + "<tr><td>" + aryFiles[i].name + "</td><td><span id='" + i + "'></span></td></tr>";
+
+                }
+
+
+                //return "OK";
+
+                //MailSend(file_no, 22)
+
+                //setTimeout(MailSend(file_no, 22), 20000);
+
+
+            }
 
 
 
 
 
 
+            function upload(f, i, dd_id) {
+
+                //alert(f.name);
+
+                var doc_type = $('#<%=select8.ClientID%>').val()
+
+                var formData = new FormData();
+
+                formData.append("dd_id", dd_id);
+
+                formData.append("doc_type", doc_type);
+
+                formData.append("file", f);
+
+                //alert('tttt'); 
+
+                $.ajax({
+
+
+                    url: 'WebService3.asmx/UploadFiles_2',
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (fileName) {
+
+                        $("#fileProgress").hide();
+                        $("#lblMessage").html("<b>" + fileName + "</b> has been uploaded.");
+
+                        uploaded_files = uploaded_files + 1;
+
+                        if (uploaded_files == total_files) {
+
+                            alert(doc_type + ' Uploaded');
+
+                            uploaded_files = 0;
+                            //MailSend(file_no, 22);
+
+                        }
+                    },
+                    xhr: function () {
+                        var fileXhr = $.ajaxSettings.xhr();
+                        //Check if upload property exists
+                        if (fileXhr.upload) {
+                            //update progressbar percent complete
+                            fileXhr.upload.addEventListener("progress", function (e) {
+                                if (e.lengthComputable) {
+                                    //$("#statustxt").attr({ value: e.loaded, max: e.total });
+                                    //console.log("Value = " + e.loaded + " :: Max =" + e.total);
+                                    var percentage = Math.floor((e.loaded / e.total) * 100);
+                                    console.log(f.name + ' : ' + percentage + '%');
+                                    $("#statustxt").html(percentage + '%');
+                                    $("#file_" + i + "").html(percentage + '%');
+                                }
+                            }, false);
+                        }
+                        return fileXhr;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $("#file_" + i + "").html('0%');
+                        //$("#error_" + i + "").html(XMLHttpRequest.responseText + '-' + textStatus + '-' + errorThrown);
+                        $("#error_" + i + "").html(XMLHttpRequest.status + '-' + XMLHttpRequest.statusText);
+                        //alert("Whoops something went wrong!");
+
+                        alert("Upload failed for file: " + dd_id + "\n\nUploading has been stopped.");
+
+
+                    }
+                });
+
+
+
+            }
 
         });
 
@@ -740,10 +908,6 @@
                             swal("Success!", "Data Saved Successfully. Drawdown ID : " + dd_id, "success");
 
 
-
-
-
-
                             //$("#btnUpload").css("display", "inline-block");
 
                             $("#btnGenerate").attr("drawdown-id", dd_id);
@@ -758,7 +922,7 @@
                             //$("#btnUpload").attr("securities", securities);
 
 
-                            $('#modalUpdateform').modal('show');
+                            //$('#modalUpdateform').modal('show');
 
                             //var dd_id = $(this).attr("dd-id");
 
@@ -827,6 +991,22 @@
                             $("#btnUpload").css({ "display": "inline-block" });
 
                             $("#btnUpload").attr("drawdown-id", drawdown_id);
+
+                            var role = document.getElementById('ContentPlaceHolder1_hdnRole').value;
+
+                            //alert(role);
+
+                            if (role != 5) {
+
+
+                                $("#btnSubmit").attr("dd-id", drawdown_id);
+                                $("#btnDocumentUpload").attr("drawdown-id", drawdown_id);
+                                $("#btnDownload").css({ "display": "inline-block" });
+                                $("#btnDocumentUpload").css({ "display": "inline-block" });
+
+                            }
+
+
 
 
                             //$("#btnUpload").attr("cus-id", cus_ids);
@@ -1001,7 +1181,7 @@
     <!-- Start of table section -->
 
 
-    
+    <asp:HiddenField ID="hdnRole" runat="server"></asp:HiddenField>
 
 
 
@@ -1105,6 +1285,12 @@
                 <button type="button" class="btn btn-primary" id="btnGenerate" style="display:none;" >Checkist Generate</button>
 
 
+                <button type="button" class="btn btn-primary" id="btnDownload" style="display:none;" >Checkist Download</button>
+
+               
+                <button type="button" class="btn btn-primary" id="btnDocumentUpload" style="display:none;" >Document Upload</button>
+
+
                 <button type="button" class="btn btn-primary" id="btnUpload" style="display:none;" >Upload</button>
 
 
@@ -1117,6 +1303,86 @@
 
     </div>
     
+
+        
+    
+    <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
+  		<div class="modal-dialog">
+    		<div class="container">
+            	<div class="row ">	
+           			<div class="col-md-6">
+                		<div class="panel">
+        					<div class="panel-heading bg-orange">                 
+        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          						<h4 class="modal-title custom_align" id="Heading">Document Upload</h4>
+                            </div>
+                            <div class="panel-body"> <!-- Start of modal body--> 
+
+
+
+
+                            ID # <span id="lblID" class="badge  badge-success"></span>
+                            <!--
+                                <div class="form-group" id="divSubjectUpdate">
+                                    <label for="">Subject</label>
+                                    <input class="form-control" type="text" id="name1" name="name" autocomplete="off"/>
+                                </div> 
+                                -->
+                                <%-- <div class="form-group" id="div2">
+                                 Please upload following documents :
+
+                                 <ul>
+                                 
+                                    <li>Checklist Scancopy</li>
+                                    <li>Accepted Scancopy</li>
+                                    <li>Board Resolution</li>
+                                    <li>Others</li>
+
+
+                                 </ul>
+                                 </div>--%>
+
+
+                                  <div class="form-group"  >
+                      			<label for="">Document Type</label>
+                      	     <select id="select8"   runat="server"       class="form-control">
+                   <option value="Checklist Scancopy">Checklist Scancopy</option>
+                   <option value="Accepted Scancopy">Accepted Scancopy</option>
+                   <option value="Board Resolution">Board Resolution</option>
+                   <option value="Others">Others</option>
+                  
+                   
+                  
+                   </select>
+
+                       
+             
+                    		</div>
+
+ 
+                                <div class="form-group" id="div1">
+                                     <input id="fileUploadID" type="file"  multiple />
+ 
+                                </div> 
+
+                                  <div id='r'>
+                        </div>
+
+
+
+                            </div><!--/.modal body-->
+                            <div class="panel-footer bg-gray-light">
+                                <input type="hidden" id="id" name="id" value="" />
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
+        	  				</div><!--/.panel-footer--> 
+            			</div><!--/.panel-->
+            		</div><!--/.col-md-6-->
+            	</div><!--/.row-->                                        
+        	</div><!-- /.modal-content -->  		 
+		</div><!-- /.modal-dialog -->            
+	</div><!--/.Modal-Update form -->   
+
+
      <div class="modal" id="sanctionModal_Multiple" tabindex="-1" role="dialog" aria-labelledby="sanctionModalLabel">
 
     <div class="modal-dialog  modal-lg " role="document" >
@@ -1320,12 +1586,18 @@
 
         Int32 id;
 
+        String status;
+
 
         if (TableData.Rows.Count > 0)
         {
             for (var data = 0; data < TableData.Rows.Count; data++)
             {
                 id = Convert.ToInt32(TableData.Rows[data]["edoc_id"]);
+
+                status = TableData.Rows[data]["status"].ToString();
+                
+                
 %>
 
 
@@ -1349,7 +1621,7 @@
                         <td><%=TableData.Rows[data]["sanction_authority"]%></td>
                         <td><%=TableData.Rows[data]["cus_name"]%></td>
                         <td><%=TableData.Rows[data]["total_amount"]%></td>
-                        <td><%=TableData.Rows[data]["status"]%></td>
+                        <td><%=TableData.Rows[data]["status_desc"]%></td>
                         	
                         <td>        
 

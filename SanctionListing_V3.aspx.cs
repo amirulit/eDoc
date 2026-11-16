@@ -27,6 +27,8 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
         Role = Convert.ToInt32(Session["Role"]);
 
+        hdnRole.Value = Role.ToString();
+
         TableData = Listing();
 
         LoadSecurity();

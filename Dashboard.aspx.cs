@@ -16,7 +16,7 @@ public partial class Dashboard : System.Web.UI.Page
         Role = Convert.ToInt32(Session["Role"]);
 
 
-        Response.Write("Role:" + Role);
+        //Response.Write("Role:" + Role);
 
     }
 }

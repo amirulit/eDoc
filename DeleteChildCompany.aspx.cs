@@ -21,7 +21,7 @@ public partial class DeleteChildCompany : System.Web.UI.Page
             {
                 using (SqlConnection con = new SqlConnection(
                     ConfigurationManager.ConnectionStrings[
-                        "YourConnectionString"].ConnectionString))
+                        "dbConn"].ConnectionString))
                 {
                     string sql = @"
                     DELETE FROM dbo.t_Group
@@ -38,7 +38,7 @@ public partial class DeleteChildCompany : System.Web.UI.Page
                 }
             }
 
-            Response.Redirect("YourExistingPage.aspx");
+            Response.Redirect("CompanyListing_V4.aspx");
         }
     }
 }

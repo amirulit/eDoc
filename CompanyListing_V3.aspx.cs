@@ -499,7 +499,7 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
 
                 if (details.Length > 0)
                 {
-                    sb.Append("<table class='table table-bordered table-striped'>");
+                    sb.Append("<table class='table table-bordered table-striped' id='" + motherCode + "'>");
                     sb.Append("<tbody>");
 
                     foreach (DataRow detail in details)
@@ -539,6 +539,14 @@ public partial class CompanyListing_V3 : System.Web.UI.Page
                     //sb.Append("<span class='text-muted'>No Child Company Found</span>");
 
                     sb.Append("<span class='text-muted'></span>");
+
+                    sb.Append("<table class='table table-bordered table-striped' id='" + motherCode + "'>");
+                    sb.Append("<tbody>");
+                    sb.Append("</tbody>");
+                    sb.Append("</table>");
+
+
+
                 }
 
                 //sb.Append("</td>");
