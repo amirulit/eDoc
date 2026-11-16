@@ -415,7 +415,7 @@
         </li>
 
             <%} %>
-        <%  if (Role == 57 || Role == 59 || Role == 61 || Role == 63 || Role == 65 || Role == 67 || Role == 69 || Role == 71)
+        <%  if (Role == 57 ||  Role == 61 || Role == 65 || Role == 69 )
             { %>
              
          <li>
@@ -431,7 +431,9 @@
         </li>
     
 
-        <%} %>
+        <%
+        }
+         %>
 
 
 
@@ -449,14 +451,19 @@
             <i class="fa fa-arrow-circle-o-right"></i><span>Initiate Checklist</span>
           </a>
         </li>
+          <%} %>
+
+         <%  
+             if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
+             {
+                 %>
 
          <li>
           <a href="DrawdownListing_V2.aspx">
             <i class="fa fa-arrow-circle-o-right"></i><span>Check List Listing</span>
           </a>
         </li>
-
-
+ 
         <!--
         <li>
           <a href="DrawdownCreate_V2.aspx">
@@ -467,13 +474,13 @@
       
 
         <%
-             }
+        }
              %>
 
 
 
           <% 
-              if (Role == 57 || Role == 59 ||Role == 61 ||Role ==  63 ||Role ==  65 ||Role ==  67)
+              if (Role == 57 || Role == 59 ||Role == 61 ||Role ==  63 ||Role ==  65 ||Role ==  67  || Role == 69||Role == 71)
              {
                   %>
 
@@ -482,11 +489,7 @@
             <i class="fa fa-arrow-circle-o-right"></i><span>Check List Listing</span>
           </a>
         </li>
-
-          <%
-          }
-          
-           %>
+          <%} %>
 
 
 
@@ -519,7 +522,7 @@
 
 
         <%
-           }
+        }
              %>
 
 

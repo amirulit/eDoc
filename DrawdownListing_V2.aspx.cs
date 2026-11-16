@@ -130,7 +130,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
 
         ////For Branch
-        if (Role == 5 || Role == 7 || Role == 9)
+        if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
         {
             command.Parameters.Add(new SqlParameter("@BranchCode", BranchCode));
             command.CommandText = "usp_Drawdown_Listing_For_Branch";

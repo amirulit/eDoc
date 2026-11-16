@@ -65,10 +65,10 @@ public partial class Login : System.Web.UI.Page
 
         Session["UserType"] = "CADMaker";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
 
@@ -82,16 +82,18 @@ public partial class Login : System.Web.UI.Page
 
         Session["Role"] = 7;
 
-        Session["UserType"] = "CADMaker";
+        //Session["UserType"] = "CADMaker";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
-        Session["BranchCode"] = "BD0010101";
+        Session["BranchCode"] = "BD0010103";
 
         Response.Redirect("Dashboard.aspx");
+
+
     }
     protected void btnMOP_Click(object sender, EventArgs e)
     {
@@ -103,10 +105,10 @@ public partial class Login : System.Web.UI.Page
 
         Session["UserType"] = "CADMaker";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
 
@@ -115,7 +117,7 @@ public partial class Login : System.Web.UI.Page
     protected void btnHOB_Click(object sender, EventArgs e)
     {
         Session["DomainID"] = "HOB";
-
+        Session["BranchCode"] = "BD0010103";
 
         Session["Name"] = "Head of Branch";
 
@@ -123,10 +125,10 @@ public partial class Login : System.Web.UI.Page
 
         Session["UserType"] = "CADMaker";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
 
