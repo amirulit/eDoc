@@ -734,9 +734,12 @@ OTHER DOCUMENTS
                 });
             };
 
+
+
+
         switch (pk)
         {
-            case 9:
+            case 7:
                 add("Approval Authority", "select", "APPROVAL");
                 add("Expiry", "date", "");
                 break;

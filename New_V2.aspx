@@ -215,11 +215,11 @@
 
                             if (role == 'HEAD OF BRANCH') {
                                 //$("#ddlRole").val(20);
-                                $("#ddlrole").empty().append('<option value="20">HOB</option>');
+                                $("#ddlrole").empty().append('<option value="11">HOB</option>');
                             }
                             else if (role == 'UPOSHAKHA INCHARGE' || role == 'Uposhakha Incharge') {
                                 //$("#ddlRole").val(15);
-                                $("#ddlrole").empty().append('<option value="15">UPOSHAKHA INCHARGE</option>');
+                                $("#ddlrole").empty().append('<option value="9">UPOSHAKHA INCHARGE</option>');
                             }
                             else {
 
@@ -229,7 +229,7 @@
 
                                     { id: 5, text: "Relationship Manager (RM)" },
 
-                                    { id: 10, text: "Credit Incharge" },
+                                    { id: 7, text: "Credit Incharge" },
 
 
 

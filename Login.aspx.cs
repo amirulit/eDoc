@@ -51,10 +51,12 @@ public partial class Login : System.Web.UI.Page
         Session["Role"] = 5;
 
 
-
+        Session["BranchCode"] = "BD0010101";
 
 
         Response.Redirect("Dashboard.aspx");
+
+
     }
     protected void btnCD_Click(object sender, EventArgs e)
     {
@@ -81,7 +83,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["Name"] = "Credit Incharge";
 
-        Session["Role"] = 5;
+        Session["Role"] = 7;
 
         Session["UserType"] = "CADMaker";
 
@@ -90,7 +92,7 @@ public partial class Login : System.Web.UI.Page
         if (txtDomainID.Text == "cadchecker@mblbd.com")
             Session["UserType"] = "CADChecker";
 
-
+        Session["BranchCode"] = "BD0010101";
 
         Response.Redirect("Dashboard.aspx");
     }
@@ -120,7 +122,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["Name"] = "Head of Branch";
 
-        Session["Role"] = 15;
+        Session["Role"] = 11;
 
         Session["UserType"] = "CADMaker";
 

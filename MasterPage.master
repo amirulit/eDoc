@@ -420,17 +420,7 @@
             <%} %>
         <%  if (Role == 57 || Role == 59 || Role == 61 || Role == 63 || Role == 65 || Role == 67 || Role == 69 || Role == 71)
             { %>
-
-
-        
-
-
-
-
-
-
-
-
+             
          <li>
           <a href="SanctionListing_V2.aspx">
             <i class="fa fa-arrow-circle-o-right"></i><span>Sanction Listing</span>
@@ -445,6 +435,12 @@
     
 
         <%} %>
+
+
+
+        
+
+
 
          <%  
              if (  Role == 5)

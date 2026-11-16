@@ -639,9 +639,9 @@ set @edoc_ref_no=CONCAT(@Year, '', FORMAT(@NextNumber, '00000'))
 
 set @Role=" + Role + @"   
 
-select @NextRole=CAD_RM_Role from  t_FileForwarding_Mapping where Update_Role=" + Role + @"
+select @NextRole=CAD_RM_Role from  t_FileForwarding_Mapping where SanctionUpload_Role=" + Role + @"
 
-select @CAD_DM_Employee_ID=emp_id from _CAD_Officials_BrachMapping where branch_code='" + request.Branch + @"'
+select @CAD_DM_Employee_ID=emp_id from t_CAD_Officials_BrachMapping where branch_code='" + request.Branch + @"'
 
 
 if (@Role in (11,21,23,25,27,29,31,33,35))
@@ -724,7 +724,7 @@ INSERT INTO [dbo].[t_Sanction_Master]
 
 
 
-        Sql = Sql + @"  update t_Sanction_Master set  cad_dm_employee_id=@CAD_DM_Employee_ID where edoc_id=" + request.EdocId + @" where  sanction_segment='SME'";
+        Sql = Sql + @"  update t_Sanction_Master set  cad_dm_employee_id=@CAD_DM_Employee_ID where edoc_id=" + request.EdocId + @" and   sanction_segment='SME'";
 
 
         Sql = Sql + @"  --SELECT CAST(SCOPE_IDENTITY() AS INT);

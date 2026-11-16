@@ -50,14 +50,32 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
         SqlCommand command = new SqlCommand();
         command.CommandType = CommandType.StoredProcedure;
-        command.CommandText = "usp_SanctionLisitng_V2";
-        command.Connection = connection;
+        //command.CommandText = "usp_SanctionLisitng_V2";
+        //command.Connection = connection;
         //command.Parameters.Add(new SqlParameter("@branchcode", Session["BranchCode"]));
         //command.Parameters.Add(new SqlParameter("@status", Status));
 
         //command.Parameters.Add(new SqlParameter("@ValueDate", ValueDate));
         //SqlCommand cmd = new SqlCommand("select * from t_FundRequsition", connection);
         //SqlCommand cmd = new SqlCommand(Sql, connection);
+
+
+        if (Role == 5)
+        {
+            String bc = Session["BranchCode"].ToString();
+
+            command.CommandText = "usp_Listing_For_Drawdown_Branch_RM";
+            command.Parameters.Add(new SqlParameter("@BranchCode", bc));
+        }
+        else
+        {
+
+
+            command.CommandText = "usp_Listing_For_Drawdown_CAD_DM";
+            command.Parameters.Add(new SqlParameter("@Role", Role));
+        }
+
+        command.Connection = connection;
 
 
         SqlDataAdapter sda = new SqlDataAdapter(command);
@@ -74,8 +92,9 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         }
         return ds.Tables[0];
 
-    }
 
+
+    }
 
 
     public class SanctionDetail
