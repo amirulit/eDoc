@@ -166,8 +166,7 @@
 
             var cell = button.closest("td");
 
-            var motherCode = button.attr("cus-id");
-
+            var motherCode = button.attr("cus-id"); 
 
             var dropdown = cell.find(".child-company-input");
 
@@ -191,8 +190,10 @@
             console.log("Option count:", dropdown.find("option").length);
 
             if (childCode == "") {
+
                 alert("Please enter child Company Cus ID");
                 return;
+
             }
 
             //if (childCode == motherCompany) {
@@ -230,6 +231,8 @@
 
                     
 
+                    childName = childName.split('-')[0];
+
                     //var row = button.closest("tr");
 
                     if (result.success) {
@@ -238,22 +241,32 @@
 
                         var tbl = 'tbl_' + motherCode;
 
-                      
                         $('#' + tbl).append(
-    '<tr>' +
-        '<td>' + childCode + '</td>' +
-        '<td>' + childName + '</td>' +
-        '<td>' +
-            '<button type="button" class="btn btn-danger btn-xs" ' +
-            'onclick="deleteChildCompany(\'' + motherCode + '\', \'' + childCode + '\')">' +
-            'Delete' +
-            '</button>' +
-        '</td>' +
-    '</tr>'
-);
+     '<tr id="row_' + childCode + '">' +
+         '<td>' + childCode + '</td>' +
+         '<td>' + childName + '</td>' +
+         '<td>' +
+             '<button type="button" class="btn btn-danger btn-xs" ' +
+             'onclick="deleteChildCompany(\'' + motherCode + '\', \'' + childCode + '\')">' +
+             //'onclick="deleteChildCompany_V2(\'' + motherCode + '\', \'' + childCode + '\', \'' + tbl + '\')">' +
+             'Delete' +
+             '</button>' +
+         '</td>' +
+     '</tr>'
+ );
+
+                        //'onclick="deleteChildCompany(\'' + motherCode + '\', \'' + childCode + '\', \'' + tbl + '\')"'
+                        
+                        //$('#row_' + childCode).remove();
+
+                        /*
+                        
+                        function deleteChildCompany(motherCode, childCode) {
+                            $('#row_' + childCode).remove();
+                        }
 
                         
-
+                        */
 
 
 
@@ -286,6 +299,10 @@
 
         });
 
+
+        function deleteChildCompany_V2(motherCode, childCode, tbl) {
+            $('#' + tbl + ' #row_' + childCode).remove();
+        }
 
         // Delete Mother Company
         $(document).on("click", ".delete-child", function () {
