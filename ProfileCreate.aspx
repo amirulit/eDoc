@@ -267,6 +267,7 @@
             $("#btnSaveCompOwnerInfo").click(function () {
 
 
+                var cus_code = $("#txtCompOwnerCustomerID").val();
                 var name = $("#txtCompOwnerName").val();
                 var role = $("#Select2").val();
                 var address = $("#txtCompOwnerAddress").val();
@@ -282,6 +283,8 @@
 
 
                 obj.edocid = $("#txteDocID").val();
+                obj.cuscode = $("#txtCompOwnerCustomerID").val();
+                
                 obj.name = name;
                 obj.role = role;
                 obj.address = address;
@@ -531,7 +534,26 @@
 
                 var cus_code = $("#txtCustomerCode").val();
                 //alert(type + '-' + cus_code);
-                getDetails(cus_type, cus_code)
+                getDetails(cus_type, cus_code, 'Profile')
+
+            });
+
+
+            $("#btnGetT24CustomerInfo_CompanyOwner").click(function () {
+
+                //$('#btnUpload').css("display", "block");
+                //$('#btnAddiInfo').css("display", "none");
+
+                //var cus_type = $("#Select1").val();
+
+                //var cus_code = $("#txtCustomerCode").val();
+                //alert(type + '-' + cus_code);
+
+                var cus_type = $("#Select1").val();
+
+                var cus_code = $("#txtCompOwnerCustomerID").val();
+
+                getDetails(cus_type, cus_code, 'Owner')
 
             });
 
@@ -604,7 +626,7 @@
 
 
 
-            function getDetails(cus_type, cus_code) {
+            function getDetails(cus_type, cus_code,purpose) {
 
                 $.ajax({
 
@@ -641,6 +663,17 @@
                         //divCusDeatil
 
                         if (sts == "0000") {
+
+
+                            if (purpose == 'Owner') {
+
+                                $("#txtCompOwnerName").val(data.d.shortName);
+                                $("#txtCompOwnerPhone").val(data.d.smsNumber);
+                                $("#txtCompOwnerAddress").val(data.d.presentAddress + ';' + data.d.ltCusPermanentAddress);
+
+
+                            }
+
 
                             $('#divCusDeatil').css("display", "block");
 
@@ -1460,6 +1493,8 @@
                                         
                                       <td>
                                          
+
+
 
                                           <div class="form-group">
  

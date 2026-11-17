@@ -271,7 +271,13 @@ public partial class ProfileCreate : System.Web.UI.Page
     public class CompOwnerInfo
     {
         public String edocid;
-       
+
+        public String company_cus_code;
+
+
+        public String owner_cus_code;
+
+
         public String name;
 
         public String address;
@@ -625,6 +631,8 @@ public partial class ProfileCreate : System.Web.UI.Page
 
                         
                         new SqlParameter("@edoc_id",Obj.edocid), 
+                                 new SqlParameter("@company_cus_code",Obj.company_cus_code), 
+                                          new SqlParameter("@owner_cus_code",Obj.owner_cus_code), 
                         new SqlParameter("@name",Obj.name),
                         new SqlParameter("@role",Obj.role),
                         new SqlParameter("@address",Obj.address),
