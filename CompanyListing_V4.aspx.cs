@@ -199,8 +199,10 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
 
 
     [WebMethod(EnableSession = true)]
-    public static object SaveChildCompany( string motherCompany,string childCompany)
+    public static object SaveChildCompany(string motherCompany, string childCompany)
     {
+
+        Int32 rows;
         try
         {
             // Check user authentication
@@ -232,6 +234,8 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
                 };
             }
 
+
+
             string conStr = ConfigurationManager
                 .ConnectionStrings["dbConn"]
                 .ConnectionString;
@@ -240,15 +244,15 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
             {
                 con.Open();
 
-                // Verify Mother Company exists
+                /*
                 String checkQuery = @"
                 SELECT COUNT(*)
                 FROM t_CustomerInfo
-                WHERE cus_code = @MotherCompany";
+                WHERE cus_code = @ChildCompany";
 
                 using (SqlCommand cmd = new SqlCommand(checkQuery, con))
                 {
-                    cmd.Parameters.AddWithValue("@MotherCompany", motherCompany.Trim());
+                    cmd.Parameters.AddWithValue("@ChildCompany", childCompany.Trim());
 
                     int count = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -257,13 +261,26 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
                         return new
                         {
                             success = false,
-                            message = "Mother Company Customer ID does not exist."
+                            message = "Child Company Customer ID does not exist."
                         };
                     }
                 }
+                */
+
 
                 // Update Mother Company
+
                 String query = @"
+
+INSERT INTO [dbo].[t_Group]
+           ([mother_com_cus_code]
+           ,[child_com_cus_code])
+     VALUES
+           (@MotherCompany
+           ,@CusID);
+
+
+
                 UPDATE t_Comp
                 SET mother_company = @MotherCompany
                 WHERE cus_code = @CusID";
@@ -273,22 +290,13 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@MotherCompany", motherCompany.Trim());
                     cmd.Parameters.AddWithValue("@CusID", childCompany.Trim());
 
-                    int rows = cmd.ExecuteNonQuery();
+                      rows = cmd.ExecuteNonQuery();
 
-                    //if (rows > 0)
-                    //{
-                    //    return new
-                    //    {
-                    //        success = true,
-                    //        motherCompany = motherCompany.Trim(),
-                    //        message = "Mother Company saved successfully."
-                    //    };
-                    //}
-
-
+                  
+                    /*
                     if (rows > 0)
                     {
-                        // Get Mother Company Name
+                       
                         string motherCompanyName = "";
 
                         string getQuery = @"
@@ -310,14 +318,30 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
                         };
 
                     }
+                    */
+
+                }
+
+                if (rows > 0)
+                {
+                    return new
+                    {
+                        success = true,
+                        motherCompany = motherCompany.Trim(),
+                        message = "Child company saved successfully."
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        success = false,
+                        message = "Child company not saved"
+                    };
+
                 }
             }
-
-            return new
-            {
-                success = false,
-                message = "Customer not found."
-            };
+          
         }
         catch (Exception ex)
         {
@@ -325,7 +349,7 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
             return new
             {
                 success = false,
-                message = "Unable to save Mother Company : " + ex.Message
+                message = "Unable to save Child Company : " + ex.Message
             };
         }
     }
@@ -472,9 +496,19 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
 
                 childHtml.Append("<div>");
 
+
+                /*
+                
+                childHtml.Append("<button type='button' ");
+                childHtml.Append("class='btn btn-primary btn-xs add-child' ");
+                childHtml.Append("cus-id='");
+                childHtml.Append(HttpUtility.HtmlAttributeEncode(motherCode));
+                childHtml.Append("'>Add</button>");
+                 
+                */
                 if (details.Length > 0)
                 {
-                    childHtml.Append("<table class='table table-bordered table-striped'>");
+                    childHtml.Append("<table class='table table-bordered table-striped' id='tbl_"+motherCode+"'>");
                     childHtml.Append("<tbody>");
 
                     foreach (DataRow detail in details)
@@ -506,13 +540,24 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
                         childHtml.Append("</tr>");
                     }
 
+
+
                     childHtml.Append("</tbody>");
                     childHtml.Append("</table>");
+
+
+
                 }
                 else
                 {
                     //childHtml.Append("<span class='text-muted'>No Child Company Found</span>");
-                    childHtml.Append("<span class='text-muted'></span>");
+                    //childHtml.Append("<span class='text-muted'></span>");
+                    childHtml.Append("<div class='text-muted'>");
+                    childHtml.Append("<table class='table table-bordered table-striped' id='tbl_" + motherCode + "'>");
+                    childHtml.Append("</table>");
+                    childHtml.Append("</div>");
+
+
                 }
 
 
@@ -522,7 +567,7 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
                 childHtml.Append(HttpUtility.HtmlAttributeEncode(motherCode));
                 childHtml.Append("'>Add</button>");
 
-                childHtml.Append("<div class='mother-input-area' style='display:none; margin-top:5px;'>");
+                childHtml.Append("<div class='child-input-area' style='display:none; margin-top:5px;'>");
 
                 //childHtml.Append("<input type='text' ");
                 //childHtml.Append("class='form-control input-sm child-company-input' ");
@@ -552,6 +597,9 @@ public partial class CompanyListing_V4 : System.Web.UI.Page
 
                 // Store generated HTML in the current mother company row
                 mother["ChildDetails"] = childHtml.ToString();
+
+
+
             }
 
 

@@ -113,7 +113,7 @@
 
             $(this).hide();
 
-            cell.find(".mother-input-area").show();
+            cell.find(".child-input-area").show();
 
             /*
             var inputArea = $(this).siblings('.mother-input-area');
@@ -136,9 +136,9 @@
                 dropdown.empty().append(options);
 
                //dropdown.prop('selectedIndex', 0);
-                var v = '200238594';
+                //var v = '200238594';
 
-                dropdown.val(v);
+                //dropdown.val(v);
 
             }
 
@@ -150,11 +150,11 @@
 
             var cell = $(this).closest("td");
 
-            cell.find(".mother-company-input").val("");
+            cell.find(".child-company-input").val("");
 
-            cell.find(".mother-input-area").hide();
+            cell.find(".child-input-area").hide();
 
-            cell.find(".add-mother").show();
+            cell.find(".add-child").show();
 
         });
 
@@ -166,7 +166,7 @@
 
             var cell = button.closest("td");
 
-            var cusId = button.attr("cus-id");
+            var motherCode = button.attr("cus-id");
 
 
             var dropdown = cell.find(".child-company-input");
@@ -175,9 +175,9 @@
 
             var childName = dropdown.find("option:selected").text();
 
-            alert("Child Code: " + childCode);
+            //alert("Child Code: " + childCode);
 
-            alert("Child Name: " + childName);
+            //alert("Child Name: " + childName);
 
 
             var dropdown = cell.find(".child-company-input");
@@ -201,23 +201,23 @@
             //}
 
 
-            alert(cusId+'-'+childCode);
+            //alert(cusId+'-'+childCode);
 
-            return false;
+            //return false;
 
 
 
-            button.prop("disabled", true);
+            //button.prop("disabled", true);
 
             $.ajax({
 
                 type: "POST",
 
-                url: "CompanyListing.aspx/SaveChildCompany",
+                url: "CompanyListing_V4.aspx/SaveChildCompany",
 
                 data: JSON.stringify({
-                    cusId: cusId,
-                    motherCompany: motherCompany
+                    motherCompany: motherCode,
+                    childCompany: childCode
                 }),
 
                 contentType: "application/json; charset=utf-8",
@@ -228,16 +228,41 @@
 
                     var result = response.d;
 
+                    
 
-                    var row = button.closest("tr");
+                    //var row = button.closest("tr");
 
                     if (result.success) {
 
-                        cell.html('<span class="mother-company-value">' + $('<div>').text(result.motherCompany).html() + '</span> ' + '<button type="button" class="btn btn-danger btn-xs delete-mother" cus-id="' + $('<div>').text(cusId).html() + '">Delete</button>');
+                        //cell.html('<span class="mother-company-value">' + $('<div>').text(result.motherCompany).html() + '</span> ' + '<button type="button" class="btn btn-danger btn-xs delete-mother" cus-id="' + $('<div>').text(cusId).html() + '">Delete</button>');
 
-                        //var row = button.closest("tr");
+                        var tbl = 'tbl_' + motherCode;
 
-                        row.find(".mother-company-name").text(result.motherCompanyName);
+                      
+                        $('#' + tbl).append(
+    '<tr>' +
+        '<td>' + childCode + '</td>' +
+        '<td>' + childName + '</td>' +
+        '<td>' +
+            '<button type="button" class="btn btn-danger btn-xs" ' +
+            'onclick="deleteChildCompany(\'' + motherCode + '\', \'' + childCode + '\')">' +
+            'Delete' +
+            '</button>' +
+        '</td>' +
+    '</tr>'
+);
+
+                        
+
+
+
+
+                        //row.find(".child-company-name").hide();
+                        //row.find(".add-child").show();
+
+                        
+
+                        //alert('Child company saved successfully');
 
 
                     }
