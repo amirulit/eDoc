@@ -228,7 +228,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["Name"] = "RM-Retail";
 
-        Session["Role"] = 27;
+        Session["Role"] = 29;
 
 
 
@@ -242,7 +242,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["Name"] = "RM-Agri";
 
-        Session["Role"] = 29;
+        Session["Role"] = 33;
 
 
 
@@ -256,7 +256,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["Name"] = "RM-CBD(SAMD)";
 
-        Session["Role"] = 37;
+        Session["Role"] = 33;
 
 
 

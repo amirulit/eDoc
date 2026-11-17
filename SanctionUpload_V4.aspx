@@ -68,7 +68,7 @@
             }
 
         });
-    
+
     </script>
     <script type="text/javascript">
 
@@ -603,12 +603,40 @@
                       	   <select id="select2"         class="form-control">
                            
                            <option value=""><--Select--></option>
-                           <option value="Corporate">Corporate</option>
-                           
-                           <option value="CMSME">CMSME</option>
-                           <option value="Retail">Retail</option>
 
+                                <% if (Role == 21 ||Role==37 )
+                                   {%>
+
+                           <option value="Corporate">Corporate</option>
+
+                                 <%} %>
+                           
+                                 <% else if (Role == 25 || Role == 41)
+                                   {%>
+                           <option value="CMSME">CMSME</option>
+                                 <%} %>
+
+                                 <% else if (Role == 29 || Role == 45)
+                                   {%>
+                           <option value="Retail">Retail</option>
+                                 <%} %>
+
+                                 <% else if (Role == 33 || Role == 49)
+                                   {%>
                            <option value="Agriculture">Agriculture</option>
+
+                                 <%
+                                   }
+                                  %>
+
+                                 <%else
+                                   { %>
+
+                                   <option value="Corporate">Corporate</option>   <option value="CMSME">CMSME</option>  <option value="Retail">Retail</option>    <option value="Agriculture">Agriculture</option>
+
+                                 <%} %>
+
+
 
                             </select>
              

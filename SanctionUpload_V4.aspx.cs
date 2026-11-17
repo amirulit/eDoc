@@ -14,8 +14,14 @@ using System.IO;
 
 public partial class SanctionUpload_V4 : System.Web.UI.Page
 {
+
+
+    public Int32 Role;
     protected void Page_Load(object sender, EventArgs e)
     {
+
+
+        Role = Convert.ToInt32(Session["Role"].ToString());
 
         LoadCusList();
 

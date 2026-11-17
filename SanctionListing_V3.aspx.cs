@@ -532,6 +532,8 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
         String DomainID = HttpContext.Current.Session["DomainID"].ToString();
 
+        //String Role = HttpContext.Current.Session["Role"].ToString();
+
         Int32 Role = Convert.ToInt32(HttpContext.Current.Session["Role"].ToString());
 
         Object[] details = null;
@@ -577,9 +579,14 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
         */
 
         SqlParameter[] parameters = 
+
                     {
+
                         new SqlParameter("@drawdown_id", drawdown_id),
-                        new SqlParameter("@by",DomainID)
+                        new SqlParameter("@by",DomainID),
+                        new SqlParameter("@role",Role)
+
+                        
 
                     };
 
