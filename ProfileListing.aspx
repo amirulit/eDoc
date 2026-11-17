@@ -46,12 +46,25 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
+
+      <section class="content-header">
+    	<h1>
+        	Customer Profile <a href="ProfileCreate.aspx" class="btn btn-success"> <i class="fa fa-plus"></i></a>
+        </h1>
+        <ol class="breadcrumb">
+        	<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Profile</a></li>
+    	</ol>
+	</section>
+
+
     <section class="content"> <!-- Start of table section -->
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
             	<div class="box">
                 	<div class="box-header">
-                  		<h3 class="box-title">Customer Listing </h3>
+                  		<h3 class="box-title">Customer Listing </h3> 
                 	</div><!-- /.box-header -->
                 	<div class="box-body table-responsive"  >
                      

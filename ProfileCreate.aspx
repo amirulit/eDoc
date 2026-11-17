@@ -341,14 +341,14 @@
                 var obj = {};
 
 
-
+                c_type = cus_type;
 
 
                 obj.cus_type = c_type;
                 obj.edoc_id = $("#txteDocID").val();
                 obj.cus_code = $("#txtCustomerCode").val();
 
-                if (c_type == 'IND') {
+                if (c_type == 'IND' ) {
 
                     obj.name = $("#txtName").val();
                     obj.fname = $("#txtFName").val();
@@ -389,7 +389,7 @@
                     obj.per_addr = $("#txtPerAddrPart").val();
                 }
 
-                if (c_type == 'PVT') {
+                if (c_type == 'PVT' || c_type == 'PUB' || c_type == 'SOC' || c_type == 'NGO' || c_type == 'OPC') {
 
                     obj.name = $("#txtNameCom").val();
 
@@ -418,6 +418,16 @@
                     obj.pre_addr = $("#txtPreAddrJV").val();
                     obj.per_addr = $("#txtPerAddrJV").val();
                 }
+
+                 
+
+
+
+
+
+
+
+
 
                 $.ajax({
 
@@ -494,14 +504,20 @@
 
 
             $("#Select1").change(function () {
-                $('#divCusDeatil').css("display", "none");
-                c_type = $("#Select1").val()
 
-                document.getElementById('cusType').innerHTML = c_type;
+                $('#divCusDeatil').css("display", "none");
+
+                c_type = $("#Select1").find("option:selected").text();
+
+                document.getElementById('cusType').innerHTML = c_type + " Information";
                 //alert($(this).val());
                 $("#divCustomer").css({ "display": "block" });
                 var cus_type = $("#Select1").val();
+
                 get_eDocID(cus_type);
+
+
+
 
             });
 
@@ -704,7 +720,11 @@
 
                             }
 
-                            if (cus_type == "PVT") {
+                            if (cus_type == "PVT" || cus_type == "PUB" || cus_type == "SOC" || cus_type == "NGO" || cus_type == "OPC") {
+
+
+                                
+                                $('#rowMotherCompany').css("display", "block");
 
                                 $('#divCusIndvInfo').css("display", "none");
                                 $('#divCusPropInfo').css("display", "none");
@@ -731,6 +751,12 @@
                                     $("#spanMotherCompany").text("***No Mother Company in T24***");
                                 } else {
                                     $("#spanMotherCompany").text("");
+                                }
+
+
+                                if (cus_type == "SOC" || cus_type == "NGO" || cus_type == "OPC")
+                                {
+                                    $('#rowMotherCompany').css("display", "none");
                                 }
 
 
@@ -846,7 +872,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content-header">
     	<h1>
-        	Customer Profile
+        	Customer Profile <a href="ProfileListing.aspx" class="btn btn-success"> <i class="fa  fa-list "></i></a>
         </h1>
         <ol class="breadcrumb">
         	<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -871,7 +897,7 @@
              
               	<div class="box box-primary">
                 	<div class="box-header with-border">
-                  		<h3 class="box-title">Create</h3>
+                  		<h3 class="box-title">Create</h3> 
                 	</div> 
                  
                  
@@ -880,12 +906,12 @@
                       			<label for="">Customer Type</label>
 
 <select id="Select1" class="form-control">
-<option value=""><-Select-></option>
-<option value="IND">Individual</option>
+<option  value=""><-Select-></option>
+<option  value="IND">Individual</option>
 <option  value="PRP">Propreitorship</option>
 <option  value="PRT">Partnership</option>
-<option  value="PVT">Pvt. Ltd. Company</option>
-<option  value="PVT">Public Ltd. Company</option>
+<option  value="PVT">Private Ltd. Company</option>
+<option  value="PUB">Public Ltd. Company</option>
 <option  value="JV">Joint Venture</option>
 <option  value="SOC">Society</option>
 <option  value="NGO">NGO</option>
@@ -1064,7 +1090,7 @@
                         					<td>Permanenet Address</td>
                         					<td id="Td24"><input id="txtPerAddrCom" type="text"  class="form-control" /></td>
                       					</tr>
-                                         <tr>
+                                         <tr id="rowMotherCompany">
                         					<td>Mother Company</td>
                         					<td id="Td22"><input id="txtMotherCompany" type="text"  class="form-control" />
                                             
@@ -1107,6 +1133,79 @@
                       					</tr>
                     				</tbody>
                   				</table>
+
+                              <!--Soceity/NGO/OPC-->
+                              <!--20261117-->
+
+
+                               <table class="table table-bordered table-striped" id="divCusSoceityInfo" style="display:none;">
+                    				<tbody>
+                      					<tr>
+                        					<td class="col-md-4">Name</td>
+                        					<td id="Td17"><input id="txtNameSoceity" type="text"  class="form-control"/></td>
+                      					</tr>
+
+                                         <tr>
+                        					<td>Phone Number</td>
+                        					<td id="Td20"><input id="txtPhoneNumberSoceity" type="text"  class="form-control"/></td>
+                      					</tr>
+
+
+                      					  <tr>
+                        					<td>Legal ID</td>
+                        					<td id="Td11"><input id="txtLegalIDSoceity" type="text"  class="form-control" /></td>
+                                      </tr>  <tr>
+                        					<td>Legal DOC Name</td>
+                        					<td id="Td12"><input id="txtLegalIDDocNameSoceity" type="text"  class="form-control" /></td>
+                      					</tr> 
+                                        <tr>
+                        					<td>Present Address</td>
+                        					<td id="Td23"><input id="txtPreAddrSoceity" type="text"  class="form-control" /></td>
+                                      </tr>  <tr>
+                        					<td>Permanenet Address</td>
+                        					<td id="Td24"><input id="txtPerAddrSoceity" type="text"  class="form-control" /></td>
+                      					</tr>
+                                         
+                    				</tbody>
+                  				</table>
+
+
+                              <table class="table table-bordered table-striped" id="divCusNGOInfo" style="display:none;">
+                    				<tbody>
+                      					<tr>
+                        					<td class="col-md-4">Name</td>
+                        					<td id="Td17"><input id="txtNameNGO" type="text"  class="form-control"/></td>
+                      					</tr>
+
+                                         <tr>
+                        					<td>Phone Number</td>
+                        					<td id="Td20"><input id="txtPhoneNumberNGO" type="text"  class="form-control"/></td>
+                      					</tr>
+
+
+                      					  <tr>
+                        					<td>Legal ID</td>
+                        					<td id="Td11"><input id="txtLegalIDNGO" type="text"  class="form-control" /></td>
+                                      </tr>  <tr>
+                        					<td>Legal DOC Name</td>
+                        					<td id="Td12"><input id="txtLegalIDDocNameNGO" type="text"  class="form-control" /></td>
+                      					</tr> 
+                                        <tr>
+                        					<td>Present Address</td>
+                        					<td id="Td23"><input id="txtPreAddrNGO" type="text"  class="form-control" /></td>
+                                      </tr>  <tr>
+                        					<td>Permanenet Address</td>
+                        					<td id="Td24"><input id="txtPerAddrNGO" type="text"  class="form-control" /></td>
+                      					</tr>
+                                         
+                    				</tbody>
+                  				</table>
+
+
+
+
+
+
                          
                             </div>
                            <div class="box-footer">
@@ -1313,7 +1412,7 @@
 
     <!--PVT-->
     
-      <div class="modal fade" id="divPVT" tabindex="-1" role="dialog" data-backdrop="static"   data-keyboard="false">
+      <div class="modal" id="divPVT" tabindex="-1" role="dialog" data-backdrop="static"   data-keyboard="false">
         <div class="modal-dialog modal-lg" style="width: 90%" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-green">
@@ -1329,7 +1428,7 @@
                             <%--<img id="Img2" class="img-circle" style="width: 120px; height: 120px;">--%>
                         </div>
                         <div class="col-sm-9"><b>Owner Info : </b>
-                             <table class="table">
+                             <table class="table table-responsive table-condensed">
                                 <thead>
                                     <tr>
                                           <td>
@@ -1360,8 +1459,30 @@
                                     <tr>
                                         
                                       <td>
-                                          <input id="txtCompOwnerCustomerID" type="text"  class="form-control" />
-     <input id="btnGetT24CustomerInfo_CompanyOwner" type="button" value="Get T24 Info"  class="btn btn-primary" /> </td>
+                                         
+
+                                          <div class="form-group">
+ 
+    <div class="input-group">
+        <input id="txtCompOwnerCustomerID"
+               type="text"
+               class="form-control"
+               placeholder="Enter Customer ID" />
+
+        <span class="input-group-btn">
+            <input id="btnGetT24CustomerInfo_CompanyOwner"
+                   type="button"
+                   value="Get T24 Info"
+                   class="btn btn-primary" />
+        </span>
+    </div>
+</div>
+
+
+
+
+
+                                      </td>
                                   
                                        
                                        
