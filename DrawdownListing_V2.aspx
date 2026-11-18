@@ -1,22 +1,201 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="DrawdownListing_V2.aspx.cs" Inherits="DrawdownListing_V2"
-    
-     Debug="true"
-    
-     %>
+    Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
     <script src="View.js" type="text/javascript"></script>
 
 
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            // Load records when page/modal opens
+            LoadSSCConditions();
+
+            // SAVE
+            $("#btnSaveConditions").click(function () {
+
+                var drawdown_id = parseInt($("#lblIDSSC").text().trim());
+                var conditions = $("#Text1").val().trim();
+
+                if (isNaN(drawdown_id) || drawdown_id <= 0) {
+                    alert("Invalid Drawdown ID");
+                    return;
+                }
+
+                if (conditions == "") {
+                    alert("Please enter Conditions");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/SaveSSCConditions",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id,
+                        conditions: conditions
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d == "Success") {
+
+                            alert("Saved successfully!");
+
+                            $("#Text1").val("");
+
+                            LoadSSCConditions();
+                        }
+                        else {
+                            alert(response.d);
+                        }
+                    },
+
+                    error: function (xhr) {
+                        alert("Error saving record");
+                    }
+                });
+
+            });
+
+
+            // LOAD TABLE
+            function LoadSSCConditions() {
+
+                var drawdown_id = parseInt($("#lblIDSSC").text().trim());
+
+                if (isNaN(drawdown_id) || drawdown_id <= 0)
+                    return;
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/GetSSCConditions",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+                        var html = "";
+
+                        if (data.length > 0) {
+
+                            $.each(data, function (i, item) {
+
+                                var tr = $("<tr>");
+
+                                $("<td>").text(i + 1).appendTo(tr);
+                                $("<td>").text(item.conditions).appendTo(tr);
+                                $("<td>").text(item.deadline).appendTo(tr);
+                                $("<td>").text(item.remarks).appendTo(tr);
+
+                                var deleteBtn = $("<button>")
+                                    .attr("type", "button")
+                                    .addClass("btn btn-danger btn-sm btnDelete")
+                                    .text("Delete")
+                                    .attr("data-id", item.id);
+
+                                $("<td>").append(deleteBtn).appendTo(tr);
+
+                                $("#tbodyConditions").append(tr);
+                            });
+
+                        }
+                        else {
+                            html = '<tr><td colspan="5" class="text-center">No records found</td></tr>';
+                            $("#tbodyConditions").html(html);
+                        }
+
+                    },
+
+                    error: function () {
+                        alert("Error loading conditions");
+                    }
+                });
+
+            }
+
+
+            // DELETE
+            $(document).on("click", ".btnDelete", function () {
+
+                var condition_id = parseInt($(this).attr("data-id"));
+                var drawdown_id = parseInt($("#lblIDSSC").text().trim());
+
+                if (!confirm("Are you sure you want to delete this condition?"))
+                    return;
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/DeleteSSCConditions",
+                    data: JSON.stringify({
+                        condition_id: condition_id,
+                        drawdown_id: drawdown_id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d == "Success") {
+
+                            alert("Deleted successfully!");
+
+                            LoadSSCConditions();
+
+                        }
+                        else {
+                            alert(response.d);
+                        }
+
+                    },
+
+                    error: function () {
+                        alert("Error deleting record");
+                    }
+                });
+
+            });
+
+        });
+
+    </script>
+
+
     <script type="text/javascript">
 
         $(document).ready(function () {
 
+
+
+            $("body").on("click", ".ssc", function () {
+
+                alert('sss');
+
+                var edoc_id = $(this).attr("edoc-id");
+                $("#lblIDSSC").text(edoc_id);
+                //alert(edoc_id);
+
+                //var $row = $(element).closest("tr");
+
+
+            });
+
+
+           
+
             $("body").on("click", ".upload", function () {
 
-                var cus_id = $(this).attr("cus-id");
+                var cus_ids = $(this).attr("cus-id");
                 //var auto_id = $(this).attr("auto-id");
                 //var e_doc_id = $(this).attr("edoc-id");
                 var drawdown_id = $(this).attr("drawdown-id");
@@ -25,7 +204,7 @@
                 //DocumentUpload_V10_New_Mapping_Drawdown.aspx
                 //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-                url = "DocumentUpload_V10_New_Mapping_Drawdown.aspx?var=" + drawdown_id + "&var1=" + cus_id;
+                url = "DocumentUpload_V10_New_Mapping_Drawdown.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
 
 
                 var width = screen.availWidth - 100;
@@ -67,20 +246,20 @@
                     dataType: "json",
 
                     success: function (response) {
-                    /*
-                        var item = response.d;
-
-                        var row = "<tr>" +
-            "<td>" + item.id + "</td>" +
-            "<td>" + item.cus_name + "</td>" +
-            "<td>" + item.cr_incharge_decline_reason + "</td>" +
-            "<td>" + item.hob_decline_reason + "</td>" +
-            "<td>" + item.dm_decline_reason + "</td>" +
-            "<td>" + item.unit_head_decline_reason + "</td>" +
-            "</tr>";
-
-            $("#reasonTable").html(row);
-            */
+                        /*
+                            var item = response.d;
+    
+                            var row = "<tr>" +
+                "<td>" + item.id + "</td>" +
+                "<td>" + item.cus_name + "</td>" +
+                "<td>" + item.cr_incharge_decline_reason + "</td>" +
+                "<td>" + item.hob_decline_reason + "</td>" +
+                "<td>" + item.dm_decline_reason + "</td>" +
+                "<td>" + item.unit_head_decline_reason + "</td>" +
+                "</tr>";
+    
+                $("#reasonTable").html(row);
+                */
 
 
                         var data = response.d;
@@ -97,7 +276,7 @@
 
 
                         $("#reasonTable").html(html);
-                        
+
                     },
 
                     error: function (xhr) {
@@ -116,7 +295,7 @@
 
             $("body").on("click", ".view", function () {
 
-                var cus_id = $(this).attr("cus-id");
+                var cus_ids = $(this).attr("cus-id");
                 //var auto_id = $(this).attr("auto-id");
                 //var e_doc_id = $(this).attr("edoc-id");
                 var drawdown_id = $(this).attr("drawdown-id");
@@ -125,7 +304,7 @@
                 //DocumentUpload_V10_New_Mapping_Drawdown.aspx
                 //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-                url = "Checklist_View_V2.aspx?var=" + drawdown_id + "&var1=" + cus_id;
+                url = "Checklist_View_V2.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
 
 
                 var width = screen.availWidth - 100;
@@ -152,7 +331,7 @@
 
             $("body").on("click", ".pdf", function () {
 
-                var cus_id = $(this).attr("cus-id");
+                var cus_ids = $(this).attr("cus-id");
                 //var auto_id = $(this).attr("auto-id");
                 //var e_doc_id = $(this).attr("edoc-id");
                 var drawdown_id = $(this).attr("drawdown-id");
@@ -161,7 +340,7 @@
                 //DocumentUpload_V10_New_Mapping_Drawdown.aspx
                 //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-                url = "Checklist_View_V2_PdfGen.aspx?var=" + drawdown_id + "&var1=" + cus_id;
+                url = "Checklist_View_V2_PdfGen.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
 
 
                 var width = screen.availWidth - 100;
@@ -191,6 +370,64 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content"> <!-- Start of table section -->
 
+
+
+            <div class="modal" id="modalSSCGen" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
+  		<div class="modal-dialog">
+    		<div class="container">
+            	<div class="row ">	
+           			<div class="col-md-6">
+                		<div class="panel">
+        					<div class="panel-heading bg-orange">                 
+        						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          						<h4 class="modal-title custom_align" id="Heading">SSC Generation</h4>
+                            </div>
+                           <div class="panel-body">
+    ID # <span id="lblIDSSC" class="badge badge-success"></span>
+
+    <div class="form-group" id="div1">
+        <label>Conditions</label>
+        <input id="Text1" type="text" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Deadline</label>
+           <input id="Text2" type="text" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <button type="button" id="btnSaveConditions"
+                class="btn btn-success">
+            <i class="fa fa-save"></i> Save
+        </button><hr />
+
+    <h4>Saved Conditions</h4>
+
+    <table class="table table-bordered table-striped" id="tblConditions">
+        <thead>
+            <tr>
+                <th>SL</th>
+                <th>Conditions</th>
+                <th>Deadline</th>
+                <th>Remarks</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyConditions">
+        </tbody>
+    </table>
+    </div>
+</div>
+                            <div class="panel-footer bg-gray-light">
+                                <input type="hidden" id="id" name="id" value="" >
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Assign</button>         
+        	  				</div><!--/.panel-footer--> 
+            			</div><!--/.panel-->
+            		</div><!--/.col-md-6-->
+            	</div><!--/.row-->                                        
+        	</div><!-- /.modal-content -->  		 
+		</div><!-- /.modal-dialog -->            
+	</div><!--/.Modal-Update form -->   
 
     
     <div class="modal" id="modalUpdateform" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
@@ -354,7 +591,7 @@
                                 <th>Loan Natures</th>
                                 <th>Securities</th>
                                    <th>Loan Amount</th>
-                                      <th>Expiry Date</th>
+                                   <%--   <th>Expiry Date</th>--%>
                                        <th>Status</th>
 
 
@@ -370,12 +607,14 @@
         //var css = "";
 
         //var last_renew_dt = "";
-
+        int status;
 
         if (TableData.Rows.Count > 0)
         {
             for (var data = 0; data < TableData.Rows.Count; data++)
             {
+
+                status = Convert.ToInt32(TableData.Rows[data]["status"]);
                             
 %>
 
@@ -387,12 +626,12 @@
                         <td><%=TableData.Rows[data]["dd_id"]%></td>
                         <td><%=TableData.Rows[data]["cus_types"]%></td>
                         <td><%=TableData.Rows[data]["cus_ids"]%></td>
-                        <td><%=TableData.Rows[data]["cus_name_2"]%></td>
+                        <td><%=TableData.Rows[data]["cus_names"]%></td>
                           
                         <td><%=TableData.Rows[data]["loan_natures"]%></td>
                         <td><%=TableData.Rows[data]["securities"]%></td>
                         <td><%=TableData.Rows[data]["loan_amount"]%></td>
-                        <td><%=TableData.Rows[data]["exp_date_2"]%></td>
+                     <%--   <td><%=TableData.Rows[data]["exp_date_2"]%></td>--%>
 
                         <td><%=TableData.Rows[data]["status_desc"]%></td>
 
@@ -406,23 +645,27 @@
                         <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Document Upload</a>                                    
                         -->
 
-                        <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Update</a>                                    
+                        <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Update</a>                                    
   
 
-                        <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
+                        <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
 
                          
-                        <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview"  cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>"  sanction-id="<%=TableData.Rows[data]["sanction_ids"]%>"   >Upload View</a>                                    
+                        <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview"  cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>"  sanction-id="<%=TableData.Rows[data]["sanction_ids"]%>"   >Upload View</a>                                    
+ 
 
 
-                        <%  if (Role == 2 || Role == 20)
+
+                        <%  if ((Role == 59 || Role == 63 || Role == 67) && status == 36)
+                            {
                                 
-                            { 
                                 
                                 %>
                         
-                        
-                        <a href="SSCCreation.aspx?v=<%=TableData.Rows[data]["drawdown_id"]%>"  class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    
+                         <a href="#modalSSCGen" data-toggle="modal" class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    
+  
+
+                        <a href="SSCCreation.aspx?v=<%=TableData.Rows[data]["drawdown_id"]%>"  class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    
   
 
   <% 
@@ -433,13 +676,13 @@
 
   
   <!--
-                        <a href="#"  class="btn btn-primary btn-xs reason" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
+                        <a href="#"  class="btn btn-primary btn-xs reason" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
   
 
-                        <a href="#"  class="btn btn-success btn-xs pdf" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Pdf Gen</a>                                    
+                        <a href="#"  class="btn btn-success btn-xs pdf" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Pdf Gen</a>                                    
   
 
-                        <a href="SSCCreation.aspx?v=<%=TableData.Rows[data]["drawdown_id"]%>"  class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    
+                        <a href="SSCCreation.aspx?v=<%=TableData.Rows[data]["drawdown_id"]%>"  class="btn btn-success btn-xs ssc" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">SSC Creation</a>                                    
   
   -->
 
@@ -448,9 +691,9 @@
                         </td>                                
 </tr>
      <%
-                        }
+            }
 
-                    }
+        }
                                                    %>
                         	</tbody>
                     	</table>	                

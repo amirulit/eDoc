@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Web.Services;
+using System.Web.Script.Services;
 
 public partial class DrawdownListing_V2 : System.Web.UI.Page
 {
@@ -27,6 +29,163 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
     }
 
 
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string SaveSSCConditions(
+        int drawdown_id,
+        string conditions,
+        string deadline,
+        string remarks)
+    {
+        try
+        {
+            string connectionString =
+                ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(
+                    "usp_SSC_Conditions_Save", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@drawdown_id", SqlDbType.Int).Value = drawdown_id;
+
+                    cmd.Parameters.Add("@conditions", SqlDbType.VarChar, 8000).Value =
+                        conditions ?? "";
+
+                    cmd.Parameters.Add("@deadline", SqlDbType.DateTime).Value =
+                        string.IsNullOrEmpty(deadline)
+                        ? (object)DBNull.Value
+                        : Convert.ToDateTime(deadline);
+
+                    cmd.Parameters.Add("@remarks", SqlDbType.VarChar, 50).Value =
+                        remarks ?? "";
+
+                    cmd.Parameters.Add("@create_date", SqlDbType.DateTime).Value =
+                        DateTime.Now;
+
+                    cmd.Parameters.Add("@create_by", SqlDbType.VarChar, 500).Value =
+                        "Test";
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return "Success";
+        }
+        catch (Exception ex)
+        {
+            return "Error: " + ex.Message;
+        }
+    }
+
+
+    [WebMethod]
+    public static string SaveSSCConditions(int drawdown_id, string conditions)
+    {
+        string cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+    using (SqlConnection con = new SqlConnection(cs))
+    {
+        using (SqlCommand cmd = new SqlCommand("usp_SSC_Conditions_Save", con))
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
+            cmd.Parameters.AddWithValue("@conditions", conditions);
+            cmd.Parameters.AddWithValue("@deadline", DBNull.Value);
+            cmd.Parameters.AddWithValue("@remarks", DBNull.Value);
+            cmd.Parameters.AddWithValue("@create_date", DateTime.Now);
+
+            string username = HttpContext.Current.User.Identity.Name;
+            cmd.Parameters.AddWithValue("@create_by",
+                string.IsNullOrEmpty(username) ? "Test" : username);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+        }
+    }
+
+    return "Success";
+    }
+    public class SSCCondition
+    {
+        public int condition_id { get; set; }
+        public string conditions { get; set; }
+        public string deadline { get; set; }
+        public string remarks { get; set; }
+    }
+
+    [WebMethod]
+    public static List<SSCCondition> GetSSCConditions(int drawdown_id)
+    {
+        List<SSCCondition> list = new List<SSCCondition>();
+
+        string cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            string sql = @"SELECT id, conditions, deadline, remarks
+                       FROM t_SSC_Conditions
+                       WHERE drawdown_id = @drawdown_id
+                       ORDER BY condition_id DESC";
+
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            {
+                cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(new SSCCondition
+                        {
+                            condition_id = Convert.ToInt32(dr["id"]),
+                            conditions = dr["conditions"].ToString(),
+                            deadline = dr["deadline"] == DBNull.Value
+                                ? ""
+                                : Convert.ToDateTime(dr["deadline"]).ToString("dd-MMM-yyyy"),
+                            remarks = dr["remarks"] == DBNull.Value
+                                ? ""
+                                : dr["remarks"].ToString()
+                        });
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+
+    [WebMethod]
+    public static string DeleteSSCConditions(int condition_id, int drawdown_id)
+    {
+        string cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            string sql = @"DELETE FROM t_SSC_Conditions
+                       WHERE id = @condition_id
+                       AND drawdown_id = @drawdown_id";
+
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            {
+                cmd.Parameters.AddWithValue("@condition_id", condition_id);
+                cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
+
+                con.Open();
+
+                int result = cmd.ExecuteNonQuery();
+
+                return result > 0 ? "Success" : "Record not found";
+            }
+        }
+    }
     [System.Web.Services.WebMethod]
     public static object GetReason(int drawdown_id)
     {

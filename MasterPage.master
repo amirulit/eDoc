@@ -102,21 +102,68 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
     <style type="text/css">
-        .sidebar-menu > li > a {
+        .sidebar-menu > li > a
+        {
             padding: 8px 15px;
         }
-
-        .sidebar-menu .treeview-menu > li > a {
+        
+        .sidebar-menu .treeview-menu > li > a
+        {
             padding: 6px 10px 6px 35px;
         }
     </style>
+
+
+    
+        <style type="text/css">
+                .msk-fade {
+                    -webkit-animation-name: animatetop;
+                    -webkit-animation-duration: 0.4s;
+                    animation-name: animatetop;
+                    animation-duration: 0.4s;
+                }
+                /* Add Animation */
+                @-webkit-keyframes animatetop {
+                    from {
+                        top: -300px;
+                        opacity: 0;
+                    }
+
+                    to {
+                        top: 0;
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes animatetop {
+                    from {
+                        top: -300px;
+                        opacity: 0;
+                    }
+
+                    to {
+                        top: 0;
+                        opacity: 1;
+                    }
+                }
+
+                .modal-content1 {
+                    position: absolute;
+                    left: 25%;
+                }
+            </style>
+
+
+
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <form id="form1" runat="server">
-        <div class="wrapper">
-            <header class="main-header">
+    <div class="wrapper">
+        <header class="main-header">
     <!-- Logo -->
     <a href="" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -227,78 +274,43 @@
         </div>
 	</nav>
   </header>
-            <div class="row" id="fProfile">
-            </div>
-            <div id="viewDuePayment">
-            </div>
-            <div id="viewAllNotification">
-            </div>
-            <div id="stdProfile">
-            </div>
-            <div id="showEvent2">
-            </div>
-            <!-- //MSK-000124 Modal-Delete Confirm Popup -->
-            <div class="modal msk-fade" id="deleteConfirmReq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary">
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="frm_title">Delete</h4>
-                        </div>
-                        <div class="modal-body bgColorWhite">
-                            <strong style="color: red;">Are you sure?</strong> Do you want to Delete this Friend
+        <div class="row" id="fProfile">
+        </div>
+        <div id="viewDuePayment">
+        </div>
+        <div id="viewAllNotification">
+        </div>
+        <div id="stdProfile">
+        </div>
+        <div id="showEvent2">
+        </div>
+        <!-- //MSK-000124 Modal-Delete Confirm Popup -->
+        <div class="modal msk-fade" id="deleteConfirmReq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="frm_title">
+                            Delete</h4>
+                    </div>
+                    <div class="modal-body bgColorWhite">
+                        <strong style="color: red;">Are you sure?</strong> Do you want to Delete this Friend
                         Request.
-                        </div>
-                        <div class="modal-footer">
-                            <a href="#" style='margin-left: 10px;' id="btnYesReq" class="deletebtn btn btn-danger col-sm-2 pull-right">Yes</a><!-- MSK-000125 -->
-                            <button type="button" class="btn btn-primary col-sm-2 pull-right" data-dismiss="modal"
-                                id="frm_cancel">
-                                No</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" style='margin-left: 10px;' id="btnYesReq" class="deletebtn btn btn-danger col-sm-2 pull-right">
+                            Yes</a><!-- MSK-000125 -->
+                        <button type="button" class="btn btn-primary col-sm-2 pull-right" data-dismiss="modal"
+                            id="frm_cancel">
+                            No</button>
                     </div>
                 </div>
             </div>
-            <style type="text/css">
-                .msk-fade {
-                    -webkit-animation-name: animatetop;
-                    -webkit-animation-duration: 0.4s;
-                    animation-name: animatetop;
-                    animation-duration: 0.4s;
-                }
-                /* Add Animation */
-                @-webkit-keyframes animatetop {
-                    from {
-                        top: -300px;
-                        opacity: 0;
-                    }
-
-                    to {
-                        top: 0;
-                        opacity: 1;
-                    }
-                }
-
-                @keyframes animatetop {
-                    from {
-                        top: -300px;
-                        opacity: 0;
-                    }
-
-                    to {
-                        top: 0;
-                        opacity: 1;
-                    }
-                }
-
-                .modal-content1 {
-                    position: absolute;
-                    left: 25%;
-                }
-            </style>
-            <!-- Left side column. contains the logo and sidebar -->
-            <aside class="main-sidebar">
+        </div>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
@@ -365,7 +377,7 @@
 
 
         <%
-            }
+                   }
              %>
 
 
@@ -383,7 +395,7 @@
 
 
         <%
-            }
+                  }
              %>
 
               <%  
@@ -415,7 +427,7 @@
         </li>
 
             <%} %>
-        <%  if (Role == 57 ||  Role == 61 || Role == 65 || Role == 69 )
+        <%  if (Role == 57 || Role == 61 || Role == 65 || Role == 69)
             { %>
              
          <li>
@@ -432,7 +444,7 @@
     
 
         <%
-        }
+            }
          %>
 
 
@@ -474,14 +486,14 @@
       
 
         <%
-        }
+             }
              %>
 
 
 
           <% 
-              if (Role == 57 || Role == 59 ||Role == 61 ||Role ==  63 ||Role ==  65 ||Role ==  67  || Role == 69||Role == 71)
-             {
+              if (Role == 57 || Role == 59 || Role == 61 || Role == 63 || Role == 65 || Role == 67 || Role == 69 || Role == 71)
+              {
                   %>
 
            <li>
@@ -492,6 +504,17 @@
           <%} %>
 
 
+           <% 
+               if (Role == 59 || Role == 63 || Role == 67)
+               {
+                  %>
+
+           <li>
+          <a href="DM_Assign.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>Assign DM</span>
+          </a>
+        </li>
+             <%} %>
 
         <% if (Role == 15 || Role == 20)
            {
@@ -505,7 +528,7 @@
         
         <%
             
-        }
+           }
         
          %>
 
@@ -522,7 +545,7 @@
 
 
         <%
-        }
+           }
              %>
 
 
@@ -540,6 +563,12 @@
         </li> <li>
           <a href="DM_Assign.aspx">
             <i class="fa fa-arrow-circle-o-right"></i><span>Assign DM</span>
+          </a>
+        </li>
+
+           <li>
+          <a href="DM_Assign.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>Team Transfer</span>
           </a>
         </li>
        
@@ -588,17 +617,17 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-            <div class="content-wrapper">
-                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                </asp:ContentPlaceHolder>
-            </div>
-            <footer class="main-footer">
+        <div class="content-wrapper">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <footer class="main-footer">
         <div class="pull-right hidden-xs">
           <b>Version</b> 1.0.2
         </div>
         <strong>Copyright &copy; 2026-2027</strong> All rights reserved.
      </footer>
-        </div>
+    </div>
     </form>
     <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
     </asp:ContentPlaceHolder>

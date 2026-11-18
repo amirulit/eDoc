@@ -13,11 +13,17 @@ public partial class DM_Assign : System.Web.UI.Page
 {
     public DataTable TableData;
 
+    public Int32 Role;
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        String Working_Area = Convert.ToString(Session["Working_Area"]);
+
+        Role = Convert.ToInt32(Session["Role"]);
+
         TableData = Listing();
 
-        DataTable dt = DM_Listing();
+        DataTable dt = DM_Listing(Working_Area);
 
         Select1.DataSource = dt;
         Select1.DataTextField = "dm_fullname";   // The column name to display (e.g., "CategoryName")
@@ -59,7 +65,7 @@ public partial class DM_Assign : System.Web.UI.Page
 
     }
 
-    public DataTable DM_Listing()
+    public DataTable DM_Listing(String Working_Area)
     {
 
 
@@ -82,7 +88,7 @@ public partial class DM_Assign : System.Web.UI.Page
         command.CommandType = CommandType.StoredProcedure;
         command.CommandText = "usp_DMList";
         command.Connection = connection;
-        //command.Parameters.Add(new SqlParameter("@branchcode", Session["BranchCode"]));
+        command.Parameters.Add(new SqlParameter("@Working_Area", Working_Area));
         //command.Parameters.Add(new SqlParameter("@status", Status));
 
         //command.Parameters.Add(new SqlParameter("@ValueDate", ValueDate));
@@ -125,10 +131,10 @@ public partial class DM_Assign : System.Web.UI.Page
 
         SqlCommand command = new SqlCommand();
         command.CommandType = CommandType.StoredProcedure;
-        command.CommandText = "usp_Drawdown_Listing_V2";
+        command.CommandText = "usp_Drawdown_Listing_For_CAD_UnitHead";
         command.Connection = connection;
         //command.Parameters.Add(new SqlParameter("@branchcode", Session["BranchCode"]));
-        //command.Parameters.Add(new SqlParameter("@status", Status));
+        command.Parameters.Add(new SqlParameter("@Role", Role));
 
         //command.Parameters.Add(new SqlParameter("@ValueDate", ValueDate));
         //SqlCommand cmd = new SqlCommand("select * from t_FundRequsition", connection);

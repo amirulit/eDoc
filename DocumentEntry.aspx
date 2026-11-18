@@ -83,7 +83,7 @@
                         <asp:TextBox ID="txtDocumentDate"
                             runat="server"
                             CssClass="form-control"
-                            TextMode="Date">
+                            >
                         </asp:TextBox>
 
                     </div>

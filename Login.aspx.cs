@@ -308,22 +308,34 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCAD_DM_CBD_Click(object sender, EventArgs e)
     {
+        Session["BranchCode"] = "CAD"; 
         Session["DomainID"] = "DM-CBD";
 
         Session["Name"] = "DM-CBD";
 
         Session["Role"] = 57;
+
+      
         Response.Redirect("Dashboard.aspx");
+
+
  
     }
     protected void btnCAD_UH_CBD_Click(object sender, EventArgs e)
     {
 
+        Session["func_role"] = "Unit Head-Corporate"; 
+        
         Session["DomainID"] = "UH-CBD";
 
         Session["Name"] = "UH-CBD";
 
         Session["Role"] = 59;
+
+        Session["BranchCode"] = "CAD";
+
+
+        Session["Working_Area"] = "Corporate";
 
         Response.Redirect("Dashboard.aspx");
 
@@ -331,7 +343,7 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCAD_DM_SME_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "DM-SME";
+        Session["BranchCode"] = "CAD"; Session["DomainID"] = "DM-SME";
 
         Session["Name"] = "DM-SME";
 
@@ -345,6 +357,10 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCAD_UH_SME_Click(object sender, EventArgs e)
     {
+        Session["Working_Area"] = "CMSME & Agri";
+        
+        Session["BranchCode"] = "CAD"; 
+        
         Session["DomainID"] = "UH-SME";
 
         Session["Name"] = "UH-SME";
@@ -352,7 +368,7 @@ public partial class Login : System.Web.UI.Page
         Session["Role"] = 63;
 
 
-        Session["BranchCode"] = "SME-CAD";
+       
 
 
         Response.Redirect("Dashboard.aspx");
@@ -363,7 +379,18 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCAD_UH_Retail_Click(object sender, EventArgs e)
     {
+        Session["DomainID"] = "UH-CBD";
 
+        Session["Name"] = "UH-CBD";
+
+        Session["Role"] = 59;
+
+        Session["BranchCode"] = "CAD";
+
+
+        Session["Working_Area"] = "Retail";
+
+        Response.Redirect("Dashboard.aspx");
     }
     protected void btnCAD_DM_Agri_Click(object sender, EventArgs e)
     {

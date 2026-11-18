@@ -6,11 +6,11 @@
 
     <script type="text/javascript">
 
-      $(document).ready(function () {
+        $(document).ready(function () {
 
 
 
-          $("#<%=Select1.ClientID%>").select2({
+            $("#<%=Select1.ClientID%>").select2({
 
               placeholder: "<--Select-->",
               allowClear: true,
@@ -89,7 +89,7 @@
 
             $("body").on("click", ".upload", function () {
 
-                var cus_id = $(this).attr("cus-id");
+                var cus_ids = $(this).attr("cus-id");
                 //var auto_id = $(this).attr("auto-id");
                 //var e_doc_id = $(this).attr("edoc-id");
                 var drawdown_id = $(this).attr("drawdown-id");
@@ -98,7 +98,7 @@
                 //DocumentUpload_V10_New_Mapping_Drawdown.aspx
                 //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-                url = "DocumentUpload_V10_New_Mapping_Drawdown.aspx?var=" + drawdown_id + "&var1=" + cus_id;
+                url = "DocumentUpload_V10_New_Mapping_Drawdown.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
 
 
                 var width = screen.availWidth - 100;
@@ -124,7 +124,7 @@
 
             $("body").on("click", ".view", function () {
 
-                var cus_id = $(this).attr("cus-id");
+                var cus_ids = $(this).attr("cus-id");
                 //var auto_id = $(this).attr("auto-id");
                 //var e_doc_id = $(this).attr("edoc-id");
                 var drawdown_id = $(this).attr("drawdown-id");
@@ -133,7 +133,7 @@
                 //DocumentUpload_V10_New_Mapping_Drawdown.aspx
                 //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-                url = "Checklist_View_V2.aspx?var=" + drawdown_id + "&var1=" + cus_id;
+                url = "Checklist_View_V2.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
 
 
                 var width = screen.availWidth - 100;
@@ -160,7 +160,7 @@
             $("body").on("click", ".assign", function () {
                 var edoc_id = $(this).attr("edoc-id");
                 $("#lblID").text(edoc_id);
-                alert(edoc_id);
+                //alert(edoc_id);
 
                 //var $row = $(element).closest("tr");
 
@@ -171,7 +171,7 @@
 
             $("body").on("click", ".pdf", function () {
 
-                var cus_id = $(this).attr("cus-id");
+                var cus_ids = $(this).attr("cus-id");
                 //var auto_id = $(this).attr("auto-id");
                 //var e_doc_id = $(this).attr("edoc-id");
                 var drawdown_id = $(this).attr("drawdown-id");
@@ -180,7 +180,7 @@
                 //DocumentUpload_V10_New_Mapping_Drawdown.aspx
                 //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-                url = "Checklist_View_V2_PdfGen.aspx?var=" + drawdown_id + "&var1=" + cus_id;
+                url = "Checklist_View_V2_PdfGen.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
 
 
                 var width = screen.availWidth - 100;
@@ -206,6 +206,11 @@
         });
 
     </script>
+    <style type="text/css">
+        .auto-style1 {
+            height: 36px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content"> <!-- Start of table section -->
@@ -275,7 +280,7 @@
                                 <th>Loan Natures</th>
                                 <th>Securities</th>
                                    <th>Loan Amount</th>
-                                      <th>Expiry Date</th>
+                                    <%--  <th>Expiry Date</th>--%>
 
 
                             	<th>Action</th>
@@ -299,20 +304,20 @@
                             
 %>
 <tr id="row_<%=TableData.Rows[data]["dd_id"]%>">
-                        <td><%=TableData.Rows[data]["id"]%></td>
-                        <td><%=TableData.Rows[data]["dd_id"]%></td>
-                          <td><%=TableData.Rows[data]["cus_type"]%></td>
-                        <td><%=TableData.Rows[data]["cus_id"]%></td>
-                        <td><%=TableData.Rows[data]["cus_name_2"]%></td>
+                        <td class="auto-style1"><%=TableData.Rows[data]["id"]%></td>
+                        <td class="auto-style1"><%=TableData.Rows[data]["dd_id"]%></td>
+                          <td class="auto-style1"><%=TableData.Rows[data]["cus_types"]%></td>
+                        <td class="auto-style1"><%=TableData.Rows[data]["cus_ids"]%></td>
+                        <td class="auto-style1"><%=TableData.Rows[data]["cus_names"]%></td>
                           
-                          <td><%=TableData.Rows[data]["loan_natures"]%></td>
-                            <td><%=TableData.Rows[data]["securities"]%></td>
-                              <td><%=TableData.Rows[data]["loan_amount"]%></td>
-                                <td><%=TableData.Rows[data]["exp_date_2"]%></td>
+                          <td class="auto-style1"><%=TableData.Rows[data]["loan_natures"]%></td>
+                            <td class="auto-style1"><%=TableData.Rows[data]["securities"]%></td>
+                              <td class="auto-style1"><%=TableData.Rows[data]["loan_amount"]%></td>
+                            <%--    <td class="auto-style1"><%=TableData.Rows[data]["exp_date_2"]%></td>--%>
 
                   
                         	
-                        <td>        
+                        <td class="auto-style1">        
 
                         <!--
                         <a href="#"  class="btn btn-success btn-xs edit" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>"  drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Edit</a>                                    
@@ -320,20 +325,20 @@
                         <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Document Upload</a>                                    
                         -->
                         <!--
-                        <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Upload</a>                                    
+                        <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Upload</a>                                    
   
 
 
-                        <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
+                        <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
   
 
 
-                        <a href="#"  class="btn btn-success btn-xs pdf" cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Pdf Gen</a>                                    
+                        <a href="#"  class="btn btn-success btn-xs pdf" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Pdf Gen</a>                                    
   
   -->
 
 
-     <a href="#modalUpdateform"  class="btn btn-success btn-xs assign"  data-toggle="modal"  cus-id="<%=TableData.Rows[data]["cus_id"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Assign DM</a>                                    
+     <a href="#modalUpdateform"  class="btn btn-success btn-xs assign"  data-toggle="modal"  cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Assign DM</a>                                    
   
 
 
