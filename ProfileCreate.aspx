@@ -267,13 +267,14 @@
             $("#btnSaveCompOwnerInfo").click(function () {
 
 
-                var cus_code = $("#txtCompOwnerCustomerID").val();
-                var name = $("#txtCompOwnerName").val();
-                var role = $("#Select2").val();
-                var address = $("#txtCompOwnerAddress").val();
+                //var cus_code = $("#txtCompOwnerCustomerID").val();
+                var cus_code = $("#Select4").val();
+                //var name = $("#txtCompOwnerName").val();
+                var role = $("#Select5").val();
+                //var address = $("#txtCompOwnerAddress").val();
 
 
-                var phone = $("#txtCompOwnerPhone").val();
+                //var phone = $("#txtCompOwnerPhone").val();
 
                 //alert(name + '-' + role + '-' + address + '-' + '-' + phone);
 
@@ -283,13 +284,15 @@
 
 
                 obj.edocid = $("#txteDocID").val();
-                obj.cuscode = $("#txtCompOwnerCustomerID").val();
+                obj.company_cus_code = $("#txtCustomerCode").val();
+                //obj.owner_cus_code = $("#txtCompOwnerCustomerID").val();
+                obj.owner_cus_code = $("#cus_code").val();
                 
-                obj.name = name;
+                //obj.name = name;
                 obj.role = role;
-                obj.address = address;
+                //obj.address = address;
 
-                obj.phone = phone;
+                //obj.phone = phone;
 
 
                 $.ajax({
@@ -305,20 +308,27 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function () {
+
+
                         alert("Data Saved Successfully.");
 
-                        $("#txtCompOwnerName").val('');
-
-                        $("#txtCompOwnerAddress").val('');
-                        $("#txtCompOwnerPhone").val('');
+                        //$("#txtCompOwnerName").val('');
+                        //$("#txtCompOwnerAddress").val('');
+                        //$("#txtCompOwnerPhone").val('');
 
 
                     },
+
                     error: function () {
                         alert("Error while inserting data");
                     }
+
+
                 });
+
                 return false;
+
+
             });
 
 
@@ -464,28 +474,41 @@
                             $('#btnAddiInfo').attr("cus-type", c_type);
                             $("#btnAddiInfo").css({ "display": "block" });
 
-                            if (c_type == 'INDV') {
+                            if (c_type == 'IND') {
                                 $("#btnAddiInfo").css({ "display": "none" });
                             }
                             //else {
                             //$("#btnAddiInfo").css({ "display": "block" });
                             //}
 
-                            if (c_type == 'PROP') {
+                            if (c_type == 'PRP') {
                                 //$("#btnAddiInfo").css({ "display": "block" }); 
                                 $("#btnAddiInfo").html("Add Owner Info")
                             }
-                            if (c_type == 'PART') {
+                            if (c_type == 'PRT') {
                                 //$("#btnAddiInfo").css({ "display": "block" });
                                 $("#btnAddiInfo").html("Add Partner Info")
                             }
                             if (c_type == 'PVT') {
                                 //$("#btnAddiInfo").css({ "display": "block" });
                                 $("#btnAddiInfo").html("Add Company Management Info")
+                            } if (c_type == 'PUB') {
+                                //$("#btnAddiInfo").css({ "display": "block" });
+                                $("#btnAddiInfo").html("Add Company Management Info")
                             }
                             if (c_type == 'JV') {
                                 //$("#btnAddiInfo").css({ "display": "block" });
                                 $("#btnAddiInfo").html("Add Joint Company Info")
+                            } if (c_type == 'NGO') {
+                                //$("#btnAddiInfo").css({ "display": "block" });
+                                $("#btnAddiInfo").html("Add NGO Management Info")
+                            }
+                            if (c_type == 'SOC') {
+                                //$("#btnAddiInfo").css({ "display": "block" });
+                                $("#btnAddiInfo").html("Add Soceity Management Info")
+                            } if (c_type == 'OPC') {
+                                //$("#btnAddiInfo").css({ "display": "block" });
+                                $("#btnAddiInfo").html("Add Company Owner Info")
                             }
 
                             $("#btnUpload").attr("auto_id", $("#Hidden1").val());
@@ -569,9 +592,33 @@
                 //alert(cus_type);
 
                 var div = "#div" + cus_type;
+
+                div = "#divOwnerInfo";
                 //alert(div);
 
-                document.getElementById("PropreitorName").innerHTML = $("#txtNameProp").val();
+
+                var ownerInfoMap = {
+                    "PRP": "Propreitorship Owner Info",
+                    "PRT": "Partrner Info",
+                    "PVT": "Management Body Info",
+                    "PUB": "Management Body Info",
+                    "JV": "Joint Company Info",
+                    "SOC": "Management Body Info",
+                    "NGO": "Management Body Info",
+                    "OPC": "Owner Info"
+                };
+
+                var infoType = "";
+
+
+
+                infoType = ownerInfoMap[cus_type] || "";
+
+
+                //alert();
+
+                document.getElementById("infoType").innerHTML = infoType;
+                //document.getElementById("PropreitorName").innerHTML = $("#txtNameProp").val();
 
                 $(div).modal('show');
 
@@ -1265,6 +1312,206 @@
 				</div> 
 
                 <!--Modal-->
+
+        <!--Common Modal for Owner-->
+
+        
+      <div class="modal" id="divOwnerInfo" tabindex="-1" role="dialog" data-backdrop="static"   data-keyboard="false">
+        <div class="modal-dialog modal-lg" style="width: 90%" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-green">
+                    <h5 class="modal-title" id="H2">Owner/Partner/JV/Company Management Body
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                       <%-- <div class="col-sm-3">--%>
+                            <%--<img id="Img2" class="img-circle" style="width: 120px; height: 120px;">--%>
+                       <%-- </div>--%>
+                      <%--  <div class="col-sm-9"><b>Owner Info : </b>--%>
+                          <div class="col-sm-12"><span id="infoType" class="  badge "></span>
+                             <table class="table table-responsive table-condensed">
+                                <thead>
+                                    <tr>
+                                          <td>
+                                            Customer ID
+                                        </td>
+                                     
+                                        <%--<td>
+                                            Name
+                                        </td>--%>
+                                         <td>
+                                            Role
+                                        </td>
+                                       <%-- <td>
+                                            Address
+                                        </td>
+                                        
+                                        <td> Phone
+                                        </td>--%>
+                                    
+                                        <td>
+                                           Action
+                                        </td>
+                                       
+                                    </tr>
+                                   
+                                </thead>
+                                  <tbody>
+                                    <tr>
+                                        
+                                      <td>
+                                         
+
+
+
+<%--                                          <div class="form-group">
+ 
+    <div class="input-group">
+        <input id="txtCompOwnerCustomerID"
+               type="text"
+               class="form-control"
+               placeholder="Enter Customer ID" />
+
+        <span class="input-group-btn">
+            <input id="btnGetT24CustomerInfo_CompanyOwner"
+                   type="button"
+                   value="Get T24 Info"
+                   class="btn btn-primary" />
+        </span>
+    </div>
+</div>--%>
+
+
+<select id="Select4"  class="form-control" runat="server">
+
+                                          
+
+</select> 
+
+
+                                      </td>
+                                  
+                                       
+                                       
+<%--                                        <td>
+                                          <input id="txtCompOwnerName" type="text"  class="form-control" />
+                                        </td>--%>
+                                         <td><select id="Select5"  class="form-control">
+
+                                             <option>Propreitorship owner</option>
+
+                                             <option>Partner</option>
+                                              <option>JV</option>
+
+                                           
+
+<option>Chairman</option>
+<option>Managing Director</option>
+<option>Director</option>
+<option>Accountant</option>
+<option>Secretary</option>
+                                             <option>Others</option>
+
+</select> 
+                                        </td>
+                                      <%--  <td>
+                                           <input id="txtCompOwnerAddress" type="text"  class="form-control" />
+                                        </td>
+                                         
+                                        <td> <input id="txtCompOwnerPhone" type="text"  class="form-control" />
+                                        </td>--%>
+                                    
+                                        <td>
+
+                                            <input id="btnSaveCompOwnerInfo" type="button" value="Save" class="btn btn-primary" />
+                                        </td>
+                                        
+                                    </tr>
+                                   
+                                </tbody>
+
+                            </table>
+                            <hr />
+
+<%--Is Group Customer ? <input id="Checkbox1" type="checkbox" />
+<a href="#exampleModal" data-toggle="modal"   data-id="1">
+        Test Modal </a>
+        <br />
+        <div id="divSisterConcern" style="display:none;">
+        <b>Sister Concern Info : </b>
+        <br />
+
+         <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            T24 Customer ID (Corporate)
+                                        </td>
+                                     
+                                        <td>
+                                            Concern Name
+                                        </td>
+                                         <td>
+                                            Address
+                                        </td>
+                                       
+                                        
+                                        <td> Phone
+                                        </td>
+                                    
+                                        <td>
+                                           Action
+                                        </td>
+                                        
+                                    </tr>
+                                   
+                                </thead>
+                                  <tbody>
+                                    <tr>
+                                        
+                                     
+                                        <td>
+
+                                        <div class="input-group mb-3">
+                                            <input id="txtConcernCustomerID" type="text"  class="form-control" />
+                                            <div class="input-group-append">
+                                                <input id="btnGetT24Info_Concern" type="button" value="Get T24 Info"  class="btn btn-primary" />  
+                                            </div>
+                                         </div>
+
+
+                                          
+                                    </td>
+                                        <td>
+                                            <input id="txtConcernName" type="text"  class="form-control" />
+                                        </td>
+                                        <td>
+                                           <input id="txtConcernAddress" type="text"  class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input id="txtConcernPhone" type="text"  class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input id="btnSaveConcernInfo" type="button" value="Save" class="btn btn-primary" />
+                                        </td>
+                                        
+                                    </tr>
+                                   
+                                </tbody>
+
+                            </table>
+                            </div>--%>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
                 <!--Prop-->
 
                   <div class="modal fade" id="divPROP" tabindex="-1" role="dialog" data-backdrop="static"
@@ -1449,7 +1696,7 @@
         <div class="modal-dialog modal-lg" style="width: 90%" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-green">
-                    <h5 class="modal-title" id="H2">Company Management Info
+                    <h5 class="modal-title" id="H2">Owner/Partner/Company Management Body
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -1526,11 +1773,18 @@
                                         </td>
                                          <td><select id="Select2"  class="form-control">
 
+                                             <option>Propreitorship owner</option>
+
+                                             <option>Partner</option>
+
+                                           
+
 <option>Chairman</option>
 <option>Managing Director</option>
 <option>Director</option>
 <option>Accountant</option>
 <option>Secretary</option>
+                                             <option>Others</option>
 
 </select> 
                                         </td>
@@ -1543,7 +1797,7 @@
                                     
                                         <td>
 
-                                            <input id="btnSaveCompOwnerInfo" type="button" value="Save" class="btn btn-primary" />
+                                         <%--   <input id="btnSaveCompOwnerInfo" type="button" value="Save" class="btn btn-primary" />--%>
                                         </td>
                                         
                                     </tr>

@@ -6,6 +6,247 @@
 
         $(document).ready(function () {
 
+            var cus_type;
+            var cus_id;
+
+
+            $("body").on("click", ".edit", function () {
+
+                cus_type = $(this).attr("cus-type");
+                cus_id = $(this).attr("cus-id");
+
+                // Set value in second footer column
+                $('#tblDetails tfoot tr th:eq(1)').text(cus_id);
+
+                /*
+                $('#tblDetails tfoot tr th:eq(1)').html(
+    '<input type="text" class="form-control" value="' + cus_id + '">'
+);
+*/
+
+
+                OpenCustomerModal(cus_type, cus_id);
+
+                $("#customerModal").modal('show');
+            });
+
+            $("#ContentPlaceHolder1_Select4").on("change", function () {
+
+                var selectedValue = $(this).find("option:selected").text();
+
+                selectedValue = selectedValue.split('-')[0];
+
+                // Set value in next TH
+                $(this).closest("th").next("th").text(selectedValue);
+
+            });
+
+
+            $("#tblDetails").on("click", ".btnDelete", function () {
+
+                var id = $(this).data("id");
+
+                if (!confirm("Are you sure you want to delete?"))
+                    return;
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: "ProfileListing.aspx/DeleteCustomerDetail",
+
+                    data: JSON.stringify({ id: id }),
+
+                    contentType: "application/json; charset=utf-8",
+
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d === "success") {
+
+                            // Remove deleted row
+                            $("#tblDetails tbody")
+                                .find("button[data-id='" + id + "']")
+                                .closest("tr")
+                                .remove();
+
+                        }
+
+                    },
+
+                    error: function () {
+                        alert("Delete failed.");
+                    }
+
+                });
+
+            });
+
+            function OpenCustomerModal(cus_type,customerId) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "ProfileListing.aspx/GetCustomerDetails",
+                    data: JSON.stringify({  cus_type: cus_type ,customerId: customerId}),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+
+                        var data = response.d;
+
+                        // First result set
+                        BindMasterForm(data.Master);
+
+                        // Second result set
+                        BindDetailTable(data.Details);
+
+
+
+
+                        $("#customerModal").modal("show");
+
+                        /*
+                        
+                        $.each(data.Master[0], function (key, value) {
+
+    console.log(key);
+    console.log(value);
+
+});
+
+
+
+$.each(data.Details, function (i, row) {
+
+    console.log(row.DetailId);
+    console.log(row.ProductName);
+
+});
+                        
+                        */
+                    },
+
+
+
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        console.log(error);
+                        alert("Unable to load customer details.");
+                    }
+                });
+            }
+
+            function BindMasterForm(data) {
+
+                var html = "";
+
+                if (!data || data.length === 0) {
+                    $("#divMaster").html("<div class='col-12'>No data found</div>");
+                    return;
+                }
+
+                html +=
+                    "<div class='table-responsive'>" +
+                        "<table class='table table-bordered table-striped'>" +
+                            "<tbody>";
+
+                $.each(data[0], function (key, value) {
+
+                    html +=
+                        "<tr>" +
+                            "<th style='width:30%;'>" + escapeHtml(key) + "</th>" +
+                            "<td>" + escapeHtml(value == null ? "" : value) + "</td>" +
+                        "</tr>";
+
+                });
+
+                html +=
+                            "</tbody>" +
+                        "</table>" +
+                    "</div>";
+
+                $("#divMaster").html(html);
+            }
+
+
+            function BindMasterForm_old(data) {
+
+                var html = "";
+
+                if (!data || data.length === 0) {
+                    $("#divMaster").html("<div class='col-12'>No data found</div>");
+                    return;
+                }
+
+                $.each(data[0], function (key, value) {
+
+                    html +=
+                        "<div class='col-md-6 mb-3'>" +
+                            "<label class='font-weight-bold'>" + escapeHtml(key) + "</label>" +
+                            "<input type='text' class='form-control' " +
+                            "value='" + escapeHtml(value == null ? "" : value) + "' " +
+                            "readonly='readonly' />" +
+                        "</div>";
+
+                });
+
+                $("#divMaster").html(html);
+            }
+
+
+
+
+            function BindDetailTable(data) {
+
+                var html = "";
+
+                if (!data || data.length === 0) {
+                    html = "<tr><td colspan='4' class='text-center'>No data found</td></tr>";
+                    $("#tblDetails tbody").html(html);
+                    return;
+                }
+
+                $.each(data, function (i, row) {
+
+                    html +=
+                        "<tr>" +
+                            "<td>" + escapeHtml(row.id == null ? "" : row.id) + "</td>" +
+                            "<td>" + escapeHtml(row.company_cus_code == null ? "" : row.company_cus_code) + "</td>" +
+                            "<td>" + escapeHtml(row.owner_cus_code == null ? "" : row.owner_cus_code) + "</td>" +
+                            "<td>" + escapeHtml(row.name == null ? "" : row.name) + "</td>" +
+                            "<td>" + escapeHtml(row.role == null ? "" : row.role) + "</td>" +
+                            //"<td>" + escapeHtml(row.address == null ? "" : row.address) + "</td>" +
+
+  //"<td>" + escapeHtml(row.phone == null ? "" : row.phone) + "</td>" +
+
+  "<td>" +
+                                "<button type='button' " +
+                                    "class='btn btn-danger btn-sm btnDelete' " +
+                                    "data-id='" + escapeHtml(row.id) + "'>" +
+                                    "Delete" +
+                                "</button>" +
+                            "</td>" +
+                        "</tr>";
+
+                });
+
+                $("#tblDetails tbody").html(html);
+            }
+
+
+
+            function escapeHtml(value) {
+
+                return $("<div/>")
+                    .text(value == null ? "" : value)
+                    .html();
+            }
+
+
+
             $("body").on("click", ".upload", function () {
 
                 var cus_type = $(this).attr("cus-type");
@@ -39,16 +280,34 @@
 
             });
 
- 
+
 
         });
 
     </script>
+
+
+    <style  type="text/css">
+
+        .modal-xl {
+    width: 90%;
+    max-width: 1400px;
+}
+
+
+
+        @media (min-width: 768px) {
+    .modal-xl {
+        width: 90%;
+    }
+}
+
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
 
-      <section class="content-header">
+    <section class="content-header">
     	<h1>
         	Customer Profile <a href="ProfileCreate.aspx" class="btn btn-success"> <i class="fa fa-plus"></i></a>
         </h1>
@@ -60,6 +319,97 @@
 
 
     <section class="content"> <!-- Start of table section -->
+
+        <div class="modal" id="customerModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Customer Details</h5>
+                <button type="button" class="close text-white"
+                        data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- First result set: Dynamic form -->
+               <%-- <h6 class="font-weight-bold">Customer Information</h6>--%>
+
+                <div  class="row">
+                <div  class="col-md-3"><div id="divMaster">
+                </div></div><div class="col-md-9"><div class="table-responsive">
+                    <table class="table table-bordered table-sm"
+                           id="tblDetails">
+
+                        <thead class="thead-light">
+                            <tr>
+                                <th>id#</th>
+                                <th>company cus code</th>
+                                <th>owner cus code</th>
+                                <th>name</th>
+                                <th>role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody></tbody>
+
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                   <th></th>
+                                <th><select id="Select4"  runat="server" class="form-control">
+<option></option>
+
+</select></th>
+                                <th></th>
+                                 
+                                <th><select id="Select1" class="form-control">
+
+                                             <option>Propreitorship owner</option>
+
+                                             <option>Partner</option>
+                                              <option>JV</option>
+
+                                           
+
+<option>Chairman</option>
+<option>Managing Director</option>
+<option>Director</option>
+<option>Accountant</option>
+<option>Secretary</option>
+                                             <option>Others</option>
+
+</select> </th>
+                               
+                              <th><input id="Button1" type="button" value="Save"  class="btn btn-primary"/></th>
+
+
+                            </tr>
+
+
+
+                        </tfoot>
+
+                    </table>
+                </div></div>
+               
+                </div>
+                <hr />
+
+                <!-- Second result set: Fixed table -->
+               <%-- <h6 class="font-weight-bold">Customer Items</h6>--%>
+
+                
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
             	<div class="box">
@@ -112,7 +462,6 @@
 
 
                                     <%  if (Role == 3)
-                                            
                                         { 
                                             %>
 

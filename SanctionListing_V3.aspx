@@ -1456,7 +1456,24 @@
                             </div><!--/.modal body-->
                             <div class="panel-footer bg-gray-light">
                                 <input type="hidden" id="id" name="id" value="" />
-                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
+                               <%-- <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         --%>
+
+                                 <div class="row">
+        <div class="col-md-6">
+            <button type="button" id="btnSubmit" class="btn btn-info" style="width: 100%;">
+                <span class="glyphicon glyphicon-upload"></span> Upload
+            </button>
+        </div>
+
+        <div class="col-md-6">
+            <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100%;">
+                <span class="glyphicon glyphicon-remove"></span> Close
+            </button>
+        </div>
+    </div>
+
+
+
         	  				</div><!--/.panel-footer--> 
             			</div><!--/.panel-->
             		</div><!--/.col-md-6-->

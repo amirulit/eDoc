@@ -23,7 +23,7 @@ public partial class ProfileCreate : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        LoadCusList();
     }
 
     [WebMethod(EnableSession = true)]
@@ -584,6 +584,38 @@ public partial class ProfileCreate : System.Web.UI.Page
         return msg;
     }
 
+
+
+
+    protected void LoadCusList()
+    {
+        //String cus_type = Request.QueryString[0].ToString();
+        //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
+        //String c_type = Request.QueryString[2].ToString().Split('-')[0];
+
+
+        SqlConnection con = new SqlConnection(@"Data Source=HO-IT-101;Initial Catalog=db_CAD;User ID=sa;Password=Mbl@1234;Integrated Security=False;MultipleActiveResultSets=True;");
+        SqlCommand cmd = con.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+
+        cmd.CommandText = "select cus_name,cus_code, cus_name+'-'+cus_code cid from t_CustomerInfo";
+        cmd.Connection = con;
+
+        SqlDataAdapter da = new SqlDataAdapter(cmd);
+        DataSet Ds = new DataSet();
+        try
+        {
+            da.Fill(Ds);
+            Select4.DataSource = Ds.Tables[0];
+            Select4.DataTextField = "cid";
+            Select4.DataValueField = "cus_code";
+            Select4.DataBind();
+        }
+        catch (Exception ex)
+        {
+            Response.Write(ex.Message);
+        }
+    }
 
     [WebMethod(EnableSession = true)]
     public static String Comp_OwnerInfo_Save(CompOwnerInfo Obj)
