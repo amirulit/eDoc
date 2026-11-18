@@ -268,7 +268,7 @@
 
 
                 //var cus_code = $("#txtCompOwnerCustomerID").val();
-                var cus_code = $("#Select4").val();
+                var cus_code = $("#ContentPlaceHolder1_Select4").val();
                 //var name = $("#txtCompOwnerName").val();
                 var role = $("#Select5").val();
                 //var address = $("#txtCompOwnerAddress").val();
@@ -286,7 +286,7 @@
                 obj.edocid = $("#txteDocID").val();
                 obj.company_cus_code = $("#txtCustomerCode").val();
                 //obj.owner_cus_code = $("#txtCompOwnerCustomerID").val();
-                obj.owner_cus_code = $("#cus_code").val();
+                obj.owner_cus_code = cus_code;
                 
                 //obj.name = name;
                 obj.role = role;

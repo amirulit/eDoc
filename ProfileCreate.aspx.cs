@@ -665,12 +665,12 @@ public partial class ProfileCreate : System.Web.UI.Page
                         new SqlParameter("@edoc_id",Obj.edocid), 
                                  new SqlParameter("@company_cus_code",Obj.company_cus_code), 
                                           new SqlParameter("@owner_cus_code",Obj.owner_cus_code), 
-                        new SqlParameter("@name",Obj.name),
+                        //new SqlParameter("@name",Obj.name),
                         new SqlParameter("@role",Obj.role),
-                        new SqlParameter("@address",Obj.address),
+                        //new SqlParameter("@address",Obj.address),
                       
              
-                        new SqlParameter("@phone",Obj.phone) ,
+                        //new SqlParameter("@phone",Obj.phone) ,
 
                         new SqlParameter("@create_by", HttpContext.Current.Session["DomainID"].ToString())
                         

@@ -10,6 +10,82 @@
             var cus_id;
 
 
+
+            
+
+
+            
+            $("#Button1").click(function () {
+
+                //var cus_code = $("#txtCompOwnerCustomerID").val();
+                var cus_code = $("#ContentPlaceHolder1_Select4").val();
+                //var name = $("#txtCompOwnerName").val();
+                var role = $("#Select1").val();
+                //var address = $("#txtCompOwnerAddress").val();
+
+
+                //var phone = $("#txtCompOwnerPhone").val();
+
+                //alert(name + '-' + role + '-' + address + '-' + '-' + phone);
+
+                var obj = {};
+
+                var edocid = $("#tblMaster tbody tr:eq(1) td:eq(1)").text();
+
+
+                obj.edocid = edocid;
+                obj.company_cus_code = cus_id;
+                //obj.owner_cus_code = $("#txtCompOwnerCustomerID").val();
+                obj.owner_cus_code = cus_code;
+
+                //obj.name = name;
+                obj.role = role;
+                //obj.address = address;
+
+                //obj.phone = phone;
+
+
+                $.ajax({
+
+                    //cache: false,
+                    //contentType: false,
+                    //processData: false,
+
+                    type: "POST",
+                    url: "ProfileCreate.aspx/Comp_OwnerInfo_Save",
+                    data: '{Obj: ' + JSON.stringify(obj) + '}',
+                    //data: formData,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+
+
+                        alert("Data Saved Successfully.");
+
+                        //$("#txtCompOwnerName").val('');
+                        //$("#txtCompOwnerAddress").val('');
+                        //$("#txtCompOwnerPhone").val('');
+
+                        //("#customerModal").modal("hide");
+
+                        OpenCustomerModal(cus_type, cus_id);
+
+
+                    },
+
+                    error: function () {
+                        alert("Error while inserting data");
+                    }
+
+
+                });
+
+                return false;
+
+
+            });
+
+
             $("body").on("click", ".edit", function () {
 
                 cus_type = $(this).attr("cus-type");
@@ -28,6 +104,9 @@
                 OpenCustomerModal(cus_type, cus_id);
 
                 $("#customerModal").modal('show');
+
+
+
             });
 
             $("#ContentPlaceHolder1_Select4").on("change", function () {
@@ -150,7 +229,7 @@ $.each(data.Details, function (i, row) {
 
                 html +=
                     "<div class='table-responsive'>" +
-                        "<table class='table table-bordered table-striped'>" +
+                        "<table class='table table-bordered table-striped'  id='tblMaster'>" +
                             "<tbody>";
 
                 $.each(data[0], function (key, value) {
@@ -425,9 +504,9 @@ $.each(data.Details, function (i, row) {
                     <i class="fa fa-times"></i> Close
                 </button>
 
-                <button type="button" class="btn btn-primary btn-lg" id="btnSave">
+              <%--  <button type="button" class="btn btn-primary btn-lg" id="btnSave">
                     <i class="fa fa-save"></i> Save
-                </button>
+                </button>--%>
 
             </div>
         </div>
