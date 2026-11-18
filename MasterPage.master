@@ -399,7 +399,12 @@
              %>
 
               <%  
-                  if (Role == 21 || Role == 23 || Role == 25 || Role == 27 || Role == 29 || Role == 31 || Role == 33 || Role == 35
+                  if (
+                      
+                      
+                     
+                      
+                      Role == 21 || Role == 23 || Role == 25 || Role == 27 || Role == 29 || Role == 31 || Role == 33 || Role == 35
 
 
                       || Role == 37 || Role == 39 || Role == 41 || Role == 43 || Role == 45 || Role == 47 || Role == 49 || Role == 51
@@ -427,7 +432,18 @@
         </li>
 
             <%} %>
-        <%  if (Role == 57 || Role == 61 || Role == 65 || Role == 69)
+
+          <%  if (Role == 5 || Role == 7 || Role == 9 || Role == 11 ){ %>
+
+          <li>
+          <a href="SanctionListing_V2.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>Sanction Listing</span>
+          </a>
+        </li>
+          <%} %>
+
+
+        <%  if ( Role == 57 || Role == 61 || Role == 65 || Role == 69)
             { %>
              
          <li>

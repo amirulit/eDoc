@@ -317,14 +317,21 @@
             $('.display').show();
             $('.edit2').hide();
 
+
+            var Role=<%=Role%>;
+
+            if (Role == 21 || Role == 25 || Role == 27 || Role == 33){
+
             $("#masterAction").html(
         '<button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">' +
             '<i class="fa fa-edit"></i> Edit' +
         '</button>'
     );
 
+                }
+          
 
-
+            //alert (Role);
 
 
 
@@ -422,15 +429,17 @@
                         }).hide().appendTo(actionTd);
                         */
 
+                        if (Role=="21" || Role=="25" || Role=="29" || Role=="33")
+                        {
+                            $("<button>", {
+                                type: "button",
+                                class: "btn btn-danger btn-xs btnDeleteDetail",
+                                text: "Delete"
+                            }).attr("data-id", item.id).appendTo(actionTd);
 
+                            actionTd.appendTo(tr);
 
-                        $("<button>", {
-                            type: "button",
-                            class: "btn btn-danger btn-xs btnDeleteDetail",
-                            text: "Delete"
-                        }).attr("data-id", item.id).appendTo(actionTd);
-
-                        actionTd.appendTo(tr);
+                        }
 
                         // Store original values
                         tr.data("original", {
@@ -683,12 +692,19 @@
                 $('.display').show();
                 $('.edit2').hide();
 
-                $("#masterAction").html(
-        '<button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">' +
-            '<i class="fa fa-edit"></i> Edit' +
-        '</button>'
-    );
 
+                var Role=<%=Role%>;
+
+                if (Role == 21 || Role == 25 || Role == 27 || Role == 33){
+
+                    $("#masterAction").html(
+            '<button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">' +
+                '<i class="fa fa-edit"></i> Edit' +
+            '</button>'
+        );
+
+
+                }
 
 
                 $("#lblID").text(edoc_id);
@@ -1174,9 +1190,20 @@
                 <h3 class="box-title">Master Information</h3>
 
                 <div class="box-tools pull-right" id="masterAction">
+                    <%
+    //Response.Write("Role = " + Role);
+%>
+                      <% 
+                          
+                         
+                          
+                          if (Role==21|| Role==25|| Role==27|| Role==33 ){ %>
+
                     <button type="button" class="btn btn-primary btn-xs" id="btnEditMaster">
                         <i class="fa fa-edit"></i> Edit
                     </button>
+
+                    <%} %>
                 </div>
             </div>
 
@@ -1274,9 +1301,13 @@
                             <th>Currency</th>
                             <th>Amount</th>
                             <th>Validity</th>
-                            <th>Action</th>
-                        </tr>
 
+                             <%  if (Role==21|| Role==25|| Role==27|| Role==33 ){ %>
+                            <th>Action</th>
+
+                            <%} %>
+                        </tr>
+                          <%  if (Role==21|| Role==25|| Role==27|| Role==33 ){ %>
                         <tr>
                             <td></td>
 
@@ -1309,11 +1340,15 @@
                             </td>
 
                             <td>
+
+                              
                                 <input id="Button1" type="button"
                                        class="btn btn-success" value="Save"/>
+
+                               
                             </td>
                         </tr>
-
+                            <%} %>
                     </thead>
 
                     <tbody id="tbodySanctionDetails"></tbody>

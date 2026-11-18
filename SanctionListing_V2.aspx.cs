@@ -13,16 +13,16 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 {
     public DataTable TableData;
 
-    public Int32 Role;
+    public Int32 Role {get;set;}
 
     protected void Page_Load(object sender, EventArgs e)
     {
 
 
 
-        Role = Convert.ToInt32(Session["Role"].ToString()); 
-        
-        
+        Role = Convert.ToInt32(Session["Role"].ToString());
+
+
         TableData = Listing();
 
         BLL b = new BLL();
@@ -62,7 +62,7 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 
     [WebMethod]
     public static Object SaveSanctionDetails_V2(
-        
+
         string customer,
         string loanNature,
         string currency,
@@ -166,8 +166,8 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
             return new { message = ex.Message, id = 0 };
         }
     }
-     
-    
+
+
 
     [System.Web.Services.WebMethod]
     public static string UpdateSanctionDetail(SanctionDetailUpdate obj)
@@ -388,35 +388,63 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
         //SqlCommand cmd = new SqlCommand(Sql, connection);
 
         String Segment = String.Empty;
-        if (Role == 21 || Role == 23)
+
+        String BranchCode = Session["BranchCode"].ToString();
+
+        if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
         {
-            Segment = "Corporate";
-            
+
+            command.CommandText = "usp_SanctionLisitng_V2_Branch";
+
+            command.Parameters.Add(new SqlParameter("@branchcode", BranchCode));
+        }
+        else
+        {
+
+            if (Role == 21 || Role == 23 || Role == 57 || Role == 59)
+            {
+                Segment = "Corporate";
+
+
+            }
+            else if (Role == 25 || Role == 27)
+            {
+                Segment = "CMSME";
+
+
+            }
+
+            else if (Role == 29 || Role == 31 || Role == 65 || Role == 59)
+            {
+                Segment = "Retail";
+
+
+            }
+
+            else if (Role == 33 || Role == 35)
+            {
+                Segment = "Agriculture";
+
+
+            }
+
+            else if (Role == 61 || Role == 63)
+            {
+                Segment = "CMSME|Agriculture";
+
+
+            }
+            else
+            {
+                Segment = "ALL";
+            }
+
+
+            command.Parameters.Add(new SqlParameter("@Segment", Segment));
 
         }
-        if (Role == 25 || Role == 27)
-        {
-            Segment = "CMSME";
-            
 
-        }
 
-        if (Role == 29 || Role == 31)
-        {
-            Segment = "Retail";
-          
-
-        }
-
-        if (Role == 33 || Role == 35)
-        {
-            Segment = "Agriculture";
-          
-
-        }
-
-        command.Parameters.Add(new SqlParameter("@Segment", Segment));
-       
 
 
 
@@ -433,6 +461,5 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
             //ErrorMSG = ex.Message;
         }
         return ds.Tables[0];
-
     }
 }
