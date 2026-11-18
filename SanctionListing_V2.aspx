@@ -400,6 +400,9 @@
                         // Action buttons
                         var actionTd = $("<td>");
 
+
+
+                        /*
                         $("<button>", {
                             type: "button",
                             class: "btn btn-primary btn-xs btnEdit",
@@ -417,6 +420,9 @@
                             class: "btn btn-warning btn-xs btnCancel",
                             text: "Cancel"
                         }).hide().appendTo(actionTd);
+                        */
+
+
 
                         $("<button>", {
                             type: "button",

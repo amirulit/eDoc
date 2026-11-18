@@ -105,6 +105,23 @@
 
                 $("#customerModal").modal('show');
 
+                //$('#tblDetails').hide();
+
+                //alert(cus_type);
+
+                if (cus_type == 'IND') {
+                    //$('#tblDetails').show();
+
+                  
+
+                    //$('#dvMaster').removeClass('col-md-4').addClass('col-md-8');
+                    $('#divDetail').css("display", "none");
+
+                } else {
+                   
+                  //$('#dvMaster').removeClass('col-md-8').addClass('col-md-4');
+                    $('#divDetail').css("display", "block");
+                }
 
 
             });
@@ -424,8 +441,8 @@ $.each(data.Details, function (i, row) {
                <%-- <h6 class="font-weight-bold">Customer Information</h6>--%>
 
                 <div  class="row">
-                <div  class="col-md-3"><div id="divMaster">
-                </div></div><div class="col-md-9"><div class="table-responsive">
+                <div  class="col-md-4" id="dvMaster"><div id="divMaster">
+                </div></div><div class="col-md-8"  id="divDetail">Owner Info:<div class="table-responsive">
                     <table class="table table-bordered table-sm"
                            id="tblDetails">
 

@@ -17,10 +17,13 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
+
+
+        Role = Convert.ToInt32(Session["Role"].ToString()); 
+        
+        
         TableData = Listing();
-
-
-        Role = Convert.ToInt32(Session["Role"].ToString());
 
         BLL b = new BLL();
 
@@ -383,6 +386,38 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
         //command.Parameters.Add(new SqlParameter("@ValueDate", ValueDate));
         //SqlCommand cmd = new SqlCommand("select * from t_FundRequsition", connection);
         //SqlCommand cmd = new SqlCommand(Sql, connection);
+
+        String Segment = String.Empty;
+        if (Role == 21 || Role == 23)
+        {
+            Segment = "Corporate";
+            
+
+        }
+        if (Role == 25 || Role == 27)
+        {
+            Segment = "CMSME";
+            
+
+        }
+
+        if (Role == 29 || Role == 31)
+        {
+            Segment = "Retail";
+          
+
+        }
+
+        if (Role == 33 || Role == 35)
+        {
+            Segment = "Agriculture";
+          
+
+        }
+
+        command.Parameters.Add(new SqlParameter("@Segment", Segment));
+       
+
 
 
         SqlDataAdapter sda = new SqlDataAdapter(command);

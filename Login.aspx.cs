@@ -48,7 +48,7 @@ public partial class Login : System.Web.UI.Page
         Session["Role"] = 5;
 
 
-        Session["BranchCode"] = "BD0010103";
+        Session["BranchCode"] = "BD0010101";
 
 
         Response.Redirect("Dashboard.aspx");

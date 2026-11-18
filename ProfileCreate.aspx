@@ -804,7 +804,9 @@
 
 
                                 
-                                $('#rowMotherCompany').css("display", "block");
+                                //$('#rowMotherCompany').css("display", "table-row");
+
+                                $('#rowMotherCompany').show();
 
                                 $('#divCusIndvInfo').css("display", "none");
                                 $('#divCusPropInfo').css("display", "none");
@@ -836,7 +838,9 @@
 
                                 if (cus_type == "SOC" || cus_type == "NGO" || cus_type == "OPC")
                                 {
-                                    $('#rowMotherCompany').css("display", "none");
+                                    //$('#rowMotherCompany').css("display", "none");
+
+                                    $('#rowMotherCompany').hide();
                                 }
 
 
@@ -1293,7 +1297,7 @@
 
                               <div style="display:flex; gap:10px; align-items:center;">
     <button type="button" id="btnSave" class="btn btn-primary btn-spaced">
-        Submit
+        Create Profile
     </button>
 
     <button type="button" id="btnAddiInfo" class="btn btn-primary btn-spaced">
@@ -1332,7 +1336,7 @@
                             <%--<img id="Img2" class="img-circle" style="width: 120px; height: 120px;">--%>
                        <%-- </div>--%>
                       <%--  <div class="col-sm-9"><b>Owner Info : </b>--%>
-                          <div class="col-sm-12"><span id="infoType" class="  badge "></span>
+                          <div class="col-md-12"><span id="infoType" class="badge"></span>
                              <table class="table table-responsive table-condensed">
                                 <thead>
                                     <tr>
