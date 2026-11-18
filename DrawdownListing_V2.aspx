@@ -13,8 +13,59 @@
 
         $(document).ready(function () {
 
+
+            $("body").on("click", ".ssc", function () {
+
+                //alert('sss');
+
+                var edoc_id = $(this).attr("edoc-id");
+
+                $("#btnSSCGenerate").attr("edoc-id", edoc_id);
+
+                //var edoc_id = $("#btnSSCGenerate").attr("edoc-id");
+
+
+                $("#lblIDSSC").text(edoc_id);
+                //alert(edoc_id);
+
+                //var $row = $(element).closest("tr");
+
+
+                //LoadSSCConditions();
+
+
+            });
+
+            $("#btnSaveConditions").click(function () {
+
+                var edoc_id = $("#btnSSCGenerate").attr("edoc-id");
+                alert(edoc_id);
+
+            });
+
+            $("input[name='conditionType']").change(function () {
+
+                var conditionType = $(this).val();
+
+                if (conditionType == "Yes") {
+
+                    $("#divConditionsEntry").show();
+
+                    LoadSSCConditions();
+
+                }
+                else {
+
+                    $("#divConditionsEntry").hide();
+
+                    $("#Text1").val("");
+
+                }
+
+            });
+
             // Load records when page/modal opens
-            LoadSSCConditions();
+            //LoadSSCConditions();
 
             // SAVE
             $("#btnSaveConditions").click(function () {
@@ -102,7 +153,7 @@
                                     .attr("type", "button")
                                     .addClass("btn btn-danger btn-sm btnDelete")
                                     .text("Delete")
-                                    .attr("data-id", item.id);
+                                    .attr("data-id", item.condition_id);
 
                                 $("<td>").append(deleteBtn).appendTo(tr);
 
@@ -128,7 +179,9 @@
             // DELETE
             $(document).on("click", ".btnDelete", function () {
 
-                var condition_id = parseInt($(this).attr("data-id"));
+                var btn = $(this);
+
+                var condition_id = parseInt(btn.attr("data-id"));
                 var drawdown_id = parseInt($("#lblIDSSC").text().trim());
 
                 if (!confirm("Are you sure you want to delete this condition?"))
@@ -150,13 +203,13 @@
 
                             alert("Deleted successfully!");
 
-                            LoadSSCConditions();
+                            // Remove nearest table row
+                            btn.closest("tr").remove();
 
                         }
                         else {
                             alert(response.d);
                         }
-
                     },
 
                     error: function () {
@@ -177,21 +230,10 @@
 
 
 
-            $("body").on("click", ".ssc", function () {
-
-                alert('sss');
-
-                var edoc_id = $(this).attr("edoc-id");
-                $("#lblIDSSC").text(edoc_id);
-                //alert(edoc_id);
-
-                //var $row = $(element).closest("tr");
 
 
-            });
 
 
-           
 
             $("body").on("click", ".upload", function () {
 
@@ -385,6 +427,37 @@
                            <div class="panel-body">
     ID # <span id="lblIDSSC" class="badge badge-success"></span>
 
+
+
+
+
+
+
+                               <div class="form-group">
+    <label>Condition Type</label>
+    <br />
+
+    <label class="radio-inline">
+        <input type="radio" name="conditionType"
+               id="rdoConditional" value="Yes" />
+        Conditional
+    </label>
+
+    &nbsp;&nbsp;
+
+    <label class="radio-inline">
+        <input type="radio" name="conditionType"
+               id="rdoClean" value="No" />
+        Clean
+    </label>
+</div>
+
+<!-- Show only when Conditional = Yes -->
+<div id="divConditionsEntry" style="display:none;">
+
+
+
+
     <div class="form-group" id="div1">
         <label>Conditions</label>
         <input id="Text1" type="text" class="form-control" />
@@ -418,9 +491,38 @@
     </table>
     </div>
 </div>
+
+                               </div>
+                            
                             <div class="panel-footer bg-gray-light">
-                                <input type="hidden" id="id" name="id" value="" >
-                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Assign</button>         
+                                <input type="hidden" id="id" name="id" value="" />
+                                  <div class="row">
+                                
+                                 <div class="col-md-6">
+            <button type="button" id="btnSSCGenerate" class="btn btn-info" style="width: 100%;">
+                <span class="glyphicon glyphicon-upload"></span> Generate SSC
+            </button>
+        </div>
+
+        <div class="col-md-6">
+            <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100%;">
+                <span class="glyphicon glyphicon-remove"></span> Close
+            </button>
+        </div>
+                                
+                               </div> 
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                      
         	  				</div><!--/.panel-footer--> 
             			</div><!--/.panel-->
             		</div><!--/.col-md-6-->
@@ -498,7 +600,7 @@
                             </div><!--/.modal body-->
                             <div class="panel-footer bg-gray-light">
                                 <input type="hidden" id="id" name="id" value="" />
-                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Upload</button>         
+                                <button type="button"   id="btnSubmit" class="btn btn-info" style="width: 100%;"><span class="glyphicon   glyphicon-upload"></span>Geneate</button>         
         	  				</div><!--/.panel-footer--> 
             			</div><!--/.panel-->
             		</div><!--/.col-md-6-->
@@ -506,6 +608,9 @@
         	</div><!-- /.modal-content -->  		 
 		</div><!-- /.modal-dialog -->            
 	</div><!--/.Modal-Update form -->   
+
+
+
 
     <div class="modal" id="documentModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">

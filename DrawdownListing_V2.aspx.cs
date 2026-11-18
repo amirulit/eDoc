@@ -130,7 +130,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
             string sql = @"SELECT id, conditions, deadline, remarks
                        FROM t_SSC_Conditions
                        WHERE drawdown_id = @drawdown_id
-                       ORDER BY condition_id DESC";
+                       ORDER BY id asc";
 
             using (SqlCommand cmd = new SqlCommand(sql, con))
             {
@@ -146,12 +146,8 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
                         {
                             condition_id = Convert.ToInt32(dr["id"]),
                             conditions = dr["conditions"].ToString(),
-                            deadline = dr["deadline"] == DBNull.Value
-                                ? ""
-                                : Convert.ToDateTime(dr["deadline"]).ToString("dd-MMM-yyyy"),
-                            remarks = dr["remarks"] == DBNull.Value
-                                ? ""
-                                : dr["remarks"].ToString()
+                            deadline = dr["deadline"] == DBNull.Value ? "" : Convert.ToDateTime(dr["deadline"]).ToString("dd-MMM-yyyy"),
+                            remarks = dr["remarks"] == DBNull.Value ? "" : dr["remarks"].ToString()
                         });
                     }
                 }
