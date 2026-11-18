@@ -324,12 +324,19 @@ $.each(data.Details, function (i, row) {
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Customer Details</h5>
-                <button type="button" class="close text-white"
-                        data-dismiss="modal">
-                    &times;
+            <div class="modal-header" style="background:#3c8dbc; color:white; padding:15px 20px;">
+
+                <button type="button" class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                        style="color:white; opacity:1; font-size:28px; margin-top:-5px;">
+                    <span aria-hidden="true">&times;</span>
                 </button>
+
+                <h4 class="modal-title" style="font-weight:bold;">
+                    <i class="fa fa-user-circle"></i> Customer Details
+                </h4>
+
             </div>
 
             <div class="modal-body">
@@ -396,6 +403,7 @@ $.each(data.Details, function (i, row) {
                     </table>
                 </div></div>
                
+                    
                 </div>
                 <hr />
 
@@ -406,6 +414,22 @@ $.each(data.Details, function (i, row) {
 
             </div>
 
+
+
+
+
+            <div class="modal-footer" style="background:#f4f4f4;">
+
+                <button type="button" class="btn btn-default btn-lg"
+                        data-dismiss="modal">
+                    <i class="fa fa-times"></i> Close
+                </button>
+
+                <button type="button" class="btn btn-primary btn-lg" id="btnSave">
+                    <i class="fa fa-save"></i> Save
+                </button>
+
+            </div>
         </div>
     </div>
 </div>

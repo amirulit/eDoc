@@ -38,6 +38,7 @@ public partial class ProfileListing : System.Web.UI.Page
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
+                cmd.Parameters.Add("@cus_type", SqlDbType.VarChar).Value = cus_type;
                 cmd.Parameters.Add("@CustomerId", SqlDbType.VarChar).Value = customerId;
 
                 using (SqlDataAdapter da = new SqlDataAdapter(cmd))
