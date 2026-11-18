@@ -36,7 +36,7 @@
 
             });
 
-            $("#btnSaveConditions").click(function () {
+            $("#btnSSCGenerate").click(function () {
 
                 var edoc_id = $("#btnSSCGenerate").attr("edoc-id");
                 alert(edoc_id);

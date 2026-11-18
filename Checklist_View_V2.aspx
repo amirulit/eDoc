@@ -1549,10 +1549,10 @@
             if (Role == 5
 ||  Role ==7
 || Role == 9
-|| Role ==59
-|| Role ==63
-|| Role ==67
-|| Role == 71)
+|| Role ==57
+|| Role ==61
+|| Role ==65
+                )
                 
                 
                 
@@ -1564,6 +1564,16 @@
         <%
         }
         %>
+
+
+
+        <% if (Role==9 || Role==63 || Role== 67) { %>
+         <input type="button" value="Approve" id="btnApprove" class="btn btn-success" />
+
+
+        <%} %>
+
+
 
         <%--<input type="button" value="Pdf"  id="btnPdf"   onclick="javascript:Pdf();"  class="btn btn-info"/>--%>
         <br />
