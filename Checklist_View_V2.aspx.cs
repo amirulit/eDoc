@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Text;
 using NReco.PdfGenerator;
+using System.Configuration;
 
 public partial class Checklist_View_V2 : System.Web.UI.Page
 {
@@ -82,6 +83,8 @@ Upload Not Required
 
     public Int32 Role;
 
+    public String DomainID { get; set; }
+
     public String CustomerName;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -89,6 +92,8 @@ Upload Not Required
 
 
         Role = Convert.ToInt32(Session["Role"].ToString());
+
+        DomainID= Session["DomainID"].ToString();
 
 
         TabsName = ("Basic Documents~Charge Documents~Liability Takeover~Loan Documents~Mortgage Document~Other Documents~Syndication/Pledge Doc.~Undertaking").Split('~');
@@ -571,6 +576,39 @@ Upload Not Required
     }
 
 
+    [WebMethod]
+    public static string ApproveDrawdown(int drawdown_id, int role, string create_by)
+    {
+        try
+        {
+            string cs = ConfigurationManager
+                .ConnectionStrings["dbconn"]
+                .ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                using (SqlCommand cmd = new SqlCommand("usp_Approve", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@drawdown_id", SqlDbType.Int).Value = drawdown_id;
+                    cmd.Parameters.Add("@role", SqlDbType.Int).Value = role;
+
+                    cmd.Parameters.Add("@create_by", SqlDbType.VarChar, 5000).Value = create_by;
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return "success";
+        }
+        catch (Exception ex)
+        {
+            return "Error: " + ex.Message;
+        }
+    }
 
     [WebMethod(EnableSession = true)]
     public static String Save_Query_Reason(Int32 drawdown_id, Int32 doc_primary_key, String query)
@@ -611,6 +649,7 @@ Upload Not Required
         command.Parameters.Add(new SqlParameter("@doc_primary_key", doc_primary_key));
         command.Parameters.Add(new SqlParameter("@query", query));
         command.Parameters.Add(new SqlParameter("@query_by_role", Role));
+        command.Parameters.Add(new SqlParameter("@create_by", DomainID));
 
         connection.Open();
         Int32 i = command.ExecuteNonQuery();

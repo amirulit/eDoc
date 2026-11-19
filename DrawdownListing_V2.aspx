@@ -335,6 +335,60 @@
             });
 
 
+
+            $(document).on("click", ".query", function () {
+
+                var drawdown_id = $(this).attr("data-drawdown-id");
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/GetQueryDetails",
+                    data: JSON.stringify({ drawdown_id: parseInt(drawdown_id) }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+
+                        var html = "";
+
+                        if (data.length > 0) {
+
+                            $.each(data, function (i, item) {
+
+                                html += "<tr>";
+
+                                html += "<td>" + (i + 1) + "</td>";
+                                html += "<td>" + $("<div>").text(item.query).html() + "</td>";
+                                html += "<td>" + $("<div>").text(item.query_by_role).html() + "</td>";
+                                html += "<td>" + $("<div>").text(item.create_date).html() + "</td>";
+                                html += "<td>" + $("<div>").text(item.create_by).html() + "</td>";
+
+                                html += "</tr>";
+
+                            });
+
+                        }
+                        else {
+
+                            html = "<tr><td colspan='5' class='text-center'>No Query Found</td></tr>";
+
+                        }
+
+                        $("#queryDetails").html(html);
+
+                        $("#queryModal").modal("show");
+
+                    },
+
+                    error: function () {
+                        alert("Error loading query details.");
+                    }
+                });
+
+            });
+
             $("body").on("click", ".view", function () {
 
                 var cus_ids = $(this).attr("cus-id");
@@ -404,6 +458,43 @@
 
             });
 
+
+            $(document).on("click", ".show", function () {
+
+                var drawdown_id = $(this).attr("data-drawdown-id");
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/GetDeclineReason",
+                    data: JSON.stringify({ drawdown_id: drawdown_id }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+
+                        if (data != null) {
+
+                            $("#cus_name").text(data.cus_name || "");
+                            $("#cr_reason").text(data.cr_reason || "");
+                            $("#hob_reason").text(data.hob_reason || "");
+                            $("#dm_reason").text(data.dm_reason || "");
+                            $("#unit_reason").text(data.unit_reason || "");
+
+                            $("#reasonModal").modal("show");
+                        }
+                        else {
+                            alert("No decline reason found.");
+                        }
+                    },
+
+                    error: function () {
+                        alert("Error loading decline reasons.");
+                    }
+                });
+
+            });
 
         });
 
@@ -676,6 +767,95 @@
         </div>
     </div>
 </div>
+        <div class="modal" id="queryModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Query Details</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Query</th>
+                            <th>Query By Role</th>
+                            <th>Create Date</th>
+                            <th>Create By</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="queryDetails">
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+        <div class="modal" id="reasonModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Decline Reasons</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Customer Name</th>
+                        <td id="cus_name"></td>
+                    </tr>
+
+                    <tr>
+                        <th>CR Incharge Decline Reason</th>
+                        <td id="cr_reason"></td>
+                    </tr>
+
+                    <tr>
+                        <th>HOB Decline Reason</th>
+                        <td id="hob_reason"></td>
+                    </tr>
+
+                    <tr>
+                        <th>DM Decline Reason</th>
+                        <td id="dm_reason"></td>
+                    </tr>
+
+                    <tr>
+                        <th>Unit Head Decline Reason</th>
+                        <td id="unit_reason"></td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
     	<div class="row" id="table1"><!--MSK-000132-1-->
         	<div class="col-md-12">
@@ -738,7 +918,34 @@
                         <td><%=TableData.Rows[data]["loan_amount"]%></td>
                      <%--   <td><%=TableData.Rows[data]["exp_date_2"]%></td>--%>
 
-                        <td><%=TableData.Rows[data]["status_desc"]%></td>
+                       <td>
+
+                           <% if (status == 17 || status == 20 || status == 28 || status == 33) {%>
+
+    <a href="javascript:void(0);"
+       class="btn btn-success btn-xs show"
+       data-drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">
+        Reason
+    </a>
+
+                           <%} %>
+
+
+                           <% if (status == 51) {%>
+
+    <a href="javascript:void(0);"
+       class="btn btn-success btn-xs query"
+       data-drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">
+        Query
+    </a>
+
+                           <%} %>
+
+
+
+
+    <%=TableData.Rows[data]["status_desc"]%>
+</td>
 
                   
                         	
@@ -750,13 +957,28 @@
                         <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Document Upload</a>                                    
                         -->
 
+
+                            
+                        <%  if ((Role == 57 || Role == 61 || Role == 65  || Role==5 || Role==7))
+                            {
+                                
+                                
+                                %>
+
                         <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Update</a>                                    
   
+
+
+                            <%
+                            }
+                               %>
+
+
 
                         <a href="#"  class="btn btn-primary btn-xs view" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">View</a>                                    
 
                          
-                        <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview"  cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>"  sanction-id="<%=TableData.Rows[data]["sanction_ids"]%>"   >Upload View</a>                                    
+                        <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview"  cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>"  sanction-id="<%=TableData.Rows[data]["sanction_ids"]%>"   >View(Uploaded Docs)</a>                                    
  
 
 

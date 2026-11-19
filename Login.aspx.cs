@@ -41,11 +41,13 @@ public partial class Login : System.Web.UI.Page
 
         
 
-        Session["DomainID"] = "RM-Branch";
+        Session["DomainID"] = "md.amirul@mblbd.com";
 
-        Session["Name"] = "RM-Branch";
+        Session["Name"] = "Mohammad Amirul Islam";
 
         Session["Role"] = 5;
+
+        Session["RoleName"] = "RM(Branch)";
 
 
         Session["BranchCode"] = "BD0010101";
@@ -59,7 +61,7 @@ public partial class Login : System.Web.UI.Page
     {
         Session["DomainID"] = "RM-CBD";
 
-        Session["Name"] = "RM-CBD";
+        Session["Name"] = "Ahsanul Islam";
 
         Session["Role"] = 21;
 
@@ -76,22 +78,24 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCI_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "CI";
 
-        Session["Name"] = "Credit Incharge";
+
+        Session["DomainID"] = "nowfel.ahmed@mblbd.com";
+
+        Session["Name"] = "Sheikh Nowfel Ahmed";
 
         Session["Role"] = 7;
 
-        //Session["UserType"] = "CADMaker";
+        Session["RoleName"] = "CI";
 
-        //if (txtDomainID.Text == "cadmaker@mblbd.com")
-        //    Session["UserType"] = "CADMaker";
-        //if (txtDomainID.Text == "cadchecker@mblbd.com")
-        //    Session["UserType"] = "CADChecker";
 
         Session["BranchCode"] = "BD0010101";
 
+
         Response.Redirect("Dashboard.aspx");
+
+
+         
 
 
     }
@@ -116,14 +120,24 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnHOB_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "HOB";
-        Session["BranchCode"] = "BD0010101";
 
-        Session["Name"] = "Head of Branch";
+        Session["DomainID"] = "ahsanul.islam@mblbd.com";
+
+        Session["Name"] = "Ahsanul Islam";
 
         Session["Role"] = 11;
 
-        Session["UserType"] = "CADMaker";
+        Session["RoleName"] = "HOB";
+
+
+        Session["BranchCode"] = "BD0010101";
+
+
+        Response.Redirect("Dashboard.aspx");
+
+
+
+         
 
         //if (txtDomainID.Text == "cadmaker@mblbd.com")
         //    Session["UserType"] = "CADMaker";
@@ -414,11 +428,16 @@ public partial class Login : System.Web.UI.Page
     }
     protected void Button1_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "RM-Branch";
 
-        Session["Name"] = "RM-Branch";
+
+
+        Session["DomainID"] = "md.amirul@mblbd.com";
+
+        Session["Name"] = "Mohammad Amirul Islam";
 
         Session["Role"] = 5;
+
+        Session["RoleName"] = "RM(Branch)";
 
 
         Session["BranchCode"] = "BD0010102";
@@ -429,39 +448,36 @@ public partial class Login : System.Web.UI.Page
     }
     protected void Button2_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "CI";
 
-        Session["Name"] = "Credit Incharge";
+
+        Session["DomainID"] = "nowfel.ahmed@mblbd.com";
+
+        Session["Name"] = "Sheikh Nowfel Ahmed";
 
         Session["Role"] = 7;
 
-        //Session["UserType"] = "CADMaker";
+        Session["RoleName"] = "CI";
 
-        //if (txtDomainID.Text == "cadmaker@mblbd.com")
-        //    Session["UserType"] = "CADMaker";
-        //if (txtDomainID.Text == "cadchecker@mblbd.com")
-        //    Session["UserType"] = "CADChecker";
 
         Session["BranchCode"] = "BD0010102";
 
+
         Response.Redirect("Dashboard.aspx");
+
+
     }
     protected void Button3_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "HOB";
+        Session["DomainID"] = "ahsanul.islam@mblbd.com";
+
+        Session["Name"] = "Ahsanul Islam";
+
+        Session["Role"] = 7;
+
+        Session["RoleName"] = "HOB";
+
+
         Session["BranchCode"] = "BD0010102";
-
-        Session["Name"] = "Head of Branch";
-
-        Session["Role"] = 11;
-
-        Session["UserType"] = "CADMaker";
-
-        //if (txtDomainID.Text == "cadmaker@mblbd.com")
-        //    Session["UserType"] = "CADMaker";
-        //if (txtDomainID.Text == "cadchecker@mblbd.com")
-        //    Session["UserType"] = "CADChecker";
-
 
 
         Response.Redirect("Dashboard.aspx");

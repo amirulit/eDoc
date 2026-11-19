@@ -26,18 +26,67 @@
     <%-- <link href="js/jquery-ui.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script src="js/jquery-ui.js" type="text/javascript"></script>--%>
+
+
     <script src="jquery-3.7.1.js" type="text/javascript"></script>
     <link href="jquery-ui.css" rel="stylesheet" type="text/css" />
     <script src="jquery-ui.js" type="text/javascript"></script>
-    <script type="text/javascript" src="plugins/datatables/jquery.dataTables.min.js">
-    </script>
-    <script type="text/javascript" src="plugins/datatables/dataTables.bootstrap.min.js">
-    </script>
+    <script type="text/javascript" src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="plugins/datatables/dataTables.bootstrap.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script language="javascript" type="text/javascript">
 
 
         $(document).ready(function () {
+
+
+            
+
+
+            $(document).on("click", "#btnApprove", function () {
+
+                var drawdown_id = $(this).attr("data-drawdown-id");
+
+                if (!confirm("Are you sure you want to approve?")) {
+                    return;
+                }
+
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "Checklist_View_V2.aspx/ApproveDrawdown",
+                    data: JSON.stringify({
+                        drawdown_id: parseInt(drawdown_id),
+                        role: 36,
+                        create_by: '<%= Session["DomainID"] %>'
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d == "success") {
+
+                            alert("Drawdown Approved Successfully!");
+
+                            //location.reload();
+
+                        }
+                        else {
+                            alert(response.d);
+                        }
+
+                    },
+
+                    error: function (xhr, status, error) {
+                        alert("Error while approving drawdown.");
+                    }
+
+
+                });
+
+            });
 
 
 
@@ -57,6 +106,9 @@
 
 
             });
+
+
+
 
 
 
@@ -1104,6 +1156,9 @@
 
             $("#lblID").text(drawdown_id);
 
+            $("#btnApprove").attr("data-drawdown-id", drawdown_id);
+
+
 
             //var customer_auto_id = params[1].split('=')[1];
             cus_id = params[1].split('=')[1];
@@ -1549,6 +1604,7 @@
             if (Role == 5
 ||  Role ==7
 || Role == 9
+|| Role == 11
 || Role ==57
 || Role ==61
 || Role ==65
@@ -1559,15 +1615,17 @@
             { 
                
         %>
+
+
         <input type="button" value="Forward" id="btnForward" class="btn btn-success" />
-        <input type="button" value="Decline" id="btnDecline" class="btn btn-primary" />
+      
         <%
         }
         %>
 
+          <input type="button" value="Decline" id="btnDecline" class="btn btn-primary" />
 
-
-        <% if (Role==9 || Role==63 || Role== 67) { %>
+        <% if (Role==59 || Role==63 || Role== 67) { %>
          <input type="button" value="Approve" id="btnApprove" class="btn btn-success" />
 
 

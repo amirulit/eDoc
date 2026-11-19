@@ -1389,8 +1389,10 @@
                         		<th>ID</th>
                                 <th>Reference</th>
                             	<th>Date</th>
+                                <th>Segment</th>
                             	<th>Authority</th>
                             	<th>Branch</th>
+                                <th>Status</th>
                                 <th>Action</th>
                              </tr>
                         	</thead>
@@ -1411,11 +1413,15 @@
                             
 %>
 <tr>
+
+
                         <td><%=TableData.Rows[data]["id"]%></td>
                         <td><%=TableData.Rows[data]["sanction_reference"]%></td>
                         <td><%=TableData.Rows[data]["sanction_date"]%></td>
+                        <td><%=TableData.Rows[data]["sanction_segment"]%></td>
                         <td><%=TableData.Rows[data]["sanction_authority"]%></td>
                         <td><%=TableData.Rows[data]["booking_branch"]%></td>
+                        <td><%=TableData.Rows[data]["status_desc"]%></td>
                         	
                         <td>        
 

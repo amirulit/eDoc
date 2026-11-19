@@ -475,6 +475,7 @@ select CusId,DrawdownId,PrimaryKey,Required,Status,getdate(),@upload_by,@upload_
     } 
     protected void LoadDocList()
     {
+
         String drawdown_id = Request.QueryString[0].ToString();
 
         //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
@@ -488,7 +489,10 @@ select CusId,DrawdownId,PrimaryKey,Required,Status,getdate(),@upload_by,@upload_
         cmd.CommandType = CommandType.StoredProcedure;
 
         cmd.CommandText = "usp_Checklist_Load_For_Upload_V2";
+
         cmd.Connection = con;
+
+
 
 
         /*
@@ -652,6 +656,8 @@ OTHER DOCUMENTS
     {
         String DomainID = HttpContext.Current.Session["DomainID"].ToString();
 
+        Int32 Role = Convert.ToInt32(HttpContext.Current.Session["Role"].ToString());
+
 
         try
         {
@@ -664,6 +670,7 @@ OTHER DOCUMENTS
 
                 cmd.Parameters.Add("@drawdown_id", SqlDbType.Int).Value = drawdown_id;
                 cmd.Parameters.Add("@by", SqlDbType.VarChar, 500).Value = DomainID;
+                cmd.Parameters.Add("@role", SqlDbType.Int, 500).Value = Role;
 
                 con.Open();
 

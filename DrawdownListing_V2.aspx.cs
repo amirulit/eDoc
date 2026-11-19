@@ -27,7 +27,55 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
        
     }
+    public class DeclineReason
+    {
+        public string cus_name { get; set; }
+        public string cr_reason { get; set; }
+        public string hob_reason { get; set; }
+        public string dm_reason { get; set; }
+        public string unit_reason { get; set; }
+    }
 
+    [WebMethod]
+    public static DeclineReason GetDeclineReason(int drawdown_id)
+    {
+        DeclineReason obj = null;
+
+        string cs = ConfigurationManager
+                    .ConnectionStrings["dbConn"]
+                    .ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "usp_Show_Decline_Reason", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@drawdown_id", SqlDbType.Int)
+                              .Value = drawdown_id;
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        obj = new DeclineReason
+                        {
+                            cus_name = Convert.ToString(dr["cus_name"]),
+                            cr_reason = Convert.ToString(dr["cr_incharge_decline_reason"]),
+                            hob_reason = Convert.ToString(dr["hob_decline_reason"]),
+                            dm_reason = Convert.ToString(dr["dm_decline_reason"]),
+                            unit_reason = Convert.ToString(dr["unit_head_decline_reason"])
+                        };
+                    }
+                }
+            }
+        }
+
+        return obj;
+    }
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
@@ -81,6 +129,56 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         }
     }
 
+    public class QueryDetails
+    {
+        public string query { get; set; }
+        public string query_by_role { get; set; }
+        public string create_date { get; set; }
+        public string create_by { get; set; }
+    }
+
+    [WebMethod]
+    public static List<QueryDetails> GetQueryDetails(int drawdown_id)
+    {
+        List<QueryDetails> list = new List<QueryDetails>();
+
+        string cs = ConfigurationManager
+            .ConnectionStrings["dbConn"]
+            .ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(cs))
+        {
+            using (SqlCommand cmd = new SqlCommand("usp_ShowQuery", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@drawdown_id", SqlDbType.Int).Value = drawdown_id;
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        QueryDetails obj = new QueryDetails();
+
+                        obj.query = Convert.ToString(dr["query"]);
+                        obj.query_by_role = Convert.ToString(dr["query_by_role"]);
+
+                        obj.create_date = dr["create_date"] == DBNull.Value
+                            ? ""
+                            : Convert.ToDateTime(dr["create_date"]).ToString("dd-MM-yyyy hh:mm tt");
+
+                        obj.create_by = Convert.ToString(dr["create_by"]);
+
+                        list.Add(obj);
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
 
     [WebMethod]
     public static string SaveSSCConditions(int drawdown_id, string conditions)
@@ -288,14 +386,14 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
         {
             command.Parameters.Add(new SqlParameter("@BranchCode", BranchCode));
-            command.CommandText = "usp_Drawdown_Listing_For_Branch";
+            command.CommandText = "usp_Drawdown_Listing_For_Branch_Update";
 
         }
         else
         {
 
             command.Parameters.Add(new SqlParameter("@Role", Role));
-            command.CommandText = "usp_Drawdown_Listing_For_CAD";
+            command.CommandText = "usp_Drawdown_Listing_For_CAD_Update";
 
         }
 

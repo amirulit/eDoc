@@ -1688,7 +1688,7 @@
 
         Int32 id;
 
-        String status;
+        Int32 status;
 
 
         if (TableData.Rows.Count > 0)
@@ -1697,7 +1697,7 @@
             {
                 id = Convert.ToInt32(TableData.Rows[data]["edoc_id"]);
 
-                status = TableData.Rows[data]["status"].ToString();
+                status = Convert.ToInt32(TableData.Rows[data]["status"].ToString());
                 
                 
 %>
@@ -1738,10 +1738,12 @@
   
   -->
 
+<%  if (status == 1 ||  status == 3 || status==4){ %>
+
 
   <a href="#"  class="btn btn-success btn-xs view"  id="btnView_<%=id %>"  data-id="<%=TableData.Rows[data]["edoc_id"]%>">Initiate Checklist</a>                                    
 
-
+<%} %>
   
   <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Upload View</a>                                    
 

@@ -125,7 +125,7 @@
 
                 alert('All documents completed successfully!');
 
-                return false;
+                //return false;
 
 
 
@@ -2357,6 +2357,8 @@
 
                     String opt_man = "";
 
+                    String radio_default_sel = "";
+
                     if (TableData.Rows.Count > 0)
                     {
                         
@@ -2440,6 +2442,8 @@
                             c_id = TableData.Rows[data]["c_id"] == DBNull.Value ? 0 : Convert.ToInt32(TableData.Rows[data]["c_id"]);
 
                             opt_man = TableData.Rows[data]["opt_man"] == DBNull.Value ? "" : TableData.Rows[data]["opt_man"].ToString();
+
+                            radio_default_sel = TableData.Rows[data]["radio_default_sel"] == DBNull.Value ? "" : TableData.Rows[data]["radio_default_sel"].ToString();
                             
                         %>
                         <tr style="<%= id_to_delete > 0 ? "background-color: #90EE90;": "" %>" id="row_<%=doc_id %>"
@@ -2451,10 +2455,8 @@
                                 <%=TableData.Rows[data]["Name"]%>
                             </td>
                             <td class="tdTopLeft">
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
-                                    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="Y" <%= opt_man == "M" ? "checked='checked' disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "Y" ? "checked='checked'" : "") %> />Yes
-                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
-                                    data-id="<%=TableData.Rows[data]["primary_key"]%>" value="N" <%= opt_man == "M" ? "disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "N" ? "checked='checked'" : "") %> />No
+                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>" value="Y" <%= (opt_man == "M" || radio_default_sel=="Yes")? "checked='checked' disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "Y" ? "checked='checked'" : "") %> />Yes
+                                <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>" value="N" <%= opt_man == "M" ? "disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "N" ? "checked='checked'" : "") %> />No
                             </td>
                             <td class="tdTopLeft">
                                 <%--<%=TableData.Rows[data]["Obtained"]%>--%>

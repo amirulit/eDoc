@@ -7,7 +7,17 @@ update t_Sanction_Master_Details set  status_desc=null
 --update t_Sanction_Master_Details set status=1
 
 select * from  t_Sanction_Master order by 1 asc 
+
 select * from t_Sanction_Master_Details order  by 1 asc 
+
+select * from t_Drawdown_V2 order by 1 asc 
+
+select * from t_Drawdown_Officers order by 1 asc 
+
+
+select * from t_Drawdown_Document_Master
+
+select *from  t_Uploads_Drawdown --where  drawdown_id<>476
 
 delete t_Drawdown_V2
 delete   t_Drawdown_SanctionIDs
