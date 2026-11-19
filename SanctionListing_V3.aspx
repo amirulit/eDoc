@@ -416,7 +416,7 @@
                 targetTd.eq(3).text(sourceTd.eq(5).text().trim()); // Date
                 targetTd.eq(4).text(sourceTd.eq(6).text().trim()); // Segment
                 targetTd.eq(5).text(sourceTd.eq(7).text().trim()); // Authority
-                targetTd.eq(6).text(sourceTd.eq(3).text().trim()); // Authority
+                targetTd.eq(6).text(sourceTd.eq(4).text().trim()); // Authority
 
                 //jQuery('#sanctionModal').modal('show');
 
@@ -1341,8 +1341,10 @@
 
                 <b>Securities : </b>
 
-
+                    <!--
                   <select id="select4"   runat="server"  multiple    class="form-control"></select>
+                        -->
+
 
                   <asp:CheckBoxList
     ID="chkList"
@@ -1362,7 +1364,7 @@
 
                 
 
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                <button type="button" class="btn btn-primary" id="btnSave">Create Drawdown</button>
  
 
                 <button type="button" class="btn btn-primary" id="btnGenerate" style="display:none;" >Checkist Generate</button>

@@ -20,7 +20,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
         Role = Convert.ToInt32(Session["Role"].ToString());
 
 
-        Name = Session["Name"].ToString();
+        Name = Session["Name"].ToString() + "/" + Session["RoleName"].ToString();
 
     }
 }

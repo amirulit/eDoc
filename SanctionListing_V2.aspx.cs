@@ -128,6 +128,9 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
     {
 
 
+
+         String Inputter = HttpContext.Current.Session["DomainID"].ToString();
+
         Int32 id;
         try
         {
@@ -148,7 +151,10 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@Currency", currency);
                     cmd.Parameters.AddWithValue("@Amount", Convert.ToDecimal(amount));
                     cmd.Parameters.AddWithValue("@Validity", validity);
-                    cmd.Parameters.AddWithValue("@entry_by", "Test");
+                    cmd.Parameters.AddWithValue("@entry_by", Inputter);
+
+
+
 
                     con.Open();
 

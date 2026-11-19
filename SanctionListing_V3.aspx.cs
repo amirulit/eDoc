@@ -346,6 +346,8 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
         // Perform server-side validation and database processing here.
 
+        String Inputter = HttpContext.Current.Session["DomainID"].ToString();
+
         Int32 Role = Convert.ToInt32(HttpContext.Current.Session["Role"].ToString());
 
 
@@ -462,17 +464,13 @@ public partial class SanctionListing_V3 : System.Web.UI.Page
 
                         new SqlParameter("@branch_code", HttpContext.Current.Session["BranchCode"].ToString()),
 
-                        new SqlParameter("@input_by_role",Role)
+                        new SqlParameter("@input_by_role",Role),
 
-
-
-
-
-
-
-
-                    };
-
+                        new SqlParameter("@by",Inputter)
+        
+        
+        
+        };
 
 
             command.Parameters.AddRange(parameters);
