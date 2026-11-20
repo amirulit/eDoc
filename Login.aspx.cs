@@ -210,6 +210,10 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCD_CBD_Click(object sender, EventArgs e)
     {
+
+        Session["DomainID"] = "Prabal@mblbd.com";
+
+
         Session["DomainID"] = "Prabal@mblbd.com";
 
         Session["Name"] = "Lutful Hoque Prabal";
@@ -506,6 +510,9 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCD_UH_SME_Click(object sender, EventArgs e)
     {
+        
+        
+        
         Session["DomainID"] = "nazrul@mblbd.com";
 
         Session["RoleName"] = "Unit Head-CMSME";
