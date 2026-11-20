@@ -546,9 +546,7 @@
 <!-- Show only when Conditional = Yes -->
 <div id="divConditionsEntry" style="display:none;">
 
-
-
-
+    
     <div class="form-group" id="div1">
         <label>Conditions</label>
         <input id="Text1" type="text" class="form-control" />
@@ -562,7 +560,7 @@
     <div class="form-group">
         <button type="button" id="btnSaveConditions"
                 class="btn btn-success">
-            <i class="fa fa-save"></i> Save
+            <i class="fa fa-save"></i>Save
         </button><hr />
 
     <h4>Saved Conditions</h4>

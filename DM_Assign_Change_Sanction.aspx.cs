@@ -62,7 +62,7 @@ public partial class DM_Assign_Change_Sanction : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            return "Error updating status";
+            return "Error updating status:" + ex.Message;
         }
     }
 
@@ -100,7 +100,7 @@ public partial class DM_Assign_Change_Sanction : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            return "Error updating DM";
+            return "Error updating DM:" + ex.Message;
         }
     }
 
