@@ -584,8 +584,15 @@
           </a>
         </li>
            <li>
-          <a href="DM_Assign.aspx">
-            <i class="fa fa-arrow-circle-o-right"></i><span>Assign DM</span>
+          <a href="DM_Assign_Change_Sanction.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>DM Assign/Change (Sanction)</span>
+          </a>
+        </li>
+
+
+            <li>
+          <a href="DM_Change_CMSME.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>DM Change(CMSME)</span>
           </a>
         </li>
 
