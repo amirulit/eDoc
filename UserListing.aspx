@@ -9,9 +9,18 @@
             transition: background-color 0.3s ease;
         }
     </style>
+    
+ 
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+            $("#ddlDivision, #ddlRole, #ddlBranch").select2({
+                width: '100%',
+                dropdownParent: $('#employeeModal'),
+                placeholder: "Select an option",
+                allowClear: true
+            });
 
 
             var currentRow;
@@ -20,6 +29,17 @@
             $(document).on("click", ".edit-employee", function () {
 
                 currentRow = $(this).closest("tr");
+
+
+                $("#modalEmpId").text(currentRow.find(".emp-id").text().trim());
+
+                $("#modalEmpCode").text(currentRow.find(".emp-code").text().trim());
+
+                $("#modalEmpName").text(currentRow.find(".emp-name").text().trim());
+
+                $("#modalDesignation").text(
+                    currentRow.find(".emp-designation").text().trim()
+                );
 
                 var id = currentRow.attr("data-id");
 
@@ -47,7 +67,9 @@
                         }
 
                         // Store all roles
-                        var allRoles = data.Roles;
+                         allRoles = data.Roles;
+
+                        //console.log(allRoles);
 
                         // Populate Division dropdown
                         var divisions = [];
@@ -85,6 +107,10 @@
 
                             loadRoles(currentRole.Division, data.RoleId);
 
+                            console.log(currentRole.Division);
+
+                            console.log(data.RoleId);
+
                         }
 
                         //$("#ddlRole").html(roleOptions);
@@ -104,6 +130,16 @@
                         $("#ddlRole").val(data.RoleId);
                         $("#ddlBranch").val(data.BranchId);
 
+                        /*
+                        $("#ddlDivision, #ddlRole, #ddlBranch").select2({
+                            width: '100%',
+                            dropdownParent: $('#employeeModal'),
+                            placeholder: "Select an option",
+                            allowClear: true
+                        });
+                        */
+
+                        initializeSelect2();
                     },
 
                     error: function () {
@@ -113,20 +149,43 @@
 
             });
 
+            function initializeSelect2() {
+
+                $("#ddlDivision, #ddlRole, #ddlBranch").each(function () {
+
+                    if ($(this).hasClass("select2-hidden-accessible")) {
+                        $(this).select2("destroy");
+                    }
+
+                    $(this).select2({
+                        width: "100%",
+                        dropdownParent: $("#employeeModal"),
+                        placeholder: "Select an option",
+                        allowClear: true
+                    });
+
+                });
+
+            }
+
 
             function loadRoles(division, selectedRoleId) {
+
+                console.log("Selected division:", division);
+                console.log("All roles:", allRoles);
+
 
                 var roleOptions = '<option value="">Select Role</option>';
 
                 $.each(allRoles, function (i, item) {
 
-                    if (item.Division === division) {
+                    if (item.Division.trim().toLowerCase() ===
+                        division.trim().toLowerCase()) {
 
                         roleOptions += '<option value="' +
                             item.Id + '">' +
                             $('<div>').text(item.Name).html() +
                             '</option>';
-
                     }
 
                 });
@@ -137,6 +196,8 @@
                     $("#ddlRole").val(selectedRoleId);
                 }
 
+                console.log("Selected Division:", division);
+                console.log("Available roles:", $("#ddlRole option").length - 1);
             }
 
             // Save changes
@@ -186,6 +247,9 @@
                             // Highlight updated row
                             currentRow.addClass("updated-row");
 
+                            alert('Updated successfully');
+
+
                             $("#employeeModal").modal("hide");
 
                         }
@@ -205,12 +269,11 @@
 
                 var division = $(this).val();
 
-                //alert(division);
-
                 loadRoles(division, null);
 
-            });
+                $("#ddlRole").val(null).trigger("change");
 
+            });
 
             $("body").on("click", ".upload", function () {
 
@@ -271,8 +334,43 @@
 
                 <input type="hidden" id="employeeId" />
 
+
+
+
+
+
+                <div class="well well-sm">
+
+    <div class="row">
+        <div class="col-sm-6">
+            <strong>ID:</strong>
+            <span id="modalEmpId"></span>
+        </div>
+
+        <div class="col-sm-6">
+            <strong>Employee ID:</strong>
+            <span id="modalEmpCode"></span>
+        </div>
+    </div>
+
+    <hr style="margin:8px 0;" />
+
+    <div class="row">
+        <div class="col-sm-6">
+            <strong>Name:</strong>
+            <span id="modalEmpName"></span>
+        </div>
+
+        <div class="col-sm-6">
+            <strong>Designation:</strong>
+            <span id="modalDesignation"></span>
+        </div>
+    </div>
+
+</div>
+
                 <div class="form-group">
-    <label>Division</label>
+    <label>Working Group</label>
     <select id="ddlDivision" class="form-control">
         <option value="">Select Division</option>
     </select>
@@ -294,21 +392,21 @@
 
             </div>
 
-            <div class="modal-footer">
+           <div class="modal-footer text-center">
 
-                <button type="button"
-                        class="btn btn-default"
-                        data-dismiss="modal">
-                    Cancel
-                </button>
+    <button type="button"
+            class="btn btn-primary"
+            id="btnSaveEmployee">
+        <i class="fa fa-save"></i> Save Changes
+    </button>
 
-                <button type="button"
-                        class="btn btn-primary"
-                        id="btnSaveEmployee">
-                    Save Changes
-                </button>
+    <button type="button"
+            class="btn btn-default"
+            data-dismiss="modal">
+        Cancel
+    </button>
 
-            </div>
+</div>
 
         </div>
     </div>
@@ -356,19 +454,30 @@
                {
                             
 %><tr data-id="<%=TableData.Rows[data]["id"]%>">
-    <td class="emp-id"><%=TableData.Rows[data]["id"]%></td>
-    <td><%=TableData.Rows[data]["empid"]%></td>
-    <td><%=TableData.Rows[data]["name"]%></td>
-    <td><%=TableData.Rows[data]["designation"]%></td>
+
+    <td class="emp-id">
+        <%=TableData.Rows[data]["id"]%>
+    </td>
+
+    <td class="emp-code">
+        <%=TableData.Rows[data]["empid"]%>
+    </td>
+
+    <td class="emp-name">
+        <%=TableData.Rows[data]["name"]%>
+    </td>
+
+    <td class="emp-designation">
+        <%=TableData.Rows[data]["designation"]%>
+    </td>
+
     <td><%=TableData.Rows[data]["domain"]%></td>
 
-    <td class="role-cell"
-        data-role-id="<%=TableData.Rows[data]["role"]%>">
+    <td class="role-cell">
         <%=TableData.Rows[data]["role"]%>
     </td>
 
-    <td class="branch-code-cell"
-        data-branch-id="<%=TableData.Rows[data]["branchcode"]%>">
+    <td class="branch-code-cell">
         <%=TableData.Rows[data]["branchcode"]%>
     </td>
 
@@ -386,6 +495,7 @@
             Update
         </button>
     </td>
+
 </tr>
      <%
             }
