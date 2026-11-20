@@ -233,16 +233,11 @@
                         if (response.d.Success) {
 
                             // Update respective row only
-                            currentRow.find(".role-cell")
-                                .text($("#ddlRole option:selected").text())
-                                .attr("data-role-id", roleId);
+                            currentRow.find(".role-cell").text($("#ddlRole option:selected").text()).attr("data-role-id", roleId);
 
-                            currentRow.find(".branch-code-cell")
-                                .text($("#ddlBranch option:selected").val())
-                                .attr("data-branch-id", branchId);
+                            currentRow.find(".branch-code-cell").text($("#ddlBranch option:selected").val()).attr("data-branch-id", branchId);
 
-                            currentRow.find(".branch-name-cell")
-                                .text($("#ddlBranch option:selected").text());
+                            currentRow.find(".branch-name-cell").text($("#ddlBranch option:selected").text());
 
                             // Highlight updated row
                             currentRow.addClass("updated-row");
