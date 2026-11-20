@@ -210,12 +210,14 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCD_CBD_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "RM-CBD";
+        Session["DomainID"] = "Prabal@mblbd.com";
 
-        Session["Name"] = "Prabal";
+        Session["Name"] = "Lutful Hoque Prabal";
         Session["RoleName"] = "RM-CBD";
 
         Session["Role"] = 21;
+
+        Session["BranchCode"] = "Credit";
 
        
 
@@ -225,14 +227,14 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCD_SME_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "RM-CMSME";
+        Session["DomainID"] = "nazrul@mblbd.com";
 
         Session["RoleName"] = "RM-CMSME";
-        Session["Name"] = "Nazrul";
+        Session["Name"] = "Nazrul Islam";
 
         Session["Role"] = 25;
 
-
+        Session["BranchCode"] = "Credit";
 
 
 
@@ -240,13 +242,15 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCD_Retail_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "RM-Retail";
+        Session["DomainID"] = "rejoan@mblbd.com";
 
-        Session["Name"] = "RM-Retail";
+        Session["Name"] = "Rejoanul Hoque";
 
         Session["Role"] = 29;
 
+        Session["RoleName"] = "RM-Retail";
 
+        Session["BranchCode"] = "Credit";
 
 
 
@@ -254,14 +258,14 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCD_Agri_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "RM-Agri";
+        Session["DomainID"] = "sadek@mblbd.com";
 
-        Session["Name"] = "RM-Agri";
+        Session["Name"] = "A T M SADIQUSSALAM CHOWDHURY";
 
         Session["Role"] = 33;
+        Session["RoleName"] = "RM-Credit";
 
-
-
+        Session["BranchCode"] = "Credit";
 
 
         Response.Redirect("Dashboard.aspx");
@@ -343,9 +347,10 @@ public partial class Login : System.Web.UI.Page
 
         Session["func_role"] = "Unit Head-Corporate";
 
-        Session["DomainID"] = "	iftikhar.ahmed@mblbd.com";
+        Session["DomainID"] = "mohanta@mblbd.com";
 
-        Session["Name"] = "IFTIKHAR AHMED CHOWDHURY";
+        Session["Name"] = "Kali Pad Mohonta";
+
         Session["RoleName"] = "UH-CBD";
 
         Session["Role"] = 59;

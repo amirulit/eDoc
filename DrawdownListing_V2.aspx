@@ -874,7 +874,7 @@
                             	<th>Customer ID</th>
                             	<th>Customer Name</th>
                                 <th>Loan Natures</th>
-                                <th>Securities</th>
+                                <th>Branch Code</th>
                                    <th>Loan Amount</th>
                                    <%--   <th>Expiry Date</th>--%>
                                        <th>Status</th>
@@ -914,7 +914,7 @@
                         <td><%=TableData.Rows[data]["cus_names"]%></td>
                           
                         <td><%=TableData.Rows[data]["loan_natures"]%></td>
-                        <td><%=TableData.Rows[data]["securities"]%></td>
+                        <td><%=TableData.Rows[data]["branch_code"]%></td>
                         <td><%=TableData.Rows[data]["loan_amount"]%></td>
                      <%--   <td><%=TableData.Rows[data]["exp_date_2"]%></td>--%>
 
@@ -957,17 +957,22 @@
                         <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["drawdown_id"]%>">Document Upload</a>                                    
                         -->
 
-
+                           <%=Role %><%=status %>
                             
-                        <%  if ((Role == 57 || Role == 61 || Role == 65  || Role==5 || Role==7))
+                        <%  if (((Role == 57 || Role == 61 || Role == 65)  && (status == 10 || status == 13  || status==30)) ||
+
+                                ((Role == 5 || Role == 7) && (status == 9 || status == 15 || status == 17 || status == 20 || status == 28 || status == 34)))
                             {
-                                
-                                
-                                %>
+                            
+                            
+                        
+                                           
+                                           %>
+                             
 
                         <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Update</a>                                    
   
-
+                         
 
                             <%
                             }

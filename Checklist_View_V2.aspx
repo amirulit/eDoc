@@ -1599,8 +1599,16 @@
    <!---->
 
     <div style="text-align: center;  padding-top:10px;">
-      <input type="button" value="Close" onclick="window.close();" class="btn   btn-danger" />
-        <% 
+     Role: <%=Role %>   Status: <%=Status %><input type="button" value="Close" onclick="window.close();" class="btn   btn-danger" />
+
+    
+
+        <% if (Forward_Button_Enabled) {%>
+          <input type="button" value="Forward" id="btnForward" class="btn btn-success" />
+        <%} %>
+
+
+<%--        <% 
             if (Role == 5
 ||  Role ==7
 || Role == 9
@@ -1621,9 +1629,9 @@
       
         <%
         }
-        %>
+        %>--%>
 
-          <input type="button" value="Decline" id="btnDecline" class="btn btn-primary" />
+          <input type="button" value="Decline" id="btnDecline" class="btn btn-primary" /> 
 
         <% if (Role==59 || Role==63 || Role== 67) { %>
          <input type="button" value="Approve" id="btnApprove" class="btn btn-success" />

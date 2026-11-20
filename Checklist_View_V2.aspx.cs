@@ -69,7 +69,7 @@ Upload Not Required
     public DataTable TableData_Securities;
 
 
-
+    public DataTable TableData_Drawdown_Info;
 
     protected string DocumentTableHtml { get; set; }
 
@@ -81,7 +81,13 @@ Upload Not Required
 
     public String Admin;
 
-    public Int32 Role;
+    public Int32 Role { get; set; }
+
+
+    public Int32 Status { get; set; }
+
+
+    public bool Forward_Button_Enabled { get; set; }
 
     public String DomainID { get; set; }
 
@@ -1099,6 +1105,16 @@ OTHER DOCUMENTS
             GridView4.DataBind();
 
 
+
+            TableData_Drawdown_Info = Ds.Tables[22];
+
+
+            Status = Convert.ToInt32(TableData_Drawdown_Info.Rows[0]["status"].ToString());
+
+            Forward_Button_Enabled = Forward_Button_Enable(Role, Status);
+
+
+
             //GridView1.DataSource = Ds.Tables[0];
             //GridView1.DataBind();
 
@@ -1115,6 +1131,25 @@ OTHER DOCUMENTS
         }
     }
 
+    protected bool Forward_Button_Enable(Int32 Role, Int32 Status)
+    {
+        //if (Role == 7 && Status == 15)
+        //return true; 
+        if (Role == 5 || Role == 7)
+            return true;
+        if (Role == 9 && Status == 19)
+            return true;
+        if (Role == 11 && Status == 19)
+            return true;
+
+        if ((Role == 57 || Role == 61 || Role == 65) && (Status == 22 || Status == 33))
+            return true;
+
+
+
+
+        return false;
+    }
     public class Obj
     {
 

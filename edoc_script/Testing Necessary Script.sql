@@ -4,6 +4,8 @@ update t_Sanction_Master set status=1, status_desc=null
 
 update t_Sanction_Master_Details set  status_desc=null
 
+update  t_Drawdown_V2 set  status=22  where drawdown_id=477
+
 --update t_Sanction_Master_Details set status=1
 
 select * from  t_Sanction_Master order by 1 asc 
