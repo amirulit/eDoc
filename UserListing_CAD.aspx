@@ -15,135 +15,204 @@
             .role-edit button {
                 margin-right: 3px;
             }
+
+
+            .current-status {
+    font-weight: bold;
+}
+
+.current-status.active {
+    color: green;
+}
+
+.current-status.inactive {
+    color: red;
+}
+
+
     </style>
     <script type="text/javascript">
 
         $(document).ready(function () {
 
-       $("body").on("click", ".upload", function () {
+            $("body").on("click", ".upload", function () {
 
-           var cus_type = $(this).attr("cus-type");
-           var auto_id = $(this).attr("auto-id");
-           var e_doc_id = $(this).attr("edoc-id");
+                var cus_type = $(this).attr("cus-type");
+                var auto_id = $(this).attr("auto-id");
+                var e_doc_id = $(this).attr("edoc-id");
 
-           var cus_id = $(this).attr("cus-id");
+                var cus_id = $(this).attr("cus-id");
 
-           //alert(cus_type + '-' + e_doc_id);
+                //alert(cus_type + '-' + e_doc_id);
 
-           //url = "DocumentUpload_V8.aspx?var=" + cus_type + "&var3=" + cus_id;
+                //url = "DocumentUpload_V8.aspx?var=" + cus_type + "&var3=" + cus_id;
 
-           url = "DocumentUpload_V10_New_Mapping_CusTypeWise.aspx?var=" + cus_type + "&var2=&var3=" + cus_id;
+                url = "DocumentUpload_V10_New_Mapping_CusTypeWise.aspx?var=" + cus_type + "&var2=&var3=" + cus_id;
 
-           var width = screen.availWidth - 100;
-           var height = screen.availHeight - 100;
-           var left = parseInt((screen.availWidth / 2) - (width / 2));
-           var top = parseInt((screen.availHeight / 2) - (height / 2));
-           var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
+                var width = screen.availWidth - 100;
+                var height = screen.availHeight - 100;
+                var left = parseInt((screen.availWidth / 2) - (width / 2));
+                var top = parseInt((screen.availHeight / 2) - (height / 2));
+                var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
 
-           //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
-           //var NWin = window.open("Menu.aspx", windowFeatures);
-           //alert(windowFeatures);
-           //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+                //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
+                //var NWin = window.open("Menu.aspx", windowFeatures);
+                //alert(windowFeatures);
+                //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
-           //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+                //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
-           newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+                newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
-           newwindow.focus();
+                newwindow.focus();
 
-       });
+            });
 
- 
+            $(document).on("click", ".status", function (e) {
 
-       $(document).on("click", ".change-role", function () {
+                e.preventDefault();
 
-           var td = $(this).closest("td");
+                var btn = $(this);
+                var id = btn.attr("user-id");
 
-           var currentRole = td.find(".current-role").text().trim();
+                var currentStatus = btn.closest("td")
+                                       .find(".current-status")
+                                       .text().trim().toLowerCase();
 
-           // Copy options from existing dropdown
-           var options = $("#ContentPlaceHolder1_Select1").html();
+                var newStatus = currentStatus === "active" ? "inactive" : "active";
 
-           var select = td.find(".role-select");
+                if (!confirm("Change status to " + newStatus + "?")) {
+                    return;
+                }
 
-           select.html(options);
+                $.ajax({
+                    type: "POST",
+                    url: "UserListing_CAD.aspx/ChangeStatus",
+                    data: JSON.stringify({
+                        id: id,
+                        status: newStatus
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
 
-           // Select current role
-           select.find("option").filter(function () {
-               return $(this).text().trim() === currentRole;
-           }).prop("selected", true);
+                    success: function (response) {
 
-           td.find(".role-display").hide();
-           td.find(".role-edit").show();
+                        if (response.d === "success") {
 
-       });
-
-
-       // Cancel button
-       $(document).on("click", ".cancel-role", function () {
-
-           var td = $(this).closest("td");
-
-           td.find(".role-edit").hide();
-           td.find(".role-display").show();
-
-       });
+                            btn.closest("td")
+                               .find(".current-status")
+                               .text(newStatus);
 
 
-       // Update button
-       $(document).on("click", ".update-role", function () {
+                            var statusElement = btn.closest("td").find(".current-status");
 
-           var btn = $(this);
-           var td = btn.closest("td");
-           var tr = btn.closest("tr");
+                            statusElement
+                                .text(newStatus)
+                                .removeClass("active inactive")
+                                .addClass(newStatus);
 
-           var id = tr.find("td:first").text().trim();
+                        }
+                        else {
+                            alert(response.d);
+                        }
+                    },
 
-           var roleSelect = td.find(".role-select");
+                    error: function () {
+                        alert("Error updating status");
+                    }
+                });
 
-           var roleId = roleSelect.val();
-           var roleName = roleSelect.find("option:selected").text();
+            });
 
-           if (!roleId) {
-               alert("Please select a role");
-               return;
-           }
+            $(document).on("click", ".change-role", function () {
 
-           $.ajax({
-               type: "POST",
-               url: "UserListing_CAD.aspx/UpdateFuncRole",
-               data: JSON.stringify({
-                   id: id,
-                   roleId: roleId
-               }),
-               contentType: "application/json; charset=utf-8",
-               dataType: "json",
+                var td = $(this).closest("td");
 
-               success: function (response) {
+                var currentRole = td.find(".current-role").text().trim();
 
-                   if (response.d === "success") {
+                // Copy options from existing dropdown
+                var options = $("#ContentPlaceHolder1_Select1").html();
 
-                       td.find(".current-role").text(roleName);
+                var select = td.find(".role-select");
 
-                       td.find(".role-edit").hide();
-                       td.find(".role-display").show();
+                select.html(options);
 
-                       alert("Role updated successfully");
+                // Select current role
+                select.find("option").filter(function () {
+                    return $(this).text().trim() === currentRole;
+                }).prop("selected", true);
 
-                   }
-                   else {
-                       alert(response.d);
-                   }
-               },
+                td.find(".role-display").hide();
+                td.find(".role-edit").show();
 
-               error: function () {
-                   alert("Error updating role");
-               }
-           });
+            });
 
-       });
 
-   });
+            // Cancel button
+            $(document).on("click", ".cancel-role", function () {
+
+                var td = $(this).closest("td");
+
+                td.find(".role-edit").hide();
+                td.find(".role-display").show();
+
+            });
+
+
+            // Update button
+            $(document).on("click", ".update-role", function () {
+
+                var btn = $(this);
+                var td = btn.closest("td");
+                var tr = btn.closest("tr");
+
+                var id = tr.find("td:first").text().trim();
+
+                var roleSelect = td.find(".role-select");
+
+                var roleId = roleSelect.val();
+                var roleName = roleSelect.find("option:selected").text();
+
+                if (!roleId) {
+                    alert("Please select a role");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "UserListing_CAD.aspx/UpdateFuncRole",
+                    data: JSON.stringify({
+                        id: id,
+                        roleId: roleId
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d === "success") {
+
+                            td.find(".current-role").text(roleName);
+
+                            td.find(".role-edit").hide();
+                            td.find(".role-display").show();
+
+                            alert("Role updated successfully");
+
+                        }
+                        else {
+                            alert(response.d);
+                        }
+                    },
+
+                    error: function () {
+                        alert("Error updating role");
+                    }
+                });
+
+            });
+
+        });
 
                  </script>
 </asp:Content>
@@ -232,13 +301,19 @@
                        
     
     	
-                        <td>        
-                             <%=TableData.Rows[data]["status2"]%>
-                                    <a href="#"  class="btn btn-info btn-xs status" user-id="<%=TableData.Rows[data]["id"]%>"   >Change</a>                                    
+                        <td>
+    <span class="current-status">
+    <%=TableData.Rows[data]["status2"]%>
+</span>
 
-                                 
-  
-                        </td>                                
+    <a href="javascript:void(0);"
+       class="btn btn-info btn-xs status"
+       user-id="<%=TableData.Rows[data]["id"]%>">
+        Change
+    </a>
+</td>
+    
+                                
 </tr>
      <%
             }

@@ -29,6 +29,42 @@ public partial class UserListing_CAD : System.Web.UI.Page
         Select1.DataBind();
     }
 
+
+
+
+    [System.Web.Services.WebMethod]
+    public static string ChangeStatus(string id, string status)
+    {
+        try
+        {
+            if (status != "active" && status != "inactive")
+                return "Invalid status";
+
+            using (SqlConnection con = new SqlConnection(
+                ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString))
+            {
+                string query = @"UPDATE t_CAD_Officials_V2
+                             SET status = @status
+                             WHERE id = @id";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@status", (status == "inactive") ? 0 : 1);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    con.Open();
+
+                    int result = cmd.ExecuteNonQuery();
+
+                    return result > 0 ? "success" : "Employee not found";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            return "Error updating status";
+        }
+    }
     [System.Web.Services.WebMethod]
     public static string UpdateFuncRole(string id, string roleId)
     {
