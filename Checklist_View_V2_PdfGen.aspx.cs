@@ -65,6 +65,12 @@ Upload Not Required
     public DataTable TableData_Customer;
 
 
+    public DataTable TableData_Drawdown_Info;
+
+
+    public String  Checklist_File_Type {get;set;}
+
+
     protected string DocumentTableHtml { get; set; }
 
 
@@ -507,19 +513,24 @@ font-family:Cambria
 
 
 
-
-        String[] files =
+       String[] files =
 {
     "20060630001_Scan_0002.jpg.jpg",
-    "20070610002_Scan_0001.jpg.jpg",
-    "20100816035_Signature Khurshed.jpg.jpg",
-    "20130331001_Sig_Misbah.jpg.jpg",
-    "20150406003_Sig_Pallab.jpg.jpg",
-    "20151227005_Sig_300-80.jpg.jpg"
+    "20070610002_Scan_0001.jpg.jpg"
 };
 
-
-
+        if (Checklist_File_Type == "Centralized")
+        {
+            files = new String[]
+    {
+        "20060630001_Scan_0002.jpg.jpg",
+        "20070610002_Scan_0001.jpg.jpg",
+        "20100816035_Signature Khurshed.jpg.jpg",
+        "20130331001_Sig_Misbah.jpg.jpg",
+        "20150406003_Sig_Pallab.jpg.jpg"
+    };
+        }
+    
         /*OLD Code*/
         /*
          
@@ -1022,9 +1033,12 @@ OTHER DOCUMENTS
             TableData_AnyOtherDocument = Ds.Tables[16];
             TableData_Confirmation = Ds.Tables[17];
 
-            TableData_Customer = Ds.Tables[18];
-            
+            //TableData_Customer = Ds.Tables[18];
 
+            TableData_Drawdown_Info = Ds.Tables[18];
+
+
+            Checklist_File_Type = TableData_Drawdown_Info.Rows[0]["cad_operation_mode"].ToString();
 
             //GridView1.DataSource = Ds.Tables[18];
             //GridView1.DataBind();

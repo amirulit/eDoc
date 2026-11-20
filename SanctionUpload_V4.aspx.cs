@@ -647,7 +647,7 @@ set @Role=" + Role + @"
 
 select @NextRole=CAD_RM_Role from  t_FileForwarding_Mapping where SanctionUpload_Role=" + Role + @"
 
-select @CAD_DM_Employee_ID=emp_id from t_CAD_Officials_BrachMapping where branch_code='" + request.Branch + @"'
+select @CAD_DM_Employee_ID=domain_id from t_CAD_Officials_BrachMapping where branch_code='" + request.Branch + @"'
 
 
 if (@Role in (11,21,23,25,27,29,31,33,35))
@@ -730,8 +730,9 @@ INSERT INTO [dbo].[t_Sanction_Master]
 
 
 
-        Sql = Sql + @"  update t_Sanction_Master set  cad_dm_employee_id=@CAD_DM_Employee_ID where edoc_id=" + request.EdocId + @" and   sanction_segment='SME'";
+        Sql = Sql + @"  update t_Sanction_Master set  cad_dm_domain_id=@CAD_DM_Employee_ID where edoc_id=" + request.EdocId + @" and   sanction_segment='CMSME'";
 
+        Sql = Sql + @"  update t_Sanction_Master set  cad_dm_domain_id=@CAD_DM_Employee_ID where edoc_id=" + request.EdocId + @" and   sanction_segment='Agriculture'";
 
         Sql = Sql + @"  --SELECT CAST(SCOPE_IDENTITY() AS INT);
 
@@ -1119,7 +1120,7 @@ INSERT INTO [dbo].[t_Sanction_Master_Details]
         SqlCommand cmd = con.CreateCommand();
         cmd.CommandType = CommandType.Text;
 
-        cmd.CommandText = " select '' code,'<--Select-->' name  union  all select branch_code code,branch_name name from t_BranchInfo";
+        cmd.CommandText = " select '' code,'<--Select-->' name  union  all select branch_code code,branch_name name from t_BranchInfo  where branch_code not in ('CAD','Credit','ICCD','SAMD','LAW','OBU')";
 
         //cmd.CommandText = "  select branch_code code,branch_name name from t_BranchInfo";
 

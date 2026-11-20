@@ -375,7 +375,7 @@ public partial class Login : System.Web.UI.Page
     protected void btnCAD_DM_SME_Click(object sender, EventArgs e)
     {
         Session["BranchCode"] = "CAD";
-        Session["DomainID"] = "assad.talukder@mblbd.com	";
+        Session["DomainID"] = "assad.talukder@mblbd.com";
 
         Session["Name"] = "MUHAMMAD ASADUZZAMAN TALUKDER";
 

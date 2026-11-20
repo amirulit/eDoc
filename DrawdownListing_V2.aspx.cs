@@ -83,7 +83,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         int drawdown_id,
         string conditions,
         string deadline,
-        string remarks)
+        string office_note)
     {
         try
         {
@@ -107,8 +107,8 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
                         ? (object)DBNull.Value
                         : Convert.ToDateTime(deadline);
 
-                    cmd.Parameters.Add("@remarks", SqlDbType.VarChar, 50).Value =
-                        remarks ?? "";
+                    cmd.Parameters.Add("@office_note", SqlDbType.VarChar, 50).Value =
+                        office_note ?? "";
 
                     cmd.Parameters.Add("@create_date", SqlDbType.DateTime).Value =
                         DateTime.Now;

@@ -11,7 +11,7 @@ using System.Web.Services;
 
 public partial class SanctionListing_V2 : System.Web.UI.Page
 {
-    public DataTable TableData;
+    public DataTable TableData{get;set;}
 
     public Int32 Role {get;set;}
 
@@ -396,13 +396,21 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
         String Segment = String.Empty;
 
         String BranchCode = Session["BranchCode"].ToString();
-
+        /*For Branch*/
         if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
         {
 
             command.CommandText = "usp_SanctionLisitng_V2_Branch";
 
             command.Parameters.Add(new SqlParameter("@branchcode", BranchCode));
+        }
+        else if (Role == 61 || Role == 63)
+        {
+            //Segment = "CMSME|Agriculture";
+
+            command.CommandText = "usp_SanctionLisitng_V2_SME_n_Agriculture";
+
+            command.Parameters.Add(new SqlParameter("@domain_id", Session["DomainID"].ToString()));
         }
         else
         {
@@ -434,12 +442,7 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
 
             }
 
-            else if (Role == 61 || Role == 63)
-            {
-                Segment = "CMSME|Agriculture";
-
-
-            }
+           
             else
             {
                 Segment = "ALL";

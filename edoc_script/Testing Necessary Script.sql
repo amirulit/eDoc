@@ -8,6 +8,18 @@ update  t_Drawdown_V2 set  status=22  where drawdown_id=477
 
 --update t_Sanction_Master_Details set status=1
 
+
+  update t_Sanction_Master set  cad_dm_employee_id='assad.talukder@mblbd.com' where edoc_id=520 and   sanction_segment='CMSME'  --SELECT CAST(SCOPE_IDENTITY() AS INT);
+
+
+  
+  update t_Sanction_Master set  cad_dm_employee_id='assad.talukder@mblbd.com' where edoc_id=522 and   sanction_segment='Agriculture'  --SELECT CAST(SCOPE_IDENTITY() AS INT);
+
+
+  
+
+
+
 select * from  t_Sanction_Master order by 1 asc 
 
 select * from t_Sanction_Master_Details order  by 1 asc 

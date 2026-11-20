@@ -72,6 +72,8 @@
 
                 var drawdown_id = parseInt($("#lblIDSSC").text().trim());
                 var conditions = $("#Text1").val().trim();
+                var deadline = $("#Text2").val().trim();
+                var office_note = $("#Text3").val().trim();
 
                 if (isNaN(drawdown_id) || drawdown_id <= 0) {
                     alert("Invalid Drawdown ID");
@@ -88,7 +90,9 @@
                     url: "DrawdownListing_V2.aspx/SaveSSCConditions",
                     data: JSON.stringify({
                         drawdown_id: drawdown_id,
-                        conditions: conditions
+                        conditions: conditions,
+                        deadline: deadline,
+                        office_note: office_note
                     }),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -555,6 +559,11 @@
     <div class="form-group">
         <label>Deadline</label>
            <input id="Text2" type="text" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Office Note NO#</label>
+           <input id="Text3" type="text" class="form-control" />
     </div>
 
     <div class="form-group">
