@@ -150,24 +150,28 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnAdmin_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "Admin";
+        Session["DomainID"] = "ashiqur.rahman@mblbd.com";
 
 
-        Session["Name"] = "Admin";
+        Session["Name"] = "MD ASHIQUR RAHMAN";
 
 
         Session["Role"] = 99;
 
-        Session["UserType"] = "CADMaker";
+        Session["RoleName"] = "Admin";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        //Session["UserType"] = "CADMaker";
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
 
         Response.Redirect("Dashboard.aspx");
+
+
     }
     protected void btnDM_Click(object sender, EventArgs e)
     {
@@ -410,15 +414,27 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCAD_DM_Retail_Click(object sender, EventArgs e)
     {
+        Session["BranchCode"] = "CAD";
+        Session["DomainID"] = "sabbir.hasan@mblbd.com";
 
+        Session["Name"] = "MD. SABBIR HASAN";
+
+        Session["Role"] = 65;
+        Session["RoleName"] = "DM-Retail";
+
+
+        //Session["BranchCode"] = "SME-CAD";
+
+
+        Response.Redirect("Dashboard.aspx");
     }
     protected void btnCAD_UH_Retail_Click(object sender, EventArgs e)
     {
         Session["DomainID"] = "UH-CBD";
 
-        Session["Name"] = "UH-CBD";
+        Session["Name"] = "UH-Retail";
 
-        Session["Role"] = 59;
+        Session["Role"] = 67;
 
         Session["BranchCode"] = "CAD";
 

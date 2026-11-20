@@ -576,17 +576,24 @@
           <a href="UserListing.aspx">
             <i class="fa fa-arrow-circle-o-right"></i><span>User Listing</span>
           </a>
-        </li> <li>
+        </li>
+          
+           <li>
+          <a href="UserListing_CAD.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>User Listing(CAD)</span>
+          </a>
+        </li>
+           <li>
           <a href="DM_Assign.aspx">
             <i class="fa fa-arrow-circle-o-right"></i><span>Assign DM</span>
           </a>
         </li>
 
-           <li>
+          <%-- <li>
           <a href="DM_Assign.aspx">
             <i class="fa fa-arrow-circle-o-right"></i><span>Team Transfer</span>
           </a>
-        </li>
+        </li>--%>
        
 
        <%
