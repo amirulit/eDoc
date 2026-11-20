@@ -176,17 +176,29 @@
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-info" OnClick="btnSubmit_Click"
                     Visible="false" />
                 Credit Division:
-                <asp:Button ID="btnCD_CBD" runat="server" Text="RM-CD (CBD)" 
-                    CssClass="btn btn-default" onclick="btnCD_CBD_Click"  />
+                <asp:Button ID="btnCD_RM_CBD" runat="server" Text="CD RM (CBD)" 
+                    CssClass="btn btn-primary" onclick="btnCD_CBD_Click"  />
 
-                    <asp:Button ID="btnCD_SME" runat="server" Text="RM-CD (SME)" 
-                    CssClass="btn btn-default" onclick="btnCD_SME_Click"   />
+                <asp:Button ID="btnCD_UH_CBD"   CssClass="btn btn-primary"  runat="server" Text="CD UH (CBD)" OnClick="btnCD_UH_CBD_Click" />
 
-                    <asp:Button ID="btnCD_Retail" runat="server" Text="RM-CD (Retail)" 
-                    CssClass="btn btn-default" onclick="btnCD_Retail_Click"   />
+                    <asp:Button ID="btnCD_RM_SME" runat="server" Text="CD RM (SME)" 
+                    CssClass="btn btn-info" onclick="btnCD_SME_Click"   />
 
-                    <asp:Button ID="btnCD_Agri" runat="server" Text="RM-CD (Agri)" 
-                    CssClass="btn btn-default" onclick="btnCD_Agri_Click"   />
+                 <asp:Button ID="btnCD_UH_SME"   CssClass="btn btn-info"  runat="server" Text="CD UH (SME)" OnClick="btnCD_UH_SME_Click" />
+
+                    <asp:Button ID="btnCD_RM_Retail" runat="server" Text="CD RM (Retail)" 
+                    CssClass="btn btn-success" onclick="btnCD_Retail_Click"   />
+
+
+                 <asp:Button ID="btnCD_UH_Retail"   CssClass="btn btn-success" runat="server" Text="CD UH (Retail)" OnClick="btnCD_UH_Retail_Click" />
+
+                    <asp:Button ID="btnCD_RM_Agri" runat="server" Text="CD RM (Agri)" 
+                    CssClass="btn   btn-warning  " onclick="btnCD_Agri_Click"   />
+
+
+                  <asp:Button ID="btnCD_UH_Agri"   CssClass="btn   btn-warning  " runat="server" Text="CD UH (Agri)" OnClick="btnCD_UH_Agri_Click" />
+
+
                 <hr />
 
 
@@ -226,25 +238,25 @@
                 <asp:Button ID="btnCAD_DM_CBD" runat="server" Text="CAD DM CBD" 
                     onclick="btnCAD_DM_CBD_Click" CssClass="btn btn-primary"  />
                 <asp:Button ID="btnCAD_UH_CBD" runat="server" Text="CAD Unit Head CBD" 
-                    onclick="btnCAD_UH_CBD_Click"  CssClass="btn btn-success" />
+                    onclick="btnCAD_UH_CBD_Click"  CssClass="btn btn-primary" />
 
                 <hr />
 
                 <asp:Button ID="btnCAD_DM_SME" runat="server" Text="CAD DM SME" 
-                    onclick="btnCAD_DM_SME_Click"  CssClass="btn btn-primary" />
+                    onclick="btnCAD_DM_SME_Click"  CssClass="btn btn-success" />
                 <asp:Button ID="btnCAD_UH_SME" runat="server" Text="CAD Unit Head SME" 
                     onclick="btnCAD_UH_SME_Click"  CssClass="btn btn-success"/>
 
                 <hr />
                 <asp:Button ID="btnCAD_DM_Retail" runat="server" Text="CAD DM Retail" 
-                    onclick="btnCAD_DM_Retail_Click"  CssClass="btn btn-primary" />
+                    onclick="btnCAD_DM_Retail_Click"  CssClass="btn btn-warning" />
                 <asp:Button ID="btnCAD_UH_Retail" runat="server" Text="CAD Unit Head Retail" 
-                    onclick="btnCAD_UH_Retail_Click"  CssClass="btn btn-success"/>
+                    onclick="btnCAD_UH_Retail_Click"  CssClass="btn btn-warning"/>
                 <hr />
-                <asp:Button ID="btnCAD_DM_Agri" runat="server" Text="CAD DM Agri" 
+              <%--  <asp:Button ID="btnCAD_DM_Agri" runat="server" Text="CAD DM Agri" 
                     onclick="btnCAD_DM_Agri_Click"  CssClass="btn btn-primary" />
                 <asp:Button ID="btnCAD_UH_Agri" runat="server" Text="CAD Unit Head Agri" 
-                    onclick="btnCAD_UH_Agri_Click"  CssClass="btn btn-success"/>
+                    onclick="btnCAD_UH_Agri_Click"  CssClass="btn btn-success"/>--%>
                 <hr />
 
               

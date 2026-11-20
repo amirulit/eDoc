@@ -51,6 +51,9 @@ DECLARE @drawdown_id INT = 291;
     WHERE Drawdown_Id = @drawdown_id
 )
 
+select * from GroupData
+
+
 SELECT
     G.Drawdown_Id,
     G.PKNo,

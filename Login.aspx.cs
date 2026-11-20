@@ -263,7 +263,7 @@ public partial class Login : System.Web.UI.Page
         Session["Name"] = "A T M SADIQUSSALAM CHOWDHURY";
 
         Session["Role"] = 33;
-        Session["RoleName"] = "RM-Credit";
+        Session["RoleName"] = "RM-Agri";
 
         Session["BranchCode"] = "Credit";
 
@@ -483,6 +483,68 @@ public partial class Login : System.Web.UI.Page
 
 
         Session["BranchCode"] = "BD0010102";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_UH_CBD_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "Prabal@mblbd.com";
+
+        Session["Name"] = "Lutful Hoque Prabal";
+        Session["RoleName"] = "Unit Head-CBD";
+
+        Session["Role"] = 23;
+
+        Session["BranchCode"] = "Credit";
+
+
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_UH_SME_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "nazrul@mblbd.com";
+
+        Session["RoleName"] = "Unit Head-CMSME";
+        Session["Name"] = "Nazrul Islam";
+
+        Session["Role"] = 27;
+
+        Session["BranchCode"] = "Credit";
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_UH_Retail_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "rejoan@mblbd.com";
+
+        Session["Name"] = "Rejoanul Hoque";
+
+        Session["Role"] = 31;
+
+        Session["RoleName"] = "Unit Head-Retail";
+
+        Session["BranchCode"] = "Credit";
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_UH_Agri_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "sadek@mblbd.com";
+
+        Session["Name"] = "A T M SADIQUSSALAM CHOWDHURY";
+
+        Session["Role"] = 35;
+        Session["RoleName"] = "Unit Head-Agri";
+
+        Session["BranchCode"] = "Credit";
 
 
         Response.Redirect("Dashboard.aspx");

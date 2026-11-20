@@ -1436,8 +1436,16 @@
 
   <a href="#"  class="btn btn-success btn-xs view"  data-sancrefno="<%=TableData.Rows[data]["sanction_reference"]%>" data-edocrefno="<%=TableData.Rows[data]["edoc_refno"]%>" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View</a>                                    
 
+
+                            <%  if (Role==23  || Role==27  || Role==31 || Role==35){ %>
+
+
   <a href="#"  class="btn btn-danger btn-xs delete" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Delete</a>                                    
    
+                            <%} %>
+
+
+
   <a href="#"  class="btn btn-success btn-xs edit" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Edit</a>                                    
 
   <a href="#"  class="btn btn-info btn-xs upload" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Upload</a>                                    
