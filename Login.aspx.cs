@@ -86,7 +86,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["Role"] = 7;
 
-        Session["RoleName"] = "CI";
+        Session["RoleName"] = "Credit Incharge";
 
 
         Session["BranchCode"] = "BD0010101";
@@ -342,7 +342,7 @@ public partial class Login : System.Web.UI.Page
         Session["Name"] = "MD. MAHMUDUL HASAN";
 
         Session["Role"] = 57;
-        Session["RoleName"] = "DM-CBD";
+        Session["RoleName"] = "DM-Corporate";
 
       
         Response.Redirect("Dashboard.aspx");
@@ -357,9 +357,9 @@ public partial class Login : System.Web.UI.Page
 
         Session["DomainID"] = "mohanta@mblbd.com";
 
-        Session["Name"] = "Kali Pad Mohonta";
+        Session["Name"] = "KALI PADA MOHANTA";
 
-        Session["RoleName"] = "UH-CBD";
+        Session["RoleName"] = "Unit Head-Corporate";
 
         Session["Role"] = 59;
 
@@ -375,12 +375,12 @@ public partial class Login : System.Web.UI.Page
     protected void btnCAD_DM_SME_Click(object sender, EventArgs e)
     {
         Session["BranchCode"] = "CAD";
-        Session["DomainID"] = "sabbir.hasan@mblbd.com";
+        Session["DomainID"] = "assad.talukder@mblbd.com	";
 
-        Session["Name"] = "MD. SABBIR HASAN";
+        Session["Name"] = "MUHAMMAD ASADUZZAMAN TALUKDER";
 
         Session["Role"] = 61;
-        Session["RoleName"] = "DM-SME";
+        Session["RoleName"] = "DM-CMSME & Agri";
 
 
         //Session["BranchCode"] = "SME-CAD";
@@ -396,12 +396,12 @@ public partial class Login : System.Web.UI.Page
         
         Session["BranchCode"] = "CAD";
 
-        Session["DomainID"] = "amotaleb@mblbd.com";
+        Session["DomainID"] = "fayz@mblbd.com";
 
 
 
-        Session["Name"] = "MOHAMMAD ABDUL MOTALEB";
-        Session["RoleName"] = "UH-CMSME";
+        Session["Name"] = "MOHAMMAD FAYZUL ISLAM";
+        Session["RoleName"] = "Unit Head-CMSME & Agri";
 
 
         Session["Role"] = 63;
@@ -415,9 +415,9 @@ public partial class Login : System.Web.UI.Page
     protected void btnCAD_DM_Retail_Click(object sender, EventArgs e)
     {
         Session["BranchCode"] = "CAD";
-        Session["DomainID"] = "sabbir.hasan@mblbd.com";
+        Session["DomainID"] = "jenat.jahan@mblbd.com";
 
-        Session["Name"] = "MD. SABBIR HASAN";
+        Session["Name"] = "JENAT JAHAN";
 
         Session["Role"] = 65;
         Session["RoleName"] = "DM-Retail";
@@ -430,14 +430,15 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCAD_UH_Retail_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "UH-CBD";
+        Session["DomainID"] = "amotaleb@mblbd.com";
 
-        Session["Name"] = "UH-Retail";
+        Session["Name"] = "MOHAMMAD ABDUL MOTALEB";
 
         Session["Role"] = 67;
 
         Session["BranchCode"] = "CAD";
-
+        Session["RoleName"] = "Unit Head-Retail";
+        
 
         Session["Working_Area"] = "Retail";
 
@@ -481,7 +482,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["Role"] = 7;
 
-        Session["RoleName"] = "CI";
+        Session["RoleName"] = "Credit Incharge";
 
 
         Session["BranchCode"] = "BD0010102";
