@@ -31,26 +31,6 @@
 
 
 
-#employeeModal .select2-container {
-    width: 100% !important;
-}
-
-#employeeModal .select2-container .select2-selection--single {
-    height: 34px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-#employeeModal .select2-container--default
-.select2-selection--single .select2-selection__rendered {
-    line-height: 32px;
-}
-
-#employeeModal .select2-container--default
-.select2-selection--single .select2-selection__arrow {
-    height: 32px;
-}
-
     </style>
     <script type="text/javascript">
 

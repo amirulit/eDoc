@@ -79,11 +79,13 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string SaveSSCConditions(
+    public static String SaveSSCConditions(
         int drawdown_id,
-        string conditions,
-        string deadline,
-        string office_note)
+        String conditions,
+         String status,
+              String reason,
+        String deadline
+        )
     {
         try
         {
@@ -102,13 +104,86 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
                     cmd.Parameters.Add("@conditions", SqlDbType.VarChar, 8000).Value =
                         conditions ?? "";
 
-                    cmd.Parameters.Add("@deadline", SqlDbType.DateTime).Value =
-                        string.IsNullOrEmpty(deadline)
-                        ? (object)DBNull.Value
-                        : Convert.ToDateTime(deadline);
+                    cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value =
+                     status ?? "";
+                    cmd.Parameters.Add("@reason", SqlDbType.VarChar, 50).Value =
+                     reason ?? "";
 
-                    cmd.Parameters.Add("@office_note", SqlDbType.VarChar, 50).Value =
+
+                    cmd.Parameters.Add("@deadline", SqlDbType.VarChar, 50).Value =
+                    deadline ?? "";
+
+
+                    //cmd.Parameters.Add("@deadline", SqlDbType.DateTime).Value =
+                    //    string.IsNullOrEmpty(deadline)
+                    //    ? (object)DBNull.Value
+                    //    : Convert.ToDateTime(deadline);
+
+
+                    cmd.Parameters.Add("@create_date", SqlDbType.DateTime).Value =
+                        DateTime.Now;
+
+                    cmd.Parameters.Add("@create_by", SqlDbType.VarChar, 500).Value =
+                        "Test";
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return "Success";
+        }
+        catch (Exception ex)
+        {
+            return "Error: " + ex.Message;
+        }
+    }
+
+
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static String SaveSSC_Office_Note(
+        int drawdown_id,
+        //String conditions,
+         //String status,
+              //String reason,
+        String office_note
+        )
+    {
+        try
+        {
+            String connectionString =
+                ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(
+                    "usp_SSC_OfficeNote_Save", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@drawdown_id", SqlDbType.Int).Value = drawdown_id;
+
+                    cmd.Parameters.Add("office_note", SqlDbType.VarChar, 8000).Value =
                         office_note ?? "";
+
+                    //cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value =
+                    // status ?? "";
+                    //cmd.Parameters.Add("@reason", SqlDbType.VarChar, 50).Value =
+                    // reason ?? "";
+
+
+                    //cmd.Parameters.Add("@deadline", SqlDbType.VarChar, 50).Value =
+                    //deadline ?? "";
+
+
+                    //cmd.Parameters.Add("@deadline", SqlDbType.DateTime).Value =
+                    //    string.IsNullOrEmpty(deadline)
+                    //    ? (object)DBNull.Value
+                    //    : Convert.ToDateTime(deadline);
+
 
                     cmd.Parameters.Add("@create_date", SqlDbType.DateTime).Value =
                         DateTime.Now;
@@ -212,7 +287,11 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
     {
         public int condition_id { get; set; }
         public string conditions { get; set; }
+        public string status { get; set; }
+        public string reason { get; set; }
+
         public string deadline { get; set; }
+
         public string remarks { get; set; }
     }
 
@@ -225,7 +304,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         using (SqlConnection con = new SqlConnection(cs))
         {
-            string sql = @"SELECT id, conditions, deadline, remarks
+            string sql = @"SELECT id, conditions,status, reason, deadline
                        FROM t_SSC_Conditions
                        WHERE drawdown_id = @drawdown_id
                        ORDER BY id asc";
@@ -244,8 +323,11 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
                         {
                             condition_id = Convert.ToInt32(dr["id"]),
                             conditions = dr["conditions"].ToString(),
-                            deadline = dr["deadline"] == DBNull.Value ? "" : Convert.ToDateTime(dr["deadline"]).ToString("dd-MMM-yyyy"),
-                            remarks = dr["remarks"] == DBNull.Value ? "" : dr["remarks"].ToString()
+                            status = dr["status"].ToString(),
+                            reason = dr["reason"].ToString(),
+                            deadline = dr["deadline"].ToString()
+                            //deadline = dr["deadline"] == DBNull.Value ? "" : Convert.ToDateTime(dr["deadline"]).ToString("dd-MMM-yyyy"),
+                            //remarks = dr["remarks"] == DBNull.Value ? "" : dr["remarks"].ToString()
                         });
                     }
                 }

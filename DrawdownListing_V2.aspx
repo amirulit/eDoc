@@ -72,8 +72,10 @@
 
                 var drawdown_id = parseInt($("#lblIDSSC").text().trim());
                 var conditions = $("#Text1").val().trim();
-                var deadline = $("#Text2").val().trim();
-                var office_note = $("#Text3").val().trim();
+                var status = $("#Select1").val().trim();
+                var reason = $("#Text2").val().trim();
+                var deadline = $("#Text3").val().trim();
+                //var office_note = $("#Text3").val().trim();
 
                 if (isNaN(drawdown_id) || drawdown_id <= 0) {
                     alert("Invalid Drawdown ID");
@@ -91,8 +93,10 @@
                     data: JSON.stringify({
                         drawdown_id: drawdown_id,
                         conditions: conditions,
-                        deadline: deadline,
-                        office_note: office_note
+                        status: status,
+                        reason: reason,
+                        deadline: deadline
+                      
                     }),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -104,6 +108,8 @@
                             alert("Saved successfully!");
 
                             $("#Text1").val("");
+                            $("#Text2").val("");
+                            $("#Text3").val("");
 
                             LoadSSCConditions();
                         }
@@ -150,8 +156,10 @@
 
                                 $("<td>").text(i + 1).appendTo(tr);
                                 $("<td>").text(item.conditions).appendTo(tr);
+                                $("<td>").text(item.status).appendTo(tr);
+                                $("<td>").text(item.reason).appendTo(tr);
                                 $("<td>").text(item.deadline).appendTo(tr);
-                                $("<td>").text(item.remarks).appendTo(tr);
+                              
 
                                 var deleteBtn = $("<button>")
                                     .attr("type", "button")
@@ -178,6 +186,61 @@
                 });
 
             }
+
+            $("#btnSSC_Office_Note_Save").click(function () {
+
+                var drawdown_id = parseInt($("#lblIDSSC").text().trim());
+                //var conditions = $("#Text1").val().trim();
+                //var status = $("#Select1").val().trim();
+                //var reason = $("#Text2").val().trim();
+                //var deadline = $("#Text3").val().trim();
+                var office_note = $("#Text4").val().trim();
+
+                if (isNaN(drawdown_id) || drawdown_id <= 0) {
+                    alert("Invalid Drawdown ID");
+                    return;
+                }
+
+                if (office_note == "") {
+                    alert("Please enter office_note");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/SaveSSC_Office_Note",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id,
+                        //conditions: conditions,
+                        //status: status,
+                        //reason: reason,
+                        office_note: office_note
+
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d == "Success") {
+
+                            alert("Office note saved successfully!");
+
+                            //$("#Text1").val("");
+
+                            //LoadSSCConditions();
+                        }
+                        else {
+                            alert(response.d);
+                        }
+                    },
+
+                    error: function (xhr) {
+                        alert("Error saving record");
+                    }
+                });
+
+            });
 
 
             // DELETE
@@ -543,35 +606,33 @@
     <label class="radio-inline">
         <input type="radio" name="conditionType"
                id="rdoClean" value="No" />
-        Clean
+        Unconditional
     </label>
 </div>
 
 <!-- Show only when Conditional = Yes -->
 <div id="divConditionsEntry" style="display:none;">
 
-    
-    <div class="form-group" id="div1">
-        <label>Conditions</label>
-        <input id="Text1" type="text" class="form-control" />
-    </div>
 
-    <div class="form-group">
-        <label>Deadline</label>
-           <input id="Text2" type="text" class="form-control" />
-    </div>
+    <table class="table table-condensed table-responsive "><tr><td>Conditions</td><td>Status</td><td>Reason</td><td>Deadline</td><td> </td></tr>
 
-    <div class="form-group">
-        <label>Office Note NO#</label>
-           <input id="Text3" type="text" class="form-control" />
-    </div>
+        <tr><td> <input id="Text1" type="text" class="form-control" /></td><td><select id="Select1" class="form-control">
+<option>Obtained</option>
 
-    <div class="form-group">
+            <option>Not Obtained</option>
+</select></td><td><input id="Text2" type="text" class="form-control" /></td><td><input id="Text3" type="text" class="form-control" /></td><td><div class="form-group">
         <button type="button" id="btnSaveConditions"
                 class="btn btn-success">
             <i class="fa fa-save"></i>Save
-        </button><hr />
+        </button>
+         </div></td></tr>
 
+
+
+
+    </table>
+  
+        
     <h4>Saved Conditions</h4>
 
     <table class="table table-bordered table-striped" id="tblConditions">
@@ -579,16 +640,35 @@
             <tr>
                 <th>SL</th>
                 <th>Conditions</th>
+                 <th>Status</th>
+                 <th>REason</th>
                 <th>Deadline</th>
-                <th>Remarks</th>
+              
                 <th>Action</th>
             </tr>
         </thead>
         <tbody id="tbodyConditions">
         </tbody>
     </table>
+       <hr />
+
+    <div class="form-group">
+        <label>Office Note NO#</label>
+           <input id="Text4" type="text" class="form-control" />
     </div>
-</div>
+
+   
+        <div class="form-group">
+        <button type="button" id="btnSSC_Office_Note_Save"
+                class="btn btn-warning">
+            <i class="fa fa-save"></i>Office Note Save
+        </button>
+         </div>
+       
+   
+
+
+    </div>
 
                                </div>
                             
@@ -603,7 +683,7 @@
         </div>
 
         <div class="col-md-6">
-            <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100%;">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 100%;">
                 <span class="glyphicon glyphicon-remove"></span> Close
             </button>
         </div>
@@ -927,7 +1007,8 @@
 
                        <td>
 
-                           <% if (status == 17 || status == 20 || status == 28 || status == 33) {%>
+                           <% if (status == 17 || status == 20 || status == 28 || status == 33)
+                              {%>
 
     <a href="javascript:void(0);"
        class="btn btn-success btn-xs show"
@@ -938,7 +1019,8 @@
                            <%} %>
 
 
-                           <% if (status == 51) {%>
+                           <% if (status == 51)
+                              {%>
 
     <a href="javascript:void(0);"
        class="btn btn-success btn-xs query"
@@ -966,7 +1048,7 @@
 
                            <%=Role %><%=status %>
                             
-                        <%  if (((Role == 57 || Role == 61 || Role == 65)  && (status == 10 || status == 13  || status==30)) ||
+                        <%  if (((Role == 57 || Role == 61 || Role == 65) && (status == 10 || status == 13 || status == 30)) ||
 
                                 ((Role == 5 || Role == 7) && (status == 9 || status == 15 || status == 17 || status == 20 || status == 28 || status == 34)))
                             {
