@@ -217,9 +217,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
     {
         List<QueryDetails> list = new List<QueryDetails>();
 
-        string cs = ConfigurationManager
-            .ConnectionStrings["dbConn"]
-            .ConnectionString;
+        String cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
         using (SqlConnection con = new SqlConnection(cs))
         {
@@ -240,13 +238,15 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
                         obj.query = Convert.ToString(dr["query"]);
                         obj.query_by_role = Convert.ToString(dr["query_by_role"]);
 
-                        obj.create_date = dr["create_date"] == DBNull.Value
-                            ? ""
-                            : Convert.ToDateTime(dr["create_date"]).ToString("dd-MM-yyyy hh:mm tt");
+                        obj.create_date = dr["create_date"] == DBNull.Value ? "" : Convert.ToDateTime(dr["create_date"]).ToString("dd-MM-yyyy hh:mm tt");
 
                         obj.create_by = Convert.ToString(dr["create_by"]);
 
+                     
                         list.Add(obj);
+
+
+
                     }
                 }
             }
@@ -258,31 +258,32 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
     [WebMethod]
     public static string SaveSSCConditions(int drawdown_id, string conditions)
     {
-        string cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+        String cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
-    using (SqlConnection con = new SqlConnection(cs))
-    {
-        using (SqlCommand cmd = new SqlCommand("usp_SSC_Conditions_Save", con))
+        using (SqlConnection con = new SqlConnection(cs))
         {
-            cmd.CommandType = CommandType.StoredProcedure;
+            using (SqlCommand cmd = new SqlCommand("usp_SSC_Conditions_Save", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
-            cmd.Parameters.AddWithValue("@conditions", conditions);
-            cmd.Parameters.AddWithValue("@deadline", DBNull.Value);
-            cmd.Parameters.AddWithValue("@remarks", DBNull.Value);
-            cmd.Parameters.AddWithValue("@create_date", DateTime.Now);
+                cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
+                cmd.Parameters.AddWithValue("@conditions", conditions);
+                cmd.Parameters.AddWithValue("@deadline", DBNull.Value);
+                cmd.Parameters.AddWithValue("@remarks", DBNull.Value);
+                cmd.Parameters.AddWithValue("@create_date", DateTime.Now);
 
-            string username = HttpContext.Current.User.Identity.Name;
-            cmd.Parameters.AddWithValue("@create_by",
-                string.IsNullOrEmpty(username) ? "Test" : username);
+                String username = HttpContext.Current.User.Identity.Name;
+                cmd.Parameters.AddWithValue("@create_by", String.IsNullOrEmpty(username) ? "Test" : username);
 
-            con.Open();
-            cmd.ExecuteNonQuery();
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
         }
+
+        return "Success";
     }
 
-    return "Success";
-    }
+
     public class SSCCondition
     {
         public int condition_id { get; set; }
@@ -296,7 +297,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static List<SSCCondition> GetSSCConditions(int drawdown_id)
+    public static List<SSCCondition> GetSSCConditions(Int32 drawdown_id)
     {
         List<SSCCondition> list = new List<SSCCondition>();
 
@@ -304,7 +305,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         using (SqlConnection con = new SqlConnection(cs))
         {
-            string sql = @"SELECT id, conditions,status, reason, deadline
+           String sql = @"SELECT id, conditions,status, reason, deadline
                        FROM t_SSC_Conditions
                        WHERE drawdown_id = @drawdown_id
                        ORDER BY id asc";
@@ -365,9 +366,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
     [System.Web.Services.WebMethod]
     public static object GetReason(int drawdown_id)
     {
-        String cs = ConfigurationManager
-            .ConnectionStrings["dbConn"]
-            .ConnectionString;
+        String cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
         using (SqlConnection con = new SqlConnection(cs))
         using (SqlCommand cmd = new SqlCommand("usp_Show_Decline_Reason", con))

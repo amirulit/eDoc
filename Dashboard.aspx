@@ -14,30 +14,34 @@
             //alert(d);
         });
 
+
+        function openNewWindow(win,status) {
+            //window.open('Dashboard_Credit.aspx', '_blank', 'width=1000,height=700');
+
+
+            window.open(win + '?S=' + status, '_blank', 'width=1000,height=700');
+        }
+
     </script>
     <style type="text/css">
-        .modal-header
-        {
+        .modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        
-        .modal-header .close
-        {
-            margin-top: 0;
-        }
-        
-        
-        .small-box
-        {
+
+            .modal-header .close {
+                margin-top: 0;
+            }
+
+
+        .small-box {
             border-radius: 5px;
             overflow: hidden;
         }
-        
-        
-        .info-box
-        {
+
+
+        .info-box {
             border-radius: 10px;
             overflow: hidden;
         }
@@ -56,54 +60,64 @@
     </section>
     <section class="content">
 
-    
+     <% if (Role == 21 || Role == 23 || Role == 25 || Role == 27 || Role == 29 || Role == 31 || Role == 33 || Role == 35)
+        { %>
     <div class="row">
-        <div class="col-lg-4 col-xs-6">
-      
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>150</h3>
 
-              <p>Uploaded Sanction</p>
+    <div class="col-lg-4 col-xs-6">
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3>
+                    <asp:Label ID="lblUploadedSanction" runat="server" Text="0"></asp:Label>
+                </h3>
+                <p>Uploaded Sanction</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+                <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
+           <a href="javascript:void(0);" class="small-box-footer" onclick="openNewWindow('Dashboard_Credit.aspx',1)">
+    More info <i class="fa fa-arrow-circle-right"></i>
+</a>
         </div>
-    
-        <div class="col-lg-4 col-xs-6">
-     
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>53<sup style="font-size: 20px"></sup></h3>
+    </div>
 
-              <p>Pending List</p>
+    <div class="col-lg-4 col-xs-6">
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3>
+                    <asp:Label ID="lblPendingSanction" runat="server" Text="0"></asp:Label>
+                </h3>
+                <p>Pending List</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+                <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
+            <a href="#" class="small-box-footer" onclick="openNewWindow('Dashboard_Credit.aspx',0)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
         </div>
-     
-        <div class="col-lg-4 col-xs-6">
-       
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>44</h3>
+    </div>
 
-              <p>Total Users</p>
+    <div class="col-lg-4 col-xs-6">
+        <div class="small-box bg-yellow">
+            <div class="inner">
+                <h3>
+                    <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>
+                </h3>
+                <p>Total Users</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+                <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
+            <a href="#" class="small-box-footer"  onclick="openNewWindow('Dashboard_UserList.aspx',1)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
         </div>
-       </div>
+    </div>
 
+</div>
+
+<%} %>
 
        <% if (Role == 1 || Role == 2)
           { %>

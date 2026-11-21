@@ -576,7 +576,7 @@ $.each(data.Details, function (i, row) {
                         	
                         <td>        
 
-                                    <a href="#"  class="btn btn-success btn-xs edit" cus-type="<%=TableData.Rows[data]["cus_type"]%>" cus-id="<%=TableData.Rows[data]["cus_code"]%>" >Edit</a>                                    
+                                    <a href="#"  class="btn btn-success btn-xs edit" cus-type="<%=TableData.Rows[data]["cus_type"]%>" cus-id="<%=TableData.Rows[data]["cus_code"]%>" >View</a>                                    
 
                                     <a href="#"  class="btn btn-info btn-xs upload" cus-type="<%=TableData.Rows[data]["cus_type"]%>"   cus-id="<%=TableData.Rows[data]["cus_code"]%>">Document Upload</a>                                    
 
