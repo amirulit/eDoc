@@ -117,7 +117,7 @@ Upload Not Required
         if (rows == null || rows.Count == 0)
             return "No records found!";
 
-        string connStr = ConfigurationManager
+       String connStr = ConfigurationManager
             .ConnectionStrings["dbConn"]
             .ConnectionString;
 
@@ -370,6 +370,8 @@ select CusId,DrawdownId,PrimaryKey,Required,Status,getdate(),@upload_by,@upload_
         connection.Open();
         Int32 i = command.ExecuteNonQuery();
         connection.Close();
+
+
         if (i > 0)
         {
             //Page.ClientScript.RegisterStartupScript(this.GetType(), "Msg", "alert('Input Saved Successfully');window.location = 'List.aspx';", true);

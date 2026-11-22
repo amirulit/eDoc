@@ -67,6 +67,12 @@ Upload Not Required
 
     public DataTable TableData_Drawdown_Info;
 
+    public DataTable TableData_Sanction_Master;
+    public DataTable TableData_Sanction_Detail;
+
+
+    public DataTable TableData_Details;
+
 
     public String  Checklist_File_Type {get;set;}
 
@@ -121,7 +127,7 @@ Upload Not Required
         StringBuilder sb = new StringBuilder();
 
         // Document section names
-        string[] tabsName =
+        String[] tabsName =
     {
         "GENERAL DOCUMENTS",
         "MORTGAGE OF PROPERTIES",
@@ -141,7 +147,7 @@ Upload Not Required
     };
 
         // Document type
-        string[] docType =
+        String[] docType =
     {
         "GENERAL",
         "MORTGAGE",
@@ -161,7 +167,7 @@ Upload Not Required
     };
 
         // Serial
-        string[] docSerial =
+        String[] docSerial =
     {
         "A", "B", "C", "D", "E",
         "F", "G", "H", "I", "J",
@@ -261,9 +267,10 @@ font-family:Cambria
         sb.AppendLine("<th>Name</th>");
         sb.AppendLine("<th>Required ?</th>");
         sb.AppendLine("<th>Status</th>");
-        sb.AppendLine("<th>Reason</th>");
+        sb.AppendLine("<th>Document</th>");
         sb.AppendLine("<th>Remarks</th>");
-        sb.AppendLine("<th>Initial</th>");
+        sb.AppendLine("<th>Expiry</th>");
+        sb.AppendLine("<th>Others</th>");
         sb.AppendLine("</tr>");
         sb.AppendLine("</thead>");
 
@@ -298,15 +305,29 @@ font-family:Cambria
             sb.AppendLine("</tr>");
 
 
-            // Documents
+            //Documents
             foreach (DataRow row in tableData.Rows)
             {
+                String pk = Convert.ToString(row["primary_key"]);
                 String sl = Convert.ToString(row["Sl"]);
                 String name = Convert.ToString(row["name"]);
                 String required = Convert.ToString(row["required"]);
                 String status = Convert.ToString(row["status"]);
-                String reason = Convert.ToString(row["reason"]);
+                String documents = Convert.ToString(row["file_name"]);
                 String remarks = Convert.ToString(row["remarks"]);
+                String expiry = Convert.ToString(row["expiry"]);
+                //String others = "";//Convert.ToString(row["reason"]);
+
+                String others = "";
+
+                DataRow[] matchedRows = TableData_Details.Select(
+                    "PKNo = " + pk
+                );
+
+                if (matchedRows.Length > 0)
+                {
+                    others = Convert.ToString(matchedRows[0]["HTMLData"]);
+                }
 
 
                 sb.AppendLine("<tr>");
@@ -333,13 +354,23 @@ font-family:Cambria
 
                 sb.AppendFormat(
                     "<td>{0}</td>",
-                    HttpUtility.HtmlEncode(reason)
+                    HttpUtility.HtmlEncode(documents)
                 );
 
                 sb.AppendFormat(
+                   "<td>{0}</td>",
+                   HttpUtility.HtmlEncode(remarks)
+               );
+
+                sb.AppendFormat(
                     "<td>{0}</td>",
-                    HttpUtility.HtmlEncode(remarks)
+                    HttpUtility.HtmlEncode(expiry)
                 );
+                sb.AppendFormat(
+                   "<td>{0}</td>",
+                   //HttpUtility.HtmlEncode(others)
+                   others
+               );
 
                 sb.AppendLine("<td></td>");
 
@@ -530,6 +561,10 @@ font-family:Cambria
         "20150406003_Sig_Pallab.jpg.jpg"
     };
         }
+
+
+
+
     
         /*OLD Code*/
         /*
@@ -932,7 +967,7 @@ sb.AppendLine(String.Format(@"
     }
     protected void LoadCheckList()
     {
-          drawdown_id = Request.QueryString[0].ToString();
+        drawdown_id = Request.QueryString[0].ToString();
 
         //Int32 cus_auto_id = Convert.ToInt32(Request.QueryString[1].ToString());
         //String c_type = Request.QueryString[2].ToString().Split('-')[0];
@@ -946,7 +981,7 @@ sb.AppendLine(String.Format(@"
 
         cmd.CommandText = "usp_Checklist_View";
         cmd.Connection = con;
-         
+
 
         /*
         SqlParameter[] parameters = 
@@ -1028,7 +1063,7 @@ OTHER DOCUMENTS
             TableData_OTHER = Ds.Tables[14];
 
 
-            
+
             TableData_Exception = Ds.Tables[15];
             TableData_AnyOtherDocument = Ds.Tables[16];
             TableData_Confirmation = Ds.Tables[17];
@@ -1036,6 +1071,14 @@ OTHER DOCUMENTS
             //TableData_Customer = Ds.Tables[18];
 
             TableData_Drawdown_Info = Ds.Tables[18];
+
+            TableData_Sanction_Master = Ds.Tables[19];
+            TableData_Sanction_Detail = Ds.Tables[20];
+
+            TableData_Details = Ds.Tables[25];
+
+            //GridView1.DataSource = TableData_Details;
+            //GridView1.DataBind();
 
 
             Checklist_File_Type = TableData_Drawdown_Info.Rows[0]["cad_operation_mode"].ToString();

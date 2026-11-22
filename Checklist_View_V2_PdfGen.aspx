@@ -1163,6 +1163,8 @@
         <input id="hfDrawdownID" type="hidden" runat="server" />
         <input type="button" value="Close" onclick="window.close();" />
         <br />
+
+        <asp:GridView ID="GridView1" runat="server"></asp:GridView>
         <br />
         
     </div>
