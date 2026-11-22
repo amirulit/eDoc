@@ -10,7 +10,7 @@ using System.Web.Services;
 using System.Configuration;
 using System.Text;
 
-public partial class CAD_User_Listing : System.Web.UI.Page
+public partial class MBPLC_User_Listing : System.Web.UI.Page
 {
     public DataTable TableData;
 

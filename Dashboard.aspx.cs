@@ -10,20 +10,23 @@ using System.Web.UI.WebControls;
 
 public partial class Dashboard : System.Web.UI.Page
 {
-    public Int32 Role{get;set;}
+    public Int32 Role { get; set; }
 
     public String BranchCode { get; set; }
 
     public Int32 tot_uploaded { get; set; }
     public Int32 tot_pending { get; set; }
-    public Int32 tot_ssc { get; set; }
+
+    public Int32 tot_ongoing { get; set; }
+    public Int32 tot_ssc_completed { get; set; }
     public Int32 tot_user { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+
 
         Role = Convert.ToInt32(Session["Role"]);
+
         BranchCode = Convert.ToString(Session["BranchCode"]);
 
         //Response.Write("Role:" + Role);
@@ -33,7 +36,7 @@ public partial class Dashboard : System.Web.UI.Page
             LoadDashboard_Credit_Division();
         }
 
-        if (Role == 5 || Role == 7 || Role == 9 || Role == 11 )
+        if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
         {
             LoadDashboard_Branch();
         }
@@ -41,6 +44,17 @@ public partial class Dashboard : System.Web.UI.Page
         if (Role == 57 || Role == 59 || Role == 61 || Role == 63 || Role == 65 || Role == 67)
         {
             LoadDashboard_CAD_Division();
+        }
+
+        if (Role == 81 || Role == 83)
+        {
+            LoadDashboard_Limit_Unit();
+        }
+
+
+        if (Role == 97 || Role == 99)
+        {
+            LoadDashboard_Admin();
         }
 
         //if (Role == 21 || Role == 23 || Role == 25 || Role == 27 || Role == 29 || Role == 31 || Role == 33 || Role == 35)
@@ -53,19 +67,17 @@ public partial class Dashboard : System.Web.UI.Page
 
     private void LoadDashboard_Credit_Division()
     {
-        String connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+        string connectionString =
+            ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
 
         using (SqlConnection con = new SqlConnection(connectionString))
         {
-            using (SqlCommand cmd = new SqlCommand("usp_Dashboard_Credit_Division", con))
+            using (SqlCommand cmd = new SqlCommand(
+                "usp_Dashboard_Credit_Division", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                //cmd.Parameters.Add("@sanction_segment", SqlDbType.VarChar, 500)
-                //              .Value = sanctionSegment;
-
-                cmd.Parameters.Add("@Role", SqlDbType.Int, 500).Value = Role;
-
+                cmd.Parameters.Add("@Role", SqlDbType.Int).Value = Role;
 
                 con.Open();
 
@@ -73,21 +85,24 @@ public partial class Dashboard : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        //lblUploadedSanction.Text =
-                        //    dr["uploaded_sanction_count"].ToString();
+                        tot_uploaded = Convert.ToInt32(
+                            dr["uploaded_sanction_count"]);
 
-                        //lblPendingSanction.Text =
-                        //    dr["pending_sanction_count"].ToString();
+                        tot_pending = Convert.ToInt32(
+                            dr["pending_sanction_count"]);
 
-                        //lblTotalUsers.Text =
-                        //    dr["tot_user"].ToString();
+                        tot_user = Convert.ToInt32(
+                            dr["tot_user"]);
 
-                        tot_uploaded = dr["tot_uploaded"].ToString();
+                        //Response.Write("Uploaded: " + tot_uploaded + "<br/>");
+                        //Response.Write("Pending: " + tot_pending + "<br/>");
+                        //Response.Write("Total Users: " + tot_user + "<br/>");
                     }
                 }
             }
         }
     }
+
 
     private void LoadDashboard_Branch()
     {
@@ -114,14 +129,20 @@ public partial class Dashboard : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        lblUploadedSanction.Text =
-                            dr["uploaded_sanction_count"].ToString();
+                        //lblUploadedSanction.Text =
+                        //    dr["uploaded_sanction_count"].ToString();
 
-                        lblPendingSanction.Text =
-                            dr["pending_sanction_count"].ToString();
+                        //lblPendingSanction.Text =
+                        //    dr["pending_sanction_count"].ToString();
 
-                        lblTotalUsers.Text =
-                            dr["tot_user"].ToString();
+                        //lblTotalUsers.Text =
+                        //    dr["tot_user"].ToString();
+
+
+                        tot_uploaded = Convert.ToInt32(dr["tot_uploaded"].ToString());
+                        tot_ongoing = Convert.ToInt32(dr["tot_ongoing"].ToString());
+                        tot_ssc_completed = Convert.ToInt32(dr["tot_ssc"].ToString());
+                        tot_user = Convert.ToInt32(dr["tot_user"].ToString());
                     }
                 }
             }
@@ -133,7 +154,7 @@ public partial class Dashboard : System.Web.UI.Page
 
         using (SqlConnection con = new SqlConnection(connectionString))
         {
-            using (SqlCommand cmd = new SqlCommand("usp_Dashboard_Credit_Division", con))
+            using (SqlCommand cmd = new SqlCommand("usp_Dashboard_CAD", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -149,14 +170,98 @@ public partial class Dashboard : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        lblUploadedSanction.Text =
-                            dr["uploaded_sanction_count"].ToString();
+                        //lblUploadedSanction.Text =
+                        //    dr["uploaded_sanction_count"].ToString();
 
-                        lblPendingSanction.Text =
-                            dr["pending_sanction_count"].ToString();
+                        //lblPendingSanction.Text =
+                        //    dr["pending_sanction_count"].ToString();
 
-                        lblTotalUsers.Text =
-                            dr["tot_user"].ToString();
+                        //lblTotalUsers.Text =
+                        //    dr["tot_user"].ToString();
+
+
+
+                        tot_uploaded = Convert.ToInt32(dr["tot_uploaded"].ToString());
+                        tot_ongoing = Convert.ToInt32(dr["tot_ongoing"].ToString());
+                        tot_ssc_completed = Convert.ToInt32(dr["tot_ssc"].ToString());
+                        tot_user = Convert.ToInt32(dr["tot_user"].ToString());
+
+
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void LoadDashboard_Limit_Unit()
+    {
+        string connectionString =
+            ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "usp_Dashboard_Credit_Division", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Role", SqlDbType.Int).Value = Role;
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        tot_uploaded = Convert.ToInt32(
+                            dr["uploaded_sanction_count"]);
+
+                        tot_pending = Convert.ToInt32(
+                            dr["pending_sanction_count"]);
+
+                        tot_user = Convert.ToInt32(
+                            dr["tot_user"]);
+
+                        //Response.Write("Uploaded: " + tot_uploaded + "<br/>");
+                        //Response.Write("Pending: " + tot_pending + "<br/>");
+                        //Response.Write("Total Users: " + tot_user + "<br/>");
+                    }
+                }
+            }
+        }
+    }
+
+
+    private void LoadDashboard_Admin()
+    {
+        string connectionString =
+            ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "usp_Dashboard_Admin", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Role", SqlDbType.Int).Value = Role;
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+
+                        tot_uploaded = Convert.ToInt32(dr["tot_uploaded"].ToString());
+                        tot_ongoing = Convert.ToInt32(dr["tot_ongoing"].ToString());
+                        tot_ssc_completed = Convert.ToInt32(dr["tot_ssc"].ToString());
+                        tot_user = Convert.ToInt32(dr["tot_user"].ToString());
+
+                        //Response.Write("Uploaded: " + tot_uploaded + "<br/>");
+                        //Response.Write("Pending: " + tot_pending + "<br/>");
+                        //Response.Write("Total Users: " + tot_user + "<br/>");
                     }
                 }
             }

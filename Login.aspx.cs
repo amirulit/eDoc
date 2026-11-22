@@ -156,7 +156,7 @@ public partial class Login : System.Web.UI.Page
         Session["Name"] = "MD ASHIQUR RAHMAN";
 
 
-        Session["Role"] = 99;
+        Session["Role"] = 97;
 
         Session["RoleName"] = "Admin";
 
@@ -569,6 +569,32 @@ public partial class Login : System.Web.UI.Page
         Session["RoleName"] = "Unit Head-Agri";
 
         Session["BranchCode"] = "Credit";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        Session["BranchCode"] = "CAD";
+        Session["DomainID"] = "raihan.reza@mblbd.com";
+
+        Session["Name"] = "MD. RAIHAN REZA CHOWDHURY";
+
+        Session["Role"] = 81;
+        Session["RoleName"] = "Limit-Manager";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void Button5_Click(object sender, EventArgs e)
+    {
+        Session["BranchCode"] = "CAD";
+        Session["DomainID"] = "paritosh31@mblbd.com";
+
+        Session["Name"] = "PARITOSH KUMAR DHAR";
+
+        Session["Role"] = 83;
+        Session["RoleName"] = "Unit Head-Limit Unit";
 
 
         Response.Redirect("Dashboard.aspx");

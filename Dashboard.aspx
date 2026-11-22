@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
-    CodeFile="Dashboard.aspx.cs" Inherits="Dashboard" %>
+    CodeFile="Dashboard.aspx.cs" Inherits="Dashboard" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="bootstrap4/boostrap.css" rel="stylesheet" type="text/css" />
@@ -60,6 +60,8 @@
     </section>
     <section class="content">
 
+        <!--Credit Division-->
+
      <% if (Role == 21 || Role == 23 || Role == 25 || Role == 27 || Role == 29 || Role == 31 || Role == 33 || Role == 35)
         { %>
     <div class="row">
@@ -68,14 +70,16 @@
         <div class="small-box bg-aqua">
             <div class="inner">
                 <h3>
-                    <asp:Label ID="lblUploadedSanction" runat="server" Text="0"></asp:Label>
+                   <%-- <asp:Label ID="lblUploadedSanction" runat="server" Text="0"></asp:Label>--%>   
+
+                    <%=tot_uploaded %>
                 </h3>
                 <p>Uploaded Sanction</p>
             </div>
             <div class="icon">
                 <i class="ion ion-bag"></i>
             </div>
-           <a href="javascript:void(0);" class="small-box-footer" onclick="openNewWindow('Dashboard_Credit.aspx',1)">
+           <a href="javascript:void(0);" class="small-box-footer" onclick="openNewWindow('Dashboard_Uploaded.aspx',1)">
     More info <i class="fa fa-arrow-circle-right"></i>
 </a>
         </div>
@@ -85,14 +89,15 @@
         <div class="small-box bg-green">
             <div class="inner">
                 <h3>
-                    <asp:Label ID="lblPendingSanction" runat="server" Text="0"></asp:Label>
+                    <%--<asp:Label ID="lblPendingSanction" runat="server" Text="0"></asp:Label>--%>
+                    <%=tot_pending %>
                 </h3>
                 <p>Pending List</p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer" onclick="openNewWindow('Dashboard_Credit.aspx',0)">
+            <a href="#" class="small-box-footer" onclick="openNewWindow('Dashboard_Uploaded.aspx',0)">
                 More info <i class="fa fa-arrow-circle-right"></i>
             </a>
         </div>
@@ -102,7 +107,8 @@
         <div class="small-box bg-yellow">
             <div class="inner">
                 <h3>
-                    <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>
+                   <%-- <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>--%>
+                <%= tot_user %>
                 </h3>
                 <p>Total Users</p>
             </div>
@@ -119,7 +125,191 @@
 
 <%} %>
 
-       <% if (Role == 1 || Role == 2)
+           <!--Branch/Uposhakha-->
+
+        <% if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
+        {
+                
+                 %>
+    <div class="row">
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblUploadedSanction" runat="server" Text="0"></asp:Label>--%><%=tot_uploaded %>
+                </h3>
+                <p>Uploaded Sanction</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+           <a href="javascript:void(0);" class="small-box-footer" onclick="openNewWindow('Dashboard_Uploaded.aspx',1)">
+    More info <i class="fa fa-arrow-circle-right"></i>
+</a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3>
+                    <%--<asp:Label ID="lblPendingSanction" runat="server" Text="0"></asp:Label>--%>
+                    <%=tot_ongoing %>
+                </h3>
+                <p>On Going</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer" onclick="openNewWindow('Dashboard_Ongoing.aspx',0)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-yellow">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>--%>
+                <%= tot_ssc_completed %>
+                </h3>
+                <p>Completed SSC</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer"  onclick="openNewWindow('Dashboard_SSC_Complete.aspx',1)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+        <div class="col-lg-3 col-xs-6">
+        <div class="small-box  bg-info">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>--%>
+                <%= tot_user %>
+                </h3>
+                <p>Total Users</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer"  onclick="openNewWindow('Dashboard_UserList.aspx',1)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<%} %>
+
+
+
+        
+           <!--CAD-->
+
+        
+
+
+
+
+
+
+        <% if (Role == 57 || Role == 59 || Role == 61 || Role == 63 || Role == 65 || Role == 67)
+        {
+                
+                 %>
+    <div class="row">
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblUploadedSanction" runat="server" Text="0"></asp:Label>--%><%=tot_uploaded %>
+                </h3>
+                <p>Uploaded Sanction</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+           <a href="javascript:void(0);" class="small-box-footer" onclick="openNewWindow('Dashboard_Uploaded.aspx',1)">
+    More info <i class="fa fa-arrow-circle-right"></i>
+</a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3>
+                    <%--<asp:Label ID="lblPendingSanction" runat="server" Text="0"></asp:Label>--%>
+                    <%=tot_ongoing %>
+                </h3>
+                <p>On Going</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer" onclick="openNewWindow('Dashboard_Ongoing.aspx',0)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-yellow">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>--%>
+                <%= tot_ssc_completed %>
+                </h3>
+                <p>Completed SSC</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer"  onclick="openNewWindow('Dashboard_SSC_Complete.aspx',1)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+        <div class="col-lg-3 col-xs-6">
+        <div class="small-box  bg-info">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>--%>
+                <%= tot_user %>
+                </h3>
+                <p>Total Users</p>
+            </div>
+            <div class="icon">
+                <i class="ion   ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer"  onclick="openNewWindow('Dashboard_UserList.aspx',1)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<%} %>
+
+
+
+
+
+       <% if (Role == 81 || Role == 83)
+              
+              
+              
+              
           { %>
 
       <div class="row">
@@ -151,6 +341,93 @@
 
         </div>
 
+        
+       <%
+          }
+           
+            %>
+
+
+         <% if (Role == 97 || Role == 99)
+              
+              
+              
+              
+          { %>
+    <div class="row">
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblUploadedSanction" runat="server" Text="0"></asp:Label>--%><%=tot_uploaded %>
+                </h3>
+                <p>Uploaded Sanction</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+           <a href="javascript:void(0);" class="small-box-footer" onclick="openNewWindow('Dashboard_Uploaded.aspx',1)">
+    More info <i class="fa fa-arrow-circle-right"></i>
+</a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3>
+                    <%--<asp:Label ID="lblPendingSanction" runat="server" Text="0"></asp:Label>--%>
+                    <%=tot_ongoing %>
+                </h3>
+                <p>On Going</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer" onclick="openNewWindow('Dashboard_Ongoing.aspx',0)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-yellow">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>--%>
+                <%= tot_ssc_completed %>
+                </h3>
+                <p>Completed SSC</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer"  onclick="openNewWindow('Dashboard_SSC_Complete.aspx',1)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+        <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>
+                   <%-- <asp:Label ID="lblTotalUsers" runat="server" Text="0"></asp:Label>--%>
+                <%= tot_user %>
+                </h3>
+                <p>Total Users</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer"  onclick="openNewWindow('Dashboard_UserList.aspx',1)">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
         
        <%
           }

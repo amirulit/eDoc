@@ -259,7 +259,9 @@
                     onclick="btnCAD_UH_Agri_Click"  CssClass="btn btn-success"/>--%>
                 <hr />
 
-              
+                <asp:Button ID="Button4" runat="server" Text="Limit Manager" OnClick="Button4_Click"  CssClass="btn btn-primary"/>
+                <asp:Button ID="Button5" runat="server" Text="Limit UnitHead" OnClick="Button5_Click"  CssClass="btn btn-primary"/>
+
                 <hr />
                 Admin:
                 <asp:Button ID="btnAdmin" runat="server" Text="Admin" CssClass="btn btn-danger"
