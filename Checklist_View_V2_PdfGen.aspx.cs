@@ -319,8 +319,15 @@ font-family:Cambria
         */
 
         sb.AppendLine("<table class='table table-condensed my-table' style='width:100%;'>");
-        sb.AppendLine("<tr><td colspan='2'>Loan Documentaton Checklist</td><tr>");
-        sb.AppendLine("<tr><td>CFR " + EdocRefNo + @"</td><td>" + System.DateTime.Now.ToString("MMM dd,yyyy") + @"<td><tr>");
+
+        sb.AppendLine("<tr>");
+        sb.AppendLine("<td colspan='2'>Loan Documentation Checklist</td>");
+        sb.AppendLine("</tr>");
+
+        sb.AppendLine("<tr>");
+        sb.AppendLine("<td>CFR " + EdocRefNo + "</td>");
+        sb.AppendLine("<td style='text-align:right;'>" + System.DateTime.Now.ToString("MMM dd, yyyy") + "</td>");
+        sb.AppendLine("</tr>");
 
         sb.AppendLine("</table>");
 
