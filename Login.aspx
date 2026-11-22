@@ -264,8 +264,9 @@
 
                 <hr />
                 Admin:
-                <asp:Button ID="btnAdmin" runat="server" Text="Admin" CssClass="btn btn-danger"
-                    OnClick="btnAdmin_Click" />
+                <asp:Button ID="btnDHead" runat="server" Text="DHOD-CAD" CssClass="btn btn-danger" OnClick="btnDHead_Click"
+                    />
+                <asp:Button ID="btnHead" runat="server" Text="HOD-CAD" CssClass="btn btn-danger" OnClick="btnHead_Click"  />
                 <hr />
                 <a href="New_V2.aspx" class="btn  btn-primary">New?</a> <a href="Login_V3.aspx" class="btn btn-success">
                     Login</a>

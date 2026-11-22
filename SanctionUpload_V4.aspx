@@ -789,7 +789,9 @@
                   		<div class="box-footer">
                   			<input type="hidden" name="do" value="add_grade" />
 
-                            <button type="button" id="btnSaveAll" class="btn btn-success">Save All</button>
+                               <button type="button" id="btnSaveAll_Pending" class="btn btn-success">Save All (Pending)</button>
+
+                            <button type="button" id="btnSaveAll_Final" class="btn btn-success">Save All (Final)</button>
 
                              <button type="button" id="btnNew" class="btn btn-primary" style="  display:none;">New</button>
 

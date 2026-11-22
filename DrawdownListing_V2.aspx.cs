@@ -470,6 +470,12 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
             command.CommandText = "usp_Drawdown_Listing_For_Branch_Update";
 
         }
+        if (Role == 97 || Role == 99)
+        {
+
+            command.CommandText = "usp_Drawdown_Listing_For_Admin";
+
+        }
         else
         {
 

@@ -150,7 +150,7 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnAdmin_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "ashiqur.rahman@mblbd.com";
+        Session["DomainID"] = "IFTIKHAR AHMED CHOWDHURYashiqur.rahman@mblbd.com";
 
 
         Session["Name"] = "MD ASHIQUR RAHMAN";
@@ -595,6 +595,77 @@ public partial class Login : System.Web.UI.Page
 
         Session["Role"] = 83;
         Session["RoleName"] = "Unit Head-Limit Unit";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "IFTIKHAR AHMED CHOWDHURYashiqur.rahman@mblbd.com";
+
+
+        Session["Name"] = "MD ASHIQUR RAHMAN";
+
+
+        Session["Role"] = 97;
+
+        Session["RoleName"] = "Admin";
+
+        //Session["UserType"] = "CADMaker";
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnDHead_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "iftikhar.ahmed@mblbd.com";
+
+
+        Session["Name"] = "	IFTIKHAR AHMED CHOWDHURY";
+
+
+        Session["Role"] = 97;
+
+        Session["RoleName"] = "Admin";
+
+
+        Session["BranchCode"] = "CAD";
+
+        //Session["UserType"] = "CADMaker";
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
+
+        Response.Redirect("Dashboard.aspx");
+
+    }
+    protected void btnHead_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "ashiqur.rahman@mblbd.com";
+
+
+        Session["Name"] = "MD ASHIQUR RAHMAN";
+
+
+        Session["Role"] = 99;
+
+        Session["RoleName"] = "Admin";
+        Session["BranchCode"] = "CAD";
+
+        //Session["UserType"] = "CADMaker";
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
         Response.Redirect("Dashboard.aspx");

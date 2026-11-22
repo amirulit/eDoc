@@ -569,7 +569,7 @@
 
 
         <%
-            if (Role == 99)
+            if (Role == 97 || Role == 99)
             {
               %>
          <li>
@@ -593,6 +593,19 @@
             <li>
           <a href="DM_Change_CMSME.aspx">
             <i class="fa fa-arrow-circle-o-right"></i><span>DM Change(CMSME)</span>
+          </a>
+        </li>
+
+            <li>
+          <a href="SanctionListing_V2.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>Sanction Listing</span>
+          </a>
+        </li>
+
+
+             <li>
+          <a href="DrawdownListing_V2.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>Check List Listing</span>
           </a>
         </li>
 

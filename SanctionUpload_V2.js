@@ -365,7 +365,19 @@ $(document).ready(function () {
     });
     */
 
-    $("#btnSaveAll").on("click", function () {
+
+    $("#btnSaveAll_Pending").on("click", function () {
+
+
+    });
+
+
+    $("#btnSaveAll_Final").on("click", function () {
+
+
+    });
+
+    $("#btnSaveAll_Final").on("click", function () {
 
 
 

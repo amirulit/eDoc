@@ -2,6 +2,240 @@
     CodeFile="Report.aspx.cs" Inherits="Report" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+
+    <script type="text/javascript" language="javascript">
+
+        function LoadApprovalAuthority(type) {
+
+            $("#data").html(
+                '<div class="text-center p-4">' +
+                '<div class="spinner-border text-primary"></div>' +
+                '<p class="mt-2">Loading records...</p>' +
+                '</div>'
+            );
+
+            $.ajax({
+
+                type: "POST",
+
+                url: "Report.aspx/GetApprovalAuthorityInfo",
+
+                data: JSON.stringify({ type: type }),
+
+                contentType: "application/json; charset=utf-8",
+
+                dataType: "json",
+
+                success: function (response) {
+
+                    var result = response.d;
+
+                    if (result.length === 0) {
+
+                        $("#data").html(
+                            '<div class="alert alert-warning">' +
+                            'No Trade License Records Found' +
+                            '</div>'
+                        );
+
+                        return;
+                    }
+
+                    var html = '';
+
+                    html += '<div class="table-responsive">';
+
+                    html += '<table class="table table-bordered table-striped table-hover align-middle">';
+
+                    html += '<thead class="table-dark"><tr>';
+
+                    html += '<th>SL</th>';
+                    html += '<th>Sanction ID</th>';
+                    html += '<th>Reference No</th>';
+                    html += '<th>Drawdown ID</th>';
+                    html += '<th>Customer Type</th>';
+                    html += '<th>Loan Nature</th>';
+                    html += '<th>Securities</th>';
+                    html += '<th>Loan Amount</th>';
+                    html += '<th>Approval Authority</th>';
+                    html += '<th>Expiry Date</th>';
+
+                    html += '</tr></thead><tbody>';
+
+                    $.each(result, function (i, item) {
+
+                        html += '<tr>';
+
+                        html += '<td>' + (i + 1) + '</td>';
+                        html += '<td>' + escapeHtml(item.sanction_ids) + '</td>';
+                        html += '<td>' + escapeHtml(item.sanction_refno) + '</td>';
+                        html += '<td>' + escapeHtml(item.drawdown_id) + '</td>';
+                        html += '<td>' + escapeHtml(item.cus_types) + '</td>';
+                        html += '<td>' + escapeHtml(item.loan_natures) + '</td>';
+                        html += '<td>' + escapeHtml(item.securities) + '</td>';
+                        html += '<td class="text-end">' + escapeHtml(item.loan_amount) + '</td>';
+                        html += '<td>' + escapeHtml(item.appr_auth) + '</td>';
+
+                        var expiryClass = type === 'Expired'
+                            ? 'text-danger fw-bold'
+                            : (type === 'Upcoming' ? 'text-warning fw-bold' : '');
+
+                        html += '<td class="' + expiryClass + '">' +
+                                escapeHtml(item.expiry) + '</td>';
+
+                        html += '</tr>';
+
+                    });
+
+                    html += '</tbody></table></div>';
+
+                    html += '<div class="text-muted mt-2">';
+                    html += 'Total Records: <strong>' + result.length + '</strong>';
+                    html += '</div>';
+
+                    $("#data").html(html);
+
+                },
+
+                error: function (xhr, status, error) {
+
+                    $("#data").html(
+                        '<div class="alert alert-danger">' +
+                        'Error loading data: ' + escapeHtml(xhr.responseText) +
+                        '</div>'
+                    );
+
+                    console.log(xhr.responseText);
+
+                }
+
+            });
+
+        }
+
+        function escapeHtml(value) {
+
+            return $('<div>').text(value == null ? '' : value).html();
+
+        }
+
+
+
+
+        function LoadCreditRating(type) {
+
+            $("#creditRatingData").html(
+                '<div class="text-center p-4">' +
+                '<div class="spinner-border text-primary"></div>' +
+                '<p>Loading Credit Rating Records...</p>' +
+                '</div>'
+            );
+
+            $.ajax({
+
+                type: "POST",
+
+                url: "Report.aspx/GetCreditRatingInfo",
+
+                data: JSON.stringify({ type: type }),
+
+                contentType: "application/json; charset=utf-8",
+
+                dataType: "json",
+
+                success: function (response) {
+
+                    var result = response.d;
+
+                    if (result.length === 0) {
+
+                        $("#creditRatingData").html(
+                            '<div class="alert alert-warning">' +
+                            'No Credit Rating Records Found' +
+                            '</div>'
+                        );
+
+                        return;
+                    }
+
+                    var html = '';
+
+                    html += '<div class="table-responsive">';
+
+                    html += '<table class="table table-bordered table-striped table-hover align-middle">';
+
+                    html += '<thead class="table-dark"><tr>';
+
+                    html += '<th>SL</th>';
+                    html += '<th>Sanction ID</th>';
+                    html += '<th>Reference No</th>';
+                    html += '<th>Drawdown ID</th>';
+                    html += '<th>Customer Type</th>';
+                    html += '<th>Loan Nature</th>';
+                    html += '<th>Securities</th>';
+                    html += '<th>Loan Amount</th>';
+                    html += '<th>Rating Company</th>';
+                    html += '<th>Expiry Date</th>';
+
+                    html += '</tr></thead><tbody>';
+
+                    $.each(result, function (i, item) {
+
+                        html += '<tr>';
+
+                        html += '<td>' + (i + 1) + '</td>';
+                        html += '<td>' + escapeHtml(item.sanction_ids) + '</td>';
+                        html += '<td>' + escapeHtml(item.sanction_refno) + '</td>';
+                        html += '<td>' + escapeHtml(item.drawdown_id) + '</td>';
+                        html += '<td>' + escapeHtml(item.cus_types) + '</td>';
+                        html += '<td>' + escapeHtml(item.loan_natures) + '</td>';
+                        html += '<td>' + escapeHtml(item.securities) + '</td>';
+                        html += '<td class="text-end">' + escapeHtml(item.loan_amount) + '</td>';
+                        html += '<td class="fw-semibold">' + escapeHtml(item.rating_company) + '</td>';
+
+                        var expiryClass = type === 'Expired'
+                            ? 'text-danger fw-bold'
+                            : (type === 'Upcoming' ? 'text-warning fw-bold' : '');
+
+                        html += '<td class="' + expiryClass + '">' +
+                            escapeHtml(item.expiry) + '</td>';
+
+                        html += '</tr>';
+
+                    });
+
+                    html += '</tbody></table></div>';
+
+                    html += '<div class="text-muted mt-2">';
+                    html += 'Total Credit Rating Records: <strong>' +
+                        result.length + '</strong>';
+                    html += '</div>';
+
+                    $("#creditRatingData").html(html);
+
+                },
+
+                error: function (xhr) {
+
+                    $("#creditRatingData").html(
+                        '<div class="alert alert-danger">' +
+                        'Unable to load Credit Rating Records' +
+                        '</div>'
+                    );
+
+                    console.log(xhr.responseText);
+
+                }
+
+            });
+
+        }
+
+</script>
+
+
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content-header">
@@ -24,8 +258,8 @@
           <!-- Custom Tabs -->
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab">Tab 1</a></li>
-              <li><a href="#tab_2" data-toggle="tab">Tab 2</a></li>
+              <li class="active"><a href="#tab_1" data-toggle="tab">Approval Authority</a></li>
+              <li><a href="#tab_2" data-toggle="tab">Credit Rating Report</a></li>
               <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -43,27 +277,95 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="tab_1">
-                <b>How to use:</b>
+               
+<div class="container-fluid mt-4">
 
-                <p>Exactly like the original bootstrap tabs except you should use
-                  the custom wrapper <code>.nav-tabs-custom</code> to achieve this style.</p>
-                A wonderful serenity has taken possession of my entire soul,
-                like these sweet mornings of spring which I enjoy with my whole heart.
-                I am alone, and feel the charm of existence in this spot,
-                which was created for the bliss of souls like mine. I am so happy,
-                my dear friend, so absorbed in the exquisite sense of mere tranquil existence,
-                that I neglect my talents. I should be incapable of drawing a single stroke
-                at the present moment; and yet I feel that I never was a greater artist than now.
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-primary text-white">
+          <%--  <h5 class="mb-0">Trade License Information</h5>--%>
+        </div>
+
+        <div class="card-body">
+
+            <div class="d-flex gap-2 flex-wrap mb-3">
+
+                <input id="btnApprovalAuthority_Missing"
+                    type="button"
+                    value="All Records"
+                    class="btn btn-primary"
+                    onclick="LoadApprovalAuthority('ALL')" />
+
+                <input id="btnApprovalAuthority_Expired"
+                    type="button"
+                    value="Expired"
+                    class="btn btn-danger"
+                    onclick="LoadApprovalAuthority('Expired')" />
+
+                <input id="btnApprovalAuthority_By_30Days"
+                    type="button"
+                    value="Upcoming (30 Days)"
+                    class="btn btn-warning"
+                    onclick="LoadApprovalAuthority('Upcoming')" />
+
+            </div>
+
+            <div id="data"></div>
+
+        </div>
+    </div>
+
+</div>
+
+
+                 
+
+
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">
-                The European languages are members of the same family. Their separate existence is a myth.
-                For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
-                in their grammar, their pronunciation and their most common words. Everyone realizes why a
-                new common language would be desirable: one could refuse to pay expensive translators. To
-                achieve this, it would be necessary to have uniform grammar, pronunciation and more common
-                words. If several languages coalesce, the grammar of the resulting language is more simple
-                and regular than that of the individual languages.
+                
+<div class="container-fluid mt-4">
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"></h5>
+        </div>
+
+        <div class="card-body">
+              <div class="d-flex gap-2 flex-wrap mb-3">
+
+                        <button type="button"
+                            class="btn btn-primary"
+                            onclick="LoadCreditRating('ALL')">
+                            All Records
+                        </button>
+
+                        <button type="button"
+                            class="btn btn-danger"
+                            onclick="LoadCreditRating('Expired')">
+                            Expired
+                        </button>
+
+                        <button type="button"
+                            class="btn btn-warning"
+                            onclick="LoadCreditRating('Upcoming')">
+                            Upcoming (30 Days)
+                        </button>
+
+                    </div>
+
+                    <div id="creditRatingData"></div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_3">
@@ -82,7 +384,8 @@
           <!-- nav-tabs-custom -->
         </div>
         <!-- /.col -->
-         
+         </div>
+        
 
       </section>
 </asp:Content>
