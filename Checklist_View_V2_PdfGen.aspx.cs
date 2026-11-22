@@ -62,11 +62,12 @@ Upload Not Required
     public DataTable TableData_Confirmation;
 
 
-    public DataTable TableData_Customer;
-
+    public DataTable TableData_SanctionAdvices;
+    public DataTable TableData_Customers;
+    public DataTable TableData_Facilities;
+    public DataTable TableData_Securities;
 
     public DataTable TableData_Drawdown_Info;
-
     public DataTable TableData_Sanction_Master;
     public DataTable TableData_Sanction_Detail;
 
@@ -76,10 +77,9 @@ Upload Not Required
 
     public String  Checklist_File_Type {get;set;}
 
-
+    public String EdocRefNo { get; set; }
+    
     protected string DocumentTableHtml { get; set; }
-
-
 
     public String[] TabsName;
     public String[] DocType;
@@ -229,7 +229,8 @@ font-family:Cambria
         {
             border-top: 1px solid #ddd !important;
         }
-        
+
+    
         .my-table th, .my-table td
         {
             border: 1px solid #ddd !important;
@@ -251,12 +252,175 @@ font-family:Cambria
 
         //String CustomerName = TableData_Customer.Rows[0]["cus_name"].ToString();
 
-        String CustomerName = "Test";
+        //String CustomerName = "Test";
 
-        sb.AppendLine("<table class='no-border'><thead><tr><th style='text-align :center;'>Mercantile Bank PLC</th></tr><thead><tr><th style='text-align :center;'>Main Branch</th></tr></thead></table></br></br></br>");
 
-        sb.AppendLine("<table class='table table-condensed my-table'><thead><tr><td>Customer Name : " + CustomerName + "</td></tr></thead></table>");
+        sb.AppendLine("<table class='no-border' style='width:100%;'>");
+        sb.AppendLine("<tr><th style='text-align:center;font-size:18px;'>Mercantile Bank PLC</th></tr>");
+        sb.AppendLine("<tr><th style='text-align:center;font-size:14px;'>Credit Administration Division</th></tr>");
+        sb.AppendLine("<tr><th style='text-align:center;font-size:14px;'>Booking Branch : " + TableData_Sanction_Master.Rows[0]["branch_name"] + @"</th></tr>");
+        sb.AppendLine("</table>");
 
+        sb.AppendLine("<br/>");
+
+        /*
+        sb.AppendLine("<table class='table table-condensed my-table' style='width:100%;'>");
+
+        sb.AppendLine("<thead>");
+        sb.AppendLine("<tr>");
+        sb.AppendLine("<th colspan='4' style='text-align:center;background-color:#D9EAF7;'>");
+        sb.AppendLine("SANCTION INFORMATION");
+        sb.AppendLine("</th>");
+        sb.AppendLine("</tr>");
+        sb.AppendLine("</thead>");
+
+        sb.AppendLine("<tbody>");
+
+        sb.AppendLine("<tr>");
+        sb.AppendLine("<th style='width:20%;'>Sanction ID</th>");
+        sb.AppendLine("<td style='width:30%;'>" +TableData_Sanction_Master.Rows[0]["id"]  + "</td>");
+        sb.AppendLine("<th style='width:20%;'>Reference No.</th>");
+        sb.AppendLine("<td style='width:30%;'>" +TableData_Sanction_Master.Rows[0]["sanction_reference"]  + "</td>");
+        sb.AppendLine("</tr>");
+
+        sb.AppendLine("<tr>");
+        sb.AppendLine("<th>Sanction Segment</th>");
+        sb.AppendLine("<td>" +TableData_Sanction_Master.Rows[0]["sanction_segment"]  + "</td>");
+        sb.AppendLine("<th>Approval Authority</th>");
+        sb.AppendLine("<td>" +TableData_Sanction_Master.Rows[0]["sanction_approval_authority"]  + "</td>");
+        sb.AppendLine("</tr>");
+
+        sb.AppendLine("<tr>");
+        sb.AppendLine("<th>Sanction Date</th>");
+        sb.AppendLine("<td colspan='3'>" + TableData_Sanction_Master.Rows[0]["sanction_date"] + "</td>");
+        sb.AppendLine("</tr>");
+
+        sb.AppendLine("</tbody>");
+        sb.AppendLine("</table>");
+        */
+        /*
+        sb.AppendLine("<table class='table table-condensed my-table' style='width:100%;'>");
+
+        sb.AppendLine("<tr>");
+
+        sb.AppendLine("<td><b>Sanction ID:</b> " + TableData_Sanction_Master.Rows[0]["id"] + "</td>");
+
+        sb.AppendLine("<td><b>Reference No:</b> " + TableData_Sanction_Master.Rows[0]["sanction_reference"] + "</td>");
+
+        sb.AppendLine("<td><b>Segment:</b> " + TableData_Sanction_Master.Rows[0]["sanction_segment"] + "</td>");
+
+        sb.AppendLine("<td><b>Approval Authority:</b> " + TableData_Sanction_Master.Rows[0]["sanction_approval_authority"] + "</td>");
+
+        sb.AppendLine("<td><b>Sanction Date:</b> " + TableData_Sanction_Master.Rows[0]["sanction_date"] + "</td>");
+
+        sb.AppendLine("</tr>");
+
+        sb.AppendLine("</table>"); 
+        */
+
+        sb.AppendLine("<table class='table table-condensed my-table' style='width:100%;'>");
+        sb.AppendLine("<tr><td colspan='2'>Loan Documentaton Checklist</td><tr>");
+        sb.AppendLine("<tr><td>CFR " + EdocRefNo + @"</td><td>" + System.DateTime.Now.ToString("MMM dd,yyyy") + @"<td><tr>");
+
+        sb.AppendLine("</table>");
+
+        sb.AppendLine("<br/>");
+
+        sb.AppendLine("<table class='table table-condensed my-table' style='width:100%;'>");
+
+        // Header row
+        sb.AppendLine("<tr style='border-bottom:1px solid #000;'>");
+
+        sb.AppendLine("<th>Sanction ID</th>");
+        sb.AppendLine("<th>Reference No.</th>");
+        sb.AppendLine("<th>Segment</th>");
+        sb.AppendLine("<th>Approval Authority</th>");
+        sb.AppendLine("<th>Sanction Date</th>");
+
+        sb.AppendLine("</tr>");
+
+        // Data row
+        sb.AppendLine("<tr>");
+
+        sb.AppendLine("<td>" + TableData_Sanction_Master.Rows[0]["id"] + "</td>");
+        sb.AppendLine("<td>" + TableData_Sanction_Master.Rows[0]["sanction_reference"] + "</td>");
+        sb.AppendLine("<td>" + TableData_Sanction_Master.Rows[0]["sanction_segment"] + "</td>");
+        sb.AppendLine("<td>" + TableData_Sanction_Master.Rows[0]["sanction_approval_authority"] + "</td>");
+        sb.AppendLine("<td>" + TableData_Sanction_Master.Rows[0]["sanction_date"] + "</td>");
+
+        sb.AppendLine("</tr>");
+
+        sb.AppendLine("</table>");
+        sb.AppendLine("<br/>");
+
+     
+
+        sb.AppendLine("<table class='table table-condensed my-table' style='width:100%;'>");
+
+        // Table Header
+        sb.AppendLine("<thead>");
+
+        //sb.AppendLine("<tr>");
+        //sb.AppendLine("<th colspan='5' style='text-align:center;background-color:#D9EAF7;'>");
+        //sb.AppendLine("SANCTION DETAILS");
+        //sb.AppendLine("</th>");
+        //sb.AppendLine("</tr>");
+
+        sb.AppendLine("<tr>");
+        sb.AppendLine("<th style='width:8%;'>SL#</th>");
+        sb.AppendLine("<th style='width:32%;'>Customer Name</th>");
+        sb.AppendLine("<th style='width:25%;'>Loan Nature</th>");
+        sb.AppendLine("<th style='width:20%;text-align:right;'>Amount</th>");
+        sb.AppendLine("<th style='width:15%;'>Validity</th>");
+        sb.AppendLine("</tr>");
+
+        sb.AppendLine("</thead>");
+
+        // Table Body
+        sb.AppendLine("<tbody>");
+
+        int serial = 1;
+
+        foreach (DataRow row in  TableData_Sanction_Detail.Rows)
+        {
+            string customerName = Convert.ToString(row["customer_name"]);
+            string loanNature = Convert.ToString(row["loan_nature"]);
+
+            string amount = row["amount"] == DBNull.Value
+                ? ""
+                : Convert.ToDecimal(row["amount"]).ToString("N2");
+
+            string validity = Convert.ToString(row["validity"]);
+
+            sb.AppendLine("<tr>");
+
+            sb.AppendLine("<td style='text-align:center;'>" + serial + "</td>");
+
+            sb.AppendLine("<td>" + System.Web.HttpUtility.HtmlEncode(customerName) + "</td>");
+
+            sb.AppendLine("<td>" + System.Web.HttpUtility.HtmlEncode(loanNature) + "</td>");
+
+            sb.AppendLine("<td style='text-align:right;'>" + amount + "</td>");
+
+            sb.AppendLine("<td>" + System.Web.HttpUtility.HtmlEncode(validity) + "</td>");
+
+            sb.AppendLine("</tr>");
+
+            serial++;
+        }
+
+        if (TableData_Sanction_Detail.Rows.Count == 0)
+        {
+            sb.AppendLine("<tr>");
+            sb.AppendLine("<td colspan='5' style='text-align:center;'>No Details Found</td>");
+            sb.AppendLine("</tr>");
+        }
+
+        sb.AppendLine("</tbody>");
+
+        sb.AppendLine("</table>");
+
+        sb.AppendLine("<br/>");
 
         sb.AppendLine("<table class='table table-condensed my-table'>");
 
@@ -314,6 +478,12 @@ font-family:Cambria
                 String required = Convert.ToString(row["required"]);
                 String status = Convert.ToString(row["status"]);
                 String documents = Convert.ToString(row["file_name"]);
+
+                if (documents == "" || documents == null)
+                    documents = "";
+                else
+                    documents = "View";
+
                 String remarks = Convert.ToString(row["remarks"]);
                 String expiry = Convert.ToString(row["expiry"]);
                 //String others = "";//Convert.ToString(row["reason"]);
@@ -372,9 +542,12 @@ font-family:Cambria
                    others
                );
 
-                sb.AppendLine("<td></td>");
+             
 
                 sb.AppendLine("</tr>");
+
+
+
             }
         }
 
@@ -717,6 +890,8 @@ sb.AppendLine(String.Format(@"
 
 
         //Show PDF in browser
+
+
         Response.Clear();
         Response.ContentType = "application/pdf";
         Response.AddHeader("Content-Disposition", "inline; filename=" + drawdown_id + "_Checklist.pdf");
@@ -1068,14 +1243,24 @@ OTHER DOCUMENTS
             TableData_AnyOtherDocument = Ds.Tables[16];
             TableData_Confirmation = Ds.Tables[17];
 
-            //TableData_Customer = Ds.Tables[18];
+            TableData_SanctionAdvices = Ds.Tables[18];
+            TableData_Customers = Ds.Tables[19];
+            TableData_Facilities = Ds.Tables[20];
+            TableData_Securities = Ds.Tables[21];
 
-            TableData_Drawdown_Info = Ds.Tables[18];
+            TableData_Drawdown_Info = Ds.Tables[22];
 
-            TableData_Sanction_Master = Ds.Tables[19];
-            TableData_Sanction_Detail = Ds.Tables[20];
+            TableData_Sanction_Master = Ds.Tables[23];
+
+            EdocRefNo = TableData_Sanction_Master.Rows[0]["edoc_refno"].ToString();
+
+
+
+
+            TableData_Sanction_Detail = Ds.Tables[24];
 
             TableData_Details = Ds.Tables[25];
+
 
             //GridView1.DataSource = TableData_Details;
             //GridView1.DataBind();

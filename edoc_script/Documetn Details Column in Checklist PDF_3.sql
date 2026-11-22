@@ -1,8 +1,9 @@
-DECLARE @drawdown_id INT = 291;
+DECLARE @drawdown_id INT = 477;
 
 ;WITH D AS
 (
     SELECT
+		ROW_NUMBER() OVER (ORDER BY REcordId asc)   sl,
         Drawdown_Id,
         PKNo,
         Value01,
@@ -85,7 +86,7 @@ HTMLData AS
             style="border-collapse:collapse;width:100%;">' +
 
         '<thead><tr style="background-color:#92D050;">' +
-        '<th>Primary Key No.</th>' +
+        '<th>Sl.</th>' +
         '<th>' + ISNULL(MAX(H1),'') + '</th>' +
         '<th>' + ISNULL(MAX(H2),'') + '</th>' +
         '<th>' + ISNULL(MAX(H3),'') + '</th>' +
@@ -95,7 +96,7 @@ HTMLData AS
         (
             SELECT
                 '<tr>' +
-                '<td>' + CAST(PKNo AS VARCHAR(10)) + '</td>' +
+                '<td>' + CAST(sl AS VARCHAR(10)) + '</td>' +
                 '<td>' + ISNULL(Value01,'') + '</td>' +
                 '<td>' + ISNULL(Value02,'') + '</td>' +
                 '<td>' + ISNULL(Value03,'') + '</td>' +
