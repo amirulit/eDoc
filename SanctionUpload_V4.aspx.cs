@@ -528,6 +528,8 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
         public string SanctionDate { get; set; }
         public string Segment { get; set; }
         public string ApprovalAuthority { get; set; }
+
+        public string EntryStatus { get; set; }
         public Double TotalAmount { get; set; }
 
         public List<FacilityDetail> Facilities { get; set; }
@@ -548,8 +550,6 @@ public partial class SanctionUpload_V4 : System.Web.UI.Page
         public bool Success { get; set; }
         public string Message { get; set; }
     }
-
-
 
 
 
@@ -684,7 +684,7 @@ INSERT INTO [dbo].[t_Sanction_Master]
            ,[upload_role]
            ,[cad_dm_role]
 
-           
+           ,[entry_status]
 
 
 )
@@ -713,8 +713,8 @@ INSERT INTO [dbo].[t_Sanction_Master]
            ,@Role
            ,@NextRole
 
-
             
+               ,'" + request.EntryStatus + @"'
 
 
 

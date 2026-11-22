@@ -367,17 +367,196 @@ $(document).ready(function () {
 
 
     $("#btnSaveAll_Pending").on("click", function () {
-
-
+        saveALL(0);
     });
 
 
     $("#btnSaveAll_Final").on("click", function () {
-
-
+        saveALL(1);
     });
 
-    $("#btnSaveAll_Final").on("click", function () {
+
+
+
+    function saveALL(Status)
+    {
+
+        var edoc_id = $("#ContentPlaceHolder1_txtEdocId").val();
+
+        var branch = $("#ContentPlaceHolder1_select3").val();
+
+        var sanc_ref = $("#txtSanctionReference").val();
+
+        var sanc_date = $("#txtSanctionDate").val();
+
+        var segment = $("#select2").val();
+
+        var appr_auth = $("#select1").val();
+
+
+
+        if (edoc_id == "" || branch == "" || sanc_ref == "" || sanc_date == "" || segment == "" || appr_auth == "") {
+            alert('Sorry !!! input missing.');
+            return;
+
+        }
+
+
+
+        var data = {};
+
+
+
+
+        data.EdocId = edoc_id;
+        data.Branch = branch;
+        data.SanctionReference = sanc_ref;
+        data.SanctionDate = sanc_date;
+        data.Segment = segment;
+        data.ApprovalAuthority = appr_auth;
+
+
+        data.EntryStatus = Status;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var tot_amount = 0.00;
+
+        var facilityDetails = [];
+
+        // Iterate through each row in the table body
+        $("#tblLoans tbody tr").each(function () {
+
+            var $row = $(this);
+
+            // Extract text from specific columns based on your renderTable structure:
+            var customerCode = $row.find("td:eq(1)").text().trim();
+            var customerName = $row.find("td:eq(2)").text().trim();
+
+            //var loanNature = $row.find("td:eq(3)").text().trim();
+            var loanNature = $row.find("td:eq(3) input[type='hidden']").val();
+            //var loanNatureText = $row.find("td:eq(3)").text().trim();
+
+            var currency = $row.find("td:eq(4)").text().trim();
+
+            var amountText = $row.find("td:eq(5)").text().trim();
+            var validity = $row.find("td:eq(6)").text().trim();
+
+            // Convert the amount string back to a float (removes commas if formatting added them)
+            var amount = parseFloat(amountText.replace(/,/g, "")) || 0;
+
+            tot_amount = tot_amount + amount
+
+            customerName = customerName.split("-")[0];
+
+
+            // Push the structured object into your loans array
+            facilityDetails.push({
+                CustomerCode: customerCode,
+                CustomerName: customerName,
+                LoanNature: loanNature,
+                Currency: currency,
+                Amount: amount,
+                Validity: validity
+            });
+
+
+        });
+
+
+        data.TotalAmount = tot_amount;
+
+        data.Facilities = facilityDetails;
+
+        if (facilityDetails.length == 0) {
+            alert('No Facility added');
+            return;
+        }
+
+        console.log(data);
+
+
+
+        var button = $(this);
+        button.prop("disabled", true);
+
+        $("#lblMessage").text("Saving...");
+
+
+
+        $.ajax({
+            type: "POST",
+            url: "SanctionUpload_V4.aspx/SaveSanction_V2",
+            data: JSON.stringify({ request: data }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+
+                var result = response.d;
+
+                if (result && result.Success) {
+                    //alert(result.Message);
+
+                    //loans = [];
+                    //renderTable();
+                    $("#lblMessage").text(result.Message);
+
+                    swal("Success!", result.Message, "success");
+
+
+                    $("#ContentPlaceHolder1_select3").val("").trigger("change");
+                    $("#select2").val("").trigger("change");
+                    $("#select1").val("").trigger("change");
+
+
+                    //$('#modalUpdateform').modal('show');
+
+
+                    $("#btnUpload").css({ "display": "inline-block" });
+
+                    //var dd_id = $(this).attr("dd-id");
+
+                    $("#lblID").text($("#ContentPlaceHolder1_txtEdocId").val());
+
+                    LoadNextRefNo();
+
+
+                    clear();
+
+                } else {
+                    $("#lblMessage").text(result ? result.Message : "Unable to save.");
+                }
+            },
+
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                $("#lblMessage").text("Error saving loan records.");
+            },
+
+            complete: function () {
+                button.prop("disabled", false);
+            }
+
+
+        });
+
+    }
+
+
+
+    $("#btnSaveAll_Final_BK").on("click", function () {
 
 
 

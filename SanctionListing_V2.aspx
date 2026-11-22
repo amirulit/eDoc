@@ -18,6 +18,11 @@
         var sanc_refno;
 
 
+
+
+
+
+
         $(document).ready(function () {
 
 
@@ -310,7 +315,49 @@
     <script type="text/javascript">
 
 
+        $(document).on("click", "#btnSaveFinal_ALL", function () {
 
+        
+
+            var edoc_id = $(this).data("edocid");
+            var edoc_refno = $(this).data("edocrefno");
+
+            //alert(edoc_id + " - " + edoc_refno);
+
+            $.ajax({
+
+                type: "POST",
+
+                url: "SanctionListing_V2.aspx/UpdateFinal",
+
+                data: JSON.stringify({
+                    edoc_id: edoc_id,
+                    edoc_refno: edoc_refno
+                }),
+
+                contentType: "application/json; charset=utf-8",
+
+                dataType: "json",
+
+                success: function (response) {
+
+                    alert("Updated Successfully");
+
+                },
+
+                error: function (xhr) {
+
+                    console.log(xhr.responseText);
+                    alert("Update Failed");
+
+                }
+
+            });
+
+        });
+
+
+    
 
         function ViewSanctionDetails(id) {
 
@@ -687,6 +734,24 @@
                 edoc_refno = $(this).data("edocrefno");
 
                 sanc_refno = $(this).data("sancrefno");
+
+
+                // Store values in Save button
+                $("#btnSaveFinal_ALL").data("edocid", edoc_id);
+                $("#btnSaveFinal_ALL").data("edocrefno", edoc_refno);
+
+
+                /*
+                
+                $("#btnSaveFinal_ALL").attr("data-edocid", edoc_id);
+                $("#btnSaveFinal_ALL").attr("data-edocrefno", edoc_refno);
+
+
+                var edoc_id = $("#btnSaveFinal_ALL").attr("data-edocid");
+                var edoc_refno = $("#btnSaveFinal_ALL").attr("data-edocrefno");
+                
+                
+                */
 
 
                 $('.display').show();
@@ -1366,6 +1431,11 @@
             </div>
 
             <div class="modal-footer">
+
+                <button type="button" class="btn btn-success"  id="btnSaveFinal_ALL">
+                    <span class="glyphicon    glyphicon-plus-sign "></span> Save(Final)
+                </button>
+
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span> Close
                 </button>
@@ -1447,7 +1517,7 @@
      { %>
 
 
-  <a href="#"  class="btn btn-warning btn-xs edit" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Edit</a>                                    
+<%--  <a href="#"  class="btn btn-warning btn-xs edit" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Edit</a>   --%>                                 
   <a href="#"  class="btn btn-info btn-xs upload" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">Upload</a>                                    
  <%} %>
  

@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.Services;
+using System.Web.Script.Services;
 
 public partial class SanctionListing_V2 : System.Web.UI.Page
 {
@@ -366,6 +367,42 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
         return documents;
 
     }
+
+
+
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string UpdateFinal(int edoc_id, string edoc_refno)
+    {
+        string connectionString =
+            ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "usp_Update_Final_Sanction", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@edoc_id", SqlDbType.Int).Value = edoc_id;
+
+                cmd.Parameters.Add("@edoc_refno", SqlDbType.VarChar, 100).Value =
+                    edoc_refno;
+
+                con.Open();
+
+                int updatedRows = Convert.ToInt32(cmd.ExecuteScalar());
+
+                if (updatedRows > 0)
+                    return "SUCCESS";
+
+                return "NO_RECORD";
+            }
+        }
+    }
+
     public DataTable Listing()
     {
 
