@@ -16,7 +16,10 @@ update  t_Drawdown_V2 set  status=22  where drawdown_id=477
   update t_Sanction_Master set  cad_dm_employee_id='assad.talukder@mblbd.com' where edoc_id=522 and   sanction_segment='Agriculture'  --SELECT CAST(SCOPE_IDENTITY() AS INT);
 
 
-  
+select * from [dbo].[PK_Lookup]
+
+select * from [dbo].[PK_Details] order by 2  asc 
+
 
 
 
@@ -29,7 +32,7 @@ select * from t_Drawdown_V2 order by 1 asc
 select * from t_Drawdown_Officers order by 1 asc 
 
 
-select * from t_Drawdown_Document_Master
+select * from t_Drawdown_Document_Master where drawdown_id=480
 
 select *from  t_Uploads_Drawdown --where  drawdown_id<>476
 

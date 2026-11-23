@@ -242,9 +242,9 @@
 
                 <hr />
 
-                <asp:Button ID="btnCAD_DM_SME" runat="server" Text="CAD DM SME" 
+                <asp:Button ID="btnCAD_DM_SME" runat="server" Text="CAD DM SME & Agri" 
                     onclick="btnCAD_DM_SME_Click"  CssClass="btn btn-success" />
-                <asp:Button ID="btnCAD_UH_SME" runat="server" Text="CAD Unit Head SME" 
+                <asp:Button ID="btnCAD_UH_SME" runat="server" Text="CAD Unit Head SME & Agri" 
                     onclick="btnCAD_UH_SME_Click"  CssClass="btn btn-success"/>
 
                 <hr />

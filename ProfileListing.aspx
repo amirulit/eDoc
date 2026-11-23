@@ -103,7 +103,21 @@
 
                 OpenCustomerModal(cus_type, cus_id);
 
+
+
                 $("#customerModal").modal('show');
+
+                $('#customerModal').on('shown.bs.modal', function () {
+
+                    $('#ContentPlaceHolder1_Select4,#Select1').select2({
+                        dropdownParent: $('#customerModal'),
+                        width: '100%' // Prevents 0px width bugs when initialized inside hidden containers
+                    });
+
+
+                });
+                
+
 
                 //$('#tblDetails').hide();
 
@@ -203,6 +217,9 @@
 
 
                         $("#customerModal").modal("show");
+
+
+
 
                         /*
                         

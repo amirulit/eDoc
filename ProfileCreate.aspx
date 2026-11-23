@@ -9,7 +9,11 @@
 
      <script type="text/javascript">
 
-        $(document).ready(function () {
+         $(document).ready(function () {
+
+             //,#ContentPlaceHolder1_Select4
+
+
             $("#Select1").select2({
                 placeholder: "<--Select-->",
                 allowClear: true
@@ -557,7 +561,7 @@
 
                 var cus_code = $("#txtCustomerCode").val();
                 //alert(type + '-' + cus_code);
-                getDetails(cus_type, cus_code, 'Profile')
+                getDetails(cus_type, cus_code, 'Profile');
 
             });
 
@@ -576,7 +580,9 @@
 
                 var cus_code = $("#txtCompOwnerCustomerID").val();
 
-                getDetails(cus_type, cus_code, 'Owner')
+                getDetails(cus_type, cus_code, 'Owner');
+
+
 
             });
 
@@ -625,6 +631,18 @@
                 //alert(cus_type);
 
                 //getDetails(cus_type, cus_code)
+
+
+
+                $('#divOwnerInfo').on('shown.bs.modal', function () {
+
+                    $('#ContentPlaceHolder1_Select4,#Select5').select2({
+                        dropdownParent: $('#divOwnerInfo'),
+                        width: '100%' // Prevents 0px width bugs when initialized inside hidden containers
+                    });
+
+                });
+
 
             });
 
@@ -1321,7 +1339,7 @@
 
         
       <div class="modal" id="divOwnerInfo" tabindex="-1" role="dialog" data-backdrop="static"   data-keyboard="false">
-        <div class="modal-dialog modal-lg" style="width: 90%" role="document">
+        <div class="modal-dialog" style="width: 90%" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-green">
                     <h5 class="modal-title" id="H2">Owner/Partner/JV/Company Management Body

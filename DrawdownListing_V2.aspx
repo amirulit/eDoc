@@ -957,7 +957,7 @@
                   		<h3 class="box-title">Drawdown Listing </h3>
                 	</div><!-- /.box-header -->
                 	<div class="box-body table-responsive"  >
-                     
+                     <asp:Label ID="lblMsg" runat="server" Text=""></asp:Label>
                 		<table id="example1" class="table table-bordered table-striped">
                     		<thead>
                             <tr>

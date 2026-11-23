@@ -25,7 +25,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         TableData = Listing();
 
-       
+
     }
     public class DeclineReason
     {
@@ -147,8 +147,8 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
     public static String SaveSSC_Office_Note(
         int drawdown_id,
         //String conditions,
-         //String status,
-              //String reason,
+        //String status,
+        //String reason,
         String office_note
         )
     {
@@ -242,7 +242,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
                         obj.create_by = Convert.ToString(dr["create_by"]);
 
-                     
+
                         list.Add(obj);
 
 
@@ -305,7 +305,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         using (SqlConnection con = new SqlConnection(cs))
         {
-           String sql = @"SELECT id, conditions,status, reason, deadline
+            String sql = @"SELECT id, conditions,status, reason, deadline
                        FROM t_SSC_Conditions
                        WHERE drawdown_id = @drawdown_id
                        ORDER BY id asc";
@@ -461,16 +461,23 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         //SqlCommand cmd = new SqlCommand(Sql, connection);
 
         String BranchCode = Session["BranchCode"].ToString();
-
+         
 
         ////For Branch
         if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
         {
+
+            //Response.Write(Role);
+
+            //Response.Write(BranchCode);
+
             command.Parameters.Add(new SqlParameter("@BranchCode", BranchCode));
+
             command.CommandText = "usp_Drawdown_Listing_For_Branch_Update";
 
+
         }
-        if (Role == 97 || Role == 99)
+        else if (Role == 97 || Role == 99)
         {
 
             command.CommandText = "usp_Drawdown_Listing_For_Admin";
@@ -480,6 +487,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         {
 
             command.Parameters.Add(new SqlParameter("@Role", Role));
+
             command.CommandText = "usp_Drawdown_Listing_For_CAD_Update";
 
         }
@@ -496,11 +504,12 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         catch (Exception ex)
         {
             //ErrorMSG = ex.Message;
+            lblMsg.Text = ex.Message;
+            //Response.Write(ex.Message);
+
         }
+
         return ds.Tables[0];
 
     }
-
-
-
 }

@@ -191,7 +191,62 @@ $(document).ready(function () {
 
     });
 
+
+    // ADD BUTTON
+    //$("#btnAdd").on("click", function () {
+    $(document).on("click", "#btnAdd2", function () {
+
+        console.log("Add button clicked");
+
+        var customerCode = $.trim($("#ddlCustomerCode2").val());
+        var customerName = $("#ddlCustomerCode2 option:selected").text();
+
+        var loanNature = $("#ddlLoanNature2").val();
+        var loanNatureText = $("#ddlLoanNature2 option:selected").text();
+
+        var currency = $("#ddlCurrency2").val();
+        var currencyText = $("#ddlCurrency2 option:selected").text();
+
+        var amount = $("#txtAmount2").val();
+        var validity = $("#txtValidity2").val();
+
+        if (!customerCode || !loanNature || !amount || !validity || !currency) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (isNaN(amount) || Number(amount) <= 0) {
+            alert("Please enter a valid amount.");
+            return;
+        }
+
+        loans.push({
+            CustomerCode: customerCode,
+            CustomerName: customerName,
+            LoanNature: loanNature,
+            LoanNatureSelected: loanNatureText,
+            Currency: currency,
+            CurrencySelected: currencyText,
+            Amount: Number(amount),
+            Validity: validity
+        });
+
+        renderTable();
+
+        // Clear fields
+        //$("#ddlCustomerCode2").val("").trigger("change");
+        $("#ddlLoanNature2").val("").trigger("change");
+        $("#ddlCurrency2").val("").trigger("change");
+        $("#txtAmount2").val("");
+        $("#txtValidity2").val("");
+
+    });
+
 });
+
+
+
+
 
 
 // Render all rows safely
@@ -273,6 +328,17 @@ $(document).ready(function () {
                 $.each(response.d, function (i, item) {
                     ddl.append(new Option(item.Text, item.Value));
                 });
+
+                ddl = $("#ddlCustomerCode2");
+                ddl.empty();
+                ddl.append(new Option("-- Select Customer --", ""));
+
+                $.each(response.d, function (i, item) {
+                    ddl.append(new Option(item.Text, item.Value));
+                });
+
+
+                
             },
 
             error: function (xhr) {
@@ -292,6 +358,16 @@ $(document).ready(function () {
 
             success: function (response) {
                 var ddl = $("#ddlLoanNature");
+                ddl.empty();
+                ddl.append(new Option("-- Select Loan Nature --", ""));
+
+                $.each(response.d, function (i, item) {
+                    ddl.append(new Option(item.Text, item.Value));
+                });
+
+
+
+                ddl = $("#ddlLoanNature2");
                 ddl.empty();
                 ddl.append(new Option("-- Select Loan Nature --", ""));
 

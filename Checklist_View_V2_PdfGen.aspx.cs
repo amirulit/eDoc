@@ -489,8 +489,21 @@ font-family:Cambria
                 String sl = Convert.ToString(row["Sl"]);
                 String name = Convert.ToString(row["name"]);
                 String required = Convert.ToString(row["required"]);
-                String status = Convert.ToString(row["status"]);
+
+
+                if (required == "Y")
+                {
+                    required = "Yes";
+                }
+                else
+                {
+                    required = "No";
+                }
+
+                String status = Convert.ToString(row["status"]); 
+
                 String documents = Convert.ToString(row["file_name"]);
+
 
                 if (documents == "" || documents == null)
                     documents = "";
@@ -503,9 +516,7 @@ font-family:Cambria
 
                 String others = "";
 
-                DataRow[] matchedRows = TableData_Details.Select(
-                    "PKNo = " + pk
-                );
+                DataRow[] matchedRows = TableData_Details.Select("PKNo = " + pk);
 
                 if (matchedRows.Length > 0)
                 {
@@ -515,8 +526,7 @@ font-family:Cambria
 
                 sb.AppendLine("<tr>");
 
-                sb.AppendFormat(
-                    "<td>{0}</td>",
+                sb.AppendFormat(    "<td>{0}</td>",
                     HttpUtility.HtmlEncode(sl)
                 );
 
