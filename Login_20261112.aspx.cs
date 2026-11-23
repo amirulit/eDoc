@@ -13,6 +13,9 @@ public partial class Login_20261112 : System.Web.UI.Page
     }
 
 
+
+
+
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
 
@@ -27,8 +30,8 @@ public partial class Login_20261112 : System.Web.UI.Page
         if (txtDomainID.Text == "cadchecker@mblbd.com")
             Session["UserType"] = "CADChecker";
 
-        
-        
+
+
         Response.Redirect("Dashboard.aspx");
 
 
@@ -38,37 +41,39 @@ public partial class Login_20261112 : System.Web.UI.Page
 
     protected void btnRM_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "RM";
 
-        Session["Name"] = "Relationship Manager";
 
-        Session["Role"] = 1;
 
-        Session["UserType"] = "CADMaker";
+        Session["DomainID"] = "md.amirul@mblbd.com";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        Session["Name"] = "Mohammad Amirul Islam";
 
+        Session["Role"] = 5;
+
+        Session["RoleName"] = "RM(Branch)";
+
+
+        Session["BranchCode"] = "BD0010101";
 
 
         Response.Redirect("Dashboard.aspx");
+
+
     }
     protected void btnCD_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "CD";
+        Session["DomainID"] = "RM-CBD";
 
-        Session["Name"] = "Credit Division";
+        Session["Name"] = "Ahsanul Islam";
 
-        Session["Role"] = 3;
+        Session["Role"] = 21;
 
         Session["UserType"] = "CADMaker";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
 
@@ -76,22 +81,26 @@ public partial class Login_20261112 : System.Web.UI.Page
     }
     protected void btnCI_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "CI";
 
-        Session["Name"] = "Credit Incharge";
 
-        Session["Role"] = 5;
+        Session["DomainID"] = "nowfel.ahmed@mblbd.com";
 
-        Session["UserType"] = "CADMaker";
+        Session["Name"] = "Sheikh Nowfel Ahmed";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        Session["Role"] = 7;
 
+        Session["RoleName"] = "Credit Incharge";
+
+
+        Session["BranchCode"] = "BD0010101";
 
 
         Response.Redirect("Dashboard.aspx");
+
+
+
+
+
     }
     protected void btnMOP_Click(object sender, EventArgs e)
     {
@@ -103,10 +112,10 @@ public partial class Login_20261112 : System.Web.UI.Page
 
         Session["UserType"] = "CADMaker";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
 
@@ -114,19 +123,29 @@ public partial class Login_20261112 : System.Web.UI.Page
     }
     protected void btnHOB_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "HOB";
+
+        Session["DomainID"] = "ahsanul.islam@mblbd.com";
+
+        Session["Name"] = "Ahsanul Islam";
+
+        Session["Role"] = 11;
+
+        Session["RoleName"] = "HOB";
 
 
-        Session["Name"] = "Head of Branch";
+        Session["BranchCode"] = "BD0010101";
 
-        Session["Role"] = 15;
 
-        Session["UserType"] = "CADMaker";
+        Response.Redirect("Dashboard.aspx");
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+
+
+
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
 
@@ -134,24 +153,28 @@ public partial class Login_20261112 : System.Web.UI.Page
     }
     protected void btnAdmin_Click(object sender, EventArgs e)
     {
-        Session["DomainID"] = "Admin";
+        Session["DomainID"] = "IFTIKHAR AHMED CHOWDHURYashiqur.rahman@mblbd.com";
 
 
-        Session["Name"] = "Admin";
+        Session["Name"] = "MD ASHIQUR RAHMAN";
 
 
-        Session["Role"] = 99;
+        Session["Role"] = 97;
 
-        Session["UserType"] = "CADMaker";
+        Session["RoleName"] = "Admin";
 
-        if (txtDomainID.Text == "cadmaker@mblbd.com")
-            Session["UserType"] = "CADMaker";
-        if (txtDomainID.Text == "cadchecker@mblbd.com")
-            Session["UserType"] = "CADChecker";
+        //Session["UserType"] = "CADMaker";
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
 
 
 
         Response.Redirect("Dashboard.aspx");
+
+
     }
     protected void btnDM_Click(object sender, EventArgs e)
     {
@@ -192,8 +215,462 @@ public partial class Login_20261112 : System.Web.UI.Page
 
         Response.Redirect("Dashboard.aspx");
     }
+    protected void btnCD_CBD_Click(object sender, EventArgs e)
+    {
+
+        Session["DomainID"] = "Prabal@mblbd.com";
+
+
+        Session["DomainID"] = "Prabal@mblbd.com";
+
+        Session["Name"] = "Lutful Hoque Prabal";
+        Session["RoleName"] = "RM-CBD";
+
+        Session["Role"] = 21;
+
+        Session["BranchCode"] = "Credit";
+
+
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_SME_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "nazrul@mblbd.com";
+
+        Session["RoleName"] = "RM-CMSME";
+        Session["Name"] = "Nazrul Islam";
+
+        Session["Role"] = 25;
+
+        Session["BranchCode"] = "Credit";
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_Retail_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "rejoan@mblbd.com";
+
+        Session["Name"] = "Rejoanul Hoque";
+
+        Session["Role"] = 29;
+
+        Session["RoleName"] = "RM-Retail";
+
+        Session["BranchCode"] = "Credit";
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_Agri_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "sadek@mblbd.com";
+
+        Session["Name"] = "A T M SADIQUSSALAM CHOWDHURY";
+
+        Session["Role"] = 33;
+        Session["RoleName"] = "RM-Agri";
+
+        Session["BranchCode"] = "Credit";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_CBD_SAMD_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "RM-CBD(SAMD)";
+
+        Session["Name"] = "RM-CBD(SAMD)";
+
+        Session["Role"] = 33;
+
+
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_SME_SAMD_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "RM-CMSME(SAMD)";
+
+        Session["Name"] = "RM-CMSME(SAMD)";
+
+        Session["Role"] = 41;
+
+
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_Retail_SAMD_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "RM-Retail(SAMD)";
+
+        Session["Name"] = "RM-Retail(SAMD)";
+
+        Session["Role"] = 45;
+
+
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_Agri_SAMD_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "RM-Agri(SAMD)";
+
+        Session["Name"] = "RM-Agri(SAMD)";
+
+        Session["Role"] = 49;
+
+
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCAD_DM_CBD_Click(object sender, EventArgs e)
+    {
+        Session["BranchCode"] = "CAD";
+        Session["DomainID"] = "mahmudulhasan@mblbd.com";
+
+        Session["Name"] = "MD. MAHMUDUL HASAN";
+
+        Session["Role"] = 57;
+        Session["RoleName"] = "DM-Corporate";
+
+
+        Response.Redirect("Dashboard.aspx");
+
+
+
+    }
+    protected void btnCAD_UH_CBD_Click(object sender, EventArgs e)
+    {
+
+        Session["func_role"] = "Unit Head-Corporate";
+
+        Session["DomainID"] = "mohanta@mblbd.com";
+
+        Session["Name"] = "KALI PADA MOHANTA";
+
+        Session["RoleName"] = "Unit Head-Corporate";
+
+        Session["Role"] = 59;
+
+        Session["BranchCode"] = "CAD";
+
+
+        Session["Working_Area"] = "Corporate";
+
+        Response.Redirect("Dashboard.aspx");
+
+
+    }
+    protected void btnCAD_DM_SME_Click(object sender, EventArgs e)
+    {
+        Session["BranchCode"] = "CAD";
+        Session["DomainID"] = "assad.talukder@mblbd.com";
+
+        Session["Name"] = "MUHAMMAD ASADUZZAMAN TALUKDER";
+
+        Session["Role"] = 61;
+        Session["RoleName"] = "DM-CMSME & Agri";
+
+
+        //Session["BranchCode"] = "SME-CAD";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCAD_UH_SME_Click(object sender, EventArgs e)
+    {
+        Session["Working_Area"] = "CMSME & Agri";
+
+
+
+        Session["BranchCode"] = "CAD";
+
+        Session["DomainID"] = "fayz@mblbd.com";
+
+
+
+        Session["Name"] = "MOHAMMAD FAYZUL ISLAM";
+        Session["RoleName"] = "Unit Head-CMSME & Agri";
+
+
+        Session["Role"] = 63;
+
+
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCAD_DM_Retail_Click(object sender, EventArgs e)
+    {
+        Session["BranchCode"] = "CAD";
+        Session["DomainID"] = "jenat.jahan@mblbd.com";
+
+        Session["Name"] = "JENAT JAHAN";
+
+        Session["Role"] = 65;
+        Session["RoleName"] = "DM-Retail";
+
+
+        //Session["BranchCode"] = "SME-CAD";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCAD_UH_Retail_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "amotaleb@mblbd.com";
+
+        Session["Name"] = "MOHAMMAD ABDUL MOTALEB";
+
+        Session["Role"] = 67;
+
+        Session["BranchCode"] = "CAD";
+        Session["RoleName"] = "Unit Head-Retail";
+
+
+        Session["Working_Area"] = "Retail";
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCAD_DM_Agri_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnCAD_UH_Agri_Click(object sender, EventArgs e)
+    {
+
+    }
     protected void Button1_Click(object sender, EventArgs e)
     {
-        Response.Redirect("Dashboard_New.aspx");
+
+
+
+        Session["DomainID"] = "md.amirul@mblbd.com";
+
+        Session["Name"] = "Mohammad Amirul Islam";
+
+        Session["Role"] = 5;
+
+        Session["RoleName"] = "RM(Branch)";
+
+
+        Session["BranchCode"] = "BD0010102";
+
+
+        Response.Redirect("Dashboard.aspx");
+
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+
+
+        Session["DomainID"] = "nowfel.ahmed@mblbd.com";
+
+        Session["Name"] = "Sheikh Nowfel Ahmed";
+
+        Session["Role"] = 7;
+
+        Session["RoleName"] = "Credit Incharge";
+
+
+        Session["BranchCode"] = "BD0010102";
+
+
+        Response.Redirect("Dashboard.aspx");
+
+
+    }
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "ahsanul.islam@mblbd.com";
+
+        Session["Name"] = "Ahsanul Islam";
+
+        Session["Role"] = 7;
+
+        Session["RoleName"] = "HOB";
+
+
+        Session["BranchCode"] = "BD0010102";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_UH_CBD_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "Prabal@mblbd.com";
+
+        Session["Name"] = "Lutful Hoque Prabal";
+        Session["RoleName"] = "Unit Head-CBD";
+
+        Session["Role"] = 23;
+
+        Session["BranchCode"] = "Credit";
+
+
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_UH_SME_Click(object sender, EventArgs e)
+    {
+
+
+
+        Session["DomainID"] = "nazrul@mblbd.com";
+
+        Session["RoleName"] = "Unit Head-CMSME";
+        Session["Name"] = "Nazrul Islam";
+
+        Session["Role"] = 27;
+
+        Session["BranchCode"] = "Credit";
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_UH_Retail_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "rejoan@mblbd.com";
+
+        Session["Name"] = "Rejoanul Hoque";
+
+        Session["Role"] = 31;
+
+        Session["RoleName"] = "Unit Head-Retail";
+
+        Session["BranchCode"] = "Credit";
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnCD_UH_Agri_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "sadek@mblbd.com";
+
+        Session["Name"] = "A T M SADIQUSSALAM CHOWDHURY";
+
+        Session["Role"] = 35;
+        Session["RoleName"] = "Unit Head-Agri";
+
+        Session["BranchCode"] = "Credit";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        Session["BranchCode"] = "CAD";
+        Session["DomainID"] = "raihan.reza@mblbd.com";
+
+        Session["Name"] = "MD. RAIHAN REZA CHOWDHURY";
+
+        Session["Role"] = 81;
+        Session["RoleName"] = "Limit-Manager";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void Button5_Click(object sender, EventArgs e)
+    {
+        Session["BranchCode"] = "CAD";
+        Session["DomainID"] = "paritosh31@mblbd.com";
+
+        Session["Name"] = "PARITOSH KUMAR DHAR";
+
+        Session["Role"] = 83;
+        Session["RoleName"] = "Unit Head-Limit Unit";
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "IFTIKHAR AHMED CHOWDHURYashiqur.rahman@mblbd.com";
+
+
+        Session["Name"] = "MD ASHIQUR RAHMAN";
+
+
+        Session["Role"] = 97;
+
+        Session["RoleName"] = "Admin";
+
+        //Session["UserType"] = "CADMaker";
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
+
+
+
+        Response.Redirect("Dashboard.aspx");
+    }
+    protected void btnDHead_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "iftikhar.ahmed@mblbd.com";
+
+
+        Session["Name"] = "	IFTIKHAR AHMED CHOWDHURY";
+
+
+        Session["Role"] = 97;
+
+        Session["RoleName"] = "Admin";
+
+
+        Session["BranchCode"] = "CAD";
+
+        //Session["UserType"] = "CADMaker";
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
+
+        Response.Redirect("Dashboard.aspx");
+
+    }
+    protected void btnHead_Click(object sender, EventArgs e)
+    {
+        Session["DomainID"] = "ashiqur.rahman@mblbd.com";
+
+
+        Session["Name"] = "MD ASHIQUR RAHMAN";
+
+
+        Session["Role"] = 99;
+
+        Session["RoleName"] = "Admin";
+        Session["BranchCode"] = "CAD";
+
+        //Session["UserType"] = "CADMaker";
+
+        //if (txtDomainID.Text == "cadmaker@mblbd.com")
+        //    Session["UserType"] = "CADMaker";
+        //if (txtDomainID.Text == "cadchecker@mblbd.com")
+        //    Session["UserType"] = "CADChecker";
+
+
+        Response.Redirect("Dashboard.aspx");
     }
 }

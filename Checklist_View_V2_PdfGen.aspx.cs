@@ -77,6 +77,8 @@ Upload Not Required
 
     public String  Checklist_File_Type {get;set;}
 
+    public Int32 Status { get; set; }
+
     public String EdocRefNo { get; set; }
     
     protected string DocumentTableHtml { get; set; }
@@ -390,14 +392,12 @@ font-family:Cambria
 
         foreach (DataRow row in  TableData_Sanction_Detail.Rows)
         {
-            string customerName = Convert.ToString(row["customer_name"]);
-            string loanNature = Convert.ToString(row["loan_nature"]);
+            String customerName = Convert.ToString(row["customer_name"]);
+            String loanNature = Convert.ToString(row["loan_nature"]);
 
-            string amount = row["amount"] == DBNull.Value
-                ? ""
-                : Convert.ToDecimal(row["amount"]).ToString("N2");
+            String amount = row["amount"] == DBNull.Value  ? ""  : Convert.ToDecimal(row["amount"]).ToString("N2");
 
-            string validity = Convert.ToString(row["validity"]);
+            String validity = Convert.ToString(row["validity"]);
 
             sb.AppendLine("<tr>");
 
@@ -436,7 +436,13 @@ font-family:Cambria
         sb.AppendLine("<tr>");
         sb.AppendLine("<th>SL#</th>");
         sb.AppendLine("<th>Name</th>");
-        sb.AppendLine("<th>Required ?</th>");
+        sb.AppendLine("<th style='width:35px; height:100px; text-align:center;'>");
+
+        sb.AppendLine("<svg width='35' height='100' xmlns='http://www.w3.org/2000/svg'>");
+        sb.AppendLine("<text x='-50' y='23' transform='rotate(-90)' font-size='12'>Required ?</text>");
+        sb.AppendLine("</svg>");
+
+        sb.AppendLine("</th>");
         sb.AppendLine("<th>Status</th>");
         sb.AppendLine("<th>Document</th>");
         sb.AppendLine("<th>Remarks</th>");
@@ -742,9 +748,13 @@ font-family:Cambria
     };
         }
 
+        //If approved
+        if (Status == 36)
+        {
 
 
 
+        }
     
         /*OLD Code*/
         /*
@@ -1274,6 +1284,9 @@ OTHER DOCUMENTS
 
 
             Checklist_File_Type = TableData_Drawdown_Info.Rows[0]["cad_operation_mode"].ToString();
+
+
+            Status = Convert.ToInt32(TableData_Drawdown_Info.Rows[0]["cad_operation_mode"].ToString());
 
             //GridView1.DataSource = Ds.Tables[18];
             //GridView1.DataBind();

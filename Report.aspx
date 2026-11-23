@@ -310,6 +310,10 @@
 
             </div>
 
+            <br />
+
+
+
             <div id="data"></div>
 
         </div>
@@ -355,6 +359,9 @@
                         </button>
 
                     </div>
+
+            <br />
+
 
                     <div id="creditRatingData"></div>
 

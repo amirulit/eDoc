@@ -17,6 +17,8 @@
 
         var sanc_refno;
 
+        var status;
+
 
 
 
@@ -729,17 +731,34 @@
             $("body").on("click", ".view", function () {
 
 
+
+
+                status= $(this).data("status");
+
                 edoc_id = $(this).data("edocid");
 
                 edoc_refno = $(this).data("edocrefno");
 
                 sanc_refno = $(this).data("sancrefno");
 
+                //alert(status);
 
-                // Store values in Save button
-                $("#btnSaveFinal_ALL").data("edocid", edoc_id);
-                $("#btnSaveFinal_ALL").data("edocrefno", edoc_refno);
+                if (status==1)
+                {
+                    // Store values in Save button
+                    $("#btnSaveFinal_ALL").data("edocid", edoc_id);
+                    $("#btnSaveFinal_ALL").data("edocrefno", edoc_refno);
 
+                    $("#btnSaveFinal_ALL").show();
+
+
+                }else
+                {
+
+                    $("#btnSaveFinal_ALL").hide();
+                
+                
+                }
 
                 /*
                 
@@ -1431,11 +1450,12 @@
             </div>
 
             <div class="modal-footer">
-
+                 <%  if (Role == 21 || Role == 23 || Role == 25 || Role == 27 || Role == 29 || Role == 31 || Role == 33 || Role == 35)
+     { %>
                 <button type="button" class="btn btn-success"  id="btnSaveFinal_ALL">
                     <span class="glyphicon    glyphicon-plus-sign "></span> Save(Final)
                 </button>
-
+                <%} %>
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span> Close
                 </button>
@@ -1504,7 +1524,7 @@
   -->
 
 
-  <a href="#"  class="btn btn-success btn-xs view"  data-sancrefno="<%=TableData.Rows[data]["sanction_reference"]%>" data-edocrefno="<%=TableData.Rows[data]["edoc_refno"]%>" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View</a>                                    
+  <a href="#"  class="btn btn-success btn-xs view"  data-sancrefno="<%=TableData.Rows[data]["sanction_reference"]%>" data-edocrefno="<%=TableData.Rows[data]["edoc_refno"]%>" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>" data-status="<%=TableData.Rows[data]["status"]%>" >View</a>                                    
 
 
                             <%  if (Role==23  || Role==27  || Role==31 || Role==35){ %>
@@ -1522,7 +1542,7 @@
  <%} %>
  
  
-  <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View Upload</a>                                    
+  <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View (Uploaded Docs)</a>                                    
 
 
 <%  

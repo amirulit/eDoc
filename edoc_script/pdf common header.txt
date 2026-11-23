@@ -1,0 +1,87 @@
+1. C# – PageHeaderHtml
+
+var pdf = new NReco.PdfGenerator.HtmlToPdfConverter();
+
+pdf.PageHeaderHtml = @"
+<html>
+<head>
+<style>
+    body {
+        font-family: Arial;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: center;
+        padding: 3px;
+    }
+
+    .bank-name {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .division {
+        font-size: 14px;
+    }
+
+    .branch {
+        font-size: 12px;
+    }
+
+    .header-line {
+        border-bottom: 1px solid #000;
+    }
+</style>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th class='bank-name'>Mercantile Bank PLC</th>
+    </tr>
+    <tr>
+        <th class='division'>Credit Administration Division</th>
+    </tr>
+    <tr>
+        <th class='branch'>Booking Branch : " +
+        System.Web.HttpUtility.HtmlEncode(
+            Convert.ToString(TableData_Sanction_Master.Rows[0]["branch_name"])) +
+        @"</th>
+    </tr>
+    <tr>
+        <td class='header-line'></td>
+    </tr>
+</table>
+
+</body>
+</html>";
+
+
+2. Main HTML body
+
+pdf.PageHeaderHeight = 65;
+pdf.Margins.Top = 80;
+
+
+
+sb.AppendLine("<table class='table table-condensed my-table' style='width:100%;'>");
+
+sb.AppendLine("<tr>");
+sb.AppendLine("<td colspan='2'>Loan Documentation Checklist</td>");
+sb.AppendLine("</tr>");
+
+sb.AppendLine("<tr>");
+sb.AppendLine("<td>CFR " + EdocRefNo + "</td>");
+sb.AppendLine("<td style='text-align:right;'>" +
+    System.DateTime.Now.ToString("MMM dd, yyyy") + "</td>");
+sb.AppendLine("</tr>");
+
+sb.AppendLine("</table>");

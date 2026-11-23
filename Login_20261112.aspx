@@ -318,28 +318,104 @@
             </div>
             <!-- Role Selection -->
             <div class="panel-footer">
-                <h4 style="color: #34495e; font-weight: 600; margin-bottom: 15px;">
-                    <i class="fa fa-users"></i>Login As
-                </h4>
+                <input type="hidden" name="do" value="user_login" />
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-info" OnClick="btnSubmit_Click"
                     Visible="false" />
-                <asp:Button ID="btnRM" runat="server" Text="RM" OnClick="btnRM_Click" CssClass="role-btn btn-rm" />
-                <asp:Button ID="btnCD" runat="server" Text="CD" OnClick="btnCD_Click" CssClass="role-btn btn-cd" />
-                <asp:Button ID="btnCI" runat="server" Text="CI" OnClick="btnCI_Click" CssClass="role-btn btn-ci" />
-                <asp:Button ID="btnMOP" runat="server" Text="MOP" OnClick="btnMOP_Click" CssClass="role-btn btn-hob"
-                    Visible="false" />
-                <asp:Button ID="btnHOB" runat="server" Text="HOB" OnClick="btnHOB_Click" CssClass="role-btn btn-hob" />
-                <asp:Button ID="btnAdmin" runat="server" Text="Admin" OnClick="btnAdmin_Click" CssClass="role-btn btn-admin" />
-                <asp:Button ID="btnDM" runat="server" Text="DM" OnClick="btnDM_Click" CssClass="role-btn btn-dm" />
-                <asp:Button ID="btnUnitHead" runat="server" Text="Unit Head" OnClick="btnUnitHead_Click"
-                    CssClass="role-btn btn-unit" />
+                Credit Division:
+                <asp:Button ID="btnCD_RM_CBD" runat="server" Text="CD RM (CBD)" 
+                    CssClass="btn btn-primary" onclick="btnCD_CBD_Click"  />
+
+                <asp:Button ID="btnCD_UH_CBD"   CssClass="btn btn-primary"  runat="server" Text="CD UH (CBD)" OnClick="btnCD_UH_CBD_Click" />
+
+                    <asp:Button ID="btnCD_RM_SME" runat="server" Text="CD RM (SME)" 
+                    CssClass="btn btn-info" onclick="btnCD_SME_Click"   />
+
+                 <asp:Button ID="btnCD_UH_SME"   CssClass="btn btn-info"  runat="server" Text="CD UH (SME)" OnClick="btnCD_UH_SME_Click" />
+
+                    <asp:Button ID="btnCD_RM_Retail" runat="server" Text="CD RM (Retail)" 
+                    CssClass="btn btn-success" onclick="btnCD_Retail_Click"   />
+
+
+                 <asp:Button ID="btnCD_UH_Retail"   CssClass="btn btn-success" runat="server" Text="CD UH (Retail)" OnClick="btnCD_UH_Retail_Click" />
+
+                    <asp:Button ID="btnCD_RM_Agri" runat="server" Text="CD RM (Agri)" 
+                    CssClass="btn   btn-warning  " onclick="btnCD_Agri_Click"   />
+
+
+                  <asp:Button ID="btnCD_UH_Agri"   CssClass="btn   btn-warning  " runat="server" Text="CD UH (Agri)" OnClick="btnCD_UH_Agri_Click" />
+
+
                 <hr />
-                <div style="margin-top: 15px;">
-                    <a href="New_Reg.aspx" class="btn btn-primary footer-link"><i class="fa fa-user-plus">
-                    </i>New User? </a><a href="Login_V3.aspx" class="btn btn-success footer-link"><i
-                        class="fa fa-sign-in"></i>Login </a>
-                    <asp:Button ID="Button1" runat="server" Text="Button" onclick="Button1_Click" />
-                </div>
+
+
+                  SAMD:
+                <asp:Button ID="btnCD_CBD_SAMD" runat="server" Text="RM-SAMD (CBD)" 
+                    CssClass="btn btn-info" onclick="btnCD_CBD_SAMD_Click"   />
+
+                    <asp:Button ID="btnCD_SME_SAMD" runat="server" Text="RM-SAMD (SME)" 
+                    CssClass="btn btn-info" onclick="btnCD_SME_SAMD_Click"   />
+
+                    <asp:Button ID="btnCD_Retail_SAMD" runat="server" Text="RM-SAMD (Retail)" 
+                    CssClass="btn btn-info" onclick="btnCD_Retail_SAMD_Click"  />
+
+                    <asp:Button ID="btnCD_Agri_SAMD" runat="server" Text="RM-SAMD (Agri)" 
+                    CssClass="btn btn-info" onclick="btnCD_Agri_SAMD_Click"    />
+                <hr />
+
+
+
+                Branch:
+                <asp:Button ID="btnRM" runat="server" Text="RM(Main)" OnClick="btnRM_Click" CssClass="btn btn-default " />
+                <asp:Button ID="btnCI" runat="server" Text="CI(Main)" CssClass="btn btn-default" OnClick="btnCI_Click" />
+                <asp:Button ID="btnHOB" runat="server" Text="HOB(Main)" CssClass="btn btn-default" OnClick="btnHOB_Click" />
+                <hr />
+
+
+                <asp:Button ID="Button1" runat="server" Text="RM(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button1_Click" />
+                <asp:Button ID="Button2" runat="server" Text="CI(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button2_Click" />
+                <asp:Button ID="Button3" runat="server" Text="HOB(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button3_Click" />
+
+
+                <hr />
+
+
+                CAD:
+
+                <asp:Button ID="btnCAD_DM_CBD" runat="server" Text="CAD DM CBD" 
+                    onclick="btnCAD_DM_CBD_Click" CssClass="btn btn-primary"  />
+                <asp:Button ID="btnCAD_UH_CBD" runat="server" Text="CAD Unit Head CBD" 
+                    onclick="btnCAD_UH_CBD_Click"  CssClass="btn btn-primary" />
+
+                <hr />
+
+                <asp:Button ID="btnCAD_DM_SME" runat="server" Text="CAD DM SME" 
+                    onclick="btnCAD_DM_SME_Click"  CssClass="btn btn-success" />
+                <asp:Button ID="btnCAD_UH_SME" runat="server" Text="CAD Unit Head SME" 
+                    onclick="btnCAD_UH_SME_Click"  CssClass="btn btn-success"/>
+
+                <hr />
+                <asp:Button ID="btnCAD_DM_Retail" runat="server" Text="CAD DM Retail" 
+                    onclick="btnCAD_DM_Retail_Click"  CssClass="btn btn-warning" />
+                <asp:Button ID="btnCAD_UH_Retail" runat="server" Text="CAD Unit Head Retail" 
+                    onclick="btnCAD_UH_Retail_Click"  CssClass="btn btn-warning"/>
+                <hr />
+              <%--  <asp:Button ID="btnCAD_DM_Agri" runat="server" Text="CAD DM Agri" 
+                    onclick="btnCAD_DM_Agri_Click"  CssClass="btn btn-primary" />
+                <asp:Button ID="btnCAD_UH_Agri" runat="server" Text="CAD Unit Head Agri" 
+                    onclick="btnCAD_UH_Agri_Click"  CssClass="btn btn-success"/>--%>
+                <hr />
+
+                <asp:Button ID="Button4" runat="server" Text="Limit Manager" OnClick="Button4_Click"  CssClass="btn btn-primary"/>
+                <asp:Button ID="Button5" runat="server" Text="Limit UnitHead" OnClick="Button5_Click"  CssClass="btn btn-primary"/>
+
+                <hr />
+                Admin:
+                <asp:Button ID="btnDHead" runat="server" Text="DHOD-CAD" CssClass="btn btn-danger" OnClick="btnDHead_Click"
+                    />
+                <asp:Button ID="btnHead" runat="server" Text="HOD-CAD" CssClass="btn btn-danger" OnClick="btnHead_Click"  />
+                <hr />
+                <a href="New_V2.aspx" class="btn  btn-primary">New?</a> <a href="Login_V3.aspx" class="btn btn-success">
+                    Login</a>
             </div>
         </div>
         <div style="text-align: center; color: #718096; font-size: 12px; margin-top: 20px;">

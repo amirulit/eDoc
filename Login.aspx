@@ -200,7 +200,7 @@
 
 
                 <hr />
-
+                <!--
 
                   SAMD:
                 <asp:Button ID="btnCD_CBD_SAMD" runat="server" Text="RM-SAMD (CBD)" 
@@ -215,7 +215,7 @@
                     <asp:Button ID="btnCD_Agri_SAMD" runat="server" Text="RM-SAMD (Agri)" 
                     CssClass="btn btn-info" onclick="btnCD_Agri_SAMD_Click"    />
                 <hr />
-
+                -->
 
 
                 Branch:
@@ -224,7 +224,7 @@
                 <asp:Button ID="btnHOB" runat="server" Text="HOB(Main)" CssClass="btn btn-default" OnClick="btnHOB_Click" />
                 <hr />
 
-
+                  Branch:
                 <asp:Button ID="Button1" runat="server" Text="RM(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button1_Click" />
                 <asp:Button ID="Button2" runat="server" Text="CI(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button2_Click" />
                 <asp:Button ID="Button3" runat="server" Text="HOB(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button3_Click" />
