@@ -111,7 +111,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
 
                     cmd.Parameters.Add("@deadline", SqlDbType.VarChar, 50).Value =
-                    deadline ?? "";
+            string.IsNullOrWhiteSpace(deadline) ? DBNull.Value : (object)deadline;
 
 
                     //cmd.Parameters.Add("@deadline", SqlDbType.DateTime).Value =
@@ -254,9 +254,9 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         return list;
     }
-
+    /*
     [WebMethod]
-    public static string SaveSSCConditions(int drawdown_id, string conditions)
+    public static string SaveSSCConditions(int drawdown_id, string conditions, string status, string reason, string deadline)
     {
         String cs = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
@@ -268,8 +268,9 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
                 cmd.Parameters.AddWithValue("@drawdown_id", drawdown_id);
                 cmd.Parameters.AddWithValue("@conditions", conditions);
-                cmd.Parameters.AddWithValue("@deadline", DBNull.Value);
-                cmd.Parameters.AddWithValue("@remarks", DBNull.Value);
+                cmd.Parameters.AddWithValue("@status", status);
+                cmd.Parameters.AddWithValue("@reason", reason);
+                cmd.Parameters.AddWithValue("@deadline", deadline);
                 cmd.Parameters.AddWithValue("@create_date", DateTime.Now);
 
                 String username = HttpContext.Current.User.Identity.Name;
@@ -282,7 +283,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         return "Success";
     }
-
+    */
 
     public class SSCCondition
     {
@@ -305,7 +306,7 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
 
         using (SqlConnection con = new SqlConnection(cs))
         {
-            String sql = @"SELECT id, conditions,status, reason, deadline
+            String sql = @"SELECT id, conditions,status, reason, convert(varchar(10), deadline,23)deadline
                        FROM t_SSC_Conditions
                        WHERE drawdown_id = @drawdown_id
                        ORDER BY id asc";

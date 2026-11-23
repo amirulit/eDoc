@@ -433,7 +433,7 @@ $.each(data.Details, function (i, row) {
 
     <section class="content"> <!-- Start of table section -->
 
-        <div class="modal" id="customerModal" tabindex="-1">
+  <div class="modal" id="customerModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
@@ -514,7 +514,11 @@ $.each(data.Details, function (i, row) {
                         </tfoot>
 
                     </table>
-                </div></div>
+                </div>
+
+
+
+                            </div>
                
                     
                 </div>

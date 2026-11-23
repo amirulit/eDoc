@@ -4,6 +4,31 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
+
+
+ 
+
+         <style type="text/css">
+
+             @media (min-width: 768px) {
+                 .modal-extra-lg {
+                     width: 95%;
+                 }
+             }
+
+             @media (min-width: 1200px) {
+                 .modal-extra-lg {
+                     width: 90%;
+                     max-width: 1600px;
+                 }
+             }
+
+
+ 
+
+
+    </style>
+
     <script src="View.js" type="text/javascript"></script>
 
 
@@ -14,11 +39,275 @@
         $(document).ready(function () {
 
 
+            $("body").on("click", ".lli", function () {
 
+
+                var drawdown_id = $(this).attr("drawdown-id");
+
+                //$("#btnSSCGenerate").attr("edoc-id", edoc_id);
+
+                //var edoc_id = $("#btnSSCGenerate").attr("edoc-id");
+
+
+                //$("#lblIDSSC").text(edoc_id);
+
+                //alert(drawdown_id);
+
+                //LoadFacilities(drawdown_id);
+
+                LoadFacilities_V2(drawdown_id);
+                
+
+            });
            
 
+            var facilityData = [];
+
+            function LoadFacilities(drawdown_id) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "LLI_Generate.aspx/GetFacilities",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        facilityData = response.d;
+
+                        var table = $("#tblFacilities");
+
+                        table.find("thead").empty();
+                        table.find("tbody").empty();
+
+                        if (!facilityData || facilityData.length === 0)
+                            return;
+
+                        var columns = Object.keys(facilityData[0]);
+
+                        // Header
+                        var header = $("<tr>");
+
+                        $.each(columns, function (i, col) {
+                            header.append($("<th>").text(col));
+                        });
+
+                        table.find("thead").append(header);
+
+                        // Body with input fields
+                        // Body
+                        $.each(facilityData, function (i, row) {
+
+                            var tr = $("<tr>");
+
+                            $.each(columns, function (j, col) {
+
+                                // First column: Normal text
+                                if (j === 0) {
+
+                                    tr.append(
+                                        $("<td>")
+                                            .text(row[col] == null ? "" : row[col])
+                                    );
+
+                                }
+                                    // Remaining columns: Editable textbox
+                                else {
+
+                                    var input = $("<input>", {
+                                        type: "text",
+                                        class: "form-control facility-input",
+                                        "data-row": i,
+                                        "data-column": col
+                                    });
+
+                                    input.val(row[col] == null ? "" : row[col]);
+
+                                    tr.append(
+                                        $("<td>").append(input)
+                                    );
+                                }
+
+                            });
+
+                            table.find("tbody").append(tr);
+
+                        });
+
+                        /*
+                        var modal = new bootstrap.Modal(
+                            document.getElementById("facilityModal")
+                        );
+    
+                        modal.show();
+                        */
 
 
+                        $("#facilityModal").modal("show");
+                    },
+
+                    error: function (xhr) {
+                        alert(xhr.responseText);
+                    }
+                });
+            }
+
+
+
+            function LoadFacilities_V2(drawdown_id) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "LLI_Generate.aspx/GetFacilities_V2",
+                    data: JSON.stringify({
+                        drawdown_id: drawdown_id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+
+                        BindDynamicTable("tblFacilities", data.Facilities);
+
+                        BindDynamicTable("tblOtherDetails", data.Master);
+
+                        BindDynamicTable("tblAdditionalDetails", data.Group);
+
+                        
+
+
+                        $("#facilityModal").modal("show");
+                    },
+
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                        alert("Error loading data");
+                    }
+
+                });
+            }
+
+            function BindDynamicTable(tableId, data) {
+
+                var table = $("#" + tableId);
+
+                table.find("thead").empty();
+                table.find("tbody").empty();
+
+                if (!data || data.length === 0)
+                    return;
+
+                var columns = Object.keys(data[0]);
+
+                // Header
+                var header = $("<tr>");
+
+                $.each(columns, function (i, col) {
+                    header.append($("<th>").text(col));
+                });
+
+                table.find("thead").append(header);
+
+                // Body
+
+                if (tableId == 'tblOtherDetails' || tableId == 'tblAdditionalDetails') {
+                    $.each(data, function (i, row) {
+
+                        var tr = $("<tr>");
+
+                        $.each(columns, function (j, col) {
+
+                            tr.append(
+                                $("<td>").text(row[col] == null ? "" : row[col])
+                            );
+
+                        });
+
+                        table.find("tbody").append(tr);
+
+                    });
+                }
+                else {
+
+                    $.each(data, function (i, row) {
+
+                        var tr = $("<tr>");
+
+                        $.each(columns, function (j, col) {
+
+                            if (j === 0) {
+                                tr.append(
+                                    $("<td>").text(row[col] == null ? "" : row[col])
+                                );
+                            }
+                            else {
+
+                                var input = $("<input>", {
+                                    type: "text",
+                                    class: "form-control facility-input",
+                                    "data-row": i,
+                                    "data-column": col
+                                });
+
+                                input.val(row[col] == null ? "" : row[col]);
+
+                                tr.append(
+                                    $("<td>").append(input)
+                                );
+                            }
+
+                        });
+
+                        table.find("tbody").append(tr);
+
+                    });
+                }
+            }
+
+            $("#btnSaevLLI").click(function () {
+                SaveFacilities();
+            });
+
+            function SaveFacilities() {
+
+                var updatedData = [];
+
+                var headers = [];
+
+                $("#tblFacilities thead th").each(function () {
+                    headers.push($(this).text().trim());
+                });
+
+                // Skip first header (FieldName)
+                var facilityColumns = headers.slice(1);
+
+                facilityColumns.forEach(function (facility) {
+
+                    var facilityObj = {};
+
+                    $("#tblFacilities tbody tr").each(function () {
+
+                        var fieldName = $(this).find("td:first").text().trim();
+
+                        var input = $(this).find(
+                            '.facility-input[data-column="' + facility + '"]'
+                        );
+
+                        facilityObj[fieldName] = input.val() || "";
+
+                    });
+
+                    updatedData.push(facilityObj);
+
+                });
+
+                console.log(updatedData);
+            }
 
             $("body").on("click", ".ssc", function () {
 
@@ -135,6 +424,9 @@
             // LOAD TABLE
             function LoadSSCConditions() {
 
+
+                $("#tbodyConditions").empty();
+
                 var drawdown_id = parseInt($("#lblIDSSC").text().trim());
 
                 if (isNaN(drawdown_id) || drawdown_id <= 0)
@@ -180,7 +472,7 @@
 
                         }
                         else {
-                            html = '<tr><td colspan="5" class="text-center">No records found</td></tr>';
+                            html = '<tr><td colspan="6" class="text-center">No records found</td></tr>';
                             $("#tbodyConditions").html(html);
                         }
 
@@ -230,7 +522,7 @@
 
                         if (response.d == "Success") {
 
-                            alert("Office note saved successfully!");
+                            alert("Office saved successfully!");
 
                             //$("#Text1").val("");
 
@@ -274,7 +566,7 @@
 
                         if (response.d == "Success") {
 
-                            alert("Deleted successfully!");
+                            //alert("Deleted successfully!");
 
                             // Remove nearest table row
                             btn.closest("tr").remove();
@@ -578,8 +870,84 @@
 
 
 
+   <div class="modal" id="facilityModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header" style="background:#3c8dbc; color:white; padding:15px 20px;">
+
+                <button type="button" class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                        style="color:white; opacity:1; font-size:28px; margin-top:-5px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h4 class="modal-title" style="font-weight:bold;">
+                    <i class="fa fa-user-circle"></i> Customer Details
+                </h4>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="table-responsive">
+                                <table class="table table-bordered" id="tblFacilities_Org">
+                                    <thead class="table-light"></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+
+
+
+
+                 <h6 class="text-primary">1. Facility Details</h6>
+                <table class="table table-bordered" id="tblFacilities">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+
+                <button type="button" id="btnSaevLLI">Save</button>
+
+                <hr />
+
+                <h6 class="text-primary">2. Other Details</h6>
+                <table class="table table-bordered" id="tblOtherDetails">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+
+                <hr />
+
+                <h6 class="text-primary">3. Additional Details</h6>
+                <table class="table table-bordered" id="tblAdditionalDetails">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+
+
+
+
+            <div class="modal-footer" style="background:#f4f4f4;">
+
+                <button type="button" class="btn btn-default btn-lg"
+                        data-dismiss="modal">
+                    <i class="fa fa-times"></i> Close
+                </button>
+
+              <%--  <button type="button" class="btn btn-primary btn-lg" id="btnSave">
+                    <i class="fa fa-save"></i> Save
+                </button>--%>
+
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+         
+
             <div class="modal" id="modalSSCGen" tabindex="-1" role="dialog" aria-labelledby="modalUpdateform" aria-hidden="true">  
-  		<div class="modal-dialog">
+  		<div class="modal-dialog ">
     		<div class="container">
             	<div class="row ">	
            			<div class="col-md-6">
@@ -647,7 +1015,7 @@
                 <th>SL</th>
                 <th>Conditions</th>
                  <th>Status</th>
-                 <th>REason</th>
+                 <th>Reason</th>
                 <th>Deadline</th>
               
                 <th>Action</th>
@@ -1064,6 +1432,8 @@
                                            
                                            %>
                              
+
+                            <a href="#"  class="btn btn-info btn-xs lli" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">LLI</a>                                    
 
                         <a href="#"  class="btn btn-info btn-xs upload" cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>">Update</a>                                    
   
