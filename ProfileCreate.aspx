@@ -314,11 +314,18 @@
                     success: function () {
 
 
-                        alert("Data Saved Successfully.");
+                        //alert("Data Saved Successfully.");
 
                         //$("#txtCompOwnerName").val('');
                         //$("#txtCompOwnerAddress").val('');
                         //$("#txtCompOwnerPhone").val('');
+
+
+                        ShowSuccessMessage("Data Saved Successfully.");
+
+
+                        LoadOwners();
+
 
 
                     },
@@ -335,7 +342,150 @@
 
             });
 
+            function ShowSuccessMessage(message) {
 
+                $("#successMessage")
+                    .stop(true, true)
+                    .html('<i class="fa fa-check-circle"></i> ' + message)
+                    .css("display", "none")
+                    .fadeIn(400)
+                    .delay(2000)
+                    .fadeOut(600);
+            }
+
+
+            function LoadOwners() {
+
+                var cus_id = $("#txtCustomerCode").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "ProfileCreate.aspx/GetOwners",
+                    data: JSON.stringify({
+                        CustomerId: cus_id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+                        var html = "";
+
+                        $.each(data, function (i, item) {
+
+                            html += "<tr id='row_" + item.id + "'>";
+                            html += "<td>" + item.id + "</td>";
+                            html += "<td>" + escapeHtml(item.company_cus_code) + "</td>";
+                            html += "<td>" + escapeHtml(item.owner_cus_code) + "</td>";
+                            html += "<td>" + escapeHtml(item.name) + "</td>";
+                            html += "<td>" + escapeHtml(item.role) + "</td>";
+
+                            html += "<td>";
+                            //html += "<button  type='button'  class='btn btn-danger btn-sm' onclick='DeleteOwner(" + item.id + ")'>";
+                            html += "<button type='button' class='btn btn-danger btn-sm btnDelete' data-id='" + item.id + "'>";
+                            html += "Delete";
+                            html += "</button>";
+                            html += "Delete";
+                            html += "</button>";
+                            html += "</td>";
+
+                            html += "</tr>";
+                        });
+
+                        $("#tblOwners tbody").html(html);
+                    },
+
+                    error: function (xhr) {
+                        alert("Error loading owner information.");
+                    }
+                });
+            }
+
+            function escapeHtml(value) {
+                return $("<div>").text(value || "").html();
+            }
+
+
+            $(document).on("click", ".btnDelete", function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                var id = $(this).attr("data-id");
+
+                if (!confirm("Are you sure you want to delete?")) {
+                    return false;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "ProfileCreate.aspx/DeleteOwner",
+                    data: JSON.stringify({ id: parseInt(id) }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d == "success") {
+
+                            //alert("Deleted successfully!");
+
+                            // Remove only selected row
+                            $("#row_" + id).fadeOut(300, function () {
+                                $(this).remove();
+                            });
+
+
+                            //LoadOwners();
+                        }
+                        else {
+                            alert("Record not found!");
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        alert("Delete error: " + error);
+                    }
+                });
+
+                return false;
+            });
+
+            function DeleteOwner(id) {
+
+                if (!confirm("Are you sure you want to delete this owner?")) {
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "ProfileCreate.aspx/DeleteOwner",
+                    data: JSON.stringify({ id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        if (response.d === "success") {
+
+                            alert("Owner deleted successfully!");
+
+                            // Reload table
+                            LoadOwners();
+
+                        }
+                        else {
+                            alert("Owner record not found.");
+                        }
+                    },
+
+                    error: function () {
+                        alert("Delete failed!");
+                    }
+                });
+            }
 
             $("#btnSave").click(function () {
 
@@ -970,8 +1120,37 @@
             margin-right: 10px;
         }
     </style>
+
+    <style type="text/css">
+
+
+        #successMessage {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #28a745;
+    color: white;
+    padding: 14px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    z-index: 99999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
+    <div id="successMessage">
+    <i class="fa fa-check-circle"></i>
+    Data Saved Successfully!
+</div>
+
+
     <section class="content-header">
     	<h1>
         	Customer Profile <a href="ProfileListing.aspx" class="btn btn-success"> <i class="fa  fa-list "></i></a>
@@ -1458,6 +1637,22 @@
 
                             </table>
                             <hr />
+
+
+
+                              <table id="tblOwners" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Company Customer Code</th>
+            <th>Owner Customer Code</th>
+            <th>Owner Name</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
 <%--Is Group Customer ? <input id="Checkbox1" type="checkbox" />
 <a href="#exampleModal" data-toggle="modal"   data-id="1">

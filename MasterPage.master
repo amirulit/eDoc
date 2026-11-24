@@ -619,8 +619,16 @@
        <%
             }
             %>
+          <% if (Role==81 || Role==83) {%>
 
-
+           <li>
+          <a href="LLI_Listing.aspx">
+            <i class="fa fa-arrow-circle-o-right"></i><span>LLI Listing</span>
+          </a>
+        </li>
+          <%
+          }
+           %>
        <li>
           <a href="Report.aspx">
             <i class="fa fa-arrow-circle-o-right"></i><span>Report</span>

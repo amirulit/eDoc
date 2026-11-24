@@ -102,6 +102,18 @@
             color: #164232;
         }
     </style>
+
+    <style type="text/css">
+
+
+        /*.select2-container .select2-selection__rendered {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}*/
+
+    </style>
+    
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
     <script src="SanctionUpload_V2.js" type="text/javascript"></script>
@@ -185,10 +197,18 @@
 
             });
 
+            //$('select option').removeAttr('title');
+
+            //$('select').select2();
+
 
 
             //            $("#ContentPlaceHolder1_select3 option[value='']").length ||
             //    $("#ContentPlaceHolder1_select3").prepend('<option value=""></option>');
+
+
+
+
 
             $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8,#ddlCurrency,#ddlCustomerCode2,#ddlLoanNature2,#ddlCurrency2").select2({
                 placeholder: "<--Select-->",
@@ -197,6 +217,26 @@
             });
 
 
+            // Remove title attribute on hover and whenever a selection changes
+            $(document).on('mouseenter select2:select select2:unselect', '.select2-selection__rendered, .select2-selection__choice', function () {
+                $(this).removeAttr('title');
+                $(this).find('[title]').removeAttr('title');
+            });
+
+
+
+            //function removeSelect2Title() {
+            //    $('.select2-selection__rendered').removeAttr('title');
+            //    $('.select2-selection').removeAttr('title');
+            //}
+
+            //removeSelect2Title();
+
+            //$(document).on('mouseenter', '.select2-container', function () {
+            //    removeSelect2Title();
+            //});
+ 
+            
 
             $('#select1>').on('change', function () {
                 $('#hfSelected').val($(this).val());

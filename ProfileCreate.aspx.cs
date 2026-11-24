@@ -13,6 +13,7 @@ using System.Data;
 using System.Web.Services;
 using Newtonsoft.Json;
 using System.Data.SqlTypes;
+using System.Web.Script.Services;
 
 
 public partial class ProfileCreate : System.Web.UI.Page
@@ -614,6 +615,89 @@ public partial class ProfileCreate : System.Web.UI.Page
         catch (Exception ex)
         {
             Response.Write(ex.Message);
+        }
+    }
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static List<OwnerInfo> GetOwners(String CustomerId)
+    {
+        List<OwnerInfo> list = new List<OwnerInfo>();
+
+        String conStr = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(conStr))
+        {
+            string sql = @"
+            SELECT TOP 10
+                c.id,
+                c.company_cus_code,
+                c.owner_cus_code,
+                ci.cus_name AS name,
+                c.role
+            FROM t_Comp_OwnerInfo c
+            LEFT JOIN dbo.t_CustomerInfo ci
+                ON ci.cus_code = c.owner_cus_code
+            WHERE c.company_cus_code = @CustomerId";
+
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            {
+                cmd.Parameters.AddWithValue("@CustomerId", CustomerId);
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(new OwnerInfo
+                        {
+                            id = Convert.ToInt32(dr["id"]),
+                            company_cus_code = dr["company_cus_code"].ToString(),
+                            owner_cus_code = dr["owner_cus_code"].ToString(),
+                            name = dr["name"].ToString(),
+                            role = dr["role"].ToString()
+                        });
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+    public class OwnerInfo
+    {
+        public int id { get; set; }
+        public string company_cus_code { get; set; }
+        public string owner_cus_code { get; set; }
+        public string name { get; set; }
+        public string role { get; set; }
+    }
+
+
+    [WebMethod]
+    public static string DeleteOwner(int id)
+    {
+        String conStr = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(conStr))
+        {
+            string sql = @"
+            DELETE FROM t_Comp_OwnerInfo
+            WHERE id = @id";
+
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            {
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                con.Open();
+
+                int result = cmd.ExecuteNonQuery();
+
+                return result > 0 ? "success" : "notfound";
+            }
         }
     }
 

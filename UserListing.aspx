@@ -60,9 +60,7 @@
 
                 $("#modalEmpName").text(currentRow.find(".emp-name").text().trim());
 
-                $("#modalDesignation").text(
-                    currentRow.find(".emp-designation").text().trim()
-                );
+                $("#modalDesignation").text(currentRow.find(".emp-designation").text().trim());
 
                 var id = currentRow.attr("data-id");
 
