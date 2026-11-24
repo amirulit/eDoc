@@ -2,6 +2,29 @@
     CodeFile="ProfileListing.aspx.cs" Inherits="ProfileListing" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+
+
+     <style type="text/css">
+        #successMessage {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: white;
+            padding: 14px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            z-index: 99999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+    </style>
+
+
+
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -60,13 +83,16 @@
                     success: function () {
 
 
-                        alert("Data Saved Successfully.");
+                        //alert("Data Saved Successfully.");
 
                         //$("#txtCompOwnerName").val('');
                         //$("#txtCompOwnerAddress").val('');
                         //$("#txtCompOwnerPhone").val('');
 
                         //("#customerModal").modal("hide");
+
+
+                        ShowSuccessMessage("Data Saved Successfully.");
 
                         OpenCustomerModal(cus_type, cus_id);
 
@@ -84,6 +110,17 @@
 
 
             });
+
+            function ShowSuccessMessage(message) {
+
+                $("#successMessage")
+                    .stop(true, true)
+                    .html('<i class="fa fa-check-circle"></i> ' + message)
+                    .css("display", "none")
+                    .fadeIn(400)
+                    .delay(2000)
+                    .fadeOut(600);
+            }
 
 
             $("body").on("click", ".edit", function () {
@@ -181,6 +218,16 @@
                                 .closest("tr")
                                 .remove();
 
+
+
+
+                        }
+
+                        if ($("#tblDetails tbody tr").length === 0) {
+
+                            html = "<tr><td colspan='6' class='text-center'>No data found</td></tr>";
+
+                            $("#tblDetails tbody").html(html);
                         }
 
                     },
@@ -317,7 +364,7 @@ $.each(data.Details, function (i, row) {
                 var html = "";
 
                 if (!data || data.length === 0) {
-                    html = "<tr><td colspan='4' class='text-center'>No data found</td></tr>";
+                    html = "<tr><td colspan='6' class='text-center'>No data found</td></tr>";
                     $("#tblDetails tbody").html(html);
                     return;
                 }
@@ -418,6 +465,13 @@ $.each(data.Details, function (i, row) {
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
+     <div id="successMessage">
+        <i class="fa fa-check-circle"></i>
+        Data Saved Successfully!
+    </div>
+
+
 
 
     <section class="content-header">

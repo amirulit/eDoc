@@ -1704,6 +1704,10 @@
 
                         var ddlStatus = row.find('.ddlStatus').val() || '';
 
+                        if (required == "N") {
+                            ddlStatus = "Not Obtained";
+                        }
+
                         rowsData.push({
                             PrimaryKey: key,
                             Required: required,
@@ -1836,16 +1840,24 @@
 
                 var saveButton = $(this).closest("tr").find(".save");
 
+
+                var ddlStatus = $(this).closest("tr").find(".ddlStatus");
+
                 if (rdo_val == "N") {
 
                 
 
                     saveButton.val("Save");
 
+                    ddlStatus.val('Part');
+
                 }
 
                 else {
+
                     saveButton.val("Upload & Save");
+                    ddlStatus.val('Obtained');
+
                 }
 
             });
@@ -2454,17 +2466,41 @@
                             <td class="tdTopLeft" style="<%= opt_man == "M" ? "color:red; font-weight:bold;": "" %>">
                                 <%=TableData.Rows[data]["Name"]%>
                             </td>
+
+
+                            <!--20261124 
                             <td class="tdTopLeft">
                                 <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>" value="Y" <%= (opt_man == "M" || radio_default_sel=="Yes")? "checked='checked' disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "Y" ? "checked='checked'" : "") %> />Yes
                                 <input type="radio" class="rdo" name="opt_req_<%=TableData.Rows[data]["primary_key"]%>" data-id="<%=TableData.Rows[data]["primary_key"]%>" value="N" <%= opt_man == "M" ? "disabled='disabled'" : (TableData.Rows[data]["c_required"].ToString() == "N" ? "checked='checked'" : "") %> />No
                             </td>
+
+                            -->
+
+                            <td class="tdTopLeft">
+    <input type="radio"
+        class="rdo"
+        name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
+        data-id="<%=TableData.Rows[data]["primary_key"]%>"
+        value="Y"
+        <%= (TableData.Rows[data]["c_required"].ToString() == "Y" || radio_default_sel == "Yes") ? "checked='checked'" : "" %>
+        <%= opt_man == "M" ? "disabled='disabled'" : "" %> />Yes
+
+    <input type="radio"
+        class="rdo"
+        name="opt_req_<%=TableData.Rows[data]["primary_key"]%>"
+        data-id="<%=TableData.Rows[data]["primary_key"]%>"
+        value="N"
+        <%= TableData.Rows[data]["c_required"].ToString() == "N" ? "checked='checked'" : "" %>
+        <%= opt_man == "M" ? "disabled='disabled'" : "" %> />No
+</td>
+
                             <td class="tdTopLeft">
                                 <%--<%=TableData.Rows[data]["Obtained"]%>--%>
                                 <select id="ddl_<%=doc_id %>" data-id="<%=TableData.Rows[data]["primary_key"]%>"
                                     class="ddlStatus">
                                     <option value="Obtained" <%= status == "Obtained" ? "selected" : "" %>>Obtained
                                     </option>
-                                    <option value="Part" <%= status == "Part" ? "selected" : "" %>>Not Obtained </option>
+                                    <option value="Part" <%= status == "Part" || status == "Not Obtained"? "selected" : "" %>>Not Obtained </option>
                                     <%--<option value="Part" <%= status == "Part" ? "selected" : "" %>>Partially Obtained
                                     </option>
                                     --%>

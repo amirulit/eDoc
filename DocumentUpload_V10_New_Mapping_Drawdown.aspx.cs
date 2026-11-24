@@ -117,9 +117,7 @@ Upload Not Required
         if (rows == null || rows.Count == 0)
             return "No records found!";
 
-       String connStr = ConfigurationManager
-            .ConnectionStrings["dbConn"]
-            .ConnectionString;
+       String connStr = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
         using (SqlConnection con = new SqlConnection(connStr))
         {
