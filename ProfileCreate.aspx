@@ -2,16 +2,82 @@
     CodeFile="ProfileCreate.aspx.cs" Inherits="ProfileCreate" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+
+
+    <style type="text/css">
+        /* Top Close Button */
+      .custom-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #198754 !important;
+    color: white;
+    padding: 12px 20px;
+}
+
+.custom-modal-header .modal-title {
+    color: white;
+    font-weight: 600;
+    margin: 0;
+}
+
+.custom-close {
+    float: none !important;
+    flex-shrink: 0;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    font-size: 27px;
+    font-weight: bold;
+    line-height: 27px;
+    padding: 0;
+    opacity: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.custom-close:hover {
+    background: white;
+    color: #198754;
+    transform: rotate(90deg);
+}
+
+        /* Footer Close Button */
+        .btn-close-modal {
+            border-radius: 25px;
+            padding: 8px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+            .btn-close-modal:hover {
+                background-color: #a71d2a;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+
+        /* Footer Styling */
+        .modal-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+
+
     <script src="sweet_alert.js" type="text/javascript"></script>
     <link href="sweet_alert.css" rel="stylesheet" type="text/css" />
 
 
 
-     <script type="text/javascript">
+    <script type="text/javascript">
 
-         $(document).ready(function () {
+        $(document).ready(function () {
 
-             //,#ContentPlaceHolder1_Select4
+            //,#ContentPlaceHolder1_Select4
 
 
             $("#Select1").select2({
@@ -291,7 +357,7 @@
                 obj.company_cus_code = $("#txtCustomerCode").val();
                 //obj.owner_cus_code = $("#txtCompOwnerCustomerID").val();
                 obj.owner_cus_code = cus_code;
-                
+
                 //obj.name = name;
                 obj.role = role;
                 //obj.address = address;
@@ -384,8 +450,6 @@
                             html += "<td>";
                             //html += "<button  type='button'  class='btn btn-danger btn-sm' onclick='DeleteOwner(" + item.id + ")'>";
                             html += "<button type='button' class='btn btn-danger btn-sm btnDelete' data-id='" + item.id + "'>";
-                            html += "Delete";
-                            html += "</button>";
                             html += "Delete";
                             html += "</button>";
                             html += "</td>";
@@ -515,7 +579,7 @@
                 obj.edoc_id = $("#txteDocID").val();
                 obj.cus_code = $("#txtCustomerCode").val();
 
-                if (c_type == 'IND' ) {
+                if (c_type == 'IND') {
 
                     obj.name = $("#txtName").val();
                     obj.fname = $("#txtFName").val();
@@ -586,7 +650,7 @@
                     obj.per_addr = $("#txtPerAddrJV").val();
                 }
 
-                 
+
 
 
 
@@ -841,7 +905,7 @@
 
 
 
-            function getDetails(cus_type, cus_code,purpose) {
+            function getDetails(cus_type, cus_code, purpose) {
 
                 $.ajax({
 
@@ -971,7 +1035,7 @@
                             if (cus_type == "PVT" || cus_type == "PUB" || cus_type == "SOC" || cus_type == "NGO" || cus_type == "OPC") {
 
 
-                                
+
                                 //$('#rowMotherCompany').css("display", "table-row");
 
                                 $('#rowMotherCompany').show();
@@ -1004,8 +1068,7 @@
                                 }
 
 
-                                if (cus_type == "SOC" || cus_type == "NGO" || cus_type == "OPC")
-                                {
+                                if (cus_type == "SOC" || cus_type == "NGO" || cus_type == "OPC") {
                                     //$('#rowMotherCompany').css("display", "none");
 
                                     $('#rowMotherCompany').hide();
@@ -1042,7 +1105,7 @@
                         alert(data.d.OpeningDate);
                         alert(data.d.LastRenewalDate);
                         alert(data.d.Principal);
-
+       
                         */
 
 
@@ -1105,7 +1168,7 @@
             }
         });
 
-         
+
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -1115,40 +1178,35 @@
         });
     </script>
     <style type="text/css">
-        .btn-spaced
-        {
+        .btn-spaced {
             margin-right: 10px;
         }
     </style>
 
     <style type="text/css">
-
-
         #successMessage {
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #28a745;
-    color: white;
-    padding: 14px 30px;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 500;
-    z-index: 99999;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: white;
+            padding: 14px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            z-index: 99999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
     <div id="successMessage">
-    <i class="fa fa-check-circle"></i>
-    Data Saved Successfully!
-</div>
+        <i class="fa fa-check-circle"></i>
+        Data Saved Successfully!
+    </div>
 
 
     <section class="content-header">
@@ -1520,13 +1578,16 @@
       <div class="modal" id="divOwnerInfo" tabindex="-1" role="dialog" data-backdrop="static"   data-keyboard="false">
         <div class="modal-dialog" style="width: 90%" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-green">
-                    <h5 class="modal-title" id="H2">Owner/Partner/JV/Company Management Body
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+               <div class="modal-header bg-green custom-modal-header">
+    <h5 class="modal-title" id="H2">
+        Owner/Partner/JV/Company Management Body
+    </h5>
+
+    <button type="button" class="custom-close"
+            data-dismiss="modal" aria-label="Close">
+        &times;
+    </button>
+</div>
                 <div class="modal-body">
                     <div class="row">
                        <%-- <div class="col-sm-3">--%>
@@ -1726,12 +1787,21 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="modal-footer">
+    <button type="button" class="btn btn-danger btn-close-modal"
+            data-dismiss="modal">
+        <i class="fa fa-times"></i> Close
+    </button>
+</div>
             </div>
         </div>
     </div>
+
+          
                 <!--Prop-->
 
-                  <div class="modal fade" id="divPROP" tabindex="-1" role="dialog" data-backdrop="static"
+    <div class="modal fade" id="divPROP" tabindex="-1" role="dialog" data-backdrop="static"
         data-keyboard="false">
         <div class="modal-dialog modal-sm" style="width: 90%" role="document">
             <div class="modal-content">
