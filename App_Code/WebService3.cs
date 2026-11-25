@@ -973,10 +973,26 @@ public class WebService3 : System.Web.Services.WebService
                 HttpContext.Current.Response.Flush();
             }
         }
+        //catch (Exception ex)
+        //{
+        //    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        //    HttpContext.Current.Response.Write(ex.Message);
+        //    HttpContext.Current.Response.Flush();
+        //}
+
         catch (Exception ex)
         {
-            HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            HttpContext.Current.Response.Write(ex.Message);
+            string logPath = @"E:\eDoc_SanctionDoc\UploadError.txt";
+
+            File.AppendAllText(
+                logPath,
+                DateTime.Now + Environment.NewLine +
+                ex.ToString() + Environment.NewLine +
+                "------------------------" + Environment.NewLine
+            );
+
+            HttpContext.Current.Response.StatusCode = 500;
+            HttpContext.Current.Response.Write("Upload failed: " + ex.Message);
             HttpContext.Current.Response.Flush();
         }
     }

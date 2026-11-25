@@ -924,7 +924,7 @@ $(document).ready(function () {
 
 
 
-    function upload(f, i, edoc_id) {
+    function upload_OLD(f, i, edoc_id) {
 
         //alert(f.name);
 
@@ -1003,6 +1003,87 @@ $(document).ready(function () {
     }
 
 
+
+    function upload(f, i, edoc_id) {
+
+        var doc_type = $('#ContentPlaceHolder1_select8').val();
+
+        var formData = new FormData();
+
+        formData.append("edoc_id", edoc_id);
+        formData.append("doc_type", doc_type);
+        formData.append("file", f);
+
+        $.ajax({
+
+            // Changed from ASMX to Generic Handler
+            url: 'UploadFiles_CD.ashx',
+
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+
+            success: function (fileName) {
+
+                $("#fileProgress").hide();
+
+                $("#lblMessage").html(
+                    $("<div>").text(fileName + " has been uploaded.").html()
+                );
+
+                uploaded_files = uploaded_files + 1;
+
+                if (uploaded_files == total_files) {
+
+                    alert(doc_type + ' Uploaded');
+
+                    uploaded_files = 0;
+
+                    alert('Uploaded successfully');
+                }
+            },
+
+            xhr: function () {
+
+                var fileXhr = $.ajaxSettings.xhr();
+
+                if (fileXhr.upload) {
+
+                    fileXhr.upload.addEventListener("progress", function (e) {
+
+                        if (e.lengthComputable) {
+
+                            var percentage = Math.floor(
+                                (e.loaded / e.total) * 100
+                            );
+
+                            console.log(f.name + ' : ' + percentage + '%');
+
+                            $("#statustxt").html(percentage + '%');
+
+                            $("#file_" + i).html(percentage + '%');
+                        }
+
+                    }, false);
+                }
+
+                return fileXhr;
+            },
+
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                $("#file_" + i).html('0%');
+
+                $("#error_" + i).html(XMLHttpRequest.status + '-' + XMLHttpRequest.responseText);
+
+                alert("Upload failed for file: " + f.name + "\n\nUploading has been stopped.");
+            }
+
+
+        });
+    }
 
 
 });

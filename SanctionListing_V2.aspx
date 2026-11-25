@@ -1483,6 +1483,8 @@
                             	<th>Authority</th>
                             	<th>Branch</th>
                                 <th>Status</th>
+                                <th>Entry Status</th>
+
                                 <th>Action</th>
                              </tr>
                         	</thead>
@@ -1494,14 +1496,18 @@
         //var css = "";
 
         //var last_renew_dt = "";
-
+        var entry_status = "";
 
         if (TableData.Rows.Count > 0)
         {
             for (var data = 0; data < TableData.Rows.Count; data++)
             {
+
+                entry_status = TableData.Rows[data]["entry_status"].ToString();
                             
 %>
+
+
 <tr>
 
 
@@ -1512,7 +1518,18 @@
                         <td><%=TableData.Rows[data]["sanction_authority"]%></td>
                         <td><%=TableData.Rows[data]["booking_branch"]%></td>
                         <td><%=TableData.Rows[data]["status_desc"]%></td>
+
+
+<td>
+    <% if (entry_status == "Pending") { %>
+        <span class="label label-danger">Pending</span>
+    <% } else { %>
+     <span class="label label-success">   <%= TableData.Rows[data]["entry_status"] %> </span>
+    <% } %>
+</td>
                         	
+    
+
                         <td>        
 
 

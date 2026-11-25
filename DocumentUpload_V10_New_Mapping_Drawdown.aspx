@@ -465,7 +465,7 @@
                 }
                 */
 
-                if (ddl == 'Part') {
+                if (required == "Y" && ddl == 'Part') {
 
                     obj.details = part_reason;
                     obj.deadline = part_deadline
@@ -1843,6 +1843,20 @@
 
                 var ddlStatus = $(this).closest("tr").find(".ddlStatus");
 
+                var fileUpload = $(this).closest("tr").find(".file");
+
+                
+
+                //console.log(fileUpload.length); // Check if element is found
+
+                //fileUpload.show();
+
+                //console.log(fileUpload.css('display'));
+
+                //fileUpload[0].style.setProperty('display', 'block', 'important');
+
+
+
                 if (rdo_val == "N") {
 
                 
@@ -1856,7 +1870,15 @@
                 else {
 
                     saveButton.val("Upload & Save");
+
+
                     ddlStatus.val('Obtained');
+
+                    //alert(rdo_val);
+                    //var fileUpload = $(this).closest("tr").find(".file");
+                    //fileUpload.css('display', 'block');
+                    
+                    $(this).closest("tr").find(".file").closest("div").show();
 
                 }
 
