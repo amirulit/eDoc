@@ -650,6 +650,501 @@ RemarksHtml
     }
 
 
+     
+
+
+    private static string BuildLimitLoadingHtml(DataSet ds)
+    {
+        string path = HttpContext.Current.Server.MapPath("~/Templates/LimitLoadingInstruction.html");
+
+        string html = HtmlTemplateHelper.LoadTemplate(path);
+
+        DataRow m = ds.Tables[0].Rows[0];
+
+        // Master information
+        html = HtmlTemplateHelper.Replace(
+            html, "InstructionDate", m["InstructionDate"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "BranchName", m["BranchName"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "ApprovalAuthority", m["ApprovalAuthority"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "SanctionReference", m["SanctionReference"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "SanctionDate", m["SanctionDate"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "ProposalDate", m["ProposalDate"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "DrawdownReference", m["DrawdownReference"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "GroupName", m["GroupName"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "GroupID", m["GroupID"]);
+
+        // Customer information
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "CustomerRows",
+            LimitLoadingHtmlBuilder.CustomerRows(ds.Tables[1]));
+
+        // Request type
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "NewChecked",
+            Check(m["IsNew"]));
+
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "RenewalChecked",
+            Check(m["IsRenewal"]));
+
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "ReverseChecked",
+            Check(m["IsLimitReverse"]));
+
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "RearrangeChecked",
+            Check(m["IsLimitRearrange"]));
+
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "OthersChecked",
+            Check(m["IsOthers"]));
+
+        html = HtmlTemplateHelper.Replace(
+            html, "OtherSpecification", m["OtherSpecification"]);
+
+        // Facility information
+        html = HtmlTemplateHelper.Replace(
+            html, "FacilityCustomerName", m["CustomerName"]);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "FacilityCustomerID", m["CustomerID"]);
+
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "FacilityHeaders",
+            LimitLoadingHtmlBuilder.FacilityHeaders());
+
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "FacilityRows",
+            LimitLoadingHtmlBuilder.FacilityRows(ds.Tables[2]));
+
+        // Remarks
+        html = HtmlTemplateHelper.ReplaceHtml(
+            html, "RemarksRows",
+            LimitLoadingHtmlBuilder.RemarksRows(ds.Tables[3]));
+
+        html = HtmlTemplateHelper.Replace(
+            html, "PageNumber", 32);
+
+        html = HtmlTemplateHelper.Replace(
+            html, "TotalPages", 32);
+
+        return html;
+    }
+
+    private static string Check(object value)
+    {
+        if (value == null || value == DBNull.Value)
+            return "";
+
+        string v = Convert.ToString(value);
+
+        bool selected = v == "1" ||
+            v.Equals("Y", StringComparison.OrdinalIgnoreCase) ||
+            v.Equals("true", StringComparison.OrdinalIgnoreCase);
+
+        return selected ? "&#10003;" : "";
+    }
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static object GenerateLLIPdf_V2(int drawdownid)
+    {
+        try
+        {
+            String masterHtml = "";
+            String facilitiesHtml = "";
+            String remarksHtml = "";
+
+            String cs = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+            // 1. Get saved HTML from database
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                String sql = @"
+                SELECT MasterHtml, FacilitiesHtml, RemarksHtml
+                FROM t_LLI_Submissions
+                WHERE DrawdownId = @DrawdownId";
+
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.Add("@DrawdownId", SqlDbType.Int).Value = drawdownid;
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (!dr.Read())
+                        {
+                            return new
+                            {
+                                Success = false,
+                                Message = "Record not found."
+                            };
+                        }
+
+                        masterHtml = dr["MasterHtml"] == DBNull.Value ? "" : dr["MasterHtml"].ToString();
+
+                        facilitiesHtml = dr["FacilitiesHtml"] == DBNull.Value ? "" : dr["FacilitiesHtml"].ToString();
+
+                        remarksHtml = dr["RemarksHtml"] == DBNull.Value ? "" : dr["RemarksHtml"].ToString();
+
+
+                    }
+                }
+            }
+
+
+
+
+            string templatePath = @"E:\eDoc_Template\lli.html";
+
+            if (!File.Exists(templatePath))
+                throw new Exception("HTML template not found.");
+
+            string html = File.ReadAllText(templatePath);
+
+
+
+
+
+
+
+            html = HtmlTemplateHelper.ReplaceHtml(html, "MasterHtml", masterHtml);
+
+            html = HtmlTemplateHelper.ReplaceHtml(html, "FacilitiesHtml", facilitiesHtml);
+
+            html = HtmlTemplateHelper.ReplaceHtml(html, "RemarksHtml", remarksHtml);
+ 
+
+            // 3. Generate PDF
+            HtmlToPdfConverter pdfConverter = new HtmlToPdfConverter();
+
+            pdfConverter.Size = PageSize.A4;
+            pdfConverter.Orientation = PageOrientation.Portrait;
+
+            pdfConverter.Margins = new PageMargins
+            {
+                Top = 12,
+                Bottom = 12,
+                Left = 10,
+                Right = 10
+            };
+
+            pdfConverter.PageFooterHtml = @"
+
+            <div style='font-family:Arial;font-size:9px; text-align:center;width:100%;'>Page <span class='page'></span>of <span class='topage'></span></div>";
+
+
+            // 4. Generate PDF bytes
+            byte[] pdfBytes = pdfConverter.GeneratePdf(html.ToString());
+
+            // 5. Return Base64 PDF
+            /*
+            return new
+            {
+                Success = true,
+                FileName = "Drawdown_" + DrawdownId + ".pdf",
+                PdfBase64 = Convert.ToBase64String(pdfBytes)
+            };
+            */
+
+
+
+            //var htmlToPdf = new HtmlToPdfConverter
+            //{
+            //    Size = PageSize.Legal,
+            //    Orientation = PageOrientation.Portrait,
+            //    Margins = new PageMargins { Top = 20, Bottom = 20, Left = 15, Right = 15 }
+            //};
+
+
+
+            pdfConverter.CustomWkHtmlArgs = "--enable-local-file-access";
+
+
+            //var html = String.Format("<body>Hello world: {0}</body>", DateTime.Now);
+
+
+            //byte[] pdfBytes = htmlToPdf.GeneratePdf(sb.ToString());
+
+            /*
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=Checklist.pdf");
+            Response.BinaryWrite(pdfBytes);
+            Response.End();
+            */
+
+
+            String folderPath = @"E:\eDoc_LLI";
+            String filePath = System.IO.Path.Combine(folderPath, drawdownid + "_LLI.pdf");
+
+            // Create folder if it doesn't exist
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // Delete existing file
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            // Save PDF
+            File.WriteAllBytes(filePath, pdfBytes);
+
+
+            //return sb.ToString();
+
+
+
+            //Show PDF in browser
+
+            /*
+        Response.Clear();
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("Content-Disposition", "inline; filename=" + drawdown_id + "_Checklist.pdf");
+        Response.BinaryWrite(pdfBytes);
+        Response.End();
+            */
+
+
+
+            return new
+            {
+                Success = true,
+                FileName = drawdownid + "_LLI.pdf",
+                PdfBase64 = Convert.ToBase64String(pdfBytes)
+            };
+
+
+
+        }
+
+        catch (Exception ex)
+        {
+            // Log ex.ToString() on the server
+            return new
+            {
+                Success = false,
+                Message = "PDF generation failed:" + ex.Message
+            };
+        }
+    }
+
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static object GenerateLLIPdf_V3(int drawdownid)
+    {
+        try
+        {
+            String masterHtml = "";
+            String facilitiesHtml = "";
+            String remarksHtml = "";
+
+            String cs = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+            // 1. Get saved HTML from database
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                String sql = @"
+                SELECT MasterHtml, FacilitiesHtml, RemarksHtml
+                FROM t_LLI_Submissions
+                WHERE DrawdownId = @DrawdownId";
+
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.Add("@DrawdownId", SqlDbType.Int).Value = drawdownid;
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (!dr.Read())
+                        {
+                            return new
+                            {
+                                Success = false,
+                                Message = "Record not found."
+                            };
+                        }
+
+                        masterHtml = dr["MasterHtml"] == DBNull.Value ? "" : dr["MasterHtml"].ToString();
+
+                        facilitiesHtml = dr["FacilitiesHtml"] == DBNull.Value ? "" : dr["FacilitiesHtml"].ToString();
+
+                        remarksHtml = dr["RemarksHtml"] == DBNull.Value ? "" : dr["RemarksHtml"].ToString();
+
+
+                    }
+                }
+            }
+
+
+
+
+            string templatePath = @"E:\eDoc_Template\lli.html";
+
+            if (!File.Exists(templatePath))
+                throw new Exception("HTML template not found.");
+
+            string html = File.ReadAllText(templatePath);
+
+
+
+
+
+
+
+            html = HtmlTemplateHelper.ReplaceHtml(html, "MasterHtml", masterHtml);
+
+            html = HtmlTemplateHelper.ReplaceHtml(html, "FacilitiesHtml", facilitiesHtml);
+
+            html = HtmlTemplateHelper.ReplaceHtml(html, "RemarksHtml", remarksHtml);
+
+
+            // 3. Generate PDF
+            HtmlToPdfConverter pdfConverter = new HtmlToPdfConverter();
+
+            pdfConverter.Size = PageSize.A4;
+            pdfConverter.Orientation = PageOrientation.Portrait;
+
+            pdfConverter.Margins = new PageMargins
+            {
+                Top = 12,
+                Bottom = 12,
+                Left = 10,
+                Right = 10
+            };
+
+            pdfConverter.PageFooterHtml = @"
+
+            <div style='font-family:Arial;font-size:9px; text-align:center;width:100%;'>Page <span class='page'></span>of <span class='topage'></span></div>";
+
+
+            // 4. Generate PDF bytes
+            byte[] pdfBytes = pdfConverter.GeneratePdf(html.ToString());
+
+            // 5. Return Base64 PDF
+            /*
+            return new
+            {
+                Success = true,
+                FileName = "Drawdown_" + DrawdownId + ".pdf",
+                PdfBase64 = Convert.ToBase64String(pdfBytes)
+            };
+            */
+
+
+
+            //var htmlToPdf = new HtmlToPdfConverter
+            //{
+            //    Size = PageSize.Legal,
+            //    Orientation = PageOrientation.Portrait,
+            //    Margins = new PageMargins { Top = 20, Bottom = 20, Left = 15, Right = 15 }
+            //};
+
+
+
+            pdfConverter.CustomWkHtmlArgs = "--enable-local-file-access";
+
+
+            //var html = String.Format("<body>Hello world: {0}</body>", DateTime.Now);
+
+
+            //byte[] pdfBytes = htmlToPdf.GeneratePdf(sb.ToString());
+
+            /*
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=Checklist.pdf");
+            Response.BinaryWrite(pdfBytes);
+            Response.End();
+            */
+
+
+            String folderPath = @"E:\eDoc_LLI";
+            String filePath = System.IO.Path.Combine(folderPath, drawdownid + "_LLI.pdf");
+
+            // Create folder if it doesn't exist
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // Delete existing file
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            // Save PDF
+            File.WriteAllBytes(filePath, pdfBytes);
+
+
+            //return sb.ToString();
+
+
+
+            //Show PDF in browser
+
+            /*
+        Response.Clear();
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("Content-Disposition", "inline; filename=" + drawdown_id + "_Checklist.pdf");
+        Response.BinaryWrite(pdfBytes);
+        Response.End();
+            */
+
+
+
+            return new
+            {
+                Success = true,
+                FileName = drawdownid + "_LLI.pdf",
+                PdfBase64 = Convert.ToBase64String(pdfBytes)
+            };
+
+
+
+        }
+
+        catch (Exception ex)
+        {
+            // Log ex.ToString() on the server
+            return new
+            {
+                Success = false,
+                Message = "PDF generation failed:" + ex.Message
+            };
+        }
+    }
+
+
+
+
+
+
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]

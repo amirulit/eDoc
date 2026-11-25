@@ -181,7 +181,7 @@
 
                 type: "POST",
 
-                url: "LLI_Generate.aspx/GenerateLLIPdf",
+                url: "LLI_Generate.aspx/GenerateLLIPdf_V2",
 
                 data: JSON.stringify({    drawdownid: parseInt(drawdownid)}),
 

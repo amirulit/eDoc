@@ -5,8 +5,7 @@ using System.Web;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace CAD.DataAccess
-{
+ 
     public class SSCData
     {
         public string Id { get; set; }
@@ -37,4 +36,3 @@ namespace CAD.DataAccess
         public string Details { get; set; }
         public string Deadline { get; set; }
     }
-}

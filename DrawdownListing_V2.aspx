@@ -151,7 +151,7 @@
             $("body").on("click", ".lli", function () {
 
 
-                  drawdown_id = $(this).attr("drawdown-id");
+                drawdown_id = $(this).attr("drawdown-id");
 
                 //$("#btnSSCGenerate").attr("edoc-id", edoc_id);
 
@@ -426,7 +426,7 @@
                                     $("<td>").text(cellValue == null ? "" : cellValue)
                                 );
 
-                            } else { 
+                            } else {
                                 var input = $("<input>", {
                                     type: "text",
                                     class: "form-control facility-input",
@@ -438,7 +438,7 @@
 
                                 tr.append(
                                     $("<td>").append(input)
-                                ); 
+                                );
                             }
                         });
                         table.find("tbody").append(tr);
@@ -753,7 +753,7 @@
                 return html;
             }
 
-          
+
 
             $("body").on("click", ".ssc", function () {
 
@@ -779,10 +779,57 @@
 
             $("#btnSSCGenerate").click(function () {
 
-                var edoc_id = $("#btnSSCGenerate").attr("edoc-id");
-                alert(edoc_id);
+                var drawdownId = $("#btnSSCGenerate").attr("edoc-id");
+
+
+                alert(drawdownId);
+
+                GenerateSSC(476);
+
 
             });
+
+
+            function GenerateSSC(drawdownId) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "SSCCreation.aspx/GenerateSSC",
+                    data: JSON.stringify({
+                        drawdownId: drawdownId
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    beforeSend: function () {
+                        $("#btnGenerate").prop("disabled", true);
+                        $("#lblMessage").text("Generating PDF...");
+                    },
+
+                    success: function (response) {
+
+                        var pdfUrl = response.d;
+
+                        if (pdfUrl) {
+
+                            $("#lblMessage").text("PDF generated successfully.");
+
+                            // Open PDF in new browser tab
+                            window.open(pdfUrl, "_blank");
+                        }
+                    },
+
+                    error: function (xhr) {
+                        alert("Error generating PDF.");
+                    },
+
+                    complete: function () {
+                        $("#btnGenerate").prop("disabled", false);
+                    }
+                });
+            }
+
+
 
             $("input[name='conditionType']").change(function () {
 
@@ -1046,271 +1093,273 @@
 
 
 
-    $("body").on("click", ".upload", function () {
+            $("body").on("click", ".upload", function () {
 
-        var cus_ids = $(this).attr("cus-id");
-        //var auto_id = $(this).attr("auto-id");
-        //var e_doc_id = $(this).attr("edoc-id");
-        var drawdown_id = $(this).attr("drawdown-id");
+                var cus_ids = $(this).attr("cus-id");
+                //var auto_id = $(this).attr("auto-id");
+                //var e_doc_id = $(this).attr("edoc-id");
+                var drawdown_id = $(this).attr("drawdown-id");
 
-        //alert(cus_type + '-' + e_doc_id);
-        //DocumentUpload_V10_New_Mapping_Drawdown.aspx
-        //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
+                //alert(cus_type + '-' + e_doc_id);
+                //DocumentUpload_V10_New_Mapping_Drawdown.aspx
+                //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
 
-        url = "DocumentUpload_V10_New_Mapping_Drawdown.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
-
-
-        var width = screen.availWidth - 100;
-        var height = screen.availHeight - 100;
-        var left = parseInt((screen.availWidth / 2) - (width / 2));
-        var top = parseInt((screen.availHeight / 2) - (height / 2));
-        var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
-
-        //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
-        //var NWin = window.open("Menu.aspx", windowFeatures);
-        //alert(windowFeatures);
-        //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        newwindow.focus();
+                url = "DocumentUpload_V10_New_Mapping_Drawdown.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
 
 
+                var width = screen.availWidth - 100;
+                var height = screen.availHeight - 100;
+                var left = parseInt((screen.availWidth / 2) - (width / 2));
+                var top = parseInt((screen.availHeight / 2) - (height / 2));
+                var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
 
-    });
+                //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
+                //var NWin = window.open("Menu.aspx", windowFeatures);
+                //alert(windowFeatures);
+                //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
+                //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
-    $("body").on("click", ".reason", function () {
+                newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
 
-        var dd_id = $(this).attr("drawdown-id");
-
-        $("#lblID").text(dd_id);
-
-
-        $.ajax({
-            type: "POST",
-            url: "DrawdownListing_V2.aspx/GetReason",
-            data: JSON.stringify({
-                drawdown_id: dd_id
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-
-            success: function (response) {
-                /*
-                    var item = response.d;
-
-                    var row = "<tr>" +
-        "<td>" + item.id + "</td>" +
-        "<td>" + item.cus_name + "</td>" +
-        "<td>" + item.cr_incharge_decline_reason + "</td>" +
-        "<td>" + item.hob_decline_reason + "</td>" +
-        "<td>" + item.dm_decline_reason + "</td>" +
-        "<td>" + item.unit_head_decline_reason + "</td>" +
-        "</tr>";
-
-        $("#reasonTable").html(row);
-        */
+                newwindow.focus();
 
 
-                var data = response.d;
-                var html = "";
 
-                $.each(data, function (key, value) {
+            });
 
-                    html += "<tr>";
-                    html += "<th>" + key + "</th>";
-                    html += "<td>" + (value == null ? "" : value) + "</td>";
-                    html += "</tr>";
 
+            $("body").on("click", ".reason", function () {
+
+                var dd_id = $(this).attr("drawdown-id");
+
+                $("#lblID").text(dd_id);
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/GetReason",
+                    data: JSON.stringify({
+                        drawdown_id: dd_id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+                        /*
+                            var item = response.d;
+        
+                            var row = "<tr>" +
+                "<td>" + item.id + "</td>" +
+                "<td>" + item.cus_name + "</td>" +
+                "<td>" + item.cr_incharge_decline_reason + "</td>" +
+                "<td>" + item.hob_decline_reason + "</td>" +
+                "<td>" + item.dm_decline_reason + "</td>" +
+                "<td>" + item.unit_head_decline_reason + "</td>" +
+                "</tr>";
+        
+                $("#reasonTable").html(row);
+                */
+
+
+                        var data = response.d;
+                        var html = "";
+
+                        $.each(data, function (key, value) {
+
+                            html += "<tr>";
+                            html += "<th>" + key + "</th>";
+                            html += "<td>" + (value == null ? "" : value) + "</td>";
+                            html += "</tr>";
+
+                        });
+
+
+                        $("#reasonTable").html(html);
+
+                    },
+
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                    }
                 });
 
 
-                $("#reasonTable").html(html);
+                $('#modalUpdateform').modal('show');
 
-            },
 
-            error: function (xhr) {
-                console.log(xhr.responseText);
-            }
+
+
+            });
+
+
+
+            $(document).on("click", ".query", function () {
+
+                var drawdown_id = $(this).attr("data-drawdown-id");
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/GetQueryDetails",
+                    data: JSON.stringify({ drawdown_id: parseInt(drawdown_id) }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+
+                        var html = "";
+
+                        if (data.length > 0) {
+
+                            $.each(data, function (i, item) {
+
+                                html += "<tr>";
+
+                                html += "<td>" + (i + 1) + "</td>";
+                                html += "<td>" + $("<div>").text(item.query).html() + "</td>";
+                                html += "<td>" + $("<div>").text(item.query_by_role).html() + "</td>";
+                                html += "<td>" + $("<div>").text(item.create_date).html() + "</td>";
+                                html += "<td>" + $("<div>").text(item.create_by).html() + "</td>";
+
+                                html += "</tr>";
+
+                            });
+
+                        }
+                        else {
+
+                            html = "<tr><td colspan='5' class='text-center'>No Query Found</td></tr>";
+
+                        }
+
+                        $("#queryDetails").html(html);
+
+                        $("#queryModal").modal("show");
+
+                    },
+
+                    error: function () {
+                        alert("Error loading query details.");
+                    }
+                });
+
+            });
+
+            $("body").on("click", ".view", function () {
+
+                var cus_ids = $(this).attr("cus-id");
+                //var auto_id = $(this).attr("auto-id");
+                //var e_doc_id = $(this).attr("edoc-id");
+                var drawdown_id = $(this).attr("drawdown-id");
+
+                //alert(cus_type + '-' + e_doc_id);
+                //DocumentUpload_V10_New_Mapping_Drawdown.aspx
+                //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
+
+                url = "Checklist_View_V2.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
+
+
+                var width = screen.availWidth - 100;
+                var height = screen.availHeight - 100;
+                var left = parseInt((screen.availWidth / 2) - (width / 2));
+                var top = parseInt((screen.availHeight / 2) - (height / 2));
+                var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
+
+                //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
+                //var NWin = window.open("Menu.aspx", windowFeatures);
+                //alert(windowFeatures);
+                //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow.focus();
+
+            });
+
+
+
+
+            $("body").on("click", ".pdf", function () {
+
+                var cus_ids = $(this).attr("cus-id");
+                //var auto_id = $(this).attr("auto-id");
+                //var e_doc_id = $(this).attr("edoc-id");
+                var drawdown_id = $(this).attr("drawdown-id");
+
+                //alert(cus_type + '-' + e_doc_id);
+                //DocumentUpload_V10_New_Mapping_Drawdown.aspx
+                //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
+
+                url = "Checklist_View_V2_PdfGen.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
+
+
+                var width = screen.availWidth - 100;
+                var height = screen.availHeight - 100;
+                var left = parseInt((screen.availWidth / 2) - (width / 2));
+                var top = parseInt((screen.availHeight / 2) - (height / 2));
+                var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
+
+                //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
+                //var NWin = window.open("Menu.aspx", windowFeatures);
+                //alert(windowFeatures);
+                //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
+
+                newwindow.focus();
+
+            });
+
+
+            $(document).on("click", ".show", function () {
+
+                var drawdown_id = $(this).attr("data-drawdown-id");
+
+                $.ajax({
+                    type: "POST",
+                    url: "DrawdownListing_V2.aspx/GetDeclineReason",
+                    data: JSON.stringify({ drawdown_id: drawdown_id }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var data = response.d;
+
+                        if (data != null) {
+
+                            $("#cus_name").text(data.cus_name || "");
+                            $("#cr_reason").text(data.cr_reason || "");
+                            $("#hob_reason").text(data.hob_reason || "");
+                            $("#dm_reason").text(data.dm_reason || "");
+                            $("#unit_reason").text(data.unit_reason || "");
+
+                            $("#reasonModal").modal("show");
+                        }
+                        else {
+                            alert("No decline reason found.");
+                        }
+                    },
+
+                    error: function () {
+                        alert("Error loading decline reasons.");
+                    }
+                });
+
+            });
+
         });
 
+    </script>
+</asp:Content>
 
-        $('#modalUpdateform').modal('show');
 
-
-
-
-    });
-
-
-
-    $(document).on("click", ".query", function () {
-
-        var drawdown_id = $(this).attr("data-drawdown-id");
-
-        $.ajax({
-            type: "POST",
-            url: "DrawdownListing_V2.aspx/GetQueryDetails",
-            data: JSON.stringify({ drawdown_id: parseInt(drawdown_id) }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-
-            success: function (response) {
-
-                var data = response.d;
-
-                var html = "";
-
-                if (data.length > 0) {
-
-                    $.each(data, function (i, item) {
-
-                        html += "<tr>";
-
-                        html += "<td>" + (i + 1) + "</td>";
-                        html += "<td>" + $("<div>").text(item.query).html() + "</td>";
-                        html += "<td>" + $("<div>").text(item.query_by_role).html() + "</td>";
-                        html += "<td>" + $("<div>").text(item.create_date).html() + "</td>";
-                        html += "<td>" + $("<div>").text(item.create_by).html() + "</td>";
-
-                        html += "</tr>";
-
-                    });
-
-                }
-                else {
-
-                    html = "<tr><td colspan='5' class='text-center'>No Query Found</td></tr>";
-
-                }
-
-                $("#queryDetails").html(html);
-
-                $("#queryModal").modal("show");
-
-            },
-
-            error: function () {
-                alert("Error loading query details.");
-            }
-        });
-
-    });
-
-    $("body").on("click", ".view", function () {
-
-        var cus_ids = $(this).attr("cus-id");
-        //var auto_id = $(this).attr("auto-id");
-        //var e_doc_id = $(this).attr("edoc-id");
-        var drawdown_id = $(this).attr("drawdown-id");
-
-        //alert(cus_type + '-' + e_doc_id);
-        //DocumentUpload_V10_New_Mapping_Drawdown.aspx
-        //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
-
-        url = "Checklist_View_V2.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
-
-
-        var width = screen.availWidth - 100;
-        var height = screen.availHeight - 100;
-        var left = parseInt((screen.availWidth / 2) - (width / 2));
-        var top = parseInt((screen.availHeight / 2) - (height / 2));
-        var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
-
-        //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
-        //var NWin = window.open("Menu.aspx", windowFeatures);
-        //alert(windowFeatures);
-        //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        newwindow.focus();
-
-    });
-
-
-
-
-    $("body").on("click", ".pdf", function () {
-
-        var cus_ids = $(this).attr("cus-id");
-        //var auto_id = $(this).attr("auto-id");
-        //var e_doc_id = $(this).attr("edoc-id");
-        var drawdown_id = $(this).attr("drawdown-id");
-
-        //alert(cus_type + '-' + e_doc_id);
-        //DocumentUpload_V10_New_Mapping_Drawdown.aspx
-        //url = "DocumentUpload_V9.aspx?var=" + cus_type + "&var1=" + auto_id + "&var2=" + e_doc_id + "&var3=" + drawdown_id;
-
-        url = "Checklist_View_V2_PdfGen.aspx?var=" + drawdown_id + "&var1=" + cus_ids;
-
-
-        var width = screen.availWidth - 100;
-        var height = screen.availHeight - 100;
-        var left = parseInt((screen.availWidth / 2) - (width / 2));
-        var top = parseInt((screen.availHeight / 2) - (height / 2));
-        var windowFeatures = "width=" + width + ", height=" + height + ", status, resizable, screenX=" + left + ", screenY=" + top;
-
-        //var NWin = window.open("PopUpHelper.aspx?txtBox='"+test+"'&var1="+test+"&var2="+test,'_blank', windowFeatures);
-        //var NWin = window.open("Menu.aspx", windowFeatures);
-        //alert(windowFeatures);
-        //newwindow = window.open('Menu.aspx', 'name', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        //newwindow = window.open(pagename, '_blank', ' resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        newwindow = window.open(url, '_blank', 'height=' + height + ', width=' + width + ', left=' + left + ', top=' + top + ', resizable=yes, scrollbars=yes, toolbar=no, status=yes, menubar=no');
-
-        newwindow.focus();
-
-    });
-
-
-    $(document).on("click", ".show", function () {
-
-        var drawdown_id = $(this).attr("data-drawdown-id");
-
-        $.ajax({
-            type: "POST",
-            url: "DrawdownListing_V2.aspx/GetDeclineReason",
-            data: JSON.stringify({ drawdown_id: drawdown_id }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-
-            success: function (response) {
-
-                var data = response.d;
-
-                if (data != null) {
-
-                    $("#cus_name").text(data.cus_name || "");
-                    $("#cr_reason").text(data.cr_reason || "");
-                    $("#hob_reason").text(data.hob_reason || "");
-                    $("#dm_reason").text(data.dm_reason || "");
-                    $("#unit_reason").text(data.unit_reason || "");
-
-                    $("#reasonModal").modal("show");
-                }
-                else {
-                    alert("No decline reason found.");
-                }
-            },
-
-            error: function () {
-                alert("Error loading decline reasons.");
-            }
-        });
-
-    });
-
-});
-
-                                  </script>
-                              </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content"> <!-- Start of table section -->
 

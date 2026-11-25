@@ -6,8 +6,7 @@ using System.Data.SqlClient;
 /// Summary description for SscRepository
 /// </summary>
 /// 
-namespace CAD.DataAccess
-{
+ 
     public static class SscRepository
     {
         public static SSCData GetSscData(int drawdownId)
@@ -102,4 +101,3 @@ namespace CAD.DataAccess
             return data;
         }
     }
-}
