@@ -1361,11 +1361,16 @@
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <section class="content"> <!-- Start of table section -->
+
+
+
+<section class="content"> <!-- Start of table section -->
 
 
 
    <div class="modal" id="facilityModal" tabindex="-1">
+
+
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
@@ -1463,14 +1468,11 @@
             <div class="modal-footer" style="background:#f4f4f4;">
 
 
-                 <button type="button" class="btn btn-primary btn-lg" id="btnSaveLLI_Complete">
-                    <i class="fa fa-save"></i> Save All
+                 <button type="button" class="btn btn-primary btn-lg" id="btnSaveLLI_Complete"><i class="fa fa-save"></i> Save All
                 </button>
 
 
-                <button type="button" class="btn btn-default btn-lg"
-                        data-dismiss="modal">
-                    <i class="fa fa-times"></i> Close
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
 
               

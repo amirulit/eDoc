@@ -32,7 +32,30 @@
             height: 32px;
         }
 
+        #pdfModal {
+    z-index: 1060 !important;
+}
 
+#pdfModal .modal-dialog {
+    z-index: 1061 !important;
+    width: 90%;
+}
+
+#pdfModal .modal-content {
+    position: relative;
+    z-index: 1062 !important;
+    background: #fff;
+}
+
+#pdfViewer {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 75vh;
+    border: none;
+    background: #fff;
+}
 
     </style>
     
@@ -251,6 +274,123 @@
             });
 
         });
+
+
+        function LoadSSCFiles() {
+
+            $.ajax({
+                type: "POST",
+                url: "LLI_Listing.aspx/GetSSCFiles",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                beforeSend: function () {
+                    $("#tblSSCFiles tbody").html(
+                        "<tr><td colspan='7' class='text-center'>Loading...</td></tr>"
+                    );
+                },
+
+                success: function (response) {
+
+                    var data = response.d;
+                    var tbody = $("#tblSSCFiles tbody");
+
+                    tbody.empty();
+
+                    if (data.length === 0) {
+                        tbody.append(
+                            "<tr><td colspan='7' class='text-center'>No files found</td></tr>"
+                        );
+                        return;
+                    }
+
+                    $.each(data, function (i, item) {
+
+                        var tr = $("<tr>");
+
+                        $("<td>").text(item.DrawdownId).appendTo(tr);
+                        $("<td>").text(item.FileName).appendTo(tr);
+                        $("<td>").text(item.SscMode).appendTo(tr);
+                        $("<td>").text(item.Type).appendTo(tr);
+                        $("<td>").text(item.CreateBy).appendTo(tr);
+                        $("<td>").text(item.CreateDate).appendTo(tr);
+
+                        var btn = $("<button>")
+     .attr("type", "button")
+     .addClass("btn btn-xs btn-primary")
+     .html("<i class='fa fa-eye'></i> View")
+     .click(function () {
+
+         $("#pdfViewer").attr("src", item.ViewUrl);
+
+         $("#pdfModal").modal("show");
+
+     });
+
+                        $("<td>").append(btn).appendTo(tr);
+
+                        tbody.append(tr);
+                    });
+                },
+
+                error: function () {
+                    $("#tblSSCFiles tbody").html(
+                        "<tr><td colspan='7' class='text-center text-danger'>Unable to load files</td></tr>"
+                    );
+                }
+            });
+        }
+
+
+
+
+
+        //$("#btnShowSSCFiles").click(function () {
+
+        //    alert('ll');
+
+        //    LoadSSCFiles();
+
+        //    $("#sscFilesModal").modal("show");
+
+        //});
+
+
+
+        /*
+        $(document).on("click", "#btnShowSSCFiles", function (e) {
+
+            e.preventDefault();
+
+            alert("Button clicked");
+
+            LoadSSCFiles();
+
+            $("#sscFilesModal").modal("show");
+
+        });
+        */
+
+        $(document).on("click", ".ssc", function (e) {
+
+
+
+            var drawdownid = $(this).attr("data-drawdownid");
+
+            alert(drawdownid);
+
+            e.preventDefault();
+
+            //alert("Button clicked");
+
+            LoadSSCFiles();
+
+            $("#sscFilesModal").modal("show");
+
+        });
+
+        
 
 
         $(document).ready(function () {
@@ -910,6 +1050,87 @@
     </div>
 
 </div>--%>
+        <div class="modal" id="pdfModal">
+    <div class="modal-dialog modal-lg" style="width:90%;">
+        <div class="modal-content">
+
+            <div class="modal-header bg-blue">
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+
+                <h4 class="modal-title">
+                    <i class="fa fa-file-pdf-o"></i> SSC PDF Viewer
+                </h4>
+            </div>
+
+            <div class="modal-body" style="padding:0;">
+
+                <iframe id="pdfViewer"
+                        src=""
+                        style="width:100%; height:75vh; border:none;">
+                </iframe>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+        <div class="modal" id="sscFilesModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header bg-blue">
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    <i class="fa fa-file-pdf-o"></i>
+                    SSC Generated Files
+                </h4>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-bordered table-striped"
+                       id="tblSSCFiles">
+
+                    <thead>
+                        <tr>
+                            <th>Drawdown ID</th>
+                            <th>File Name</th>
+                            <th>SSC Mode</th>
+                            <th>Type</th>
+                            <th>Created By</th>
+                            <th>Create Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 
     	<div class="row" id="table1"><!--MSK-000132-1-->
@@ -966,6 +1187,9 @@
         <button type="button" data-drawdownid="<%=TableData.Rows[data]["DrawdownId"] %>"class="btn btn-success btn-xs view">View</button>
 
         <button type="button" data-drawdownid="<%=TableData.Rows[data]["DrawdownId"] %>"class="btn btn-success btn-xs Pdf">Pdf</button>
+
+          <button type="button" data-drawdownid="<%=TableData.Rows[data]["DrawdownId"] %>"class="btn btn-success btn-xs ssc">View(SSC)</button>
+
     </td>
 
 </tr>
@@ -975,7 +1199,15 @@
         }
                                                    %>
                         	</tbody>
-                    	</table>	                
+                    	</table>	   
+                        
+                        <button type="button" id="btnShowSSCFiles"
+        class="btn btn-info">
+    <i class="fa fa-folder-open"></i>
+    View SSC Files
+</button>
+                        
+                                     
                		</div>
               	</div>
             </div>

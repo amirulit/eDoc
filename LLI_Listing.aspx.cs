@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Web.Services;
 
 public partial class LLI_Listing : System.Web.UI.Page
 {
@@ -187,6 +188,61 @@ public partial class LLI_Listing : System.Web.UI.Page
         }
 
         return result;
+    }
+
+    public class SSCFileInfo
+    {
+        public int DrawdownId { get; set; }
+        public string FileName { get; set; }
+        public string SscMode { get; set; }
+        public string Type { get; set; }
+        public string CreateBy { get; set; }
+        public string CreateDate { get; set; }
+        public string ViewUrl { get; set; }
+    }
+
+
+    [WebMethod(EnableSession = true)]
+    public static List<SSCFileInfo> GetSSCFiles()
+    {
+        List<SSCFileInfo> list = new List<SSCFileInfo>();
+
+        string cs = ConfigurationManager
+            .ConnectionStrings["dbconn"].ConnectionString;
+
+        using (SqlConnection con = new SqlConnection(cs))
+        using (SqlCommand cmd = new SqlCommand(@"
+        SELECT drawdown_id, file_name, ssc_mode,
+               type, create_by, create_date
+        FROM dbo.t_SSC_Files
+        ORDER BY create_date DESC", con))
+        {
+            con.Open();
+
+            using (SqlDataReader dr = cmd.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    SSCFileInfo item = new SSCFileInfo();
+
+                    item.DrawdownId = Convert.ToInt32(dr["drawdown_id"]);
+                    item.FileName = dr["file_name"].ToString();
+                    item.SscMode = dr["ssc_mode"].ToString();
+                    item.Type = dr["type"].ToString();
+                    item.CreateBy = dr["create_by"].ToString();
+
+                    item.CreateDate = Convert.ToDateTime(
+                        dr["create_date"]).ToString("dd-MMM-yyyy hh:mm tt");
+
+                    item.ViewUrl = VirtualPathUtility.ToAbsolute(
+                        "~/ViewSSC.ashx?id=" + item.DrawdownId);
+
+                    list.Add(item);
+                }
+            }
+        }
+
+        return list;
     }
     public DataTable Listing()
     {
