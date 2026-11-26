@@ -1183,12 +1183,18 @@
         	</div><!-- /.modal-content -->  		 
 		</div><!-- /.modal-dialog -->            
 	</div><!--/.Modal-Update form -->   
-  <div class="modal" id="documentModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+
+
+
+
+<div class="modal" id="documentModal" tabindex="-1" role="dialog">
+
+
+  <div class="modal-dialog modal-lg" style="width:90%;">
 
         <div class="modal-content">
 
-            <div class="modal-header">
+              <div class="modal-header bg-blue">
                 <button type="button" class="close" data-dismiss="modal">
                     &times;
                 </button>
@@ -1247,6 +1253,96 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+          <div class="modal" id="pdfModal">
+    <div class="modal-dialog modal-lg" style="width:90%;">
+        <div class="modal-content">
+
+            <div class="modal-header bg-blue">
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+
+                <h4 class="modal-title">
+                    <i class="fa fa-file-pdf-o"></i> SSC PDF Viewer
+                </h4>
+            </div>
+
+            <div class="modal-body" style="padding:0;">
+
+                <iframe id="pdfViewer"
+                        src=""
+                        style="width:100%; height:75vh; border:none;">
+                </iframe>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+        <div class="modal" id="sscFilesModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header bg-blue">
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    <i class="fa fa-file-pdf-o"></i>
+                    SSC Generated Files
+                </h4>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-bordered table-striped"
+                       id="tblSSCFiles">
+
+                    <thead>
+                        <tr>
+                            <th>Drawdown ID</th>
+                            <th>File Name</th>
+                            <th>SSC Mode</th>
+                            <th>Type</th>
+                            <th>Created By</th>
+                            <th>Create Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
 
 
 
