@@ -2,7 +2,13 @@
     CodeFile="Dashboard.aspx.cs" Inherits="Dashboard" Debug="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <link href="bootstrap4/boostrap.css" rel="stylesheet" type="text/css" />
+ <%--   <link href="bootstrap4/boostrap.css" rel="stylesheet" type="text/css" />--%>
+
+
+
+    
+
+
     <script type="text/javascript">
 
 
@@ -46,6 +52,7 @@
             overflow: hidden;
         }
     </style>
+ 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <section class="content-header">

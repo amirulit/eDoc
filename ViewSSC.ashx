@@ -39,6 +39,9 @@ public class ViewSSC : IHttpHandler
         context.Response.TransmitFile(filePath);
         context.Response.Flush();
         context.ApplicationInstance.CompleteRequest();
+        
+        
+        
     }
 
     public bool IsReusable

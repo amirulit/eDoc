@@ -206,7 +206,7 @@
 
                 url: "LLI_Generate.aspx/GenerateLLIPdf_V2",
 
-                data: JSON.stringify({    drawdownid: parseInt(drawdownid)}),
+                data: JSON.stringify({ drawdownid: parseInt(drawdownid) }),
 
                 contentType: "application/json; charset=utf-8",
 
@@ -378,7 +378,7 @@
 
             var drawdownid = $(this).attr("data-drawdownid");
 
-            alert(drawdownid);
+            //alert(drawdownid);
 
             e.preventDefault();
 
@@ -386,7 +386,10 @@
 
             LoadSSCFiles();
 
+
             $("#sscFilesModal").modal("show");
+
+
 
         });
 
@@ -1188,7 +1191,7 @@
 
         <button type="button" data-drawdownid="<%=TableData.Rows[data]["DrawdownId"] %>"class="btn btn-success btn-xs Pdf">Pdf</button>
 
-          <button type="button" data-drawdownid="<%=TableData.Rows[data]["DrawdownId"] %>"class="btn btn-success btn-xs ssc">View(SSC)</button>
+        <button type="button" data-drawdownid="<%=TableData.Rows[data]["DrawdownId"] %>"class="btn btn-success btn-xs ssc">View(SSC)</button>
 
     </td>
 

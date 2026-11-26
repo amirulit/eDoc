@@ -5,12 +5,15 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Login : System.Web.UI.Page
+public partial class Login_20261112 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
 
     }
+
+
+
 
 
     protected void btnSubmit_Click(object sender, EventArgs e)
@@ -27,8 +30,8 @@ public partial class Login : System.Web.UI.Page
         if (txtDomainID.Text == "cadchecker@mblbd.com")
             Session["UserType"] = "CADChecker";
 
-        
-        
+
+
         Response.Redirect("Dashboard.aspx");
 
 
@@ -39,7 +42,7 @@ public partial class Login : System.Web.UI.Page
     protected void btnRM_Click(object sender, EventArgs e)
     {
 
-        
+
 
         Session["DomainID"] = "md.amirul@mblbd.com";
 
@@ -95,7 +98,7 @@ public partial class Login : System.Web.UI.Page
         Response.Redirect("Dashboard.aspx");
 
 
-         
+
 
 
     }
@@ -137,7 +140,7 @@ public partial class Login : System.Web.UI.Page
 
 
 
-         
+
 
         //if (txtDomainID.Text == "cadmaker@mblbd.com")
         //    Session["UserType"] = "CADMaker";
@@ -227,7 +230,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["BranchCode"] = "Credit";
 
-       
+
 
 
 
@@ -344,11 +347,11 @@ public partial class Login : System.Web.UI.Page
         Session["Role"] = 57;
         Session["RoleName"] = "DM-Corporate";
 
-      
+
         Response.Redirect("Dashboard.aspx");
 
 
- 
+
     }
     protected void btnCAD_UH_CBD_Click(object sender, EventArgs e)
     {
@@ -393,7 +396,7 @@ public partial class Login : System.Web.UI.Page
         Session["Working_Area"] = "CMSME & Agri";
 
 
-        
+
         Session["BranchCode"] = "CAD";
 
         Session["DomainID"] = "fayz@mblbd.com";
@@ -407,7 +410,7 @@ public partial class Login : System.Web.UI.Page
         Session["Role"] = 63;
 
 
-       
+
 
 
         Response.Redirect("Dashboard.aspx");
@@ -438,7 +441,7 @@ public partial class Login : System.Web.UI.Page
 
         Session["BranchCode"] = "CAD";
         Session["RoleName"] = "Unit Head-Retail";
-        
+
 
         Session["Working_Area"] = "Retail";
 
@@ -527,9 +530,9 @@ public partial class Login : System.Web.UI.Page
     }
     protected void btnCD_UH_SME_Click(object sender, EventArgs e)
     {
-        
-        
-        
+
+
+
         Session["DomainID"] = "nazrul@mblbd.com";
 
         Session["RoleName"] = "Unit Head-CMSME";

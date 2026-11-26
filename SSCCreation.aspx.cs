@@ -152,8 +152,7 @@ public partial class SSCCreation : System.Web.UI.Page
     {
         try
         {
-            byte[] pdfBytes =
-                SscPdfGenerator.GenerateUnconCentralizedSscPdf(drawdownId);
+            byte[] pdfBytes = SscPdfGenerator.GenerateUnconCentralizedSscPdf(drawdownId);
 
             string folderPath = @"E:\eDoc_SSC";
 
@@ -162,8 +161,8 @@ public partial class SSCCreation : System.Web.UI.Page
                 Directory.CreateDirectory(folderPath);
             }
 
-            string fileName = "SSC_" + drawdownId + ".pdf";
-            string filePath = Path.Combine(folderPath, fileName);
+            String fileName = "SSC_" + drawdownId + ".pdf";
+            String filePath = Path.Combine(folderPath, fileName);
 
             // Save PDF on server
             File.WriteAllBytes(filePath, pdfBytes);
@@ -177,10 +176,11 @@ public partial class SSCCreation : System.Web.UI.Page
 
 
             // Return browser-accessible URL
-            string pdfUrl = VirtualPathUtility.ToAbsolute(
-                "~/ViewSSC.ashx?id=" + drawdownId);
+            String pdfUrl = VirtualPathUtility.ToAbsolute("~/ViewSSC.ashx?id=" + drawdownId);
 
             return pdfUrl;
+
+
         }
         catch (Exception ex)
         {
@@ -196,13 +196,11 @@ public partial class SSCCreation : System.Web.UI.Page
     string type,
     string createBy)
     {
-        string cs = ConfigurationManager
-            .ConnectionStrings["dbconn"].ConnectionString;
+        String cs = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
 
         using (SqlConnection con = new SqlConnection(cs))
         {
-            using (SqlCommand cmd = new SqlCommand(
-                "usp_Insert_SSC_Files", con))
+            using (SqlCommand cmd = new SqlCommand("usp_Insert_SSC_Files", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

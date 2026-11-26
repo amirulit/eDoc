@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login_20261112" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -90,87 +90,233 @@
 
     </script>
     <style type="text/css">
-        #loginFrom .modal-dialog
-        {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0;
-            width: 100%;
-            max-width: 500px;
-        }
-    </style>
-    <style type="text/css">
         html, body
         {
-            height: 100%;
+            min-height: 100%;
             margin: 0;
+            font-family: 'Segoe UI' , Arial, sans-serif;
+            background: linear-gradient(135deg, #eaf2fb, #dce8f5);
         }
-        
-        
-        .login-wrapper
-        {
-            width: 33%;
-            height: auto;
-            margin: 100px auto 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        
-        
-        .login-panel
+        /* Welcome banner */.welcome-banner
         {
             width: 100%;
-        }
-        
-        
-        .welcome-banner
-        {
-            width: 100%;
-            height: 200px;
-            background-color: #0d6efd;
-            color: white;
+            min-height: 190px;
+            background: linear-gradient(120deg, #092c55, #1265a8, #1686c9);
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-            padding: 10px 20px;
+            padding: 25px;
             box-sizing: border-box;
-            margin-bottom: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .welcome-banner h1
+        {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: .5px;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .welcome-banner p
+        {
+            font-size: 15px;
+            margin-top: 10px;
+            color: #dceeff;
+        }
+        /* Main login wrapper */.login-wrapper
+        {
+            width: 100%;
+            max-width: 650px;
+            margin: -45px auto 40px;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+        /* Login panel */.login-panel
+        {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 12px 35px rgba(0, 35, 75, .16);
+        }
+        /* Panel heading */.login-panel .panel-heading
+        {
+            background: #fff;
+            color: #123c67;
+            padding: 25px 25px 10px;
+            border: none;
+            text-align: center;
+        }
+        .login-panel .panel-title
+        {
+            font-size: 25px;
+            font-weight: 700;
+        }
+        /* Panel body */.login-panel .panel-body
+        {
+            padding: 20px 35px 25px;
+        }
+        .login-panel label
+        {
+            color: #34495e;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .login-panel .form-control
+        {
+            height: 45px;
+            border-radius: 6px;
+            border: 1px solid #d4deea;
+            box-shadow: none;
+            font-size: 15px;
+        }
+        .login-panel .form-control:focus
+        {
+            border-color: #1686c9;
+            box-shadow: 0 0 6px rgba(22, 134, 201, .2);
+        }
+        /* Footer */.login-panel .panel-footer
+        {
+            background: #f7faff;
+            padding: 22px 25px;
+            border-top: 1px solid #e6edf5;
+            text-align: center;
+        }
+        /* Role buttons */.role-btn
+        {
+            min-width: 85px;
+            margin: 5px 3px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: none;
+            transition: all .2s ease;
+        }
+        .role-btn:hover
+        {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,.15);
+        }
+        /* Individual colors */.btn-rm
+        {
+            background: #2878b9;
+            color: white;
+        }
+        .btn-cd
+        {
+            background: #16a085;
+            color: white;
+        }
+        .btn-ci
+        {
+            background: #8e44ad;
+            color: white;
+        }
+        .btn-hob
+        {
+            background: #e67e22;
+            color: white;
+        }
+        .btn-admin
+        {
+            background: #34495e;
+            color: white;
+        }
+        .btn-dm
+        {
+            background: #2980b9;
+            color: white;
+        }
+        .btn-unit
+        {
+            background: #27ae60;
+            color: white;
+        }
+        /* Footer links */.footer-link
+        {
+            display: inline-block;
+            margin: 5px;
+            padding: 11px 28px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none !important;
+        }
+        /* Responsive */@media (max-width: 600px)
+        {
+            .welcome-banner
+            {
+                min-height: 150px;
+            }
+            .welcome-banner h1
+            {
+                font-size: 23px;
+            }
+            .login-wrapper
+            {
+                margin-top: -25px;
+            }
+            .login-panel .panel-body
+            {
+                padding: 20px;
+            }
+            .role-btn
+            {
+                min-width: 75px;
+                padding: 9px 10px;
+            }
         }
     </style>
 </head>
 <body onload="login()">
     <form id="form1" runat="server">
+    <!-- Welcome Banner -->
     <div class="welcome-banner">
-        <h1>
-            Welcome to MBPLC Document Management System (DMS)</h1>
+        <div>
+            <h1>
+                <i class="fa fa-folder-open"></i>MBPLC Document Management System
+            </h1>
+            <p>
+                Secure Document Management &amp; Workflow Solution
+            </p>
+        </div>
     </div>
+    <!-- Login Section -->
     <div class="login-wrapper">
-        <div class="panel panel-primary login-panel">
+        <div class="panel panel-default login-panel">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    Login</h3>
+                    <i class="fa fa-sign-in"></i>Welcome Back
+                </h3>
+                <p style="color: #8998a9; margin-top: 8px;">
+                    Please enter your credentials to continue
+                </p>
             </div>
             <div class="panel-body">
+                <!-- Domain ID -->
                 <div class="form-group" id="divEmail">
                     <label>
-                        Domain ID</label>
-                    <asp:TextBox ID="txtDomainID" runat="server" CssClass="form-control">
-                    </asp:TextBox>
+                        <i class="fa fa-user"></i>Domain ID
+                    </label>
+                    <asp:TextBox ID="txtDomainID" runat="server" CssClass="form-control" placeholder="Enter your Domain ID">
+                        </asp:TextBox>
                 </div>
+                <!-- Password -->
                 <div class="form-group" id="divPassword">
                     <label>
-                        Password</label>
-                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password">
-                    </asp:TextBox>
+                        <i class="fa fa-lock"></i>Password
+                    </label>
+                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password"
+                        placeholder="Enter your password">
+                        </asp:TextBox>
                 </div>
             </div>
+            <!-- Role Selection -->
             <div class="panel-footer">
                 <input type="hidden" name="do" value="user_login" />
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-info" OnClick="btnSubmit_Click"
@@ -200,7 +346,7 @@
 
 
                 <hr />
-                <!--
+
 
                   SAMD:
                 <asp:Button ID="btnCD_CBD_SAMD" runat="server" Text="RM-SAMD (CBD)" 
@@ -215,7 +361,7 @@
                     <asp:Button ID="btnCD_Agri_SAMD" runat="server" Text="RM-SAMD (Agri)" 
                     CssClass="btn btn-info" onclick="btnCD_Agri_SAMD_Click"    />
                 <hr />
-                -->
+
 
 
                 Branch:
@@ -224,7 +370,7 @@
                 <asp:Button ID="btnHOB" runat="server" Text="HOB(Main)" CssClass="btn btn-default" OnClick="btnHOB_Click" />
                 <hr />
 
-                  Branch:
+
                 <asp:Button ID="Button1" runat="server" Text="RM(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button1_Click" />
                 <asp:Button ID="Button2" runat="server" Text="CI(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button2_Click" />
                 <asp:Button ID="Button3" runat="server" Text="HOB(Dhanmomdi)" CssClass="btn btn-default " OnClick="Button3_Click" />
@@ -242,9 +388,9 @@
 
                 <hr />
 
-                <asp:Button ID="btnCAD_DM_SME" runat="server" Text="CAD DM SME & Agri" 
+                <asp:Button ID="btnCAD_DM_SME" runat="server" Text="CAD DM SME" 
                     onclick="btnCAD_DM_SME_Click"  CssClass="btn btn-success" />
-                <asp:Button ID="btnCAD_UH_SME" runat="server" Text="CAD Unit Head SME & Agri" 
+                <asp:Button ID="btnCAD_UH_SME" runat="server" Text="CAD Unit Head SME" 
                     onclick="btnCAD_UH_SME_Click"  CssClass="btn btn-success"/>
 
                 <hr />
@@ -253,7 +399,7 @@
                 <asp:Button ID="btnCAD_UH_Retail" runat="server" Text="CAD Unit Head Retail" 
                     onclick="btnCAD_UH_Retail_Click"  CssClass="btn btn-warning"/>
                 <hr />
-              <%--  <asp:Button ID="btnCAD_DM_Agri" runat="server" Text="CAD DM Agri" 
+              <%--<asp:Button ID="btnCAD_DM_Agri" runat="server" Text="CAD DM Agri" 
                     onclick="btnCAD_DM_Agri_Click"  CssClass="btn btn-primary" />
                 <asp:Button ID="btnCAD_UH_Agri" runat="server" Text="CAD Unit Head Agri" 
                     onclick="btnCAD_UH_Agri_Click"  CssClass="btn btn-success"/>--%>
@@ -268,9 +414,18 @@
                     />
                 <asp:Button ID="btnHead" runat="server" Text="HOD-CAD" CssClass="btn btn-danger" OnClick="btnHead_Click"  />
                 <hr />
-                <a href="New_V2.aspx" class="btn  btn-primary">New?</a> <a href="Login_V3.aspx" class="btn btn-success">
-                    Login</a>
+                 <div style="margin-top: 15px;">
+                    <a href="New_Reg.aspx" class="btn btn-primary footer-link"><i class="fa fa-user-plus">
+                    </i>New User? </a><a href="Login_V3.aspx" class="btn btn-success footer-link"><i
+                        class="fa fa-sign-in"></i>Login </a>
+                    <asp:Button ID="Button6" runat="server" Text="Button" onclick="Button1_Click" />
+                </div>
             </div>
+        </div>
+        <div style="text-align: center; color: #718096; font-size: 12px; margin-top: 20px;">
+            MBPLC Document Management System
+            <br />
+            Secure &amp; Reliable Document Management
         </div>
     </div>
     </form>

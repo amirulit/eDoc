@@ -384,7 +384,7 @@
 
             $(document).on('change', '.bulk', function () {
 
-                if ($('.bulk:checked').length > 0) {
+                if ($('.bulk:checked').length > 1) {
                     $('#Button2').show();
                 } else {
                     $('#Button2').hide();

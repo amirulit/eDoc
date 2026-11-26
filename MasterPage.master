@@ -102,59 +102,161 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
     <style type="text/css">
-        .sidebar-menu > li > a
-        {
+        .sidebar-menu > li > a {
             padding: 8px 15px;
         }
-        
-        .sidebar-menu .treeview-menu > li > a
-        {
+
+        .sidebar-menu .treeview-menu > li > a {
             padding: 6px 10px 6px 35px;
         }
     </style>
 
 
-    
-        <style type="text/css">
-                .msk-fade {
-                    -webkit-animation-name: animatetop;
-                    -webkit-animation-duration: 0.4s;
-                    animation-name: animatetop;
-                    animation-duration: 0.4s;
-                }
-                /* Add Animation */
-                @-webkit-keyframes animatetop {
-                    from {
-                        top: -300px;
-                        opacity: 0;
-                    }
 
-                    to {
-                        top: 0;
-                        opacity: 1;
-                    }
-                }
+    <style type="text/css">
+        .msk-fade {
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s;
+        }
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0;
+            }
 
-                @keyframes animatetop {
-                    from {
-                        top: -300px;
-                        opacity: 0;
-                    }
+            to {
+                top: 0;
+                opacity: 1;
+            }
+        }
 
-                    to {
-                        top: 0;
-                        opacity: 1;
-                    }
-                }
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0;
+            }
 
-                .modal-content1 {
-                    position: absolute;
-                    left: 25%;
-                }
-            </style>
+            to {
+                top: 0;
+                opacity: 1;
+            }
+        }
+
+        .modal-content1 {
+            position: absolute;
+            left: 25%;
+        }
+    </style>
 
 
+    <!--Added 20261226-->
+    <style type="text/css">
+        /* ==============================
+   Main Header / Navbar
+================================= */
 
+        .main-header > .navbar {
+            margin-left: 230px;
+            margin-bottom: 0;
+            min-height: 50px;
+            border: none;
+            border-radius: 0;
+            -webkit-transition: margin-left .3s ease-in-out;
+            -o-transition: margin-left .3s ease-in-out;
+            transition: margin-left .3s ease-in-out;
+        }
+
+        .skin-blue .main-header .navbar {
+            background-color: #1265a8;
+        }
+
+        /* ==============================
+   Logo
+================================= */
+
+        .skin-blue .main-header .logo {
+            background-color: #092c55;
+            color: #fff;
+            font-weight: bold;
+        }
+
+            .skin-blue .main-header .logo:hover {
+                background-color: #092c55;
+            }
+
+        /* ==============================
+   Sidebar
+================================= */
+
+        .skin-blue .main-sidebar {
+            background-color: #173b60;
+        }
+
+        .skin-blue .sidebar a {
+            color: #b8c7ce;
+        }
+
+            .skin-blue .sidebar a:hover {
+                text-decoration: none;
+            }
+
+        /* ==============================
+   Sidebar Menu - Compact
+================================= */
+
+        .sidebar-menu li > a {
+            position: relative;
+            display: block;
+            padding: 8px 10px 8px 15px;
+            font-size: 13px;
+            line-height: 18px;
+        }
+
+        .skin-blue .sidebar-menu > li > a {
+            color: #e4edf7;
+            border-left: 3px solid transparent;
+        }
+
+        /* Menu Header */
+
+        .skin-blue .sidebar-menu > li.header {
+            color: #a9c4dc;
+            background: #112e4b;
+            padding: 8px 15px;
+            font-size: 11px;
+        }
+
+        /* Hover and Active */
+
+        .skin-blue .sidebar-menu > li:hover > a,
+        .skin-blue .sidebar-menu > li.active > a {
+            color: #fff;
+            background: #377690;
+            border-left-color: #36b9e9;
+        }
+
+        /* ==============================
+   Submenu
+================================= */
+
+        .sidebar-menu .treeview-menu > li > a {
+            padding: 6px 5px 6px 25px;
+            font-size: 12px;
+            line-height: 17px;
+        }
+
+        .skin-blue .treeview-menu > li > a {
+            color: #c2d5e8;
+        }
+
+            .skin-blue .treeview-menu > li.active > a,
+            .skin-blue .treeview-menu > li > a:hover {
+                color: #fff;
+            }
+    </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 
@@ -162,14 +264,14 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <form id="form1" runat="server">
-    <div class="wrapper">
-        <header class="main-header">
+        <div class="wrapper">
+            <header class="main-header">
     <!-- Logo -->
     <a href="" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><strong>eDoc</strong></span>
+      <span class="logo-mini"><i class="fa fa-folder-open"></i><strong>eDoc</strong></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><strong>eDoc </strong></span>
+      <span class="logo-lg"><i class="fa fa-folder-open"></i><strong>eDoc </strong></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -247,7 +349,7 @@
             	<li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                       <img src="user2-160x160.jpg" class="user-image" alt="User Image">
-                      <span class="hidden-xs">Test</span>
+                      <span class="hidden-xs"><%=Name2%></span>
                     </a>
                     <ul class="dropdown-menu">
                       <!-- User image -->
@@ -274,43 +376,41 @@
         </div>
 	</nav>
   </header>
-        <div class="row" id="fProfile">
-        </div>
-        <div id="viewDuePayment">
-        </div>
-        <div id="viewAllNotification">
-        </div>
-        <div id="stdProfile">
-        </div>
-        <div id="showEvent2">
-        </div>
-        <!-- //MSK-000124 Modal-Delete Confirm Popup -->
-        <div class="modal msk-fade" id="deleteConfirmReq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="frm_title">
-                            Delete</h4>
-                    </div>
-                    <div class="modal-body bgColorWhite">
-                        <strong style="color: red;">Are you sure?</strong> Do you want to Delete this Friend
+            <div class="row" id="fProfile">
+            </div>
+            <div id="viewDuePayment">
+            </div>
+            <div id="viewAllNotification">
+            </div>
+            <div id="stdProfile">
+            </div>
+            <div id="showEvent2">
+            </div>
+            <!-- //MSK-000124 Modal-Delete Confirm Popup -->
+            <div class="modal msk-fade" id="deleteConfirmReq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="frm_title">Delete</h4>
+                        </div>
+                        <div class="modal-body bgColorWhite">
+                            <strong style="color: red;">Are you sure?</strong> Do you want to Delete this Friend
                         Request.
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#" style='margin-left: 10px;' id="btnYesReq" class="deletebtn btn btn-danger col-sm-2 pull-right">
-                            Yes</a><!-- MSK-000125 -->
-                        <button type="button" class="btn btn-primary col-sm-2 pull-right" data-dismiss="modal"
-                            id="frm_cancel">
-                            No</button>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" style='margin-left: 10px;' id="btnYesReq" class="deletebtn btn btn-danger col-sm-2 pull-right">Yes</a><!-- MSK-000125 -->
+                            <button type="button" class="btn btn-primary col-sm-2 pull-right" data-dismiss="modal"
+                                id="frm_cancel">
+                                No</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Left side column. contains the logo and sidebar -->
-        <aside class="main-sidebar">
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
@@ -321,7 +421,7 @@
         	<img src="user2-160x160.jpg" class="img-circle" alt="User Image"/>
         </div>
         <div class="pull-left info">
-        	<p>Test</p>
+        	<p><%=Name2%></p>
             
         </div>
       </div>
@@ -400,10 +500,10 @@
 
               <%  
                   if (
-                      
-                      
-                     
-                      
+
+
+
+
                       Role == 21 || Role == 23 || Role == 25 || Role == 27 || Role == 29 || Role == 31 || Role == 33 || Role == 35
 
 
@@ -433,7 +533,8 @@
 
             <%} %>
 
-          <%  if (Role == 5 || Role == 7 || Role == 9 || Role == 11 ){ %>
+          <%  if (Role == 5 || Role == 7 || Role == 9 || Role == 11)
+              { %>
 
           <li>
           <a href="SanctionListing_V2.aspx">
@@ -443,7 +544,7 @@
           <%} %>
 
 
-        <%  if ( Role == 57 || Role == 61 || Role == 65 || Role == 69)
+        <%  if (Role == 57 || Role == 61 || Role == 65 || Role == 69)
             { %>
              
          <li>
@@ -619,7 +720,8 @@
        <%
             }
             %>
-          <% if (Role==81 || Role==83) {%>
+          <% if (Role == 81 || Role == 83)
+             {%>
 
            <li>
           <a href="LLI_Listing.aspx">
@@ -627,7 +729,7 @@
           </a>
         </li>
           <%
-          }
+             }
            %>
        <li>
           <a href="Report.aspx">
@@ -668,17 +770,17 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-        <div class="content-wrapper">
-            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-            </asp:ContentPlaceHolder>
-        </div>
-        <footer class="main-footer">
+            <div class="content-wrapper">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            <footer class="main-footer">
         <div class="pull-right hidden-xs">
           <b>Version</b> 1.0.2
         </div>
         <strong>Copyright &copy; 2026-2027</strong> All rights reserved.
      </footer>
-    </div>
+        </div>
     </form>
     <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
     </asp:ContentPlaceHolder>

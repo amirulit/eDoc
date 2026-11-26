@@ -440,6 +440,7 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
             command.CommandText = "usp_SanctionLisitng_V2_Branch";
 
             command.Parameters.Add(new SqlParameter("@branchcode", BranchCode));
+
         }
         else if (Role == 61 || Role == 63)
         {
@@ -448,6 +449,7 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
             command.CommandText = "usp_SanctionLisitng_V2_SME_n_Agriculture";
 
             command.Parameters.Add(new SqlParameter("@domain_id", Session["DomainID"].ToString()));
+
         }
         else
         {
@@ -460,22 +462,20 @@ public partial class SanctionListing_V2 : System.Web.UI.Page
             }
             else if (Role == 25 || Role == 27)
             {
-                Segment = "CMSME";
-
-
+                Segment = "CMSME"; 
             }
 
             else if (Role == 29 || Role == 31 || Role == 65 || Role == 59)
             {
-                Segment = "Retail";
 
+                Segment = "Retail"; 
 
             }
 
             else if (Role == 33 || Role == 35)
             {
-                Segment = "Agriculture";
 
+                Segment = "Agriculture"; 
 
             }
 

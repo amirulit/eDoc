@@ -1517,7 +1517,12 @@
                         <td><%=TableData.Rows[data]["sanction_segment"]%></td>
                         <td><%=TableData.Rows[data]["sanction_authority"]%></td>
                         <td><%=TableData.Rows[data]["booking_branch"]%></td>
-                        <td><%=TableData.Rows[data]["status_desc"]%></td>
+                        <td><%=TableData.Rows[data]["status_desc"]%>
+
+
+
+
+                        </td>
 
 
 <td>
