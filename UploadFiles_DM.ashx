@@ -26,8 +26,8 @@ public class UploadFiles_DM : IHttpHandler, IRequiresSessionState
             if (postedFile == null || postedFile.ContentLength == 0)
                 throw new Exception("Empty file.");
 
-            int edoc_id = Convert.ToInt32(
-                context.Request.Form["edoc_id"]);
+            int dd_id = Convert.ToInt32(
+                context.Request.Form["dd_id"]);
 
             String doc_type = context.Request.Form["doc_type"];
 
@@ -36,7 +36,7 @@ public class UploadFiles_DM : IHttpHandler, IRequiresSessionState
 
             String f_name = Path.GetFileName(postedFile.FileName);
 
-            String fileName = edoc_id + "_" + f_name;
+            String fileName = dd_id + "_" + f_name;
 
             String uploadPath = @"E:\eDoc_Upload_DM\";
 
@@ -48,7 +48,7 @@ public class UploadFiles_DM : IHttpHandler, IRequiresSessionState
             postedFile.SaveAs(fullPath);
 
             // Call your existing database method here.
-            String err_msg = Document_Upload_DM(edoc_id, doc_type, f_name);
+            String err_msg = Document_Upload_DM(dd_id, doc_type, fileName);
 
             context.Response.ContentType = "text/plain";
 

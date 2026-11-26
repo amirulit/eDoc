@@ -38,7 +38,7 @@ public class UploadFiles_CD : IHttpHandler, IRequiresSessionState
 
             String fileName = edoc_id + "_" + f_name;
 
-            String uploadPath = @"E:\eDoc_SanctionDoc\";
+            String uploadPath = @"E:\eDoc_Upload_SanctionDoc\";
 
             if (!Directory.Exists(uploadPath))
                 Directory.CreateDirectory(uploadPath);
@@ -49,7 +49,7 @@ public class UploadFiles_CD : IHttpHandler, IRequiresSessionState
 
             // Call your existing database method here.
             String err_msg = Document_Upload_CD(
-                edoc_id, doc_type, f_name);
+                edoc_id, doc_type, fileName);
 
             context.Response.ContentType = "text/plain";
 

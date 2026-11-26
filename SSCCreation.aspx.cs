@@ -190,11 +190,11 @@ public partial class SSCCreation : System.Web.UI.Page
     }
 
     public static int InsertSSCFile(
-    int drawdownId,
-    string fileName,
-    string sscMode,
-    string type,
-    string createBy)
+    Int32 drawdownId,
+    String fileName,
+    String sscMode,
+    String type,
+    String createBy)
     {
         String cs = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
 

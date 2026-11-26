@@ -513,4 +513,201 @@ public partial class DrawdownListing_V2 : System.Web.UI.Page
         return ds.Tables[0];
 
     }
+
+
+
+//    [System.Web.Services.WebMethod]
+//    public static List<DocumentInfo> GetUploadedDocuments(String sanctionids, Int32 drawdownid)
+//    {
+
+
+//        List<DocumentInfo> documents = new List<DocumentInfo>();
+
+//        String connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+//        String query = @"
+//
+//
+//
+//        SELECT
+//            id,
+//            edoc_id,
+//            file_type,
+//            file_name,
+//            upload_by,
+//            upload_time
+//        FROM 
+//            dbo.t_Document_Upload_By_CD
+//       -WHERE edoc_id in (" + sanctionids + @")
+//        --WHERE edoc_id in (@edoc_id )
+//        ORDER BY 
+//            id DESC
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//";
+
+//        using (SqlConnection con = new SqlConnection(connectionString))
+//        {
+//            using (SqlCommand cmd = new SqlCommand(query, con))
+//            {
+//                // Adjust SqlDbType and length to match your edoc_id column.
+//                //cmd.Parameters.Add("@edoc_id", SqlDbType.NVarChar, 100).Value = edocId;
+
+//                con.Open();
+
+//                using (SqlDataReader dr = cmd.ExecuteReader())
+//                {
+//                    while (dr.Read())
+//                    {
+//                        string fileName = Convert.ToString(dr["file_name"]);
+
+//                        documents.Add(new DocumentInfo
+//                        {
+//                            Id = Convert.ToInt32(dr["id"]),
+//                            FileType = Convert.ToString(dr["file_type"]),
+//                            FileName = fileName,
+//                            UploadBy = Convert.ToString(dr["upload_by"]),
+//                            UploadTime = Convert.ToDateTime(dr["upload_time"]).ToString("dd-MMM-yyyy hh:mm tt"),
+
+
+//                            /*
+//                            FileUrl = "~/UploadedDocuments/" +
+//                                      Uri.EscapeDataString(
+//                                          System.IO.Path.GetFileName(fileName))
+
+//                            */
+//                            /*
+//                            FileUrl = "~/UploadedDocuments/" +
+//                                     Uri.EscapeDataString(
+//                                         System.IO.Path.GetFileName(fileName))
+//                            */
+
+//                            FileUrl = "ViewDocument.ashx?id=" + Convert.ToInt32(dr["id"])
+
+
+//                        });
+//                    }
+//                }
+//            }
+//        }
+
+//        return documents;
+
+//    }
+
+
+
+
+
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static object GetUploadedDocuments(String sanctionids, Int32 drawdownid)
+    {
+        DataTable dt1 = new DataTable();
+        DataTable dt2 = new DataTable();
+
+
+
+        String connectionString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+
+
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand("SP_GetUploadedDocuments", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@sanctionids", sanctionids);
+                cmd.Parameters.AddWithValue("@drawdownid", drawdownid);
+
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                        dt1 = ds.Tables[0];
+
+                    if (ds.Tables.Count > 1)
+                        dt2 = ds.Tables[1];
+                }
+            }
+        }
+
+        //Convert DataTables into Lists
+        List<DocumentInfo> list1 = ConvertToList(dt1);
+        List<DocumentInfo> list2 = ConvertToList(dt2);
+
+        return new
+        {
+            Table1 = list1,
+            Table2 = list2
+        };
+
+
+    }
+
+    private static List<DocumentInfo> ConvertToList(DataTable dt)
+    {
+        List<DocumentInfo> list = new List<DocumentInfo>();
+
+        foreach (DataRow row in dt.Rows)
+        {
+            DocumentInfo item = new DocumentInfo();
+
+            item.Id = Convert.ToInt32(row["id"]);
+            item.FileType = Convert.ToString(row["File_Type"]);
+            item.FileName = Convert.ToString(row["File_Name"]);
+            item.UploadBy = Convert.ToString(row["Upload_By"]);
+            item.UploadTime = Convert.ToString(row["Upload_Time"]);
+            //item.FileUrl = Convert.ToString(row["FileUrl"]);
+
+            item.FileUrl = "ViewDocument.ashx?id=" + Convert.ToInt32(row["id"]) + "&Typ=" + Convert.ToString(row["Typ"]) + "&FileName=" + Convert.ToString(row["File_Name"]);
+
+            //item.FileUrl = "ViewDocument.ashx?id=" + Convert.ToInt32(row["id"]) + "&Typ=" + HttpUtility.UrlEncode(Convert.ToString(row["Typ"])) + "&FileName=" + HttpUtility.UrlEncode(Convert.ToString(row["File_Name"]));
+
+            //item.FileUrl = "ViewDocument.ashx?id=" + Convert.ToInt32(row["id"]);
+
+
+            item.Typ = Convert.ToString(row["Typ"]);
+
+
+            //FileUrl = "ViewDocument.ashx?id=" + Convert.ToInt32(dr["id"])
+
+
+            list.Add(item);
+        }
+
+        return list;
+    
+    
+    }
+
+    public class DocumentInfo
+    {
+        public int Id { get; set; }
+        public string FileType { get; set; }
+        public string FileName { get; set; }
+        public string UploadBy { get; set; }
+        public string UploadTime { get; set; }
+        public string FileUrl { get; set; }
+
+        public string Typ { get; set; }
+    
+    
+    }
+
+
+
 }
+

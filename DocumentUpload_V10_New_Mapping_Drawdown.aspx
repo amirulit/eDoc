@@ -1705,7 +1705,7 @@
                         var ddlStatus = row.find('.ddlStatus').val() || '';
 
                         if (required == "N") {
-                            ddlStatus = "Not Obtained";
+                            ddlStatus = "N/A";
                         }
 
                         rowsData.push({
