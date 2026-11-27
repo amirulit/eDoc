@@ -159,7 +159,9 @@ $(document).ready(function () {
         var amount = $("#txtAmount").val();
         var validity = $("#txtValidity").val();
 
-        if (!customerCode || !loanNature || !amount || !validity || !currency) {
+        var proposalType = $("#ddlProposalType").val();
+
+        if (!customerCode || !loanNature || !amount || !validity || !currency || !proposalType) {
             alert("Please fill in all fields.");
             return;
         }
@@ -177,7 +179,8 @@ $(document).ready(function () {
             Currency: currency,
             CurrencySelected: currencyText,
             Amount: Number(amount),
-            Validity: validity
+            Validity: validity,
+            ProposalType: proposalType
         });
 
         renderTable();
@@ -188,6 +191,8 @@ $(document).ready(function () {
         $("#ddlCurrency").val("").trigger("change");
         $("#txtAmount").val("");
         $("#txtValidity").val("");
+
+        $("#ddlProposalType").val("").trigger("change");
 
     });
 
@@ -210,7 +215,9 @@ $(document).ready(function () {
         var amount = $("#txtAmount2").val();
         var validity = $("#txtValidity2").val();
 
-        if (!customerCode || !loanNature || !amount || !validity || !currency) {
+        var proposalType = $("#ddlProposalType2").val();
+
+        if (!customerCode || !loanNature || !amount || !validity || !currency || !proposalType) {
             alert("Please fill in all fields.");
             return;
         }
@@ -228,7 +235,8 @@ $(document).ready(function () {
             Currency: currency,
             CurrencySelected: currencyText,
             Amount: Number(amount),
-            Validity: validity
+            Validity: validity,
+            ProposalType: proposalType
         });
 
         renderTable();
@@ -239,6 +247,7 @@ $(document).ready(function () {
         $("#ddlCurrency2").val("").trigger("change");
         $("#txtAmount2").val("");
         $("#txtValidity2").val("");
+        $("#ddlProposalType2").val("").trigger("change");
 
     });
 
@@ -271,6 +280,7 @@ function renderTable() {
         $("<td>").text(loan.Currency).appendTo(tr);
         $("<td>").text(loan.Amount.toFixed(2)).appendTo(tr);
         $("<td>").text(loan.Validity).appendTo(tr);
+        $("<td>").text(loan.ProposalType).appendTo(tr);
 
         var removeButton = $("<button>", {
             type: "button",

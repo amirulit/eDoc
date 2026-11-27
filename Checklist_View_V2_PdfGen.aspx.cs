@@ -746,7 +746,7 @@ font-family:Cambria
     "20070610002_Scan_0001.jpg.jpg"
 };
 
-        if (Checklist_File_Type == "Centralized")
+       if (Checklist_File_Type == "Decentralized")
         {
             files = new String[]
     {

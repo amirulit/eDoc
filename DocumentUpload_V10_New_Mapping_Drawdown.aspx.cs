@@ -1011,9 +1011,9 @@ OTHER DOCUMENTS
 	,e.*
 from
 (
-select d.id,d.doc_name,d.status,d.details,d.deadline from [dbo].[t_DocumentStatus] d where status in ('Part','Not')
+select d.id,d.doc_name,d.status,d.details,d.deadline from [dbo].[t_DocumentStatus] d where required='Y' and  status in ('Part','Not')
 union all
-select o.id,o.doc_name,o.status,o.details,o.deadline  from [dbo].[t_OtherDocuments] o  where o.status not in  ('Obtained')
+select o.id,o.doc_name,o.status,o.details,o.deadline  from [dbo].[t_OtherDocuments] o  where required='Y' and  o.status not in  ('Obtained')
 )e";
 
             //const string query = "select * from [dbo].[t_DocumentStatus] where status in ('Part','Not') ";
@@ -1038,9 +1038,9 @@ select e.*,m.name from t_Drawdown_Document_Master m
 join
 (
 
-select * from [dbo].[t_Uploads_Drawdown] d where status in ('Part','Not')   and drawdown_id=@drawdown_id
+select * from [dbo].[t_Uploads_Drawdown] d where  required='Y' and status in ('Part','Not')   and drawdown_id=@drawdown_id
 union 
-select * from [dbo].[t_Uploads_Drawdown] o where o.status not in  ('Obtained') and drawdown_id=@drawdown_id
+select * from [dbo].[t_Uploads_Drawdown] o where  required='Y' and o.status not in  ('Obtained') and drawdown_id=@drawdown_id
 
 
 )e

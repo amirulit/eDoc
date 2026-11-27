@@ -1979,7 +1979,7 @@
 
 
                          
-                        <a  href="javascript:void(0);"  class="btn btn-info btn-xs docview"  cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>"  sanction-ids="<%=TableData.Rows[data]["sanction_ids"]%>"   >View(Uploaded Docs)</a>                                    
+                        <a  href="javascript:void(0);"  class="btn btn-info btn-xs docview"  cus-id="<%=TableData.Rows[data]["cus_ids"]%>" cus-type="<%=TableData.Rows[data]["drawdown_id"]%>" auto-id="<%=TableData.Rows[data]["id"]%>"  edoc-id="<%=TableData.Rows[data]["drawdown_id"]%>" drawdown-id="<%=TableData.Rows[data]["dd_id"]%>"  >View(Uploaded Docs)</a>                                    
  
 
 

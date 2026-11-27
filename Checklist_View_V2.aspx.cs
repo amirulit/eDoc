@@ -315,7 +315,7 @@ Upload Not Required
                     sb.AppendLine("<td></td>");
                 }
 
-                sb.AppendLine("<td><input id='btnQuery_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-info btn-sm query' value='Query' /></td>");
+                sb.AppendLine("<td><input id='btnQuery_" + primary_key + "' type='button'  data-id='" + primary_key + "' class='btn btn-warning btn-sm query' value='Query' /></td>");
 
                 sb.AppendLine("</tr>");
             }

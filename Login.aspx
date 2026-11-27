@@ -327,10 +327,10 @@
 
                 <asp:Button ID="btnCD_UH_CBD"   CssClass="btn btn-primary"  runat="server" Text="CD UH (CBD)" OnClick="btnCD_UH_CBD_Click" />
 
-                    <asp:Button ID="btnCD_RM_SME" runat="server" Text="CD RM (SME)" 
+                    <asp:Button ID="btnCD_RM_SME" runat="server" Text="CD RM (CMSME)" 
                     CssClass="btn btn-info" onclick="btnCD_SME_Click"   />
 
-                 <asp:Button ID="btnCD_UH_SME"   CssClass="btn btn-info"  runat="server" Text="CD UH (SME)" OnClick="btnCD_UH_SME_Click" />
+                 <asp:Button ID="btnCD_UH_SME"   CssClass="btn btn-info"  runat="server" Text="CD UH (CMSME)" OnClick="btnCD_UH_SME_Click" />
 
                     <asp:Button ID="btnCD_RM_Retail" runat="server" Text="CD RM (Retail)" 
                     CssClass="btn btn-success" onclick="btnCD_Retail_Click"   />
@@ -352,7 +352,7 @@
                 <asp:Button ID="btnCD_CBD_SAMD" runat="server" Text="RM-SAMD (CBD)" 
                     CssClass="btn btn-info" onclick="btnCD_CBD_SAMD_Click"   />
 
-                    <asp:Button ID="btnCD_SME_SAMD" runat="server" Text="RM-SAMD (SME)" 
+                    <asp:Button ID="btnCD_SME_SAMD" runat="server" Text="RM-SAMD (CMSME)" 
                     CssClass="btn btn-info" onclick="btnCD_SME_SAMD_Click"   />
 
                     <asp:Button ID="btnCD_Retail_SAMD" runat="server" Text="RM-SAMD (Retail)" 

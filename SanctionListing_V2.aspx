@@ -623,6 +623,12 @@
 
                 var edocId = $(this).attr('data-edocid');
 
+                //var sanctionids = $(this).attr('sanction-ids');
+
+                //var drawdownid = $(this).attr('drawdown-id');
+
+
+
                 $('#documentModal').modal('show');
 
                 $('#documentListSection').show();
@@ -634,8 +640,17 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "SanctionListing_V2.aspx/GetUploadedDocuments",
-                    data: JSON.stringify({ edocId: edocId }),
+
+
+                    //url: "SanctionListing_V2.aspx/GetUploadedDocuments",
+                    //data: JSON.stringify({ edocId: edocId }),
+
+
+                    url: "DrawdownListing_V2.aspx/GetUploadedDocuments",
+                    data: JSON.stringify({ sanctionids: edocId, drawdownid: 999999 }),
+
+
+
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
 
@@ -650,35 +665,52 @@
 
                         } else {
 
-                            $.each(data, function (i, item) {
 
-                                html += '<tr>';
+                            var result = response.d;
 
-                                html += '<td>' + (i + 1) + '</td>';
-                                html += '<td>' + $('<div>').text(item.FileType || '').html() + '</td>';
-                                html += '<td>' + $('<div>').text(item.FileName || '').html() + '</td>';
-                                html += '<td>' + $('<div>').text(item.UploadBy || '').html() + '</td>';
-                                html += '<td>' + $('<div>').text(item.UploadTime || '').html() + '</td>';
+                            var html = '';
 
-                                html += '<td>';
+                            html += '<h4>Sanction Upload</h4>';
+                            html += generateDocumentTable(result.Table1, 'table1');
 
-                                if (item.FileName && item.FileName.toLowerCase().endsWith('.pdf')) {
+                            html += '<hr/>';
 
-                                    html += '<button type="button" ' + 'class="btn btn-success btn-xs viewPDF" ' + 'data-url="' + $('<div>').text(item.FileUrl).html() + '">' + '<i class="fa fa-file-pdf-o"></i> View PDF' + '</button>';
+                            html += '<h4>Documentiton Upload</h4>';
+                            html += generateDocumentTable(result.Table2, 'table2');
 
-                                } else {
-
-                                    html += '<span class="text-muted">Not PDF</span>';
-
-                                }
-
-                                html += '</td></tr>';
-
-                            });
+                            $('#documentList').html(html);
 
                         }
 
-                        $('#documentList').html(html);
+                        //    $.each(data, function (i, item) {
+
+                        //        html += '<tr>';
+
+                        //        html += '<td>' + (i + 1) + '</td>';
+                        //        html += '<td>' + $('<div>').text(item.FileType || '').html() + '</td>';
+                        //        html += '<td>' + $('<div>').text(item.FileName || '').html() + '</td>';
+                        //        html += '<td>' + $('<div>').text(item.UploadBy || '').html() + '</td>';
+                        //        html += '<td>' + $('<div>').text(item.UploadTime || '').html() + '</td>';
+
+                        //        html += '<td>';
+
+                        //        if (item.FileName && item.FileName.toLowerCase().endsWith('.pdf')) {
+
+                        //            html += '<button type="button" ' + 'class="btn btn-success btn-xs viewPDF" ' + 'data-url="' + $('<div>').text(item.FileUrl).html() + '">' + '<i class="fa fa-file-pdf-o"></i> View PDF' + '</button>';
+
+                        //        } else {
+
+                        //            html += '<span class="text-muted">Not PDF</span>';
+
+                        //        }
+
+                        //        html += '</td></tr>';
+
+                        //    });
+
+                        //}
+
+                        //$('#documentList').html(html);
 
                     },
 
@@ -692,6 +724,76 @@
                 });
 
             });
+
+
+
+
+            
+            // Generate document table
+            function generateDocumentTable(data, tableName) {
+
+                var html = '';
+
+                html += '<table class="table table-bordered table-striped">';
+                html += '<thead>';
+                html += '<tr>';
+                html += '<th>SL</th>';
+                html += '<th>File Type</th>';
+                html += '<th>File Name</th>';
+                html += '<th>Upload By</th>';
+                html += '<th>Upload Time</th>';
+                html += '<th>Action</th>';
+                html += '</tr>';
+                html += '</thead>';
+
+                html += '<tbody>';
+
+                if (!data || data.length === 0) {
+
+                    html += '<tr><td colspan="6" class="text-center">No documents found.</td></tr>';
+
+                } else {
+
+                    $.each(data, function (i, item) {
+
+                        html += '<tr>';
+
+                        html += '<td>' + (i + 1) + '</td>';
+                        html += '<td>' + $('<div>').text(item.FileType || '').html() + '</td>';
+                        html += '<td>' + $('<div>').text(item.FileName || '').html() + '</td>';
+                        html += '<td>' + $('<div>').text(item.UploadBy || '').html() + '</td>';
+                        html += '<td>' + $('<div>').text(item.UploadTime || '').html() + '</td>';
+
+                        html += '<td>';
+
+                        if (item.FileName &&
+                            item.FileName.toLowerCase().endsWith('.pdf')) {
+
+                            //html += '<button type="button" class="btn btn-success btn-xs viewPDF"    data-url="' + encodeURIComponent(item.FileUrl || '') + '">View PDF</button>';
+
+
+                            html += '<button type="button" class="btn btn-success btn-xs viewPDF"    data-url="' + item.FileUrl + '">View PDF</button>';
+
+                            //html += '<button type="button" class="btn btn-success btn-xs viewPDF" data-url="' + $('<div>').text(item.FileUrl || '').html() + '">View PDF</button>';
+
+                        } else {
+
+                            html += '<span class="text-muted">Not PDF</span>';
+
+                        }
+
+                        html += '</td>';
+                        html += '</tr>';
+
+                    });
+
+                }
+
+                html += '</tbody>';
+                html += '</table>';
+
+                return html;
+            }
 
 
             // View PDF inside modal
@@ -1206,20 +1308,11 @@
                 <!-- Document List -->
                 <div id="documentListSection">
 
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>SL</th>
-                                <th>File Type</th>
-                                <th>File Name</th>
-                                <th>Upload By</th>
-                                <th>Upload Time</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                    
 
-                        <tbody id="documentList"></tbody>
-                    </table>
+
+                      <div id="documentList"></div>
+
 
                 </div>
 
@@ -1660,7 +1753,7 @@
  <%} %>
  
  
-  <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>">View (Uploaded Docs)</a>                                    
+  <a  href="javascript:void(0);"  class="btn btn-primary btn-xs docview" data-edocid="<%=TableData.Rows[data]["edoc_id"]%>"  data-id="<%=TableData.Rows[data]["id"]%>"    sanction-ids="<%=TableData.Rows[data]["edoc_id"]%>"   drawdown-id="999999"        >View (Uploaded Docs)</a>                                    
 
 
 <%  

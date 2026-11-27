@@ -256,8 +256,21 @@
             .skin-blue .treeview-menu > li > a:hover {
                 color: #fff;
             }
+
     </style>
 
+
+    <style type="text/css">
+
+
+        .skin-blue .wrapper, .skin-blue .main-sidebar, .skin-blue .left-side {
+  background-color: #173b60;
+}
+
+
+
+
+    </style>
  
 
     <asp:ContentPlaceHolder ID="head" runat="server">

@@ -1555,7 +1555,7 @@
                             <div class="panel-body">
                                 <!-- Start of modal body-->
 
-                              <table class="table   table-responsive ">
+                              <table class=" table table-condensed table-responsive my-table">
                               
                               <tr><td>Drawdown ID #</td><td><span id="lblID2" class="badge  badge-success"></span></td></tr>
                               

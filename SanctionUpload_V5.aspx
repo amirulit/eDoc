@@ -3,6 +3,98 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="StyleSheet.css" rel="stylesheet" type="text/css" />
+
+
+<%--    <style  type="text/css">
+
+
+
+        /* Compact form layout */
+.form-group {
+    margin-bottom: 5px !important;
+}
+
+.row {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+[class*="col-"] {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* Compact labels */
+label {
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Compact inputs and dropdowns */
+.form-control {
+    height: 30px;
+    padding: 3px 6px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+/* Compact buttons */
+.btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+/* Compact table */
+.table {
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > td {
+    padding: 4px 6px !important;
+    vertical-align: middle !important;
+}
+
+/* Compact table inputs */
+.table .form-control {
+    height: 27px;
+    padding: 2px 5px;
+    font-size: 12px;
+}
+
+/* Compact panel */
+.box {
+    margin-bottom: 8px;
+}
+
+.box-header {
+    padding: 6px 10px;
+}
+
+.box-body {
+    padding: 8px;
+}
+
+
+
+.row {
+    margin-bottom: 3px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+
+.compact-field {
+    width: 7%;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+    </style>--%>
     <style type="text/css">
        
         
@@ -210,7 +302,7 @@
 
 
 
-            $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8,#ddlCurrency,#ddlCustomerCode2,#ddlLoanNature2,#ddlCurrency2").select2({
+            $("#select1,#select2,#ContentPlaceHolder1_select3,#ddlCustomerCode,#ddlLoanNature,#select8,#ddlCurrency,#ddlCustomerCode2,#ddlLoanNature2,#ddlCurrency2,#ddlProposalType,#ddlProposalType2").select2({
                 placeholder: "<--Select-->",
                 allowClear: true,
                 width: "100%"
@@ -856,7 +948,7 @@
               <div class="tab-pane active" id="tab_1">
                
  <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label>Customer Code</label>
         <select id="ddlCustomerCode2" class="form-control">
             <option value="">-- Select Customer --</option>
@@ -865,7 +957,7 @@
       </div>
       <div class="row">
 
-    <div class="col-md-3">
+    <div class="col-md-4">
         <label>Loan Nature</label>
         <select id="ddlLoanNature2" class="form-control">
             <option value="">-- Select Loan Nature --</option>
@@ -886,7 +978,7 @@
                </select>
     </div>
 
-    <div class="col-md-1">
+    <div class="col-md-2">
         <label>Amount</label>
         <input type="text" id="txtAmount2"
                class="form-control" min="0.01" step="0.01" />
@@ -895,6 +987,27 @@
     <div class="col-md-2">
         <label>Validity</label>
         <input type="text" id="txtValidity2" class="form-control" />
+    </div>
+
+
+             <div class="col-md-2">
+        <label>Proposal Type</label>
+       <select id="ddlProposalType2" name="ProposalType" class="form-control">
+        <option value="">-- Select Proposal Type --</option>
+        <option value="Renewal">Renewal</option>
+        <option value="Fresh">Fresh</option>
+        <option value="Enhancement">Enhancement</option>
+        <option value="Renewal with enhancement">Renewal with enhancement</option>
+        <option value="Rearrange of limit">Rearrange of limit</option>
+        <option value="Reduction">Reduction</option>
+        <option value="Reschedule">Reschedule</option>
+        <option value="Conversion">Conversion</option>
+        <option value="Validity extension">Validity extension</option>
+        <option value="Renewal with reduction">Renewal with reduction</option>
+        <option value="Renewal for adjustment purpose">Renewal for adjustment purpose</option>
+        <option value="Limit Cancelled">Limit Cancelled</option>
+        <option value="Others">Others</option>
+    </select>
     </div>
 
    <div class="col-md-1" style="padding-top: 25px;">
@@ -916,14 +1029,14 @@
  
     
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <label>Customer Code</label>
         <select id="ddlCustomerCode" class="form-control">
             <option value="">-- Select Customer --</option>
         </select>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label>Loan Nature</label>
         <select id="ddlLoanNature" class="form-control">
             <option value="">-- Select Loan Nature --</option>
@@ -944,7 +1057,7 @@
                </select>
     </div>
 
-    <div class="col-md-1">
+    <div class="col-md-2">
         <label>Amount</label>
         <input type="text" id="txtAmount"
                class="form-control" min="0.01" step="0.01" />
@@ -954,6 +1067,33 @@
         <label>Validity</label>
         <input type="text" id="txtValidity" class="form-control" />
     </div>
+
+      <div class="col-md-1">
+        <label>Proposal Type</label>
+       <select id="ddlProposalType" name="ProposalType" class="form-control">
+        <option value="">-- Select Proposal Type --</option>
+        <option value="Renewal">Renewal</option>
+        <option value="Fresh">Fresh</option>
+        <option value="Enhancement">Enhancement</option>
+        <option value="Renewal with enhancement">Renewal with enhancement</option>
+        <option value="Rearrange of limit">Rearrange of limit</option>
+        <option value="Reduction">Reduction</option>
+        <option value="Reschedule">Reschedule</option>
+        <option value="Conversion">Conversion</option>
+        <option value="Validity extension">Validity extension</option>
+        <option value="Renewal with reduction">Renewal with reduction</option>
+        <option value="Renewal for adjustment purpose">Renewal for adjustment purpose</option>
+        <option value="Limit Cancelled">Limit Cancelled</option>
+        <option value="Others">Others</option>
+    </select>
+    </div>
+
+
+
+
+
+
+
 
    <div class="col-md-1" style="padding-top: 25px;">
     <button type="button" id="btnAdd" class="btn btn-primary form-control">
@@ -998,6 +1138,7 @@
             <th>Currency</th>
             <th>Amount</th>
             <th>Validity</th>
+            <th>Proposal Type</th>
             <th>Action</th>
         </tr>
     </thead>
